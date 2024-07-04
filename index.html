@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">    
+        <link rel="stylesheet" href="https://cdn.materialdesignicons.com/6.4.95/css/materialdesignicons.min.css">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+        <style>
+            .fa-bars,
+            .fa-plus,
+            .fa-list,
+            .fa-dollar-sign,
+            .fa-ranking-star,
+            .fa-right-from-bracket {
+                width: 24px;
+                text-align: center;
+            }
+            /* Ensure the card body flexes to fill the card */
+            .card-body {
+                display: flex;
+                flex-direction: column;
+            }
+
+            /* Make the card text expand to fill the available space */
+            .card-text {
+                flex-grow: 1;
+                height: 60px;
+                text-align: justify;
+            }
+            .card-img-top {
+                height: 150px;
+                object-fit: cover; /* This will ensure the image covers the area without distorting its aspect ratio */
+                width: 100%; /* Ensure the image covers the full width of the card */
+            }
+        </style>
+    </head>
+    <body>
+        <header class="p-3 mb-3 border-bottom">
+            <div>
+                <div class="d-flex flex-wrap align-items-center justify-content-between">
+                    <div class="d-flex">
+                        <a href="/" class="d-flex align-items-center text-dark text-decoration-none">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Logo_TV_2015.svg" alt="mdo" class="bi me-2" width="40" height="32">
+                        </a>
+
+                        <ul class="nav col-12 me-md-auto mb-2 justify-content-center mb-md-0 d-none d-md-flex">
+                            <li><a href="#" class="nav-link px-2 link-secondary">Eventos</a></li>
+                            <li><a href="#" class="nav-link px-2 link-dark">Lojas</a></li>
+                            <li><a href="#" class="nav-link px-2 link-dark">Categorias</a></li>
+                        </ul>
+                    </div>
+                    <div class="d-flex px-3">
+                        <form class="col-12 col-md-auto me-md-3 d-none d-md-flex">
+                            <input type="search" class="form-control" placeholder="Pesquisar..." aria-label="Search">
+                        </form>
+    
+                        <button data-bs-toggle="offcanvas" style="border:none; background:none;" type="button" href="#offcanvasExample" role="button" aria-controls="offcanvasExample">
+                            <i class="fa-solid fa-bars" style="width:24px; text-align: center;"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+            <div class="offcanvas-header px-4 d-flex justify-content-between align-items-center">
+                <a href="/" class="d-flex align-items-center me-md-auto link-dark text-decoration-none">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Logo_TV_2015.svg" alt="mdo" class="bi me-2" width="40" height="32">
+                </a>
+                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                
+            </div>
+                <div class="offcanvas-body d-flex flex-column justify-content-between">
+                <ul class="nav nav-pills flex-column mb-auto">
+                    <li class="d-md-none">
+                        <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
+                            <input type="search" class="form-control" placeholder="Pesquisar..." aria-label="Search">
+                        </form>
+                    </li>
+                    <li class="d-md-none">
+                        <a href="#" class="nav-link link-secondary">
+                            <div class="d-flex align-items-center">
+                                <span>Eventos</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="d-md-none">
+                        <a href="#" class="nav-link link-dark">
+                            <div class="d-flex align-items-center">
+                                <span>Lojas</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="d-md-none">
+                        <a href="#" class="nav-link link-dark">
+                            <div class="d-flex align-items-center">
+                                <span>Categorias</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="d-md-none border-top my-3"></li>
+                    <li>
+                        <a href="#" class="nav-link link-dark d-block">
+                            <div class="d-flex align-items-center">
+                                <i class="fa-solid fa-plus bi me-4" style="width:24px; text-align: center;"></i>
+                                <span>Inscrições</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="nav-link link-dark d-block">
+                            <div class="d-flex align-items-center">
+                                <i class="fa-solid fa-list bi me-4" style="width:24px; text-align: center;"></i>
+                                <span>Inventário</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="nav-link link-dark d-block">
+                            <div class="d-flex align-items-center">
+                                <i class="fa-solid fa-dollar-sign bi me-4" style="width:24px; text-align: center;"></i>
+                                <span>Vendas</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="border-top my-3"></li>
+                    <li>
+                        <a href="#" class="nav-link link-dark">
+                            <div class="d-flex align-items-center">
+                                <i class="fa-solid fa-ranking-star bi me-4" style="width:24px; text-align: center;"></i>
+                                <span>Estatísticas</span>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+                <div class="border-top my-3"></div>
+                <div class="d-flex justify-content-between align-items-center">
+                    <div href="#" class="d-flex justify-content-between align-items-center">
+                        <div class="d-flex align-items-center px-2">
+                            <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-4">
+                            <span><strong>Sua Loja</strong></span>
+                        </div>
+                    </div>
+                    <button style="border:none; background:none;"><i class="fa-solid fa-right-from-bracket px-2"></i></button>
+                </div>
+            </div>
+        </div>
+        <section class="py-5">
+            <div class="container">
+                <div class="row">
+                <div>
+                    <div class="bg-primary py-6 px-6 px-xl-0 rounded-4 ">
+                    <div class="row align-items-center">
+                        <div class="offset-xl-1 col-xl-5 col-md-6 col-12 p-5">
+                        <div>
+                            <h2 class="h1 text-white mb-3">Vamos tornar suas vendas mais fáceis!</h2>
+                            <p class="text-white fs-4">Registre sua atividade e analise seus resultados de forma rápida e eficiente...</p>
+                            <button class="btn btn-dark">Vamos lá!</button>
+                        </div>
+                        </div>
+                        <div class="col-xl-6 col-md-6 col-12">
+                        <div class="text-center">
+                            <img src="https://codescandy.com/geeks-bootstrap-5/assets/images/education/course.png" alt="learning" class="img-fluid">
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </section>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-4 col-sm-6 mb-2">
+                    <div class="card evento">
+                        <img class="card-img-top" src="https://www.turismosantos.com.br/static/files_turismosantos/styles/wpp/public/img4-scaled.jpg?itok=7-35bhk-" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">Anime Santos</h5>
+                            <p class="card-text">Descrição do Anime antos</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-4 col-sm-6 mb-2">
+                    <div class="card evento">
+                        <img class="card-img-top" src="https://www.tnh1.com.br//fileadmin/_processed_/d/9/csm_CCXP_tera_2a_edicao_totalmente_virtual_com_promessa_de_50_horas_de_conteudo_Divulgacao_7a46703637.jpg" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">CCXP</h5>
+                            <p class="card-text">Descrição do CCXP</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-4 col-sm-6 mb-2">
+                    <div class="card evento">
+                        <img class="card-img-top" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTwV3Ev2pw7FAAzPfNPUfu5OxEOblEqECFkTw&s" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">Steam Punk</h5>
+                            <p class="card-text">Descrição do steampunk</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-4 col-sm-6 mb-2">
+                    <div class="card evento">
+                        <img class="card-img-top" src="https://spotme.com/wp-content/uploads/2020/07/Hero-1.jpg" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">Santos Geek Convention</h5>
+                            <p class="card-text">Descrição do Santos Geek Convention</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-4 col-sm-6 mb-2">
+                    <div class="card evento">
+                        <img class="card-img-top" src="https://s3.guicheweb.com.br/imagenseventos/20-10-2022_12-18-44.jpg" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">Praia Games</h5>
+                            <p class="card-text">Descrição do Praia Games.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-4 col-sm-6 mb-2">
+                    <div class="card evento">
+                        <img class="card-img-top" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4wSwdZll7hWnVUvFJnEkbMZILeyMArx7UZQ&s" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">Festival Geek</h5>
+                            <p class="card-text">Descrição do Festival Geek.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-4 col-sm-6 mb-2">
+                    <div class="card evento">
+                        <img class="card-img-top" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRHElGdgSmzKQYAIyho6Hs90ugmT89-6AYSdQ&s" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">Rota Geek</h5>
+                            <p class="card-text">Descrição do rota geek.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-4 col-sm-6 mb-2">
+                    <div class="card evento">
+                        <img class="card-img-top" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcShIQyFSlpe-VijQiVC5WijYrjiEIUN6bUL8g&s" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">Expo Comics</h5>
+                            <p class="card-text">Descrição do Expo Comics.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-4 col-sm-6 mb-2">
+                    <div class="card evento">
+                        <img class="card-img-top" src="https://wdmfoto.com.br/wp-content/uploads/2023/07/logo-AF23-selo20-duotone-150x282-1-1.png" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">Anime Friends</h5>
+                            <p class="card-text">Descrição do Anime Friends</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-4 col-sm-6 mb-2">
+                    <div class="card evento">
+                        <img class="card-img-top" src="https://clickitatiba.com.br/v5/wp-content/uploads/2023/07/07f953dd-6fc1-4718-a0cc-f52c56a26aa3.jpeg" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">Fesival do Japão</h5>
+                            <p class="card-text">Descrição do Festival do Japão</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-4 col-sm-6 mb-2">
+                    <div class="card evento">
+                        <img class="card-img-top" src="https://finalbossgeek.com.br/wp-content/uploads/2024/04/upabc_logo_tema_data.png" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">UP?ABC</h5>
+                            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore...</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-4 col-sm-6 mb-2">
+                    <div class="card evento">
+                        <img class="card-img-top" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQXwoy-_R07pFeOG5ZmoXCP3RpLkdQOaITrRQ&s" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">Horror Expo</h5>
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Add more rows as needed -->
+        </div>
+
+        
+    </body>
+</html>
