@@ -31,3 +31,15 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
+
+.image-overlay {
+    position: absolute;
+    top: 10px; /* Ajuste conforme necessário */
+    right: 0; /* Ajuste conforme necessário */
+    background-color: rgba(0, 0, 0, 0.7); /* Fundo semitransparente */
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px 0 0 5px;
+    font-size: 0.9em;
+    text-align: center;
+}

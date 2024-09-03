@@ -23,6 +23,7 @@ function modeloEvento(evento) {
         <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
             <div class="card evento">
                 <img class="card-img-top" src="${evento.imagem}" alt="Card image cap">
+                <span class="image-overlay">${evento.data}</span>
                 <div class="card-body">
                     <h5 class="card-title">${evento.titulo}</h5>
                     <p class="card-text descricao-evento">${evento.descricao}</p>

@@ -91,9 +91,9 @@
       <script src="/assets/js/home.js"></script>
       <script>
         $(document).ready(function() {
-          setTimeout(function() {
+          // setTimeout(function() {
                 carregarEventos();
-            }, 2000);
+            // }, 2000);
         });
       </script>
 </html>
