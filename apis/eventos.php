@@ -6,4 +6,5 @@ require_once($web.'/source/Core/Core.php');
 $core = new Core();
 
 $home = new Home();
-$core->loadPage('home');
+$eventos = $home->Eventos();
+$core->loadPage('apis/eventos', ['eventos' => $eventos]);

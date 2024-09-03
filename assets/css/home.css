@@ -1,0 +1,33 @@
+.fa-bars,
+.fa-plus,
+.fa-list,
+.fa-dollar-sign,
+.fa-ranking-star,
+.fa-right-from-bracket {
+    width: 24px;
+    text-align: center;
+}
+/* Ensure the card body flexes to fill the card */
+.card-body {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Make the card text expand to fill the available space */
+.card-text {
+    flex-grow: 1;
+    height: 50px;
+    text-align: justify;
+}
+.card-img-top {
+    height: 150px;
+    object-fit: cover; /* This will ensure the image covers the area without distorting its aspect ratio */
+    width: 100%; /* Ensure the image covers the full width of the card */
+}
+
+.descricao-evento {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}

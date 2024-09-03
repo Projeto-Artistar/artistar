@@ -1,17 +1,16 @@
 <?php
 
-namespace Core;
-
 class Core {
     public $web;
 
     public function __construct() {
-        $this->web = dirname(__FILE__);
+        $this->web = $_SERVER['DOCUMENT_ROOT'];
     }
-    public function loadPage($page) {
-        if (file_exists($this->web."/../Theme/{$page}.html"))
-            echo file_get_contents($this->web."/../Theme/{$page}.html");
-        else
-            echo 'Página não encontrada';
+    public function loadPage($page, $parameters = []) {
+        if (file_exists($this->web."/source/Theme/{$page}.php")) {
+            foreach ($parameters as $key => $value)
+                $$key = $value;
+            require_once($this->web."/source/Theme/{$page}.php");
+        }
     }
 }

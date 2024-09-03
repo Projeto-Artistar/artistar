@@ -2,46 +2,10 @@
 <html>
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="/vendor/fontawesome-6.6.0/css/all.min.css">    
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">    
         <link rel="stylesheet" href="https://cdn.materialdesignicons.com/6.4.95/css/materialdesignicons.min.css">
-        <link href="vendor/bootstrap-5.3.3/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-        <script src="vendor/bootstrap-5.3.3/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-        <style>
-            .fa-bars,
-            .fa-plus,
-            .fa-list,
-            .fa-dollar-sign,
-            .fa-ranking-star,
-            .fa-right-from-bracket {
-                width: 24px;
-                text-align: center;
-            }
-            /* Ensure the card body flexes to fill the card */
-            .card-body {
-                display: flex;
-                flex-direction: column;
-            }
-
-            /* Make the card text expand to fill the available space */
-            .card-text {
-                flex-grow: 1;
-                height: 50px;
-                text-align: justify;
-            }
-            .card-img-top {
-                height: 150px;
-                object-fit: cover; /* This will ensure the image covers the area without distorting its aspect ratio */
-                width: 100%; /* Ensure the image covers the full width of the card */
-            }
-
-            .descricao-evento {
-                display: -webkit-box;
-                -webkit-line-clamp: 2;
-                -webkit-box-orient: vertical;
-                overflow: hidden;
-            }
-
-        </style>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     </head>
     <body>
         <header class="navbar navbar-expand-lg navbar bg-white mb-4 fixed-top border-bottom py-3" id="navbar">
@@ -52,17 +16,106 @@
                     </a>
 
                     <ul class="nav col-12 me-md-auto mb-2 justify-content-center mb-md-0 d-none d-md-flex">
-                        <li><a href="#" class="nav-link px-2 link-secondary">Log-in</a></li>
-                        <li><a href="#" class="nav-link px-2 link-dark">Cadastre-se</a></li>
+                        <li><a href="#" class="nav-link px-2 link-secondary">Iniciar Vendas</a></li>
+                        <li><a href="#" class="nav-link px-2 link-dark"></a></li>
+                        <li><a href="#" class="nav-link px-2 link-dark">Categorias</a></li>
                     </ul>
                 </div>
                 <div id="barra-direita" class="d-flex">
                     <form class="col-12 col-md-auto me-md-3 d-none d-md-flex">
                         <input type="search" class="form-control" placeholder="Pesquisar..." aria-label="Search">
                     </form>
+
+                    <button data-bs-toggle="offcanvas" style="border:none; background:none;" type="button" href="#offcanvasExample" role="button" aria-controls="offcanvasExample">
+                        <i class="fa-solid fa-bars" style="width:24px; text-align: center;"></i>
+                    </button>
                 </div>
             </div>
         </header>
+
+        <nav class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+            <div class="offcanvas-header px-4 d-flex justify-content-between align-items-center">
+                <a href="/" class="d-flex align-items-center me-md-auto link-dark text-decoration-none">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Logo_TV_2015.svg" alt="mdo" class="bi me-2" width="40" height="32">
+                </a>
+                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                
+            </div>
+                <div class="offcanvas-body d-flex flex-column justify-content-between">
+                <ul class="nav nav-pills flex-column mb-auto">
+                    <li class="d-md-none">
+                        <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
+                            <input type="search" class="form-control" placeholder="Pesquisar..." aria-label="Search">
+                        </form>
+                    </li>
+                    <li class="d-md-none">
+                        <a href="#" class="nav-link link-secondary">
+                            <div class="d-flex align-items-center">
+                                <span>Eventos</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="d-md-none">
+                        <a href="#" class="nav-link link-dark">
+                            <div class="d-flex align-items-center">
+                                <span>Lojas</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="d-md-none">
+                        <a href="#" class="nav-link link-dark">
+                            <div class="d-flex align-items-center">
+                                <span>Categorias</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="d-md-none border-top my-3"></li>
+                    <li>
+                        <a href="#" class="nav-link link-dark d-block">
+                            <div class="d-flex align-items-center">
+                                <i class="fa-solid fa-plus bi me-4" style="width:24px; text-align: center;"></i>
+                                <span>Inscrições</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="nav-link link-dark d-block">
+                            <div class="d-flex align-items-center">
+                                <i class="fa-solid fa-list bi me-4" style="width:24px; text-align: center;"></i>
+                                <span>Inventário</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="nav-link link-dark d-block">
+                            <div class="d-flex align-items-center">
+                                <i class="fa-solid fa-dollar-sign bi me-4" style="width:24px; text-align: center;"></i>
+                                <span>Vendas</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="border-top my-3"></li>
+                    <li>
+                        <a href="#" class="nav-link link-dark">
+                            <div class="d-flex align-items-center">
+                                <i class="fa-solid fa-ranking-star bi me-4" style="width:24px; text-align: center;"></i>
+                                <span>Estatísticas</span>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+                <div class="border-top my-3"></div>
+                <div class="d-flex justify-content-between align-items-center">
+                    <div href="#" class="d-flex justify-content-between align-items-center">
+                        <div class="d-flex align-items-center px-2">
+                            <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-4">
+                            <span><strong>Sua Loja</strong></span>
+                        </div>
+                    </div>
+                    <button style="border:none; background:none;"><i class="fa-solid fa-right-from-bracket px-2"></i></button>
+                </div>
+            </div>
+        </nav>
         <section class="pt-5 mb-4 mt-5">
             <div class="container">
                 <div class="row">
@@ -228,7 +281,7 @@
           </div>
         </section>
         <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05);">
-          © 2024 Artistar. Todos os direitos reservados.
+          © Artistar. Todos os direitos reservados.
         </div>
       </footer>
 </html>
