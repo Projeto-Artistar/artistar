@@ -2,11 +2,13 @@
 <html>
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">    
-        <link rel="stylesheet" href="https://cdn.materialdesignicons.com/6.4.95/css/materialdesignicons.min.css">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    </head>
+            <link rel="stylesheet" href="/vendor/fontawesome-6.6.0/css/all.min.css">    
+            <link rel="stylesheet" href="https://cdn.materialdesignicons.com/6.4.95/css/materialdesignicons.min.css">
+            <link href="vendor/bootstrap-5.3.3/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+            <script src="vendor/bootstrap-5.3.3/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            <link href="assets/css/home.css" rel="stylesheet">
+        </head>
     <body>
         <header class="navbar navbar-expand-lg navbar bg-white mb-4 fixed-top border-bottom py-3" id="navbar">
             <div class="container-fluid px-3">
@@ -141,117 +143,8 @@
             </div>
         </section>
         <section class="container">
-            <div class="row">
-                <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-                    <div class="card evento">
-                        <img class="card-img-top" src="https://www.turismosantos.com.br/static/files_turismosantos/styles/wpp/public/img4-scaled.jpg?itok=7-35bhk-" alt="Card image cap">
-                        <div class="card-body">
-                            <h5 class="card-title">Anime Santos</h5>
-                            <p class="card-text descricao-evento">Descrição do Anime antos</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-                    <div class="card evento">
-                        <img class="card-img-top" src="https://www.tnh1.com.br//fileadmin/_processed_/d/9/csm_CCXP_tera_2a_edicao_totalmente_virtual_com_promessa_de_50_horas_de_conteudo_Divulgacao_7a46703637.jpg" alt="Card image cap">
-                        <div class="card-body">
-                            <h5 class="card-title">CCXP</h5>
-                            <p class="card-text descricao-evento">Descrição do CCXP</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-                    <div class="card evento">
-                        <img class="card-img-top" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTwV3Ev2pw7FAAzPfNPUfu5OxEOblEqECFkTw&s" alt="Card image cap">
-                        <div class="card-body">
-                            <h5 class="card-title">Steam Punk</h5>
-                            <p class="card-text descricao-evento">Descrição do steampunk</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-                    <div class="card evento">
-                        <img class="card-img-top" src="https://spotme.com/wp-content/uploads/2020/07/Hero-1.jpg" alt="Card image cap">
-                        <div class="card-body">
-                            <h5 class="card-title">Santos Geek Convention</h5>
-                            <p class="card-text descricao-evento">Descrição do Santos Geek Convention</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-                    <div class="card evento">
-                        <img class="card-img-top" src="https://s3.guicheweb.com.br/imagenseventos/20-10-2022_12-18-44.jpg" alt="Card image cap">
-                        <div class="card-body">
-                            <h5 class="card-title">Praia Games</h5>
-                            <p class="card-text descricao-evento">Descrição do Praia Games.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-                    <div class="card evento">
-                        <img class="card-img-top" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4wSwdZll7hWnVUvFJnEkbMZILeyMArx7UZQ&s" alt="Card image cap">
-                        <div class="card-body">
-                            <h5 class="card-title">Festival Geek</h5>
-                            <p class="card-text descricao-evento">Descrição do Festival Geek.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-                    <div class="card evento">
-                        <img class="card-img-top" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRHElGdgSmzKQYAIyho6Hs90ugmT89-6AYSdQ&s" alt="Card image cap">
-                        <div class="card-body">
-                            <h5 class="card-title">Rota Geek</h5>
-                            <p class="card-text descricao-evento">Descrição do rota geek.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-                    <div class="card evento">
-                        <img class="card-img-top" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcShIQyFSlpe-VijQiVC5WijYrjiEIUN6bUL8g&s" alt="Card image cap">
-                        <div class="card-body">
-                            <h5 class="card-title">Expo Comics</h5>
-                            <p class="card-text descricao-evento">Descrição do Expo Comics.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-                    <div class="card evento">
-                        <img class="card-img-top" src="https://wdmfoto.com.br/wp-content/uploads/2023/07/logo-AF23-selo20-duotone-150x282-1-1.png" alt="Card image cap">
-                        <div class="card-body">
-                            <h5 class="card-title">Anime Friends</h5>
-                            <p class="card-text descricao-evento">Descrição do Anime Friends</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-                    <div class="card evento">
-                        <img class="card-img-top" src="https://clickitatiba.com.br/v5/wp-content/uploads/2023/07/07f953dd-6fc1-4718-a0cc-f52c56a26aa3.jpeg" alt="Card image cap">
-                        <div class="card-body">
-                            <h5 class="card-title">Fesival do Japão</h5>
-                            <p class="card-text descricao-evento">Descrição do Festival do Japão</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-                    <div class="card evento">
-                        <img class="card-img-top" src="https://finalbossgeek.com.br/wp-content/uploads/2024/04/upabc_logo_tema_data.png" alt="Card image cap">
-                        <div class="card-body">
-                            <h5 class="card-title">UP?ABC</h5>
-                            <p class="card-text descricao-evento">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore...</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-                    <div class="card evento">
-                        <img class="card-img-top" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQXwoy-_R07pFeOG5ZmoXCP3RpLkdQOaITrRQ&s" alt="Card image cap">
-                        <div class="card-body">
-                            <h5 class="card-title">Horror Expo</h5>
-                            <p class="card-text descricao-evento">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        </div>
-                    </div>
-                </div>
+            <div class="row" id="eventos">
             </div>
-            <!-- Add more rows as needed -->
         </section>
     </body>
     <footer class="text-center text-lg-start bg-light text-muted">
@@ -284,4 +177,5 @@
           © Artistar. Todos os direitos reservados.
         </div>
       </footer>
+      <script src="/assets/js/home.js"></script>
 </html>

@@ -6,7 +6,7 @@ class Core {
     public function __construct() {
         $this->web = $_SERVER['DOCUMENT_ROOT'];
     }
-    public function loadPage($page, $parameters = []) {
+    public function loadView($page, $parameters = []) {
         if (file_exists($this->web."/source/Theme/{$page}.php")) {
             foreach ($parameters as $key => $value)
                 $$key = $value;

@@ -1,6 +1,6 @@
 function Eventos() {
     $.ajax({
-        url: '/apis/eventos.php',
+        url: '/apis/eventos',
         type: 'GET',
         success: function(response) {
             response = JSON.parse(response);

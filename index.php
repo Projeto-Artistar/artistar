@@ -1,9 +1,22 @@
 <?php
+ini_set('display_errors', 1);
+
 $web = $_SERVER['DOCUMENT_ROOT'];
-require_once($web.'/source/Models/Home.php');
-require_once($web.'/source/Core/Core.php');
 
-$core = new Core();
+$pagina = $_SERVER['REQUEST_URI'];
 
-$home = new Home();
-$core->loadPage('home');
+$urls = [
+    '/' => 'homeController.home',
+    '/logado' => 'homeController.logado',
+    '/apis/eventos' => 'apiController.eventos'
+];
+
+if (isset($urls[$pagina])) {
+    $controller = $urls[$pagina];
+    $controller = explode('.', $controller);
+    require_once($web.'/source/Controllers/'.$controller[0].'.php');
+    $controller[0] = new $controller[0];
+    $controller[0]->{$controller[1]}();
+} else {
+    require_once('404.php');
+}
