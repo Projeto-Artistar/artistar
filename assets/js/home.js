@@ -1,4 +1,4 @@
-function Eventos() {
+function carregarEventos() {
     $.ajax({
         url: '/apis/eventos',
         type: 'GET',
@@ -33,9 +33,3 @@ function modeloEvento(evento) {
     $('#eventos').append(htmlEvento)
 
 }
-
-$(document).ready(function() {
-  
-    Eventos();
-    
-});
