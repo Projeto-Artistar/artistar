@@ -58,9 +58,10 @@ define('FUNDONAVHOVER', '#010242');
 function url($path)
 {
     if ($path) {
-        return ROOT . "/{$path}";
+        // return ROOT . "/{$path}";
+        return "/{$path}";
     }
-    return ROOT;
+    return "/";
 }
 
 // function getBucket($path){
