@@ -1,12 +1,26 @@
 <?php
 
-$web = $_SERVER['DOCUMENT_ROOT'];
-require_once($web.'/source/Models/Home.php');
+namespace Source\Controllers;
 
-Class apiController extends Core {
+use CoffeeCode\Router\Router;
+use Source\Core\Core;
+use Source\Model\Home;
+
+class apiController extends Core {
+
     public function eventos() {
-        $home = new Home();
-        $eventos = $home->Eventos();
-        $this->loadView('apis/eventos', ['eventos' => $eventos]);
+
+        $dados = new Home(ROOT);
+        $eventos = $dados->trazerEventos();
+        
+
+        echo $this->view->render("apis/eventos", ['eventos' => $eventos]);
+        return;
     }
+
+
+    public function sair(){
+        session_destroy();
+    }
+
 }

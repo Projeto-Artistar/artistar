@@ -1,14 +1,24 @@
 <?php
 
-$web = $_SERVER['DOCUMENT_ROOT'];
-require_once($web.'/source/Core/Core.php');
+namespace Source\Controllers;
 
-Class homeController extends Core {
-    public function home() {
-        $this->loadView('home');
+use CoffeeCode\Router\Router;
+use Source\Core\Core;
+use Source\Model\Home;
+
+class homeController extends Core
+{
+
+    public function home()
+    {
+
+        echo $this->view->render("home");
+        return;
     }
 
-    public function logado() {
-        $this->loadView('home.logado');
+
+    public function sair(){
+        session_destroy();
     }
+
 }

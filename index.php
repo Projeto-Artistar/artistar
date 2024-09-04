@@ -1,22 +1,29 @@
 <?php
 ini_set('display_errors', 1);
 
-$web = $_SERVER['DOCUMENT_ROOT'];
+require __DIR__ . "/vendor/autoload.php";
 
-$pagina = $_SERVER['REQUEST_URI'];
+use CoffeeCode\Router\Router;
 
-$urls = [
-    '/' => 'homeController.home',
-    '/logado' => 'homeController.logado',
-    '/apis/eventos' => 'apiController.eventos'
-];
+session_start();
 
-if (isset($urls[$pagina])) {
-    $controller = $urls[$pagina];
-    $controller = explode('.', $controller);
-    require_once($web.'/source/Controllers/'.$controller[0].'.php');
-    $controller[0] = new $controller[0];
-    $controller[0]->{$controller[1]}();
-} else {
-    require_once('404.php');
-}
+$router = new Router(ROOT);
+
+$router->group(null)->namespace("Source\Controllers");
+$router->get("/", "homeController:home", "homeController.home");
+
+$router->group('apis')->namespace("Source\Controllers");
+$router->get("/eventos", "apiController:eventos", "apiController.eventos");
+
+$router->group("error");
+$router->get("/404", "errorController:error404", "errorController.error404");
+
+
+$router->dispatch();
+
+if($router->error())
+    header("location: /error/".$router->error());
+
+
+
+

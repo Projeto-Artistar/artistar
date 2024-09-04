@@ -1,16 +1,33 @@
 <?php
 
-class Core {
-    public $web;
 
-    public function __construct() {
-        $this->web = $_SERVER['DOCUMENT_ROOT'];
+namespace Source\Core;
+
+use League\Plates\Engine;
+
+class Core
+{
+
+    protected $view;
+
+    protected $nucleo;
+
+    protected $router;
+
+    protected $homenPath = 'artistar';
+
+    public function __construct($router){
+        $this->router=$router;
+        $this->view = new Engine(dirname(__DIR__,1)."/Theme");
+        $this->nucleo = $this->view;
+
+        $this->view->addData(["router"=> $this->router]);
+
     }
-    public function loadView($page, $parameters = []) {
-        if (file_exists($this->web."/source/Theme/{$page}.php")) {
-            foreach ($parameters as $key => $value)
-                $$key = $value;
-            require_once($this->web."/source/Theme/{$page}.php");
-        }
+
+    public function validaAcesso(){
+
     }
+
+
 }

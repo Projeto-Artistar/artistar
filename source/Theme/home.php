@@ -2,12 +2,12 @@
 <html>
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="/vendor/fontawesome-6.6.0/css/all.min.css">    
-        <link rel="stylesheet" href="https://cdn.materialdesignicons.com/6.4.95/css/materialdesignicons.min.css">
+        <link rel="stylesheet" href="/assets/vendors/fontawesome-6.6.0/css/all.min.css">    
+        <link rel="stylesheet" href="/assets/vendors/mdi/css/materialdesignicons.min.css">
         <link href="vendor/bootstrap-5.3.3/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-        <script src="vendor/bootstrap-5.3.3/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <link href="assets/css/home.css" rel="stylesheet">
+        <script src="/assets/vendors/bootstrap-5.3.3/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+        <script src="/assets/js/jquery-3.6.0.js"></script>
+        <link href="/assets/css/home.css" rel="stylesheet">
     </head>
     <body>
         <header class="navbar navbar-expand-lg navbar bg-white mb-4 fixed-top border-bottom py-3" id="navbar">
