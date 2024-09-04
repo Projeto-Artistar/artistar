@@ -1,4 +1,4 @@
-function carregarEventos() {
+function getEventos() {
     $.ajax({
         url: '/apis/eventos',
         type: 'GET',

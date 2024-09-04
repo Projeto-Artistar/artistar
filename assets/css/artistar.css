@@ -1,0 +1,25 @@
+.link-hover {
+    transition: color .15s ease-in-out;
+}
+.link-hover:hover, .link-hover:focus {
+    color: #c3c3c3 !important;
+}
+
+.pesquisa-superior {
+    transition: width 0.3s ease-in-out;
+    width: 200px; /* Largura inicial */
+}
+
+.pesquisa-superior:hover {
+    width: 300px; /* Largura ao passar o mouse */
+}
+
+.midias-sociais a {
+    text-decoration: unset;
+}
+
+@media (max-width: 768px) {
+    .offcanvas.offcanvas-end {
+        width: 100%;
+    }
+}

@@ -1,5 +1,14 @@
 
-<?= $this->layout("base"); ?>
+<?= $this->layout("base", [
+    'title' => $title, 
+    'header' => $header,
+    'footer' => $footer
+    ]
+); ?>
+
+<?= $this->start("css") ?>
+<link rel="stylesheet" href="<?= url("assets/css/home.css") ?>">
+<?= $this->stop() ?>
 
 <?= $this->start("conteudo") ?>
 <section class="pt-5 mb-4 mt-5">
@@ -32,8 +41,11 @@
 </section>
 <?= $this->stop() ?>
 
-<?= $this->start("css") ?>
-<?= $this->stop() ?>
-
 <?= $this->start("js") ?>
+<script src="<?= url("assets/js/home.js") ?>"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        getEventos();
+    });
+</script>
 <?= $this->stop() ?>
