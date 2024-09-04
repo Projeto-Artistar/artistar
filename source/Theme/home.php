@@ -43,9 +43,4 @@
 
 <?= $this->start("js") ?>
 <script src="<?= url("assets/js/home.js") ?>"></script>
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        getEventos();
-    });
-</script>
 <?= $this->stop() ?>
