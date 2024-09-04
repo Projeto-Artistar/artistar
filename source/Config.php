@@ -4,7 +4,7 @@ global $db;
 define("PROJETO", "artistar");
 
 define("ROOT", 'http://'.$_SERVER['HTTP_HOST']."/".PROJETO);
-define("KEY", "CHAVE_top_SUPER_segura");
+define("KEY", "Art1st4r-C4t-S0u1");
 
 
 //home
