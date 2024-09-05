@@ -6,7 +6,7 @@
             </a>
 
             <ul class="nav col-12 me-md-auto mb-2 justify-content-center mb-md-0 d-none d-md-flex">
-                <li><a href="#" class="nav-link px-2 link-secondary link-hover">Iniciar Vendas</a></li>
+                <li><a href="#" class="nav-link px-2 link-secondary link-hover">Iniciar</a></li>
                 <li><a href="#" class="nav-link px-2 link-dark link-hover">Mostruário</a></li>
             </ul>
         </div>
@@ -40,7 +40,7 @@
             <li class="d-md-none">
                 <a href="#" class="nav-link link-secondary">
                     <div class="d-flex align-items-center">
-                        <span>Iniciar Vendas</span>
+                        <span>Iniciar</span>
                     </div>
                 </a>
             </li>

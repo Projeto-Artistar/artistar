@@ -22,11 +22,11 @@ function modeloEvento(evento) {
     let htmlEvento = `
         <div class="col-lg-3 col-md-4 col-sm-6 mb-4 evento">
             <div class="card">
-                <img class="card-img-top" src="${evento.imagem}" alt="Card image cap">
-                <span class="image-overlay">${evento.data} - ${evento.data}</span>
+                <img class="card-img-top" src="${evento.image}" alt="Card image cap">
+                <span class="image-overlay">${evento.start_date} - ${evento.end_date}</span>
                 <div class="card-body">
-                    <h5 class="card-title">${evento.titulo}</h5>
-                    <p class="card-text descricao-evento">${evento.descricao}</p>
+                    <h5 class="card-title">${evento.title}</h5>
+                    <p class="card-text descricao-evento">${evento.description}</p>
                 </div>
             </div>
         </div>

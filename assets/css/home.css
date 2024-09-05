@@ -56,6 +56,10 @@
     width: 200px;
 }
 
+.evento {
+    cursor: pointer;
+}
+
 .evento:hover > .card > .card-img-top {
     height: 0;
 }
@@ -68,7 +72,68 @@
     -webkit-line-clamp: 8;
 }
 
-.evento {
+.evento > .card  {
+    /* transform: scale(1); */
+    transition: box-shadow 0.3s ease-in-out;
+    box-shadow: none;
+}
+
+.evento:hover > .card  {
+    /* transform: scale(1.1); */
+    box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
+}
+
+
+.section-dark {
+    background-color: #eeeeee;
+}
+
+.carousel-item img {
+    max-height: 400px;
+    object-fit: cover;
+}
+
+.carousel-caption {
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.section-parceiros {
+    padding: 20px 0;
+}
+
+.section-parceiros .text-white {
+    font-size: 1.2em;
+}
+
+.img-parceiro {
+    width: 200px;
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto; /* Centraliza a imagem horizontalmente */
+    border-radius: 105px;
     cursor: pointer;
+    transition: transform 0.3s ease-in-out;
+    transform: scale(1);
+}
+
+.img-parceiro:hover {
+    transform: scale(1.1);
+}
+    
+
+.img-parceiro-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px; /* Altura fixa para centralizar verticalmente */
+}
+
+@media (max-width: 767.98px) {
+    .img-parceiros {
+        margin-top: 40px; /* Margem em dispositivos móveis */
+    }
 }
 
