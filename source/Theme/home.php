@@ -16,18 +16,18 @@
     <div class="container">
         <div class="py-3 d-flex justify-content-between align-items-center">
             <span class="h2">Eventos</span>
-            <a href="#">Ver mais eventos</a>
+            <a href="#" class="color-klikit-4 text-decoration-none">Ver mais eventos</a>
         </div>
         <div class="row" id="eventos"></div>
     </div>
 </section>
-<section class="section-parceiros section-dark py-5">
+<section class="section-parceiros bg-klikit-2 py-5">
     <div class="container">
         <div class="row align-items-center">
-            <div class="col-md-6 text-dark">
+            <div class="col-md-6 text-white">
                 <h2 class="h1">Parceiros</h2>
                 <p class="lead">Conheça nossos parceiros e patrocinadores, sem eles nada disso seria possível!</p>
-                <a href="#" class="btn btn-outline-dark">Ver mais</a>
+                <a href="#" class="btn btn-outline-light">Ver mais</a>
             </div>
             <div class="col-md-6 img-parceiros">
                 <div class="row">
@@ -42,10 +42,6 @@
         </div>
     </div>
 </section>
-<?= $this->stop() ?>
-
-<?= $this->start("js") ?>
-<script src="<?= url("assets/js/home.js") ?>"></script>
 <?= $this->stop() ?>
 
 <?= $this->start("js") ?>

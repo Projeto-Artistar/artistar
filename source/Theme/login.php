@@ -1,0 +1,44 @@
+<?= $this->layout("base", [
+    'title' => $title, 
+    'footer' => $footer
+    ]
+); ?>
+
+<?= $this->start("css") ?>
+<link rel="stylesheet" href="<?= url("assets/css/login.css") ?>">
+<?= $this->stop() ?>
+
+<?= $this->start("conteudo") ?>
+<section class="container-fluid vh-100 d-flex align-items-center justify-content-center bg-btp-3">
+    <div class="row w-75 h-75 outer-box">
+        <div class="col-md-6 d-flex align-items-center justify-content-center">
+            <img src="https://codescandy.com/geeks-bootstrap-5/assets/images/education/course.png" alt="Login Image" class="img-fluid">
+        </div>
+        <div class="col-md-6 d-flex align-items-center justify-content-center">
+            <div class="login-form border">
+                <h2 class="text-center">Login</h2>
+                <p class="text-center">Não possui conta? <a href="<?= url("register") ?>" class="color-btp-1">Cadastre-se</a></p>
+                <form id="form-login" method="post" action="<?= url("auth/login") ?>">
+                    <div class="mb-3">
+                        <label for="email" class="form-label">E-mail</label>
+                        <input type="email" class="form-control" id="email" name="email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="senha" class="form-label">Senha</label>
+                        <input type="password" class="form-control" id="senha" name="senha" required>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <a href="<?= url("auth/forgot-password") ?>" class="ms-3 color-btp-1">Esqueci minha senha</a>
+                        <button type="submit" class="btn btn-btp-1 w-25">Entrar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<?= $this->stop() ?>
+
+<?= $this->start("js") ?>
+<script src="<?= url("assets/js/login.js") ?>"></script>
+<?= $this->stop() ?>

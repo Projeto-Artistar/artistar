@@ -11,8 +11,13 @@ $router = new Router(ROOT);
 
 $router->group(null)->namespace("Source\Controllers");
 $router->get("/", "homeController:home", "homeController.home");
-$router->get("/login", "homeController:login", "homeController.login");
-$router->get("/sair", "homeController:sair", "homeController.sair");
+
+
+
+$router->get("/login", "authController:login", "authController.login");
+$router->get("/register", "authController:register", "authController.register");
+$router->get("/validate-email", "authController:validate", "authController.validate");
+$router->get("/sair", "authController:sair", "authController.sair");
 
 $router->group('apis')->namespace("Source\Controllers");
 $router->get("/eventos", "apiController:eventos", "apiController.eventos");

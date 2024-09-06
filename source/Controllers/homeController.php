@@ -22,15 +22,6 @@ class homeController extends Core
         return;
     }
 
-    public function login() {
-        $_SESSION['logado'] = true;
-        header("location: /");
-        return;
-    }
-
-
-
-
     public function sair(){
         session_destroy();
         header("location: /");
