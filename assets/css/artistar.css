@@ -115,12 +115,35 @@
     text-decoration: unset;
 }
 
+body {
+    min-height: 100vh;
+}
+
+.footer-center {
+    position: absolute;
+    display: inline-block;
+    right: 0;
+    left: 0;
+}
+
+.footer-left, .footer-right {
+    z-index: 1;
+}
+
 @media (max-width: 768px) {
     .offcanvas.offcanvas-end {
         width: 100%;
     }
 }
 
-body {
-    min-height: 100vh;
+@media (max-width: 991px) {
+
+    .footer-center {
+        position: relative;
+        display: inline-block;
+        right: auto;
+        left: auto;
+        margin: 5px 0 10px 0;
+    }
+
 }

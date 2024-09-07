@@ -12,8 +12,6 @@ $router = new Router(ROOT);
 $router->group(null)->namespace("Source\Controllers");
 $router->get("/", "homeController:home", "homeController.home");
 
-
-
 $router->get("/login", "authController:login", "authController.login");
 $router->get("/register", "authController:register", "authController.register");
 $router->get("/validate-email", "authController:validate", "authController.validate");

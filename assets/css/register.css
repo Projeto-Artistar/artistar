@@ -40,6 +40,7 @@
     border-radius: 8px; /* Adiciona bordas arredondadas */
     background-color: #fff;
     width: 75% !important;
+    height: 75% !important;
 }
 
 .input-validate {
@@ -55,5 +56,6 @@
 @media (max-width: 768px) {
     .outer-box {
         width: 100% !important;
+        height: 100% !important;
     }
 }

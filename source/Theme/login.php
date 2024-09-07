@@ -10,7 +10,7 @@
 
 <?= $this->start("conteudo") ?>
 <section class="container-fluid vh-100 d-flex align-items-center justify-content-center bg-btp-3">
-    <div class="row w-75 h-75 outer-box">
+    <div class="row h-75 outer-box">
         <div class="col-md-6 d-flex align-items-center justify-content-center">
             <img src="https://codescandy.com/geeks-bootstrap-5/assets/images/education/course.png" alt="Login Image" class="img-fluid">
         </div>
