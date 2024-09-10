@@ -6,32 +6,28 @@ use CoffeeCode\Router\Router;
 use Source\Core\Core;
 use Source\Model\Auth;
 
-class authController extends Core
-{
-
-    public function login() {
-        $footer = $this->view->render("fragments/footer");
-        echo $this->view->render("login", [
-            'title' =>  'Login - Artistar', 
-            'footer' => $footer,
-        ]);
-        return;
-    }
+class authController extends Core {
 
     public function register() {
-        $footer = $this->view->render("fragments/footer");
-        echo $this->view->render("register", [
+        echo $this->view->render("auth/register", [
             'title' =>  'Cadastro - Artistar', 
-            'footer' => $footer,
+            'footer' => $this->footer(),
         ]);
         return;
     }
 
     public function validate() {
-        $footer = $this->view->render("fragments/footer");
-        echo $this->view->render("validate", [
+        echo $this->view->render("auth/validate-email", [
             'title' =>  'Confirmação de Email - Artistar', 
-            'footer' => $footer,
+            'footer' => $this->footer(),
+        ]);
+        return;
+    }
+
+    public function login() {
+        echo $this->view->render("auth/login", [
+            'title' =>  'Login - Artistar', 
+            'footer' => $this->footer(),
         ]);
         return;
     }

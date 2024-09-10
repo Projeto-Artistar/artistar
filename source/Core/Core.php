@@ -16,6 +16,8 @@ class Core
 
     protected $homenPath = 'artistar';
 
+    protected $logado = false;
+
     public function __construct($router){
         $this->router=$router;
         $this->view = new Engine(dirname(__DIR__,1)."/Theme");
@@ -25,7 +27,26 @@ class Core
 
     }
 
+    public function header() {
+        return $this->view->render("fragments/".($this->getLogado() ? "header-logado" : "header"));
+    }
+
+    public function footer() {
+        return $this->view->render("fragments/footer");
+    }
+
+    public function verificaLogado(){
+        if(isset($_SESSION['logado'])) $this->logado = true;
+    }
+
+    public function getLogado () {
+        return $this->logado;
+    }
+
     public function validaAcesso(){
+        if(!$this->getLogado()){
+            header("location: /login");
+        }
 
     }
 

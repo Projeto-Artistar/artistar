@@ -41,7 +41,10 @@
     background-color: #fff;
     width: 75% !important;
     height: 75% !important;
+    display: table;
 }
+
+
 
 .input-validate {
     padding: 0.375rem 0;

@@ -6,8 +6,8 @@
             </a>
 
             <ul class="nav col-12 me-md-auto mb-2 justify-content-center mb-md-0 d-none d-md-flex">
-                <li><a href="/login" class="nav-link px-2 link-secondary link-hover">Log-in</a></li>
-                <li><a href="/register" class="nav-link px-2 link-dark link-hover">Cadastre-se</a></li>
+                <li><a href="<?= url('auth/login')?>" class="nav-link px-2 link-secondary link-hover">Log-in</a></li>
+                <li><a href="<?= url('auth/register')?>" class="nav-link px-2 link-dark link-hover">Cadastre-se</a></li>
             </ul>
         </div>
         <div id="barra-direita" class="d-flex">
