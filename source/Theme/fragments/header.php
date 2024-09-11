@@ -1,13 +1,13 @@
 <header class="navbar navbar-expand-lg navbar bg-white mb-4 fixed-top border-bottom py-3" id="navbar">
-    <div class="container-fluid px-3">
+    <div class="container-fluid px-3 bg-white">
         <div class="d-flex">
             <a href="/" class="d-flex align-items-center text-dark text-decoration-none">
                 <img src="<?= url("assets/image/logo.svg") ?>" alt="mdo" class="bi me-2" width="40" height="32">
             </a>
 
             <ul class="nav col-12 me-md-auto mb-2 justify-content-center mb-md-0 d-none d-md-flex">
-                <li><a href="<?= url('auth/login')?>" class="nav-link px-2 link-secondary link-hover">Log-in</a></li>
-                <li><a href="<?= url('auth/register')?>" class="nav-link px-2 link-dark link-hover">Cadastre-se</a></li>
+                <li><a href="<?= url('login')?>" class="nav-link px-2 link-kitlit-1">Log-in</a></li>
+                <li><a href="<?= url('register')?>" class="nav-link px-2 link-kitlit-2">Cadastre-se</a></li>
             </ul>
         </div>
         <div id="barra-direita" class="d-flex">
@@ -38,14 +38,14 @@
                 </form>
             </li>
             <li class="d-md-none">
-                <a href="/login" class="nav-link link-secondary">
+                <a href="<?= url('login') ?>" class="nav-link link-secondary">
                     <div class="d-flex align-items-center">
                         <span>Log-in</span>
                     </div>
                 </a>
             </li>
             <li class="d-md-none">
-                <a href="#" class="nav-link link-dark">
+                <a href="<?= url('register') ?>" class="nav-link link-dark">
                     <div class="d-flex align-items-center">
                         <span>Cadastre-se</span>
                     </div>

@@ -22,14 +22,6 @@
     margin-bottom: 20px;
 }
 
-.login-form a {
-    text-decoration: none;
-}
-
-.login-form a:hover {
-    text-decoration: underline;
-}
-
 .d-flex.justify-content-between.align-items-center {
     margin-top: 20px;
 }
@@ -40,10 +32,12 @@
     border-radius: 8px; /* Adiciona bordas arredondadas */
     background-color: #fff;
     width: 75% !important;
-    height: 75% !important;
-    display: table;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 75vh;
 }
-
 
 
 .input-validate {
@@ -61,4 +55,26 @@
         width: 100% !important;
         height: 100% !important;
     }
+}
+
+.position-relative .btn-outline-secondary {
+    border: none;
+    background: none;
+    padding: 0;
+    margin: 0;
+}
+
+.position-relative .btn-outline-secondary i {
+    font-size: 1.2rem;
+}
+
+.input-group .btn-outline-secondary {
+    border: none;
+    background: none;
+    padding: 0;
+    margin: 0;
+}
+
+.input-group .btn-outline-secondary i {
+    font-size: 1.2rem;
 }

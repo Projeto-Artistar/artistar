@@ -18,4 +18,18 @@ class homeController extends Core {
         return;
     }
 
+    public function login() {
+        echo $this->view->render("login", [
+            'title' =>  'Login - Artistar', 
+            'footer' => $this->footer(),
+        ]);
+        return;
+    }
+
+    public function logout(){
+        session_destroy();
+        header("location: /");
+    }
+
+
 }

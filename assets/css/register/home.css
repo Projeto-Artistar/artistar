@@ -22,11 +22,11 @@
     margin-bottom: 20px;
 }
 
-.cadastre-se {
+.login-form a {
     text-decoration: none;
 }
 
-.cadastre-se:hover {
+.login-form a:hover {
     text-decoration: underline;
 }
 
@@ -47,6 +47,7 @@
     min-height: 75vh;
 }
 
+
 .input-validate {
     padding: 0.375rem 0;
 }
@@ -60,5 +61,28 @@
 @media (max-width: 768px) {
     .outer-box {
         width: 100% !important;
+        height: 100% !important;
     }
+}
+
+.position-relative .btn-outline-secondary {
+    border: none;
+    background: none;
+    padding: 0;
+    margin: 0;
+}
+
+.position-relative .btn-outline-secondary i {
+    font-size: 1.2rem;
+}
+
+.input-group .btn-outline-secondary {
+    border: none;
+    background: none;
+    padding: 0;
+    margin: 0;
+}
+
+.input-group .btn-outline-secondary i {
+    font-size: 1.2rem;
 }
