@@ -18,15 +18,15 @@
                     <div class="mb-3">
                         <label for="codigo" class="form-label">Código de Confirmação</label>
                         <div class="d-flex justify-content-between">
-                            <input type="text" class="form-control text-center m-1 input-validate" id="codigo1" name="codigo1" maxlength="1" required style="text-transform: uppercase;">
-                            <input type="text" class="form-control text-center m-1 input-validate" id="codigo2" name="codigo2" maxlength="1" required style="text-transform: uppercase;">
-                            <input type="text" class="form-control text-center m-1 input-validate" id="codigo3" name="codigo3" maxlength="1" required style="text-transform: uppercase;">
-                            <input type="text" class="form-control text-center m-1 input-validate" id="codigo4" name="codigo4" maxlength="1" required style="text-transform: uppercase;">
+                            <input type="text" class="form-control text-center m-1 input-validate input-kiklit-2" id="codigo1" name="codigo1" maxlength="1" required style="text-transform: uppercase;">
+                            <input type="text" class="form-control text-center m-1 input-validate input-kiklit-2" id="codigo2" name="codigo2" maxlength="1" required style="text-transform: uppercase;">
+                            <input type="text" class="form-control text-center m-1 input-validate input-kiklit-2" id="codigo3" name="codigo3" maxlength="1" required style="text-transform: uppercase;">
+                            <input type="text" class="form-control text-center m-1 input-validate input-kiklit-2" id="codigo4" name="codigo4" maxlength="1" required style="text-transform: uppercase;">
                             <span class="mx-2">-</span>
-                            <input type="text" class="form-control text-center m-1 input-validate" id="codigo5" name="codigo5" maxlength="1" required style="text-transform: uppercase;">
-                            <input type="text" class="form-control text-center m-1 input-validate" id="codigo6" name="codigo6" maxlength="1" required style="text-transform: uppercase;">
-                            <input type="text" class="form-control text-center m-1 input-validate" id="codigo7" name="codigo7" maxlength="1" required style="text-transform: uppercase;">
-                            <input type="text" class="form-control text-center m-1 input-validate" id="codigo8" name="codigo8" maxlength="1" required style="text-transform: uppercase;">
+                            <input type="text" class="form-control text-center m-1 input-validate input-kiklit-2" id="codigo5" name="codigo5" maxlength="1" required style="text-transform: uppercase;">
+                            <input type="text" class="form-control text-center m-1 input-validate input-kiklit-2" id="codigo6" name="codigo6" maxlength="1" required style="text-transform: uppercase;">
+                            <input type="text" class="form-control text-center m-1 input-validate input-kiklit-2" id="codigo7" name="codigo7" maxlength="1" required style="text-transform: uppercase;">
+                            <input type="text" class="form-control text-center m-1 input-validate input-kiklit-2" id="codigo8" name="codigo8" maxlength="1" required style="text-transform: uppercase;">
                         </div>
                     </div>
                     <div class="d-flex justify-content-end align-items-center">

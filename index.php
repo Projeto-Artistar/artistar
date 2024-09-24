@@ -30,6 +30,10 @@ $router->get("/", "resetController:home", "resetController.home");
 $router->get("/code", "resetController:code", "resetController.code");
 $router->get("/new-password", "resetController:newPassword", "resetController.newPassword");
 
+$router->group('legal')->namespace("Source\Controllers");
+$router->get("/terms", "legalController:terms", "legalController.terms");
+$router->get("/privacy", "legalController:privacy", "legalController.privacy");
+
 
 
 

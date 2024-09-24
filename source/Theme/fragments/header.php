@@ -12,7 +12,7 @@
         </div>
         <div id="barra-direita" class="d-flex">
             <form class="col-12 col-md-auto me-md-3 d-none d-md-flex">
-                <input type="search" class="form-control pesquisa-superior" placeholder="Pesquisar..." aria-label="Search">
+                <input type="search" class="form-control pesquisa-superior input-kiklit-2" placeholder="Pesquisar..." aria-label="Search">
             </form>
 
             <button data-bs-toggle="offcanvas" style="border:none; background:none;" type="button" href="#offcanvasExample" role="button" aria-controls="offcanvasExample" class="link-hover d-md-none">

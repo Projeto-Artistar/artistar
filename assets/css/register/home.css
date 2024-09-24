@@ -22,14 +22,6 @@
     margin-bottom: 20px;
 }
 
-.login-form a {
-    text-decoration: none;
-}
-
-.login-form a:hover {
-    text-decoration: underline;
-}
-
 .d-flex.justify-content-between.align-items-center {
     margin-top: 20px;
 }

@@ -3,9 +3,6 @@
         <div class="footer-left">
             <span>Contate-nos</span>
         </div>
-        <div class="text-center footer-center">
-            © 2024 Artistar. Todos os direitos reservados.
-        </div>
         <div class="midias-sociais footer-right">
             <a href="" class="me-4 text-reset link-hover">
                 <i class="fab fa-facebook-f"></i>

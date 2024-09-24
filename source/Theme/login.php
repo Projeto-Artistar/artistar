@@ -22,11 +22,11 @@
                     <form id="form-login" method="post" action="<?= url("auth/login") ?>">
                         <div class="mb-3">
                             <label for="email" class="form-label">E-mail</label>
-                            <input type="email" class="form-control" id="email" name="email" required>
+                            <input type="email" class="form-control input-kiklit-2" id="email" name="email" required>
                         </div>
                         <div class="mb-3">
                             <label for="senha" class="form-label">Senha</label>
-                            <input type="password" class="form-control" id="senha" name="senha" required>
+                            <input type="password" class="form-control input-kiklit-2" id="senha" name="senha" required>
                         </div>
                         <div class="d-flex justify-content-between align-items-center">
                             <a href="<?= url("password-reset") ?>" class="link-kitlit-2">Esqueci minha senha</a>

@@ -18,11 +18,11 @@
                 <form id="form-new-password" method="post" action="<?= url("auth/update-password") ?>">
                     <div class="mb-3">
                         <label for="senha" class="form-label">Nova Senha</label>
-                        <input type="password" class="form-control" id="senha" name="senha" required>
+                        <input type="password" class="form-control input-kiklit-2" id="senha" name="senha" required>
                     </div>
                     <div class="mb-3">
                         <label for="confirmacao-senha" class="form-label">Confirmação de Nova Senha</label>
-                        <input type="password" class="form-control" id="confirmacao-senha" name="confirmacao-senha" required>
+                        <input type="password" class="form-control input-kiklit-2" id="confirmacao-senha" name="confirmacao-senha" required>
                     </div>
                     <div class="d-flex justify-content-end align-items-center">
                         <button type="submit" class="btn btn-kiklit-2">Confirmar</button>

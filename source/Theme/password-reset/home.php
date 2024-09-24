@@ -21,7 +21,7 @@
                     <form id="form-login" method="get" action="<?= url("password-reset/code") ?>">
                         <div class="mb-3">
                             <label for="email" class="form-label">E-mail</label>
-                            <input type="email" class="form-control" id="email" name="email" required>
+                            <input type="email" class="form-control input-kiklit-2" id="email" name="email" required>
                         </div>
                         <div class="d-flex justify-content-between align-items-center">
                             <a href="<?= url('login') ?>" class="link-kitlit-2">Cancelar</a>
