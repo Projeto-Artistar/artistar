@@ -4,15 +4,14 @@ namespace Source\Controllers;
 
 use CoffeeCode\Router\Router;
 use Source\Core\Core;
-use Source\Model\Home;
+use Source\Model\API;
 
 class apiController extends Core {
 
-    public function eventos() {
+    public function events() {
 
-        $dados = new Home(ROOT);
-        $eventos = $dados->trazerEventos();
-        
+        $dados = new API(ROOT);
+        $eventos = $dados->listEvents();
 
         echo $this->view->render("apis/eventos", ['eventos' => $eventos]);
         return;

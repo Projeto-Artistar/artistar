@@ -58,6 +58,7 @@
 
 .evento {
     cursor: pointer;
+    
 }
 
 .evento:hover > .card > .card-img-top {

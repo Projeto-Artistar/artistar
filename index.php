@@ -14,6 +14,10 @@ $router->get("/", "homeController:home", "homeController.home");
 $router->get("/login", "homeController:login", "homeController.login");
 $router->get("/logout", "homeController:logout", "homeController.logout");
 
+$router->group('events')->namespace("Source\Controllers");
+$router->get("/", "eventsController:home", "eventsController.home");
+$router->get("/{eventId}", "eventsController:detail", "eventsController.detail");
+$router->get("/{eventId}/{friendlyUrl}", "eventsController:detail", "eventsController.detail");
 
 
 
@@ -39,7 +43,7 @@ $router->get("/privacy", "legalController:privacy", "legalController.privacy");
 
 
 $router->group('apis')->namespace("Source\Controllers");
-$router->get("/eventos", "apiController:eventos", "apiController.eventos");
+$router->get("/events", "apiController:events", "apiController.events");
 
 
 
