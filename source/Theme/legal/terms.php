@@ -6,11 +6,10 @@
 ); ?>
 
 <?= $this->start("css") ?>
-<link rel="stylesheet" href="<?= url("assets/css/legal/tou.css") ?>">
 <?= $this->stop() ?>
 
 <?= $this->start("conteudo") ?>
-<section class="container minimum-height avoid-navbar">
+<section class="container minimum-height avoid-navbar pt-4">
     <div class="row d-flex justify-content-center ">
         <span class="h2 text-center">Termos de Uso</span>
         <div class="col-12 mt-2 text-justify">

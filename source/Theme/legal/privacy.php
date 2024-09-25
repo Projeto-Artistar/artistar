@@ -6,13 +6,12 @@
 ); ?>
 
 <?= $this->start("css") ?>
-<link rel="stylesheet" href="<?= url("assets/css/legal/tou.css") ?>">
 <?= $this->stop() ?>
 
 <?= $this->start("conteudo") ?>
-<section class="container minimum-height avoid-navbar">
+<section class="container minimum-height avoid-navbar pt-4">
     <div class="row d-flex justify-content-center ">
-        <span class="h2 text-center">Política de Privacidade</span>
+        <span class="h2 text-center">Políticas de Privacidade</span>
         <div class="col-12 mt-2 text-justify">
             <p>Na (nome empresarial simplificado), privacidade e segurança são prioridades e nos comprometemos com a transparência do tratamento de dados pessoais dos nossos usuários/clientes. Por isso, esta presente Política de Privacidade estabelece como é feita a coleta, uso e transferência de informações de clientes ou outras pessoas que acessam ou usam nosso site.</p>
             <p>Ao utilizar nossos serviços, você entende que coletaremos e usaremos suas informações pessoais nas formas descritas nesta Política, sob as normas da Constituição Federal de 1988 (art. 5º, LXXIX; e o art. 22º, XXX – incluídos pela EC 115/2022), das normas de Proteção de Dados (LGPD, Lei Federal 13.709/2018), das disposições consumeristas da Lei Federal 8078/1990 e as demais normas do ordenamento jurídico brasileiro aplicáveis.</p>

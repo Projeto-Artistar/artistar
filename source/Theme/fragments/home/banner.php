@@ -1,4 +1,4 @@
-<section class="section-banner section-dark pt-5 mt-5 pb-4">
+<section class="section-banner section-dark pb-4 avoid-navbar">
     <div class="container">
         <div class="row">
             <div>

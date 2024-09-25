@@ -35,7 +35,7 @@
                         </div>
                         <div class="mb-3 position d-flex">
                             <input type="checkbox" class="form-check-input checkbox-kiklit-2" id="aceito-termos" name="aceito-termos" required>
-                            <label class="form-check label" for="aceito-termos">Li e aceito os <a href="<?= url('legal/terms')?>" target="_blank" class="link-kitlit-2">Termos de Uso</a> e as <a href="<?= url('legal/privacy')?>" target="_blank" class="link-kitlit-2">Políticas de Privacidade</a></label>
+                            <label class="form-check label" for="aceito-termos">Li e aceito as <a href="<?= url('legal/privacy')?>" target="_blank" class="link-kitlit-2">Políticas de Privacidade</a> e os <a href="<?= url('legal/terms')?>" target="_blank" class="link-kitlit-2">Termos de Uso</a></label>
                         </div>
                         <div class="d-flex justify-content-end align-items-center">
                             <button type="submit" class="btn btn-kiklit-2">Confirmar</button>

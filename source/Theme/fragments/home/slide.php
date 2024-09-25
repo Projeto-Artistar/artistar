@@ -1,4 +1,4 @@
-<section class="section-slide pt-4 mt-5">
+<section class="section-slide avoid-navbar">
     <div class="col-12">
         <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-indicators">

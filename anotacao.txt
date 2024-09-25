@@ -1,0 +1,2 @@
+Os logs de acesso devem ser salvos.
+APIs do Sympla
