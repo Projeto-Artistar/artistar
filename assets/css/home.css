@@ -58,7 +58,7 @@
 
 .evento {
     cursor: pointer;
-    
+    text-decoration: none;
 }
 
 .evento:hover > .card > .card-img-top {
@@ -87,17 +87,6 @@
 
 .section-dark {
     background-color: #eeeeee;
-}
-
-.carousel-item img {
-    max-height: 400px;
-    object-fit: cover;
-}
-
-.carousel-caption {
-    background-color: rgba(0, 0, 0, 0.5);
-    padding: 10px;
-    border-radius: 5px;
 }
 
 .section-parceiros {

@@ -10,16 +10,20 @@ class apiController extends Core {
 
     public function events() {
 
-        $dados = new API(ROOT);
+        $dados = new API();
         $eventos = $dados->listEvents();
 
-        echo $this->view->render("apis/eventos", ['eventos' => $eventos]);
+        echo $this->view->render("apis/events", ['eventos' => $eventos]);
         return;
     }
 
+    public function eventDetails($data) {
 
-    public function sair(){
-        session_destroy();
+        $dados = new API();
+        $evento = $dados->getEventDetails(filter_var($data['eventId'], FILTER_SANITIZE_NUMBER_INT));
+
+        echo $this->view->render("apis/eventDetails", ['evento' => $evento]);
+        return;
     }
 
 }

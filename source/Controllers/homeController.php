@@ -13,7 +13,7 @@ class homeController extends Core {
             'title' =>  'Artistar', 
             'header' => $this->header(),
             'footer' => $this->footer(),
-            'banner' => $this->view->render("fragments/home/".(isset($_SESSION['logado']) ? "banner" : "slide")),
+            'banner' => $this->view->render("fragments/home/".($this->getLogado() ? "banner" : "slide")),
         ]);
         return;
     }

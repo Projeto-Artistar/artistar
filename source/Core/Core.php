@@ -18,7 +18,7 @@ class Core
 
     protected $logado = false;
 
-    public function __construct($router){
+    public function __construct($router = ROOT){
         $this->router=$router;
         $this->view = new Engine(dirname(__DIR__,1)."/Theme");
         $this->nucleo = $this->view;

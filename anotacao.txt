@@ -1,2 +1,3 @@
 Os logs de acesso devem ser salvos.
 APIs do Sympla
+Usar o absolute para o botão de mostrar senha

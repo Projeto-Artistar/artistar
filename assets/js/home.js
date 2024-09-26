@@ -1,7 +1,7 @@
 function getEventos() {
     $.ajax({
         url: '/apis/events',
-        type: 'GET',
+        type: 'POST',
         success: function(response) {
             response = JSON.parse(response);
             if (response.code == 200) {
@@ -20,7 +20,7 @@ function getEventos() {
 
 function modeloEvento(evento) {
     let htmlEvento = `
-        <div class="col-lg-3 col-md-4 col-sm-6 mb-4 evento">
+        <a class="col-lg-3 col-md-4 col-sm-6 mb-4 evento" href="/events/${evento.id}/${evento.url}">
             <div class="card">
                 <img class="card-img-top" src="${evento.image}" alt="Card image cap">
                 <span class="image-overlay">${evento.start_date} - ${evento.end_date}</span>
@@ -29,7 +29,7 @@ function modeloEvento(evento) {
                     <p class="card-text descricao-evento">${evento.description}</p>
                 </div>
             </div>
-        </div>
+        </a>
     `;
     $('#eventos').append(htmlEvento)
 

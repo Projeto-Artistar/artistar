@@ -368,6 +368,17 @@
     text-justify: inter-word;
 }
 
+.carousel-item img {
+    max-height: 400px;
+    object-fit: cover;
+}
+
+.carousel-caption {
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 10px;
+    border-radius: 5px;
+}
+
 @media (max-width: 768px) {
     .offcanvas.offcanvas-end {
         width: 100%;

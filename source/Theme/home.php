@@ -16,7 +16,7 @@
     <div class="container">
         <div class="py-3 d-flex justify-content-between align-items-center">
             <span class="h2">Eventos</span>
-            <a href="#" class="link-kitlit-2">Ver mais eventos</a>
+            <a href="<?= url('events')?>" class="link-kitlit-2">Ver mais eventos</a>
         </div>
         <div class="row" id="eventos"></div>
     </div>

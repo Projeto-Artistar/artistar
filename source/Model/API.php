@@ -127,4 +127,14 @@ class API extends Core
         return $eventos;
     }
 
+    public function getEventDetails($id){
+        $eventos = $this->listEvents();
+        foreach ($eventos as $evento) {
+            if ($evento['id'] == $id) {
+                return $evento;
+            }
+        }
+        return [];
+    }
+
 }

@@ -9,41 +9,44 @@ session_start();
 
 $router = new Router(ROOT);
 
-$router->group(null)->namespace("Source\Controllers");
+$router->namespace("Source\Controllers");
+
+$router->group(null);
 $router->get("/", "homeController:home", "homeController.home");
 $router->get("/login", "homeController:login", "homeController.login");
 $router->get("/logout", "homeController:logout", "homeController.logout");
 
-$router->group('events')->namespace("Source\Controllers");
+$router->group('events');
 $router->get("/", "eventsController:home", "eventsController.home");
-$router->get("/{eventId}", "eventsController:detail", "eventsController.detail");
-$router->get("/{eventId}/{friendlyUrl}", "eventsController:detail", "eventsController.detail");
+$router->get("/{eventId}", "eventsController:details", "eventsController.details");
+$router->get("/{eventId}/{friendlyUrl}", "eventsController:details", "eventsController.details");
 
 
 
 
-$router->group('register')->namespace("Source\Controllers");
+$router->group('register');
 $router->get("/", "registerController:home", "registerController.home");
 $router->get("/validate-email", "registerController:validate", "registerController.validate");
 
 
 
 
-$router->group('password-reset')->namespace("Source\Controllers");
+$router->group('password-reset');
 $router->get("/", "resetController:home", "resetController.home");
 $router->get("/code", "resetController:code", "resetController.code");
 $router->get("/new-password", "resetController:newPassword", "resetController.newPassword");
 
-$router->group('legal')->namespace("Source\Controllers");
+$router->group('legal');
 $router->get("/terms", "legalController:terms", "legalController.terms");
-$router->get("/privacy", "legalController:privacy", "legalController.privacy");
+$router->get("/privacy", "legalController:privacy");
 
 
 
 
 
-$router->group('apis')->namespace("Source\Controllers");
-$router->get("/events", "apiController:events", "apiController.events");
+$router->group('apis');
+$router->post("/events", "apiController:events", "apiController.events");
+$router->post("/events/details", "apiController:eventDetails", "apiController.eventDetails");
 
 
 
