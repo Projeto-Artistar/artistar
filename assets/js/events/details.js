@@ -8,11 +8,11 @@ function getEvent() {
         success: function(response) {
             response = JSON.parse(response);
             if (response.code == 200) {
-                eventos = response.data.eventos;
+                // eventos = response.data.eventos;
                 
-                eventos.forEach(evento => {
-                    modeloEvento(evento);
-                });
+                // eventos.forEach(evento => {
+                //     modeloEvento(evento);
+                // });
             }
         },
         error: function(error) {
