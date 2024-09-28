@@ -26,13 +26,12 @@ function modeloEvento(evento) {
                 <span class="image-overlay">${evento.start_date} - ${evento.end_date}</span>
                 <div class="card-body">
                     <h5 class="card-title">${evento.title}</h5>
-                    <p class="card-text descricao-evento">${evento.description}</p>
+                    <p class="card-text descricao-evento">${evento.subtitle}</p>
                 </div>
             </div>
         </a>
     `;
     $('#eventos').append(htmlEvento)
-
 }
 
 $(document).ready(function() {

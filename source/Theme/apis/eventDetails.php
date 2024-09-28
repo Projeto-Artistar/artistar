@@ -1,10 +1,12 @@
-
 <?php
 
 $result = [
     'code' => 200,
     'data' => [
-        'evento' => $evento
+        'basicInfo' => $basicInfo,
+        'days'      => $days,
+        'prices'    => $prices,
+        'photos'    => $photos
     ]
 ];
 
