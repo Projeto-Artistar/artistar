@@ -333,7 +333,7 @@ class API extends Core
                 'id'            => 12,
                 'url'           => 'horror-expo',
                 'title'         => 'Horror Expo',
-                'address'       => 'Centro de Convenções Frei Caneca - R. Frei Caneca, 569 - Consolação, São Paulo - SP, 01307-001',
+                'address'       => '',
                 'production'    => 'Parker Produções',
                 'subtitle'   => 'O Horror Expo é um evento que reúne fãs de terror, suspense e ficção científica. O evento acontece em São Paulo e reúne milhares de pessoas todos os anos.',
                 'contacts'      => [

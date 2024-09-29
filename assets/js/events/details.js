@@ -8,13 +8,13 @@ function getEvent() {
         success: function(response) {
             response = JSON.parse(response);
             if (response.code == 200) {
-                if (response.data.photos.length > 0) viewPhotos(response.data.photos);
+                viewPhotos(response.data.photos);
                 basicInfo = response.data.basicInfo;
                 viewBasicInfo(basicInfo);
-                if (basicInfo.contacts.length > 0) viewContacts(basicInfo.contacts);
-                if (basicInfo.socialMedia.length > 0) viewSocialMedia(basicInfo.socialMedia);
-                if (response.data.days.length > 0)  viewDays(response.data.days);
-                if (response.data.prices.length > 0) viewPrices(response.data.prices);
+                viewContacts(basicInfo.contacts);
+                viewSocialMedia(basicInfo.socialMedia);
+                viewDays(response.data.days);
+                viewPrices(response.data.prices);
             }
         },
         error: function(error) {
@@ -24,16 +24,19 @@ function getEvent() {
 }
 
 function viewPhotos(photos) {
-    photos.forEach(photo => {
-        addAlbumIndicator(photo);
-        moldPhoto(photo);
-    });
-    if (photos.length > 1) {
-        $('#slide-btn-previous').show();
-        $('#slide-btn-next').show();
+    if (photos.length > 0) {
+        photos.forEach(photo => {
+            addAlbumIndicator(photo);
+            moldPhoto(photo);
+        });
+        if (photos.length > 1) {
+            $('#slide-btn-previous').show();
+            $('#slide-btn-next').show();
+        }
+        $('#photosCarousel').show();
+        createImageModal();
     }
-    $('#photosCarousel').show();
-    createImageModal();
+    $('#carouselSkeleton').hide();
 }  
 
 function createImageModal() {
@@ -78,7 +81,7 @@ function viewBasicInfo(basicInfo) {
     loadTitle(basicInfo.title);
     loadButtons();
     // loadSubtitle(basicInfo.subtitle);
-    if (basicInfo.address != '')  loadAddress(basicInfo.address);
+    loadAddress(basicInfo.address);
     loadDescription(basicInfo.description);
     loadProductor(basicInfo.production);
     
@@ -87,6 +90,7 @@ function viewBasicInfo(basicInfo) {
 function loadTitle(title) {
     $('#eventTitle').html(`<h1>${title}</h1>`);
     $('#eventTitle').show();
+    $('#eventTitle-skeleton').hide();
 }
 
 function loadButtons() {
@@ -98,6 +102,8 @@ function loadButtons() {
     `;
     $('#column-buttons').html(htmlButtons);
     $('#column-buttons').show();
+    $('#column-buttons-skeleton').hide();
+
     favoriteEvent();
 }
 
@@ -126,20 +132,33 @@ function loadSubtitle(subtitle) {
 }
 
 function loadDescription(description) {
-    $('#eventDescription').html(description);
-    $('#eventDescription').show();
-    $('#column-description').show();
-    $('#row-dpi').show();
+    if (description != '' && description != null && description != undefined) {
+        $('#eventDescription').html(description);
+        $('#eventDescription').show();
+        $('#column-description').show();
+    } else {
+        $('#column-pi').removeClass('col-md-6');
+        $('#column-pi').addClass('col-12');
+    }
+    $('#column-description-skeleton').hide();
 }
 
 function loadAddress(address) {
-    $('#eventAddress').text(address);
-    $('#eventAddress').show();
-    generateMap(basicInfo.address);
+    if (address != '') {
+        let htmlAddress = `<h6 class="color-klikit-2"><i class="mdi mdi-map-marker"></i> ${address}</h6>`;
+        $('#eventAddress').append(htmlAddress);
+        $('#eventAddress').show();
+        generateMap(basicInfo.address);
+    } else {
+        $('#column-productor').removeClass('justify-content-end')
+    }
+    $('#eventAddress-skeleton').hide();
+    
 }
 
 function loadProductor(productor) {
     $('#eventProductor').text(productor);
+    $('#column-productor-skeleton').hide();
     $('#column-productor').show();
 }
 
@@ -148,13 +167,17 @@ function generateMap(address) {
     var iframe = "<iframe frameborder='0' style='border:0; width: 100%; min-height: 500px;' src='" + url + "' allowfullscreen></iframe>";
     $('#mapa').html(iframe);
     $('#row-map').show();
+    $('#section-map').show();
 }
 
 function viewContacts(contacts) {
-    contacts.forEach(contact => {
-        moldContact(contact);
-    });
-    $('#contactsColumn').show();
+    if (contacts.length > 0) {
+        contacts.forEach(contact => {
+            moldContact(contact);
+        });
+        $('#contactsColumn').show();
+    }
+    $('#contactsColumn-skeleton').hide();
 }
 
 function moldContact(contact) {
@@ -163,10 +186,13 @@ function moldContact(contact) {
 }
 
 function viewSocialMedia(socialMedia) {
-    socialMedia.forEach(social => {
-        moldSocialMedia(social);
-    });
-    $('#socialMediaColumn').show();
+    if (socialMedia.length > 0) {
+        socialMedia.forEach(social => {
+            moldSocialMedia(social);
+        });
+        $('#socialMediaColumn').show();
+    }
+    $('#socialMediaColumn-skeleton').hide();
 }
 
 function moldSocialMedia(social) {
@@ -179,12 +205,14 @@ function moldSocialMedia(social) {
 }
 
 function viewDays(days) {
-    days.forEach(day => {
-        moldDay(day);
-    });
-    $('#daysRow').show();
-    $('#column-pi').show();
-    $('#row-dpi').show();
+    if (days.length > 0) {
+        days.forEach(day => {
+            moldDay(day);
+        });
+        $('#daysRow').show();
+        $('#column-pi').show();
+    }
+    $('#column-pi-skeleton').hide();
 }
 
 function moldDay(day) {
@@ -202,12 +230,14 @@ function moldDay(day) {
 }
 
 function viewPrices(prices) {
-    prices.forEach(price => {
-        moldPrice(price);
-    });
-    $('#pricesRow').show();
-    $('#column-pi').show();
-    $('#row-dpi').show();
+    if (prices.length > 0) {
+        prices.forEach(price => {
+            moldPrice(price);
+        });
+        $('#pricesRow').show();
+        $('#column-pi').show();
+    }
+    $('#column-pi-skeleton').hide();
 }
 
 function moldPrice(price) {
@@ -228,6 +258,9 @@ function moldPrice(price) {
 }
 
 $(document).ready(function() {
-    getEvent();
+    //wait 3 seconds before loading the event
+    setTimeout(function() {
+        getEvent();
+    }, 3000);
 });
 
