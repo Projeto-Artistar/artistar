@@ -6,6 +6,8 @@
 ); ?>
 
 <?= $this->start("css") ?>
+<link rel="stylesheet" type="text/css" href="<?= url("assets/vendors/slick-1.8.1/slick/slick.css") ?>"/>
+<link rel="stylesheet" type="text/css" href="<?= url("assets/vendors/slick-1.8.1/slick/slick-theme.css") ?>"/>
 <link rel="stylesheet" href="<?= url("assets/css/events/details.css") ?>">
 <?= $this->stop() ?>
 
@@ -116,10 +118,131 @@
     </div>
 </section>
 <section id="slide-item-modal"></section>
+<section id="share-modal">
+    <!-- Modal de Compartilhamento -->
+    <div class="modal fade" id="shareModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="shareModalLabel">Compartilhar</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <div class="flex-grow-1 text-start p-2 border rounded overflow-hidden text-nowrap" id="linkToCopy">
+                            <?= $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] ?>
+                        </div>
+                        <button class="btn btn-kiklit-2 ms-2" id="copyUrl">
+                            <i class="fas fa-link"></i> Copiar
+                        </button>
+                    </div>
+                    <div class="wrap-modal-slider">
+                        <div class="your-class">
+                            <div class="share-button d-flex flex-column align-items-center">
+                                <button class="btn btn-primary mb-2" id="shareFacebook">
+                                    <i class="fab fa-facebook-f fa-2x"></i>
+                                </button>
+                                <div>Facebook</div>
+                            </div>
+                            <div class="share-button d-flex flex-column align-items-center">
+                                <button class="btn btn-success mb-2" id="shareWhatsApp">
+                                    <i class="fab fa-whatsapp fa-2x"></i>
+                                </button>
+                                <div>WhatsApp</div>
+                            </div>
+                            <div class="share-button d-flex flex-column align-items-center">
+                                <button class="btn btn-danger mb-2" id="sharePinterest">
+                                    <i class="fab fa-pinterest fa-2x"></i>
+                                </button>
+                                <div>Pinterest</div>
+                            </div>
+                            <div class="share-button d-flex flex-column align-items-center">
+                                <button class="btn btn-info mb-2" id="shareLinkedIn">
+                                    <i class="fab fa-linkedin-in fa-2x"></i>
+                                </button>
+                                <div>LinkedIn</div>
+                            </div>
+                            <div class="share-button d-flex flex-column align-items-center">
+                                <button class="btn btn-primary mb-2" id="shareTelegram">
+                                    <i class="fab fa-telegram-plane fa-2x"></i>
+                                </button>
+                                <div>Telegram</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div id="copyToast" class="toast bg-klikit-1" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-body text-light">
+            URL copiada para a área de transferência!
+        </div>
+    </div>
+</div>
+
 
 <?= $this->stop() ?>
 
 <?= $this->start("js") ?>
+<!-- Outros scripts -->
+<script src="<?= url("assets/vendors/slick-1.8.1/slick/slick.min.js") ?>"></script>
 <script>const eventId = <?= $evento['id'] ?>;</script>
 <script src="<?= url("assets/js/events/details.js") ?>"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    // Função para copiar a URL
+    document.getElementById('copyUrl').addEventListener('click', function() {
+        const url = window.location.href;
+        navigator.clipboard.writeText(url).then(function() {
+            // Exibe o toast de notificação
+            const toast = new bootstrap.Toast(document.getElementById('copyToast'));
+            toast.show();
+        }, function(err) {
+            console.error('Erro ao copiar a URL: ', err);
+        });
+    });
+
+    // Função para compartilhar no Facebook
+    document.getElementById('shareFacebook').addEventListener('click', function() {
+        const url = window.location.href;
+        window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank');
+    });
+
+    // Função para compartilhar no WhatsApp
+    document.getElementById('shareWhatsApp').addEventListener('click', function() {
+        const url = window.location.href;
+        window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(url)}`, '_blank');
+    });
+
+    // Função para compartilhar no Pinterest
+    document.getElementById('sharePinterest').addEventListener('click', function() {
+        const url = window.location.href;
+        const description = document.title; // Você pode ajustar isso para usar uma descrição personalizada
+        window.open(`https://pinterest.com/pin/create/button/?url=${encodeURIComponent(url)}&description=${encodeURIComponent(description)}`, '_blank');
+    });
+
+    // Função para compartilhar no LinkedIn
+    document.getElementById('shareLinkedIn').addEventListener('click', function() {
+        const url = window.location.href;
+        const title = document.title; // Você pode ajustar isso para usar um título personalizado
+        window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}&title=${encodeURIComponent(title)}`, '_blank');
+    });
+
+    // Função para compartilhar no Telegram
+    document.getElementById('shareTelegram').addEventListener('click', function() {
+        const url = window.location.href;
+        window.open(`https://t.me/share/url?url=${encodeURIComponent(url)}`, '_blank');
+    });
+});
+$('.modal').on('shown.bs.modal', function (e) {
+    $('.your-class').slick('setPosition');
+    $('.wrap-modal-slider').addClass('open');
+})
+</script>
+
+
 <?= $this->stop() ?>

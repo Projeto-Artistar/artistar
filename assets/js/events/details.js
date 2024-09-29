@@ -79,12 +79,11 @@ function moldPhoto(photo) {
 
 function viewBasicInfo(basicInfo) {
     loadTitle(basicInfo.title);
-    loadButtons();
+    loadButtons(basicInfo.favorite);
     // loadSubtitle(basicInfo.subtitle);
     loadAddress(basicInfo.address);
     loadDescription(basicInfo.description);
     loadProductor(basicInfo.production);
-    
 }
 
 function loadTitle(title) {
@@ -93,36 +92,62 @@ function loadTitle(title) {
     $('#eventTitle-skeleton').hide();
 }
 
-function loadButtons() {
+function loadButtons(favorite) {
+    let favoriteClass = favorite == 1 ? 'mdi-heart' : 'mdi-heart-outline';
     let htmlButtons = `
         <div class="event-buttons">
-            <button class="btn btn-favorite shadow-none btn-event-action"><i class="mdi mdi-heart-outline btn-icon"></i></button>
-            <button class="btn btn-share shadow-none btn-event-action"><i class="mdi mdi-share-variant btn-icon"></i></button>
+            <button class="btn btn-favorite shadow-none btn-event-action"><i class="mdi ${favoriteClass} btn-icon"></i></button>
+            <button class="btn btn-share shadow-none btn-event-action" id="btn-share"><i class="mdi mdi-share-variant btn-icon"></i></button>
         </div>
     `;
     $('#column-buttons').html(htmlButtons);
     $('#column-buttons').show();
+    $('#btn-share').on('click', function() {
+        $('#shareModal').modal('show');
+    });
     $('#column-buttons-skeleton').hide();
-
     favoriteEvent();
 }
 
 function favoriteEvent() {
     $('.btn-favorite').on('click', function() {
         let icon = $(this);
-        icon.addClass('animate-grow-shrink');
-        let child = icon.children();
-        if(child.hasClass('mdi-heart-outline')) {
-            child.removeClass('mdi-heart-outline');
-            child.addClass('mdi-heart');
-        } else {
-            child.removeClass('mdi-heart');
-            child.addClass('mdi-heart-outline');
-        }
-        // Remove a classe após a animação terminar
-        icon.on('animationend', function() {
-            icon.removeClass('animate-grow-shrink');
+        $.ajax({
+            url: '/apis/events/favorite',
+            type: 'POST',
+            data: {
+                eventId: eventId
+            },
+            success: function(response) {
+                response = JSON.parse(response);
+                if (response.code == 200) {
+                    icon.addClass('animate-grow-shrink');
+                    let child = icon.children();
+                    if (response.data.favorite) {
+                        if(child.hasClass('mdi-heart-outline')) {
+                            child.removeClass('mdi-heart-outline');
+                            child.addClass('mdi-heart');
+                        }
+                    } else {
+                        if (child.hasClass('mdi-heart')) {
+                            child.removeClass('mdi-heart');
+                            child.addClass('mdi-heart-outline');
+                        }
+                    }
+                    icon.on('animationend', function() {
+                        icon.removeClass('animate-grow-shrink');
+                    });
+                } else {
+                    if (response.code == 401) {
+                        window.location.href = '/login';
+                    }
+                }
+            },
+            error: function(error) {
+                console.log('An error occurred');
+            }
         });
+
     });
 }
 
@@ -221,7 +246,7 @@ function moldDay(day) {
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">${day.date}</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">${day.start_time} - ${day.end_time}</h6>
+                    <h6 class="card-subtitle mb-2 text-muted color-klikit-2">${day.start_time} - ${day.end_time}</h6>
                 </div>
             </div>
         </div>
@@ -247,7 +272,7 @@ function moldPrice(price) {
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">${price.name}</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">${price.price}</h6>
+                    <h6 class="card-subtitle mb-2 text-muted color-klikit-2">${price.price}</h6>
                     <span class="card-subtitle mb-2 text-muted">Até ${price.end_date}</span>
                 </div>
             </div>
@@ -258,9 +283,32 @@ function moldPrice(price) {
 }
 
 $(document).ready(function() {
-    //wait 3 seconds before loading the event
-    setTimeout(function() {
+    // setTimeout(function() {
         getEvent();
-    }, 3000);
+    // }, 3000);     
+    $('.your-class').slick({
+        slidesToShow: 4,
+        slidesToScroll: 4,
+        infinite: false,
+        arrows: true,
+        prevArrow: '<button type="button" class="slick-prev">Previous</button>',
+        nextArrow: '<button type="button" class="slick-next">Next</button>',
+        responsive: [
+            {
+              breakpoint: 768,
+              settings: {
+                slidesToShow: 3,
+                slidesToScroll: 1,
+              },
+            },
+            {
+              breakpoint: 576,
+              settings: {
+                slidesToShow: 2,
+                slidesToScroll: 1,
+              },
+            },
+        ],
+    });
 });
 

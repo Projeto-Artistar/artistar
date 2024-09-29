@@ -1,0 +1,1 @@
+<?= json_encode(isset($result) ? $result : ['code' => 404]); ?>
