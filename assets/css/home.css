@@ -121,6 +121,11 @@
     height: 200px; /* Altura fixa para centralizar verticalmente */
 }
 
+.carousel-item img {
+    max-height: 400px;
+    object-fit: cover;
+}
+
 @media (max-width: 767.98px) {
     .img-parceiros {
         margin-top: 40px; /* Margem em dispositivos móveis */

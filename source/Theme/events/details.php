@@ -74,6 +74,10 @@
         </div>
     </div>
 </section>
+<section id="slide-item-modal">
+</section>
+
+
 
 <?= $this->stop() ?>
 

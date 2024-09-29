@@ -370,11 +370,6 @@
     text-justify: inter-word;
 }
 
-.carousel-item img {
-    max-height: 400px;
-    object-fit: cover;
-}
-
 .carousel-caption {
     background-color: rgba(0, 0, 0, 0.5);
     padding: 10px;

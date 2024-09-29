@@ -23,13 +23,16 @@
     left: 50%;
     transform: translate(-50%, -50%);
     width: auto;
-    /* height: 100%; */
-    max-height: 100%;
+    max-height: 80%;
     max-width: 100%;
     display: block;
     z-index: 2;
     object-fit: cover; /* Garante que a imagem cubra todo o contêiner */
     object-position: center; /* Centraliza a imagem */
+    box-shadow: 
+        0 -10px 20px -10px rgba(0, 0, 0, 0.7), /* Sombra mais forte em cima */
+        0 10px 10px -10px rgba(0, 0, 0, 0.3);  /* Sombra mais fraca embaixo */
+    cursor: pointer;
 }
 
 .carousel-indicators,
@@ -79,4 +82,22 @@
 
 .animate-grow-shrink {
     animation: grow-shrink 0.3s forwards;
+}
+
+.img-modal {
+    width: 100%;
+    height: auto;
+    max-height: 80vh;
+    max-width: 100%;
+    object-fit: contain;
+}
+
+.slide-dialog {
+    max-width: 60%;
+}
+
+@media (max-width: 991px) {
+    .slide-dialog {
+        max-width: 90%;
+    }
 }

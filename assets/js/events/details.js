@@ -33,7 +33,25 @@ function viewPhotos(photos) {
         $('#slide-btn-next').show();
     }
     $('#photosCarousel').show();
-}   
+    createImageModal();
+}  
+
+function createImageModal() {
+    let htmlModal = `
+        <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered slide-dialog">
+                <div class="modal-body d-flex justify-content-center align-items-center">
+                    <img  class="img-fluid img-modal" alt="Imagem">
+                </div>
+            </div>
+        </div>
+    `;
+    $('#slide-item-modal').append(htmlModal);
+    $('.slide-item').on('click', function() {
+        $('#imageModal').find('img').attr('src', $(this).attr('src'));
+        $('#imageModal').modal('show');
+    });
+}
 
 function addAlbumIndicator(photo) {
     let current = photo.order == 0 ? 'class="active" aria-current="true"' : '';
