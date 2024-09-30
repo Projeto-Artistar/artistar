@@ -189,59 +189,20 @@
 
 <?= $this->start("js") ?>
 <!-- Outros scripts -->
-<script src="<?= url("assets/vendors/slick-1.8.1/slick/slick.min.js") ?>"></script>
-<script>const eventId = <?= $evento['id'] ?>;</script>
-<script src="<?= url("assets/js/events/details.js") ?>"></script>
+<script src="<?= url("assets/vendors/slick-1.8.1/slick/slick.min.js") ?>" defer></script>
+<script defer>const eventId = <?= $evento['id'] ?>;</script>
+<script src="<?= url("assets/js/events/details.js") ?>" defer></script>
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-    // Função para copiar a URL
-    document.getElementById('copyUrl').addEventListener('click', function() {
-        const url = window.location.href;
-        navigator.clipboard.writeText(url).then(function() {
-            // Exibe o toast de notificação
-            const toast = new bootstrap.Toast(document.getElementById('copyToast'));
-            toast.show();
-        }, function(err) {
-            console.error('Erro ao copiar a URL: ', err);
+document.querySelectorAll('.modal').forEach(function(modal) {
+    modal.addEventListener('shown.bs.modal', function() {
+        document.querySelectorAll('.your-class').forEach(function(element) {
+            $(element).slick('setPosition');
+        });
+        document.querySelectorAll('.wrap-modal-slider').forEach(function(element) {
+            element.classList.add('open');
         });
     });
-
-    // Função para compartilhar no Facebook
-    document.getElementById('shareFacebook').addEventListener('click', function() {
-        const url = window.location.href;
-        window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank');
-    });
-
-    // Função para compartilhar no WhatsApp
-    document.getElementById('shareWhatsApp').addEventListener('click', function() {
-        const url = window.location.href;
-        window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(url)}`, '_blank');
-    });
-
-    // Função para compartilhar no Pinterest
-    document.getElementById('sharePinterest').addEventListener('click', function() {
-        const url = window.location.href;
-        const description = document.title; // Você pode ajustar isso para usar uma descrição personalizada
-        window.open(`https://pinterest.com/pin/create/button/?url=${encodeURIComponent(url)}&description=${encodeURIComponent(description)}`, '_blank');
-    });
-
-    // Função para compartilhar no LinkedIn
-    document.getElementById('shareLinkedIn').addEventListener('click', function() {
-        const url = window.location.href;
-        const title = document.title; // Você pode ajustar isso para usar um título personalizado
-        window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}&title=${encodeURIComponent(title)}`, '_blank');
-    });
-
-    // Função para compartilhar no Telegram
-    document.getElementById('shareTelegram').addEventListener('click', function() {
-        const url = window.location.href;
-        window.open(`https://t.me/share/url?url=${encodeURIComponent(url)}`, '_blank');
-    });
 });
-$('.modal').on('shown.bs.modal', function (e) {
-    $('.your-class').slick('setPosition');
-    $('.wrap-modal-slider').addClass('open');
-})
 </script>
 
 

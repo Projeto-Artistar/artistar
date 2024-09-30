@@ -1,11 +1,11 @@
-function getEvent() {
+async function getEvent() {
     $.ajax({
         url: '/apis/events/details',
         type: 'POST',
         data: {
             eventId: eventId
         },
-        success: function(response) {
+        success: async function(response) {
             response = JSON.parse(response);
             if (response.code == 200) {
                 viewPhotos(response.data.photos);
@@ -23,7 +23,7 @@ function getEvent() {
     });
 }
 
-function viewPhotos(photos) {
+async function viewPhotos(photos) {
     if (photos.length > 0) {
         photos.forEach(photo => {
             addAlbumIndicator(photo);
@@ -34,12 +34,58 @@ function viewPhotos(photos) {
             $('#slide-btn-next').show();
         }
         $('#photosCarousel').show();
+        lazyLoadImages();
         createImageModal();
+
     }
     $('#carouselSkeleton').hide();
 }  
 
-function createImageModal() {
+async function lazyLoadImages() {
+    const lazyImages = document.querySelectorAll('img[data-src]');
+    const lazyBackgrounds = document.querySelectorAll('.slide-background[data-bg]');
+
+    if ('IntersectionObserver' in window) {
+        const lazyObserver = new IntersectionObserver(function(entries, observer) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting) {
+                    const lazyElement = entry.target;
+                    if (lazyElement.tagName === 'IMG') {
+                        console.log(`Loading image: ${lazyElement.getAttribute('data-src')}`);
+                        lazyElement.src = lazyElement.getAttribute('data-src');
+                        lazyElement.removeAttribute('data-src');
+                    } else if (lazyElement.classList.contains('slide-background')) {
+                        lazyElement.style.backgroundImage = `url('${lazyElement.getAttribute('data-bg')}')`;
+                        lazyElement.removeAttribute('data-bg');
+                    }
+                    observer.unobserve(lazyElement);
+                }
+            });
+        });
+
+        lazyImages.forEach(function(lazyImage) {
+            lazyObserver.observe(lazyImage);
+        });
+
+        lazyBackgrounds.forEach(function(lazyBackground) {
+            lazyObserver.observe(lazyBackground);
+        });
+    } else {
+        // Fallback para navegadores que não suportam IntersectionObserver
+        lazyImages.forEach(function(lazyImage) {
+            lazyImage.src = lazyImage.getAttribute('data-src');
+            lazyImage.removeAttribute('data-src');
+        });
+
+        lazyBackgrounds.forEach(function(lazyBackground) {
+            lazyBackground.style.backgroundImage = `url('${lazyBackground.getAttribute('data-bg')}')`;
+            lazyBackground.removeAttribute('data-bg');
+        });
+    }
+}
+
+
+async function createImageModal() {
     let htmlModal = `
         <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered slide-dialog">
@@ -56,7 +102,7 @@ function createImageModal() {
     });
 }
 
-function addAlbumIndicator(photo) {
+async function addAlbumIndicator(photo) {
     let current = photo.order == 0 ? 'class="active" aria-current="true"' : '';
     let htmlIndicator = `
         <button type="button" data-bs-target="#photosCarousel" data-bs-slide-to="${photo.order}" ${current} aria-label="${photo.label}"></button>
@@ -64,20 +110,20 @@ function addAlbumIndicator(photo) {
     $('#photo-carousel-indicators').append(htmlIndicator);
 }
 
-function moldPhoto(photo) {
+async function moldPhoto(photo) {
     let active = photo.order == 0 ? 'active' : '';
     let htmlPhoto = `
         <div class="carousel-item ${active}">
             <div class="slide d-flex justify-content-center">
-                <div class="slide-background" style="background-image: url('${photo.url}');"></div>
-                <img class="slide-item" src="${photo.url}" alt="${photo.label}">
+                <div class="slide-background" data-bg="/assets/image/800x400.png"></div>
+                <img class="slide-item" src="${photo.url}" alt="${photo.label}" loading="lazy">
             </div>
         </div>
     `;
     $('#carousel-items').append(htmlPhoto);
 }
 
-function viewBasicInfo(basicInfo) {
+async function viewBasicInfo(basicInfo) {
     loadTitle(basicInfo.title);
     loadButtons(basicInfo.favorite);
     // loadSubtitle(basicInfo.subtitle);
@@ -86,18 +132,18 @@ function viewBasicInfo(basicInfo) {
     loadProductor(basicInfo.production);
 }
 
-function loadTitle(title) {
+async function loadTitle(title) {
     $('#eventTitle').html(`<h1>${title}</h1>`);
     $('#eventTitle').show();
     $('#eventTitle-skeleton').hide();
 }
 
-function loadButtons(favorite) {
-    let favoriteClass = favorite == 1 ? 'mdi-heart' : 'mdi-heart-outline';
+async function loadButtons(favorite) {
+    let favoriteIcon = favorite == 1 ? 'mdi:heart' : 'mdi:heart-outline';
     let htmlButtons = `
         <div class="event-buttons">
-            <button class="btn btn-favorite shadow-none btn-event-action"><i class="mdi ${favoriteClass} btn-icon"></i></button>
-            <button class="btn btn-share shadow-none btn-event-action" id="btn-share"><i class="mdi mdi-share-variant btn-icon"></i></button>
+            <button class="btn btn-favorite shadow-none btn-event-action"><span class="iconify btn-icon" data-icon="${favoriteIcon}" data-inline="false"></span></button>
+            <button class="btn btn-share shadow-none btn-event-action" id="btn-share"><span class="iconify btn-icon" data-icon="mdi:share-variant" data-inline="false"></span></button>
         </div>
     `;
     $('#column-buttons').html(htmlButtons);
@@ -109,7 +155,7 @@ function loadButtons(favorite) {
     favoriteEvent();
 }
 
-function favoriteEvent() {
+async function favoriteEvent() {
     $('.btn-favorite').on('click', function() {
         let icon = $(this);
         $.ajax({
@@ -118,7 +164,7 @@ function favoriteEvent() {
             data: {
                 eventId: eventId
             },
-            success: function(response) {
+            success: async function(response) {
                 response = JSON.parse(response);
                 if (response.code == 200) {
                     icon.addClass('animate-grow-shrink');
@@ -151,12 +197,12 @@ function favoriteEvent() {
     });
 }
 
-function loadSubtitle(subtitle) {
+async function loadSubtitle(subtitle) {
     $('#eventSubtitle').text(subtitle);
     $('#eventSubtitle').show();
 }
 
-function loadDescription(description) {
+async function loadDescription(description) {
     if (description != '' && description != null && description != undefined) {
         $('#eventDescription').html(description);
         $('#eventDescription').show();
@@ -168,7 +214,7 @@ function loadDescription(description) {
     $('#column-description-skeleton').hide();
 }
 
-function loadAddress(address) {
+async function loadAddress(address) {
     if (address != '') {
         let htmlAddress = `<h6 class="color-klikit-2"><i class="mdi mdi-map-marker"></i> ${address}</h6>`;
         $('#eventAddress').append(htmlAddress);
@@ -181,13 +227,13 @@ function loadAddress(address) {
     
 }
 
-function loadProductor(productor) {
+async function loadProductor(productor) {
     $('#eventProductor').text(productor);
     $('#column-productor-skeleton').hide();
     $('#column-productor').show();
 }
 
-function generateMap(address) {
+async function generateMap(address) {
     var url = "https://www.google.com/maps?q=" + encodeURIComponent(address) + "&output=embed";
     var iframe = "<iframe frameborder='0' style='border:0; width: 100%; min-height: 500px;' src='" + url + "' allowfullscreen></iframe>";
     $('#mapa').html(iframe);
@@ -195,7 +241,7 @@ function generateMap(address) {
     $('#section-map').show();
 }
 
-function viewContacts(contacts) {
+async function viewContacts(contacts) {
     if (contacts.length > 0) {
         contacts.forEach(contact => {
             moldContact(contact);
@@ -205,12 +251,12 @@ function viewContacts(contacts) {
     $('#contactsColumn-skeleton').hide();
 }
 
-function moldContact(contact) {
+async function moldContact(contact) {
     let htmlContact = `<li><i class="${contact.icon}"></i> <span class="color-klikit-2 mx-2">${contact.value}</span></li>`;
     $('#contactsList').append(htmlContact);
 }
 
-function viewSocialMedia(socialMedia) {
+async function viewSocialMedia(socialMedia) {
     if (socialMedia.length > 0) {
         socialMedia.forEach(social => {
             moldSocialMedia(social);
@@ -220,7 +266,7 @@ function viewSocialMedia(socialMedia) {
     $('#socialMediaColumn-skeleton').hide();
 }
 
-function moldSocialMedia(social) {
+async function moldSocialMedia(social) {
     let htmlSocial = `
         <li class="d-flex align-items-center mb-2">
             <i class="${social.icon}"></i> <a class="link-kitlit-1 mx-2" href="${social.url}" target="_blank">${social.name}</a>
@@ -229,7 +275,7 @@ function moldSocialMedia(social) {
     $('#socialMediaList').append(htmlSocial);
 }
 
-function viewDays(days) {
+async function viewDays(days) {
     if (days.length > 0) {
         days.forEach(day => {
             moldDay(day);
@@ -240,7 +286,7 @@ function viewDays(days) {
     $('#column-pi-skeleton').hide();
 }
 
-function moldDay(day) {
+async function moldDay(day) {
     let htmlDay = `
         <div class="col-xxl-4 col-md-6 col-sm-4 col-6 mb-3">
             <div class="card">
@@ -254,7 +300,7 @@ function moldDay(day) {
     $('#daysRow').append(htmlDay);
 }
 
-function viewPrices(prices) {
+async function viewPrices(prices) {
     if (prices.length > 0) {
         prices.forEach(price => {
             moldPrice(price);
@@ -265,7 +311,7 @@ function viewPrices(prices) {
     $('#column-pi-skeleton').hide();
 }
 
-function moldPrice(price) {
+async function moldPrice(price) {
 
     let htmlPrice = `
         <div class="col-xxl-4 col-md-6 col-sm-4 col-6 mb-3">
@@ -282,10 +328,47 @@ function moldPrice(price) {
 
 }
 
-$(document).ready(function() {
-    // setTimeout(function() {
-        getEvent();
-    // }, 3000);     
+document.addEventListener('DOMContentLoaded', function() {
+    getEvent(); 
+
+    $('#copyUrl').on('click', function() {
+        const url = window.location.href;
+        navigator.clipboard.writeText(url).then(function() {
+            const toast = new bootstrap.Toast(document.getElementById('copyToast'));
+            toast.show();
+        }, function(err) {
+            console.error('Erro ao copiar a URL: ', err);
+        });
+    }); 
+
+    $('#shareFacebook').on('click', function() {
+        const url = window.location.href;
+        window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank');
+    });
+
+    $('#shareWhatsApp').on('click', function() {
+        const url = window.location.href;
+        window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(url)}`, '_blank');
+    });
+
+    $('#sharePinterest').on('click', function() {
+        const url = window.location.href;
+        const description = document.title; // Você pode ajustar isso para usar uma descrição personalizada
+        window.open(`https://pinterest.com/pin/create/button/?url=${encodeURIComponent(url)}&description=${encodeURIComponent(description)}`, '_blank');
+    });
+
+    $('#shareLinkedIn').on('click', function() {
+        const url = window.location.href;
+        const title = document.title; // Você pode ajustar isso para usar um título personalizado
+        window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}&title=${encodeURIComponent(title)}`, '_blank');
+    });
+
+    $('#shareTelegram').on('click', function() {
+        const url = window.location.href;
+        window.open(`https://t.me/share/url?url=${encodeURIComponent(url)}`, '_blank');
+    });
+
+
     $('.your-class').slick({
         slidesToShow: 4,
         slidesToScroll: 4,
