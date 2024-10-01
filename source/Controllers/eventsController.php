@@ -18,22 +18,29 @@ class eventsController extends Core {
         return;
     }
 
-    public function details($get) {
+    public function details($data) {
         $dados = new Events();
-        $evento = $dados->getBasicEventInfo(filter_var($get['eventId'], FILTER_SANITIZE_NUMBER_INT));
-
-        if (empty($evento)) {
+        $event = $dados->getEventBasicInfo(filter_var($data['eventId'], FILTER_SANITIZE_NUMBER_INT));
+        
+        if (empty($event)) {
             header("Location: /error/404");
             return;
-        } else if (!isset($get['friendlyUrl']) || $evento['url'] != $get['friendlyUrl']) {
-            header("Location: /events/{$evento['id']}/{$evento['url']}");
+        } else if (!isset($data['friendlyUrl']) || $event['url'] != $data['friendlyUrl']) {
+            header("Location: /events/{$event['id']}/{$event['url']}");
             return;
         }
+
+        $days = $dados->getEventDays(filter_var($data['eventId'], FILTER_SANITIZE_NUMBER_INT));
+        $prices = $dados->getEventPrices(filter_var($data['eventId'], FILTER_SANITIZE_NUMBER_INT));
+        $photos = $dados->getEventPhotos(filter_var($data['eventId'], FILTER_SANITIZE_NUMBER_INT));
         echo $this->view->render("events/details", [
-            'title' =>  $evento['title'].' - Artistar', 
+            'title' =>  $event['title'].' - Artistar', 
             'header' => $this->header(),
             'footer' => $this->footer(),
-            'evento' => $evento,
+            'event' => $event,
+            'days' => $days,
+            'prices' => $prices,
+            'photos' => $photos
         ]);
         return;
     }

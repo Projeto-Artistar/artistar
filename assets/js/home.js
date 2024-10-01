@@ -1,8 +1,8 @@
-function getEventos() {
+async function getEventos() {
     $.ajax({
         url: '/apis/events',
         type: 'POST',
-        success: function(response) {
+        success: async function(response) {
             response = JSON.parse(response);
             if (response.code == 200) {
                 eventos = response.data.eventos;
@@ -12,13 +12,13 @@ function getEventos() {
                 });
             }
         },
-        error: function(error) {
+        error: async function(error) {
             console.log('An error occurred');
         }
     });
 }
 
-function modeloEvento(evento) {
+async function modeloEvento(evento) {
     let htmlEvento = `
         <a class="col-lg-3 col-md-4 col-sm-6 mb-4 evento" href="/events/${evento.id}/${evento.url}">
             <div class="card">
@@ -34,7 +34,7 @@ function modeloEvento(evento) {
     $('#eventos').append(htmlEvento)
 }
 
-$(document).ready(function() {
+$(document).ready(async function() {
     getEventos();
     $('.card').each(function() {
         var $card = $(this);
@@ -43,7 +43,6 @@ $(document).ready(function() {
 
         $cardBody.on('mouseover', function() {
             $cardImgTop.css('height', '0');
-            console.log('aa');
         });
 
         $cardBody.on('mouseout', function() {

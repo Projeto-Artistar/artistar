@@ -7,7 +7,7 @@
 
             <ul class="nav col-12 me-md-auto mb-2 justify-content-center mb-md-0 d-none d-md-flex">
                 <li><a href="<?= url('login')?>" class="nav-link px-2 link-kitlit-1">Log-in</a></li>
-                <li><a href="<?= url('register')?>" class="nav-link px-2 link-kitlit-2">Cadastre-se</a></li>
+                <li><a href="<?= url('register')?>" class="nav-link px-2 link-kitlit-1">Cadastre-se</a></li>
             </ul>
         </div>
         <div id="barra-direita" class="d-flex">

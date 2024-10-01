@@ -35,32 +35,6 @@ class apiController extends Core {
         return;
     }
 
-    public function eventDetails($data) {
-
-        $dados = new API();
-        $basicInfo = $dados->getEventBasicInfo(filter_var($data['eventId'], FILTER_SANITIZE_NUMBER_INT));
-        if (empty($basicInfo)) {
-            $this->renderError();
-            return;
-        }
-        $days = $dados->getEventDays(filter_var($data['eventId'], FILTER_SANITIZE_NUMBER_INT));
-        $prices = $dados->getEventPrices(filter_var($data['eventId'], FILTER_SANITIZE_NUMBER_INT));
-        $photos = $dados->getEventPhotos(filter_var($data['eventId'], FILTER_SANITIZE_NUMBER_INT));
-
-        echo $this->view->render("apiResponse", [
-            'result' => [
-                'code' => 200,
-                'data' => [
-                    'basicInfo' => $basicInfo,
-                    'days'      => $days,
-                    'prices'    => $prices,
-                    'photos'    => $photos
-                ]
-            ]
-        ]);
-        return;
-    }
-
     public function eventFavorite($data) {
 
         // if (!$this->getLogado()) {
