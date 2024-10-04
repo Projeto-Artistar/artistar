@@ -14,6 +14,7 @@ class eventsController extends Core {
             'header' => $this->header(),
             'footer' => $this->footer(),
             'banner' => $this->view->render("fragments/home/".($this->getLogado() ? "banner" : "slide")),
+            'events' => (new Events())->getEvents()
         ]);
         return;
     }
