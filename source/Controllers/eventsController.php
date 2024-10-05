@@ -9,12 +9,20 @@ use Source\Model\Events;
 class eventsController extends Core {
 
     public function home() {
+        $get = [];
+        if (isset($_GET['s'])) $get['s'] = filter_var($_GET['s'], FILTER_SANITIZE_STRING);
+        if (isset($_GET['r'])) $get['r'] = filter_var($_GET['r'], FILTER_SANITIZE_STRING);
+        if (isset($_GET['sd'])) $get['sd'] = filter_var($_GET['sd'], FILTER_SANITIZE_STRING);
+        if (isset($_GET['fd'])) $get['fd'] = filter_var($_GET['fd'], FILTER_SANITIZE_STRING);
+        
         echo $this->view->render("events/home", [
-            'title' =>  'Eventos - Artistar', 
-            'header' => $this->header(),
-            'footer' => $this->footer(),
-            'banner' => $this->view->render("fragments/home/".($this->getLogado() ? "banner" : "slide")),
-            'events' => (new Events())->getEvents()
+            'title'         =>  'Eventos - Artistar', 
+            'header'        => $this->header(),
+            'footer'        => $this->footer(),
+            'banner'        => $this->view->render("fragments/home/".($this->getLogado() ? "banner" : "slide")),
+            'events'        => (new Events())->getEvents(),
+            'queryString'   => http_build_query($get),
+            'currentPage'   => isset($_GET['page']) ? filter_var($_GET['page'], FILTER_SANITIZE_NUMBER_INT) : 1
         ]);
         return;
     }
