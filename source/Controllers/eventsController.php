@@ -30,7 +30,7 @@ class eventsController extends Core {
             'footer'        => $this->footer(),
             'banner'        => $this->view->render("fragments/home/".($this->getLogado() ? "banner" : "slide")),
             'events'        => $dados->getEvents(),
-            'estados'       => $dados->getEstados(),
+            'estados'       => $this->getEstados(),
             'get'           => $get,
             'queryString'   => $queryString,
             'currentPage'   => $paginaAtual,

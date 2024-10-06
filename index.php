@@ -11,10 +11,14 @@ $router = new Router(ROOT);
 
 $router->namespace("Source\Controllers");
 
-$router->group(null);
+$router->group(NULL);
 $router->get("/", "homeController:home", "homeController.home");
 $router->get("/login", "homeController:login", "homeController.login");
 $router->get("/logout", "homeController:logout", "homeController.logout");
+
+
+$router->group('results');
+$router->get("/", "searchController:results", "searchController.results");
 
 $router->group('events');
 $router->get("/", "eventsController:home", "eventsController.home");

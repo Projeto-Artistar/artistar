@@ -1,23 +1,9 @@
 function search() {
-    event.preventDefault(); // Prevenir o envio padrão do formulário
-    var searchInput = document.getElementById('searchInput');
-    var encodedValue = encodeURIComponent(searchInput.value);
-
-    // Criar um campo oculto com o valor codificado
-    var hiddenInput = document.createElement('input');
-    hiddenInput.type = 'hidden';
-    hiddenInput.name = 's';
-    hiddenInput.value = encodedValue;
-
     var form = document.getElementById('searchForm');
-    form.appendChild(hiddenInput);
     form.submit();
 }
 
 document.getElementById('searchIcon').addEventListener('click', async function() {
-    search();
-});
-document.getElementById('searchForm').addEventListener('submit', async function(event) {
     search();
 });
 

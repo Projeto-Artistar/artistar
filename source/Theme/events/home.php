@@ -11,14 +11,14 @@
 
 <?= $this->start("conteudo") ?>
 
-<section id="search-bar" class="avoid-navbar minimum-height container">
+<section class="avoid-navbar minimum-height container">
 <section id="search-bar">
         <!-- Barra de pesquisa e filtros -->
         <form id="searchForm" method="GET" action="<?= url('events')?>" class="pt-3">
             <div class="row position-relative">
                 <div class="col-12 d-flex align-items-center">
                     <div class="search-wrapper flex-grow-1 position-relative px-1">
-                        <input id="searchInput" type="text" class="form-control input-kiklit-2" placeholder="Pesquisar eventos..." value="<?php if (isset($_GET['s'])) echo urldecode($_GET['s']); ?>">
+                        <input name="s" id="searchInput" type="search" class="form-control input-kiklit-2" placeholder="Pesquisar eventos..." value="<?php if (isset($_GET['s'])) echo urldecode($_GET['s']); ?>">
                         <i class="fas fa-search link-kitlit-2 position-absolute" id="searchIcon"></i>
                     </div>
                     <i class="fas fa-sliders-h link-kitlit-2 m-3 icon-filter" id="filterIcon"></i>
@@ -26,7 +26,7 @@
             </div>
             <div class="offcanvas-filter w-100 show " id="filterRow">
                 <div class="row px-1">
-                <div class="col-md-6 col-12 py-1">
+                    <div class="col-md-6 col-12 py-1">
                         <div class="form-group">
                             <label for="filterRegion">Região</label>
                             <select id="filterRegion" class="form-control input-kiklit-2 my-1" name="r">
