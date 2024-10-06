@@ -140,4 +140,13 @@ class API extends Core
         }
     }
 
+    public function listCities($uf) {
+        $url = "https://servicodados.ibge.gov.br/api/v1/localidades/estados/{$uf}/municipios";
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $response = curl_exec($ch);
+        curl_close($ch);
+        return json_decode($response, true);
+    }
+
 }

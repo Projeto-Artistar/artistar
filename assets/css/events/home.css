@@ -80,3 +80,30 @@
     border-color: #9C5EF2;
     color: white !important;
 }
+
+.search-wrapper {
+    position: relative;
+}
+.search-wrapper input {
+    padding-right: 2.5rem; /* Espaço para o ícone */
+}
+.search-wrapper .fa-search {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #aaa;
+    cursor: pointer;
+}
+
+.icon-filter {
+    cursor: pointer;
+}
+.offcanvas-filter {
+    transition: max-height .4s ease-in-out;
+    overflow: hidden;
+    max-height: 0;
+}
+.offcanvas-filter.show {
+    max-height: 500px; /* Ajuste conforme necessário */
+}

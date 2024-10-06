@@ -442,4 +442,75 @@ class Events extends Core
         return isset($data[$id]) ? $data[$id] : [];
     }
 
+    public function getEstados() {
+        return [
+            ['id' => 1, 'name' => 'Acre', 'uf' => 'AC'],
+            ['id' => 2, 'name' => 'Alagoas', 'uf' => 'AL'],
+            ['id' => 3, 'name' => 'Amapá', 'uf' => 'AP'],
+            ['id' => 4, 'name' => 'Amazonas', 'uf' => 'AM'],
+            ['id' => 5, 'name' => 'Bahia', 'uf' => 'BA'],
+            ['id' => 6, 'name' => 'Ceará', 'uf' => 'CE'],
+            ['id' => 7, 'name' => 'Distrito Federal', 'uf' => 'DF'],
+            ['id' => 8, 'name' => 'Espírito Santo', 'uf' => 'ES'],
+            ['id' => 9, 'name' => 'Goiás', 'uf' => 'GO'],
+            ['id' => 10, 'name' => 'Maranhão', 'uf' => 'MA'],
+            ['id' => 11, 'name' => 'Mato Grosso', 'uf' => 'MT'],
+            ['id' => 12, 'name' => 'Mato Grosso do Sul', 'uf' => 'MS'],
+            ['id' => 13, 'name' => 'Minas Gerais', 'uf' => 'MG'],
+            ['id' => 14, 'name' => 'Pará', 'uf' => 'PA'],
+            ['id' => 15, 'name' => 'Paraíba', 'uf' => 'PB'],
+            ['id' => 16, 'name' => 'Paraná', 'uf' => 'PR'],
+            ['id' => 17, 'name' => 'Pernambuco', 'uf' => 'PE'],
+            ['id' => 18, 'name' => 'Piauí', 'uf' => 'PI'],
+            ['id' => 19, 'name' => 'Rio de Janeiro', 'uf' => 'RJ'],
+            ['id' => 20, 'name' => 'Rio Grande do Norte', 'uf' => 'RN'],
+            ['id' => 21, 'name' => 'Rio Grande do Sul', 'uf' => 'RS'],
+            ['id' => 22, 'name' => 'Rondônia', 'uf' => 'RO'],
+            ['id' => 23, 'name' => 'Roraima', 'uf' => 'RR'],
+            ['id' => 24, 'name' => 'Santa Catarina', 'uf' => 'SC'],
+            ['id' => 25, 'name' => 'São Paulo', 'uf' => 'SP'],
+            ['id' => 26, 'name' => 'Sergipe', 'uf' => 'SE'],
+            ['id' => 27, 'name' => 'Tocantins', 'uf' => 'TO'],
+        ];
+    }
+
+    public function getEventosPaginacao($paginaAtual = 1, $querystring = '') {
+
+        $totalPaginas = 10;
+        $paginas = [];
+        $paginas[] = [
+            'pagina' => 1,
+            'url' => 'events?page=1&' . $querystring,
+            'class' => $paginaAtual == 1 ? 'active' : ''
+        ];
+
+        if($paginaAtual > 3) $paginas[] = [
+            'pagina' => '...',
+            'url' => '#',
+            'class' => 'disabled'
+        ];
+
+        for($i = $paginaAtual - 2; $i <= $paginaAtual + 2; $i++)
+            if($i > 1 && $i < $totalPaginas)
+                $paginas[] = [
+                    'pagina' => $i,
+                    'url' => 'events?page=' . $i. '&' . $querystring,
+                    'class' => $paginaAtual == $i ? 'active' : ''
+                ];
+
+        if($paginaAtual < $totalPaginas - 2) $paginas[] = [
+            'pagina'    => '...',
+            'url'       => '#',
+            'class'     => 'disabled'
+        ];
+        $paginas[] = [
+            'pagina' => $totalPaginas,
+            'url' => 'events?page='.$totalPaginas.'&' . $querystring,
+            'class' => $paginaAtual == $totalPaginas ? 'active' : ''
+        ];
+
+        return $paginas;
+
+    }
+
 }

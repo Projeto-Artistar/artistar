@@ -9,20 +9,32 @@ use Source\Model\Events;
 class eventsController extends Core {
 
     public function home() {
-        $get = [];
-        if (isset($_GET['s'])) $get['s'] = filter_var($_GET['s'], FILTER_SANITIZE_STRING);
-        if (isset($_GET['r'])) $get['r'] = filter_var($_GET['r'], FILTER_SANITIZE_STRING);
-        if (isset($_GET['sd'])) $get['sd'] = filter_var($_GET['sd'], FILTER_SANITIZE_STRING);
-        if (isset($_GET['fd'])) $get['fd'] = filter_var($_GET['fd'], FILTER_SANITIZE_STRING);
-        
+        $get = [
+            's'     => (isset($_GET['s']) ? filter_var($_GET['s'], FILTER_SANITIZE_STRING) : ''),
+            'r'     => (isset($_GET['r']) ? filter_var($_GET['r'], FILTER_SANITIZE_STRING) : ''),
+            'c'     => (isset($_GET['c']) ? filter_var($_GET['c'], FILTER_SANITIZE_STRING) : ''),
+            'sd'    => (isset($_GET['sd']) ? filter_var($_GET['sd'], FILTER_SANITIZE_STRING) : ''),
+            'fd'    => (isset($_GET['fd']) ? filter_var($_GET['fd'], FILTER_SANITIZE_STRING) : '')
+        ];
+
+        $paginaAtual = isset($_GET['page']) ? filter_var($_GET['page'], FILTER_SANITIZE_NUMBER_INT) : 1;
+
+        $dados = new Events();
+
+        $queryString = http_build_query($get);
+        $paginacao = $dados->getEventosPaginacao($paginaAtual, $queryString);
+
         echo $this->view->render("events/home", [
             'title'         =>  'Eventos - Artistar', 
             'header'        => $this->header(),
             'footer'        => $this->footer(),
             'banner'        => $this->view->render("fragments/home/".($this->getLogado() ? "banner" : "slide")),
-            'events'        => (new Events())->getEvents(),
-            'queryString'   => http_build_query($get),
-            'currentPage'   => isset($_GET['page']) ? filter_var($_GET['page'], FILTER_SANITIZE_NUMBER_INT) : 1
+            'events'        => $dados->getEvents(),
+            'estados'       => $dados->getEstados(),
+            'get'           => $get,
+            'queryString'   => $queryString,
+            'currentPage'   => $paginaAtual,
+            'pages'         => $paginacao
         ]);
         return;
     }
@@ -53,6 +65,5 @@ class eventsController extends Core {
         ]);
         return;
     }
-
 
 }

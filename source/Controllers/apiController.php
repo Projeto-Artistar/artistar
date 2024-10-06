@@ -58,4 +58,21 @@ class apiController extends Core {
         return;
     }
 
+    public function cities($data) {
+
+        $dados = new API();
+        $cities = $dados->listCities(filter_var($data['uf'], FILTER_SANITIZE_STRING));
+
+        echo $this->view->render("apiResponse", [
+            'result' => [
+                'code' => 200,
+                'data' => [
+                    'cities' => $cities
+                ]
+            ]
+        ]);
+    
+        return;
+    }
+
 }

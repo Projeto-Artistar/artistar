@@ -7,34 +7,6 @@
 
 <?= $this->start("css") ?>
 <link rel="stylesheet" href="<?= url("assets/css/events/home.css") ?>">
-<style>
-    .search-wrapper {
-        position: relative;
-    }
-    .search-wrapper input {
-        padding-right: 2.5rem; /* Espaço para o ícone */
-    }
-    .search-wrapper .fa-search {
-        position: absolute;
-        right: 10px;
-        top: 50%;
-        transform: translateY(-50%);
-        color: #aaa;
-        cursor: pointer;
-    }
-
-    .icon-filter {
-        cursor: pointer;
-    }
-    .offcanvas-filter {
-        transition: max-height .4s ease-in-out;
-        overflow: hidden;
-        max-height: 0;
-    }
-    .offcanvas-filter.show {
-        max-height: 500px; /* Ajuste conforme necessário */
-    }
-</style>
 <?= $this->stop() ?>
 
 <?= $this->start("conteudo") ?>
@@ -54,54 +26,40 @@
             </div>
             <div class="offcanvas-filter w-100 show " id="filterRow">
                 <div class="row px-1">
-                    <div class="col-xl-3 col-md-4 col-sm-6 col-12 py-1">
+                <div class="col-md-6 col-12 py-1">
                         <div class="form-group">
                             <label for="filterRegion">Região</label>
-                            <select id="filterRegion" class="form-control input-kiklit-2" name="r">
+                            <select id="filterRegion" class="form-control input-kiklit-2 my-1" name="r">
                                 <option value="">Selecione uma região</option>
-                                <option value="AC">Acre</option>
-                                <option value="AL">Alagoas</option>
-                                <option value="AP">Amapá</option>
-                                <option value="AM">Amazonas</option>
-                                <option value="BA">Bahia</option>
-                                <option value="CE">Ceará</option>
-                                <option value="DF">Distrito Federal</option>
-                                <option value="ES">Espírito Santo</option>
-                                <option value="GO">Goiás</option>
-                                <option value="MA">Maranhão</option>
-                                <option value="MT">Mato Grosso</option>
-                                <option value="MS">Mato Grosso do Sul</option>
-                                <option value="MG">Minas Gerais</option>
-                                <option value="PA">Pará</option>
-                                <option value="PB">Paraíba</option>
-                                <option value="PR">Paraná</option>
-                                <option value="PE">Pernambuco</option>
-                                <option value="PI">Piauí</option>
-                                <option value="RJ">Rio de Janeiro</option>
-                                <option value="RN">Rio Grande do Norte</option>
-                                <option value="RS">Rio Grande do Sul</option>
-                                <option value="RO">Rondônia</option>
-                                <option value="RR">Roraima</option>
-                                <option value="SC">Santa Catarina</option>
-                                <option value="SP">São Paulo</option>
-                                <option value="SE">Sergipe</option>
-                                <option value="TO">Tocantins</option>
+                                <?php foreach($estados as $estado) {?>
+                                    <option <?php if($estado['uf'] == $get['r']) echo 'selected'; ?> value="<?= $estado['uf'] ?>"><?= $estado['name'] ?></option>
+                                <?php } ?>
                             </select>
                         </div>
                     </div>
+                    <div class="col-md-6 col-12  py-1">
+                        <div class="form-group">
+                            <label for="filterCity">Cidade</label>
+                            <select id="filterCity" class="form-control input-kiklit-2 my-1" name="c">
+                                <option value="<?php if (!empty($get['c'])) echo $get['c']; ?>"><?= empty($get['c']) ? 'Selecione uma cidade' : $get['c']; ?></option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row px-1">
                     <div class="col-xl-3 col-md-4 col-sm-6 col-12 py-1">
                         <div class="form-group">
                             <label for="filterDate">Data Inicial</label>
-                            <input type="date" id="filterDate" class="form-control input-kiklit-2" name="sd">
+                            <input type="date" id="filterDate" class="form-control input-kiklit-2 my-1" name="sd" value="<?= $get['sd']?>">
                         </div>
                     </div>
                     <div class="col-xl-3 col-md-4 col-sm-6 col-12 py-1">
                         <div class="form-group">
                             <label for="filterDate">Data Final</label>
-                            <input type="date" id="filterDate" class="form-control input-kiklit-2" name="fd">
+                            <input type="date" id="filterDate" class="form-control input-kiklit-2 my-1" name="fd" value="<?= $get['fd']?>">
                         </div>
                     </div>
-                    <div class="col-xl-3 col-md-12 col-sm-6 col-12 d-flex justify-content-end align-items-end py-1">
+                    <div class="col-xl-6 col-md-4 col-12 d-flex justify-content-end align-items-end py-1">
                         <button type="submit" class="btn btn-kiklit-2">Pesquisar</button>
                     </div>
                 </div>
@@ -132,19 +90,17 @@
     <section>
         <nav aria-label="Page navigation example">
             <ul class="pagination justify-content-center">
-                <li class="page-item disabled">
-                    <a class="page-link link-kitlit-2" href="#" aria-label="Previous">
+                <li class="page-item <?php if ($currentPage <= 1) echo 'disabled'; ?>">
+                    <a class="page-link link-kitlit-2" href="<?= url('events?page='.($currentPage-1).'&'.$queryString) ?>" aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>
                         <span class="sr-only">Anterior</span>
                     </a>
                 </li>
-                <li class="page-item active"><a class="page-link link-kitlit-2" href="<?= url('events?' . $queryString)?>">1</a></li>
-                <li class="page-item"><a class="page-link link-kitlit-2" href="<?= url('events?' . $queryString . '&page=2')?>">2</a></li>
-                <li class="page-item"><a class="page-link link-kitlit-2" href="<?= url('events?' . $queryString . '&page=3')?>">3</a></li>
-                <li class="page-item disabled"><a class="page-link link-kitlit-2" href="#">...</a></li>
-                <li class="page-item"><a class="page-link link-kitlit-2" href="<?= url('events?' . $queryString . '&page=10')?>">10</a></li>
-                <li class="page-item">
-                    <a class="page-link link-kitlit-2" href="#" aria-label="Next">
+                <?php foreach($pages as $page) { ?>
+                    <li class="page-item <?= $page['class'] ?>"><a class="page-link link-kitlit-2" href="<?= url($page['url'])?>"><?= $page['pagina']?></a></li>
+                <?php } ?>
+                <li class="page-item <?php if ($currentPage >= 10) echo 'disabled'; ?>">
+                    <a class="page-link link-kitlit-2" href="<?= url('events?page='.($currentPage+1).'&'.$queryString) ?>" aria-label="Next">
                         <span aria-hidden="true">&raquo;</span>
                         <span class="sr-only">Próximo</span>
                     </a>
@@ -156,32 +112,9 @@
 <?= $this->stop() ?>
 
 <?= $this->start("js") ?>
+<script src="<?= url('assets/js/events/home.js') ?>"></script>
 <script>
-    function search() {
-        event.preventDefault(); // Prevenir o envio padrão do formulário
-        var searchInput = document.getElementById('searchInput');
-        var encodedValue = encodeURIComponent(searchInput.value);
-
-        // Criar um campo oculto com o valor codificado
-        var hiddenInput = document.createElement('input');
-        hiddenInput.type = 'hidden';
-        hiddenInput.name = 's';
-        hiddenInput.value = encodedValue;
-
-        var form = document.getElementById('searchForm');
-        form.appendChild(hiddenInput);
-        form.submit();
-    }
-
-    document.getElementById('searchIcon').addEventListener('click', function() {
-        search();
-    });
-    document.getElementById('searchForm').addEventListener('submit', function(event) {
-        search();
-    });
-    document.getElementById('filterIcon').addEventListener('click', function() {
-        var filterRow = document.getElementById('filterRow');
-        filterRow.classList.toggle('show');
-    });
+    const defaultCity = '<?= empty($get['c']) ? 'Carregando...' : $get['c']; ?>';
+    searchCities('<?= empty($get['r']) ? '' : $get['r']; ?>');
 </script>
 <?= $this->stop() ?>
