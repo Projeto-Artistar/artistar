@@ -11,9 +11,9 @@
             </ul>
         </div>
         <div id="barra-direita" class="d-flex">
-            <form class="col-12 col-md-auto me-md-3 d-none d-md-flex" method="GET" action="<?= url('results') ?>">
+            <!-- <form class="col-12 col-md-auto me-md-3 d-none d-md-flex" method="GET" action="<?= url('events') ?>">
                 <input name="search" type="search" class="form-control pesquisa-superior input-kiklit-2" placeholder="Pesquisar..." aria-label="Search" value="<?= $search ?>">
-            </form>
+            </form> -->
 
             <button data-bs-toggle="offcanvas" style="border:none; background:none;" type="button" href="#offcanvasExample" role="button" aria-controls="offcanvasExample" class="link-hover d-md-none">
                 <i class="fa-solid fa-bars" style="width:24px; text-align: center;"></i>

@@ -22,6 +22,7 @@ class Core
         $this->router=$router;
         $this->view = new Engine(dirname(__DIR__,1)."/Theme");
         $this->nucleo = $this->view;
+        $this->verificaLogado();
 
         $this->view->addData(["router"=> $this->router]);
 
@@ -38,7 +39,7 @@ class Core
     }
 
     public function verificaLogado(){
-        if(isset($_SESSION['logado'])) $this->logado = true;
+        if(isset($_SESSION['artistar']['logado'])) $this->logado = true;
     }
 
     public function getLogado () {

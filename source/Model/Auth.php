@@ -12,8 +12,9 @@ class Auth extends Core {
         //apenas para exemplificar a conexão com o banco de dados
     }
 
-    public function trazerUsuario(){
-       
+    public function login($post) {
+        $_SESSION['artistar']['logado'] = true;
+        return true;
     }
 
 }

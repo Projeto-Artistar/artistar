@@ -24,7 +24,7 @@ class searchController extends Core {
         $results = $dados->getResults($search, $get);
 
         echo $this->view->render("results", [
-            'title'     =>  'Artistar', 
+            'title'     =>  'Resultados para: '.$search.' - Artistar', 
             'header'    => $this->header($search),
             'footer'    => $this->footer(),
             'banner'    => $this->view->render("fragments/home/".($this->getLogado() ? "banner" : "slide")),

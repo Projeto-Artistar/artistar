@@ -6,16 +6,16 @@
             </a>
 
             <ul class="nav col-12 me-md-auto mb-2 justify-content-center mb-md-0 d-none d-md-flex">
-                <li><a href="#" class="nav-link px-2 link-secondary link-hover">Iniciar</a></li>
-                <li><a href="#" class="nav-link px-2 link-dark link-hover">Mostruário</a></li>
+                <li><a href="/begin" class="nav-link px-2 link-kitlit-1 link-hover">Iniciar</a></li>
+                <li><a href="#" class="nav-link px-2 link-kitlit-1 link-hover">Mostruário</a></li>
             </ul>
         </div>
         <div id="barra-direita" class="d-flex">
-            <form class="col-12 col-md-auto me-md-3 d-none d-md-flex">
-                <input type="search" class="form-control pesquisa-superior" placeholder="Pesquisar..." aria-label="Search">
-            </form>
+            <!-- <form class="col-12 col-md-auto me-md-3 d-none d-md-flex" method="GET" action="<?= url('events') ?>">
+                <input name="search" type="search" class="form-control pesquisa-superior input-kiklit-2" placeholder="Pesquisar..." aria-label="Search" value="<?= $search ?>">
+            </form> -->
 
-            <button data-bs-toggle="offcanvas" style="border:none; background:none;" type="button" href="#offcanvasExample" role="button" aria-controls="offcanvasExample" class="link-hover">
+            <button data-bs-toggle="offcanvas" style="border:none; background:none;" type="button" href="#offcanvasExample" role="button" aria-controls="offcanvasExample" class="link-kitlit-2 link-hover">
                 <i class="fa-solid fa-bars" style="width:24px; text-align: center;"></i>
             </button>
         </div>
@@ -27,7 +27,7 @@
         <a href="/" class="d-flex align-items-center me-md-auto link-dark text-decoration-none">
             <img src="<?= url("assets/image/logo.svg") ?>" alt="mdo" class="bi me-2" width="40" height="32">
         </a>
-        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        <button type="button" class="btn-close text-reset input-kiklit-2" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         
     </div>
         <div class="offcanvas-body d-flex flex-column justify-content-between">
@@ -38,14 +38,14 @@
                 </form>
             </li>
             <li class="d-md-none">
-                <a href="#" class="nav-link link-secondary">
+                <a href="#" class="nav-link color-klikit-1">
                     <div class="d-flex align-items-center">
                         <span>Iniciar</span>
                     </div>
                 </a>
             </li>
             <li class="d-md-none">
-                <a href="#" class="nav-link link-dark">
+                <a href="#" class="nav-link color-klikit-1">
                     <div class="d-flex align-items-center">
                         <span>Mostruário</span>
                     </div>
@@ -94,7 +94,7 @@
                     <span><strong>Sua Loja</strong></span>
                 </div>
             </div>
-            <button style="border:none; background:none;" onclick="window.location.href='/sair';" class="link-hover"><i class="fa-solid fa-right-from-bracket px-2"></i></button>
+            <button style="border:none; background:none;" onclick="window.location.href='/auth/logout';" class="link-hover"><i class="fa-solid fa-right-from-bracket px-2"></i></button>
         </div>
     </div>
 </nav>

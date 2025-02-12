@@ -1,8 +1,8 @@
-<section class="section-banner section-dark pb-4 avoid-navbar">
+<section class="section-banner section-dark p-4 avoid-navbar">
     <div class="container">
         <div class="row">
             <div>
-                <div class="bg-primary py-6 px-6 px-xl-0 rounded-4 ">
+                <div class="bg-rockme-2 py-6 px-6 px-xl-0 rounded-4 ">
                 <div class="row align-items-center">
                     <div class="offset-xl-1 col-xl-5 col-md-6 col-12 p-5">
                     <div>
