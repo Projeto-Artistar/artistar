@@ -33,6 +33,7 @@ $router->get("/{eventId}/{friendlyUrl}", "eventsController:details", "eventsCont
 
 $router->group('register');
 $router->get("/", "registerController:home", "registerController.home");
+$router->post("/", "registerController:insertStore", "registerController.insertStore");
 $router->get("/validate-email", "registerController:validate", "registerController.validate");
 
 $router->group('password-reset');

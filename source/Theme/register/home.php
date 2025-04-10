@@ -16,7 +16,7 @@
                 <div class="login-form border">
                     <h2 class="text-center">Cadastro</h2>
                     <p class="text-center">Já possui conta? <a href="<?= url("login") ?>" class="link-kitlit-2">Entrar</a></p>
-                    <form id="form-login" method="get" action="<?= url("register/validate-email") ?>">
+                    <form id="form-register" method="get" action="<?= url("register/validate-email") ?>">
                         <div class="mb-3">
                             <label for="user" class="form-label">Usuário</label>
                             <input type="text" class="form-control input-kiklit-2" id="user" name="user" required>
@@ -33,12 +33,12 @@
                             <label for="confirmacao-senha" class="form-label">Confirmação de senha</label>
                             <input type="password" class="form-control input-kiklit-2" id="confirmacao-senha" name="confirmacao-senha" required>
                         </div>
-                        <div class="mb-3 position d-flex">
+                        <!-- <div class="mb-3 position d-flex">
                             <input type="checkbox" class="form-check-input checkbox-kiklit-2" id="aceito-termos" name="aceito-termos" required>
                             <label class="form-check label" for="aceito-termos">Li e aceito as <a href="<?= url('legal/privacy')?>" target="_blank" class="link-kitlit-2">Políticas de Privacidade</a> e os <a href="<?= url('legal/terms')?>" target="_blank" class="link-kitlit-2">Termos de Uso</a></label>
-                        </div>
+                        </div> -->
                         <div class="d-flex justify-content-end align-items-center">
-                            <button type="submit" class="btn btn-kiklit-2">Confirmar</button>
+                            <button type="submit" class="btn btn-kiklit-2" id="btn-confirm-register">Confirmar</button>
                         </div>
                     </form>
                 </div>

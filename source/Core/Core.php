@@ -4,6 +4,7 @@
 namespace Source\Core;
 
 use League\Plates\Engine;
+use PDO;
 
 class Core
 {
@@ -18,12 +19,16 @@ class Core
 
     protected $logado = false;
 
+    protected $NoSQL = NULL;
+    
+    protected $SQL = NULL;
+
     public function __construct($router = ROOT){
         $this->router=$router;
         $this->view = new Engine(dirname(__DIR__,1)."/Theme");
         $this->nucleo = $this->view;
+        $this->SQL = new PDO('mysql:host=localhost;dbname=artistar', 'root', '');
         $this->verificaLogado();
-
         $this->view->addData(["router"=> $this->router]);
 
     }
