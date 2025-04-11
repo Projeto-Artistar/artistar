@@ -60,7 +60,8 @@ class registerController extends Core {
             $mail->isHTML(true);
             $mail->Subject = 'Confirmação de Email - Artistar';
 
-            $validationCode = substr($validationCode, 0, 4) . '-' . substr($validationCode, 4);
+            $halfValidationCode = ceil(count($validationCode) / 2);
+            $validationCode = substr($validationCode, 0, $halfValidationCode) . '-' . substr($validationCode, $halfValidationCode);
 
             $mail->Body = 'Seu código de validação é: ' . $validationCode;
             $mail->AltBody = 'Seu código de validação é: ' . $validationCode;
