@@ -9,7 +9,6 @@ return array(
     'Source\\' => array($baseDir . '/source'),
     'PHPMailer\\PHPMailer\\' => array($vendorDir . '/phpmailer/phpmailer/src'),
     'League\\Plates\\' => array($vendorDir . '/league/plates/src'),
-    'Firebase\\JWT\\' => array($vendorDir . '/firebase/php-jwt/src'),
     'CoffeeCode\\Router\\' => array($vendorDir . '/coffeecode/router/src'),
     'CoffeeCode\\Optimizer\\' => array($vendorDir . '/coffeecode/optimizer/src'),
 );

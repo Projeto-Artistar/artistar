@@ -6,9 +6,12 @@ use CoffeeCode\Router\Router;
 use Exception;
 use Source\Core\Core;
 use Source\Model\Register;
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception as PHPMailerException;
 
 class registerController extends Core {
 
+    // Controller functions
     public function home() {
         echo $this->view->render("register/home", [
             'title' =>  'Cadastro - Artistar', 
@@ -18,37 +21,23 @@ class registerController extends Core {
     }
 
     public function insertStore($post) {
-        $model = new Register();
-
         try { 
-            $emailIsAvaliable = $model->verifyIfEmailIsAvaliable($post['email']);
-        } catch (Exception $e) {
-            exit(json_encode([
-                'code' => 500,
-                'message' => $e->getMessage(),
-            ]));
-        }
-
-        if ($emailIsAvaliable) {
-            try { 
-                $storeId = $model->insertStore($post['user'], $post['email'], $post['password']);
-                exit(json_encode([
-                    'code' => 200,
-                    'message' => 'Store inserted successfully',
-                ]));
-            } catch (Exception $e) {
-                exit(json_encode([
-                    'code' => 500,
-                    'message' => $e->getMessage(),
-                ]));
+            $model = new Register();
+            if ($model->verifyIfEmailIsAvaliable($post['email'])) {
+                $validationCode = $this->generateValidationCode(8);
+                $storeId = $model->insertStore($post['user'], $post['email'], $post['password'], $validationCode);
+                if($this->sendValidationEmail($post['email'], $validationCode)) {
+                    $this->setUserLogonStatus($storeId);
+                    exit($this->renderApiResponse(200, 'Store inserted successfully'));
+                } else {
+                    exit($this->renderApiResponse(500, 'Failed to send validation email'));
+                }
+            } else {
+                exit($this->renderApiResponse(404, 'E-mail already in use'));
             }
-        } else {
-            exit(json_encode([
-                'code' => 404,
-                'message' => 'E-mail already in use',
-            ]));
+        } catch (Exception $e) {
+            exit($this->renderApiResponse(500, $e->getMessage()));
         }
-
     }
 
     public function validate() {
@@ -59,4 +48,30 @@ class registerController extends Core {
         return;
     }
 
+    // Helper functions
+    public function sendValidationEmail($email, $validationCode) {
+        $mail = new \PHPMailer\PHPMailer\PHPMailer();
+        try {
+            $mail->isSMTP();
+            $mail->Host = 'smtp.gmail.com'; // SMTP server
+            $mail->SMTPAuth = true;
+            //Use credentials
+            $mail->addAddress($email);
+            $mail->isHTML(true);
+            $mail->Subject = 'Confirmação de Email - Artistar';
+
+            $validationCode = substr($validationCode, 0, 4) . '-' . substr($validationCode, 4);
+
+            $mail->Body = 'Seu código de validação é: ' . $validationCode;
+            $mail->AltBody = 'Seu código de validação é: ' . $validationCode;
+            $mail->send();
+            return true;
+        } catch (PHPMailerException $e) {
+            return false;
+        }
+    }
+
+    public function setUserLogonStatus($userId) {
+        $_SESSION['artistar']['logon'] = $userId;
+    }
 }

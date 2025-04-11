@@ -89,6 +89,18 @@ class Core
         ];
     }
 
+    public function generateValidationCode($length = 6) {
+        return substr(str_shuffle('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, $length);
+    }
 
+    public function renderApiResponse($code, $message, $data = null) {
+        $result = [];
+        $result['code'] = $code;
+        $result['message'] = $message;
+        if (!empty($data)) $result['data'] = $data;
+        return $this->view->render("apiResponse", [
+            'result' => $result 
+        ]);
+    }
 
 }

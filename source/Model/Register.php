@@ -24,21 +24,22 @@ class Register extends Core
         return $result['qtd'] == 0;
     }
 
-    public function insertStore($user, $email, $password) {
+    public function insertStore($user, $email, $password, $validationCode) {
   
         $email = filter_var($email, FILTER_SANITIZE_EMAIL);
         $password = md5($password);
-
+          
         $storeStatement = $this->SQL->prepare('
             INSERT INTO lojas 
-                (loja_nome, loja_login_email, loja_login_senha)
+                (loja_nome, loja_login_email, loja_login_senha, loja_codigo_validacao)
             VALUES 
-                (:user, :email, :password)
+                (:user, :email, :password, :validationCode)
         ');
 
         $storeStatement->bindParam(':user', $user, PDO::PARAM_STR);
         $storeStatement->bindParam(':email', $email, PDO::PARAM_STR);
         $storeStatement->bindParam(':password', $password, PDO::PARAM_STR);
+        $storeStatement->bindParam(':validationCode', $validationCode, PDO::PARAM_STR);
 
         $storeStatement->execute();
 

@@ -30,6 +30,7 @@
                         </div>
                     </div>
                     <div class="d-flex justify-content-end align-items-center">
+                        <a class="btn btn-kiklit-2 mx-1" href="<?= url('auth/logout')?>">Cancelar</a>
                         <button type="submit" class="btn btn-kiklit-2">Confirmar</button>
                     </div>
                 </form>
