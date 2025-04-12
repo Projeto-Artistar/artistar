@@ -19,6 +19,8 @@ class Core
 
     protected $logado = false;
 
+    protected $user = null;
+
     protected $NoSQL = NULL;
     
     protected $SQL = NULL;
@@ -43,18 +45,70 @@ class Core
         return $this->view->render("fragments/footer");
     }
 
+    public function setUserLogonStatus($user) {
+        $_SESSION['artistar']['logon'] = $user;
+    }
+
+    public function unsetUserLogonStatus() {
+        unset($_SESSION['artistar']['logon']);
+    }
+
     public function verificaLogado(){
-        if(isset($_SESSION['artistar']['logado'])) $this->logado = true;
+        $this->setLogado(false);
+        if(isset($_SESSION['artistar']['logon'])) {
+            $userStatement = $this->SQL->prepare('
+                SELECT
+                    loja_id id,
+                    loja_nome nome,
+                    loja_login_email email,
+                    loja_email_validado email_validado,
+                    loja_envio_validacao envio_validacao
+                FROM
+                    lojas 
+                WHERE
+                    loja_id = :id
+            ');
+            $userStatement->bindParam(':id', $_SESSION['artistar']['logon'], PDO::PARAM_INT);
+            $userStatement->execute();
+            $result = $userStatement->fetch();
+            if($result) {
+                $this->setLogado(true);
+                $this->setUser($result);
+            } else {
+                $this->unsetUserLogonStatus();
+            }
+        }
+    }
+
+    public function setLogado ($logado) {
+        $this->logado = $logado;
     }
 
     public function getLogado () {
         return $this->logado;
     }
 
-    public function validaAcesso(){
+    public function setUser ($user) {
+        $this->user = $user;
+    }
+
+    public function getUser () {
+        return $this->user;
+    }
+
+    public function validaAcesso($redirectToValidation = true) {
         if(!$this->getLogado()){
             header("location: /login");
-        }
+            exit;
+        } 
+        if($redirectToValidation) $this->checkIfEmailIsValidated();
+    }
+
+    public function checkIfEmailIsValidated() {
+        if (!$this->getUser()['email_validado']) {
+            header("location: /register/validate-email");
+            exit;
+        } 
     }
 
     public function getEstados() {

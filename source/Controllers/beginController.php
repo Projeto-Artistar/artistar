@@ -9,6 +9,7 @@ use Source\Model\Begin;
 class beginController extends Core {
 
     public function home() {
+        $this->validaAcesso();
         echo $this->view->render("begin", [
             'title' =>  'Iniciar - Artistar', 
             'header' => $this->header(),

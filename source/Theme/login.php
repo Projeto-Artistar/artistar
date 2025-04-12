@@ -19,7 +19,7 @@
                 <div class="login-form border">
                     <h2 class="text-center">Login</h2>
                     <p class="text-center">Não possui conta? <a href="<?= url("register") ?>" class="link-kitlit-2">Cadastre-se</a></p>
-                    <form id="form-login" method="post" action="<?= url("auth/login") ?>">
+                    <form id="form-login" method="post" action="<?= url("") ?>">
                         <div class="mb-3">
                             <label for="email" class="form-label">E-mail</label>
                             <input type="email" class="form-control input-kiklit-2" id="email" name="email" required>
@@ -42,4 +42,5 @@
 <?= $this->stop() ?>
 
 <?= $this->start("js") ?>
+<script src="<?= url("assets/js/login.js") ?>"></script>
 <?= $this->stop() ?>

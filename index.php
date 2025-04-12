@@ -1,5 +1,7 @@
 <?php
 ini_set('display_errors', 1);
+ini_set('date.timezone', 'America/Sao_Paulo');
+ini_set('default_charset', 'UTF-8');
 
 require __DIR__ . "/vendor/autoload.php";
 
@@ -35,6 +37,7 @@ $router->group('register');
 $router->get("/", "registerController:home", "registerController.home");
 $router->post("/", "registerController:insertStore", "registerController.insertStore");
 $router->get("/validate-email", "registerController:validate", "registerController.validate");
+$router->post("/validate-code", "registerController:validateCode", "registerController.validateCode");
 
 $router->group('password-reset');
 $router->get("/", "resetController:home", "resetController.home");

@@ -24,14 +24,10 @@ class registerController extends Core {
         try { 
             $model = new Register();
             if ($model->verifyIfEmailIsAvaliable($post['email'])) {
-                $validationCode = $this->generateValidationCode(8);
-                $storeId = $model->insertStore($post['user'], $post['email'], $post['password'], $validationCode);
-                if($this->sendValidationEmail($post['email'], $validationCode)) {
-                    $this->setUserLogonStatus($storeId);
-                    exit($this->renderApiResponse(200, 'Store inserted successfully'));
-                } else {
-                    exit($this->renderApiResponse(500, 'Failed to send validation email'));
-                }
+                
+                $storeId = $model->insertStore($post['user'], $post['email'], $post['password']);
+                $this->setUserLogonStatus($storeId);
+                exit($this->renderApiResponse(200, 'Store inserted successfully'));
             } else {
                 exit($this->renderApiResponse(404, 'E-mail already in use'));
             }
@@ -41,11 +37,36 @@ class registerController extends Core {
     }
 
     public function validate() {
+        $this->validaAcesso(false);
+        if ($this->getUser()['email_validado'] == 1) {
+            header("location: /");
+            return;
+        } else {
+            $createdAt = strtotime($this->getUser()['envio_validacao']);
+            $now = strtotime(date("Y-m-d H:i:s"));
+            $diff = ($now - $createdAt) / 3600;
+            if ($diff > 1) {
+                $validationCode = $this->generateValidationCode(8);
+                $model = new Register();
+                $model->updateValidationCode($this->getUser()['id'], $validationCode);
+                $this->sendValidationEmail($this->getUser()['email'], $validationCode);
+            }
+        }
         echo $this->view->render("register/validate-email", [
             'title' =>  'Confirmação de Email - Artistar', 
             'footer' => $this->footer(),
         ]);
         return;
+    }
+
+    public function validateCode($post) {
+        $model = new Register();
+        if ($model->validateCode($this->getUser()['id'], $post['code'])) {
+            $model->updateEmailValidationStatus($this->getUser()['id']);
+            exit($this->renderApiResponse(200, 'Email validated successfully'));
+        } else {
+            exit($this->renderApiResponse(404, 'Invalid code'));
+        }
     }
 
     // Helper functions
@@ -59,10 +80,10 @@ class registerController extends Core {
             $mail->addAddress($email);
             $mail->isHTML(true);
             $mail->Subject = 'Confirmação de Email - Artistar';
-
-            $halfValidationCode = ceil(count($validationCode) / 2);
+                  
+            $halfValidationCode = ceil(strlen($validationCode) / 2);
             $validationCode = substr($validationCode, 0, $halfValidationCode) . '-' . substr($validationCode, $halfValidationCode);
-
+            $mail->FromName = "Artistar";
             $mail->Body = 'Seu código de validação é: ' . $validationCode;
             $mail->AltBody = 'Seu código de validação é: ' . $validationCode;
             $mail->send();
@@ -72,7 +93,5 @@ class registerController extends Core {
         }
     }
 
-    public function setUserLogonStatus($userId) {
-        $_SESSION['artistar']['logon'] = $userId;
-    }
+
 }
