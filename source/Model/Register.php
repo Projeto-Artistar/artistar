@@ -86,7 +86,8 @@ class Register extends Core
                 lojas 
             SET 
                 loja_email_validado = 1,
-                loja_codigo_validacao = NULL
+                loja_codigo_validacao = NULL,
+                loja_envio_validacao = NULL
             WHERE 
                 loja_id = :id
         ');
