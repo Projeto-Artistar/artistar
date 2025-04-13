@@ -6,7 +6,7 @@
 ); ?>
 
 <?= $this->start("css") ?>
-<link rel="stylesheet" href="<?= url("assets/css/register/home.css") ?>">
+<link rel="stylesheet" href="<?= url("assets/css/login.css") ?>">
 <?= $this->stop() ?>
 
 <?= $this->start("conteudo") ?>
@@ -15,7 +15,7 @@
         <div class="col d-flex align-items-center justify-content-center">
             <div class="login-form border">
                 <h2 class="text-center">Nova Senha</h2>
-                <form id="form-new-password" method="post" action="<?= url("auth/update-password") ?>">
+                <form id="form-new-password" method="post" action="<?= url("") ?>">
                     <div class="mb-3">
                         <label for="senha" class="form-label">Nova Senha</label>
                         <input type="password" class="form-control input-kiklit-2" id="senha" name="senha" required>
@@ -35,5 +35,5 @@
 <?= $this->stop() ?>
 
 <?= $this->start("js") ?>
-<script src="<?= url("assets/js/register/home.js") ?>"></script>
+<script src="<?= url("assets/js/new-password.js") ?>"></script>
 <?= $this->stop() ?>

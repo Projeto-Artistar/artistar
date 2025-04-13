@@ -14,22 +14,24 @@
         <div class="col-md-6 d-flex align-items-center justify-content-center">
             <div class="login-form border">
                 <h2 class="text-center">Confirmação de E-mail</h2>
-                <form id="form-confirmacao" method="get" action="<?= url("password-reset/new-password") ?>">
+                <form id="form-confirmation-code" method="get" action="<?= url("auth/new-password") ?>">
                     <div class="mb-3">
                         <label for="codigo" class="form-label">Código de Confirmação</label>
                         <div class="d-flex justify-content-between">
-                            <input type="text" class="form-control text-center m-1 input-validate input-kiklit-2" id="codigo1" name="codigo1" maxlength="1" required style="text-transform: uppercase;">
-                            <input type="text" class="form-control text-center m-1 input-validate input-kiklit-2" id="codigo2" name="codigo2" maxlength="1" required style="text-transform: uppercase;">
-                            <input type="text" class="form-control text-center m-1 input-validate input-kiklit-2" id="codigo3" name="codigo3" maxlength="1" required style="text-transform: uppercase;">
-                            <input type="text" class="form-control text-center m-1 input-validate input-kiklit-2" id="codigo4" name="codigo4" maxlength="1" required style="text-transform: uppercase;">
+                            <input type="text" class="form-control text-center m-1 input-validate input-kiklit-2" id="codigo1" name="code[0]" maxlength="1" required style="text-transform: uppercase;">
+                            <input type="text" class="form-control text-center m-1 input-validate input-kiklit-2" id="codigo2" name="code[1]" maxlength="1" required style="text-transform: uppercase;">
+                            <input type="text" class="form-control text-center m-1 input-validate input-kiklit-2" id="codigo3" name="code[2]" maxlength="1" required style="text-transform: uppercase;">
+                            <input type="text" class="form-control text-center m-1 input-validate input-kiklit-2" id="codigo4" name="code[3]" maxlength="1" required style="text-transform: uppercase;">
                             <span class="mx-2">-</span>
-                            <input type="text" class="form-control text-center m-1 input-validate input-kiklit-2" id="codigo5" name="codigo5" maxlength="1" required style="text-transform: uppercase;">
-                            <input type="text" class="form-control text-center m-1 input-validate input-kiklit-2" id="codigo6" name="codigo6" maxlength="1" required style="text-transform: uppercase;">
-                            <input type="text" class="form-control text-center m-1 input-validate input-kiklit-2" id="codigo7" name="codigo7" maxlength="1" required style="text-transform: uppercase;">
-                            <input type="text" class="form-control text-center m-1 input-validate input-kiklit-2" id="codigo8" name="codigo8" maxlength="1" required style="text-transform: uppercase;">
+                            <input type="text" class="form-control text-center m-1 input-validate input-kiklit-2" id="codigo5" name="code[4]" maxlength="1" required style="text-transform: uppercase;">
+                            <input type="text" class="form-control text-center m-1 input-validate input-kiklit-2" id="codigo6" name="code[5]" maxlength="1" required style="text-transform: uppercase;">
+                            <input type="text" class="form-control text-center m-1 input-validate input-kiklit-2" id="codigo7" name="code[6]" maxlength="1" required style="text-transform: uppercase;">
+                            <input type="text" class="form-control text-center m-1 input-validate input-kiklit-2" id="codigo8" name="code[7]" maxlength="1" required style="text-transform: uppercase;">
+                            <img src="<?= url("assets/images/loader.gif") ?>" id="loader" class="d-none" alt="Loading...">
                         </div>
                     </div>
                     <div class="d-flex justify-content-end align-items-center">
+                        <a class="btn btn-kiklit-2 mx-1" href="<?= url('auth/logout')?>">Cancelar</a>
                         <button type="submit" class="btn btn-kiklit-2">Confirmar</button>
                     </div>
                 </form>
@@ -41,24 +43,6 @@
 <?= $this->stop() ?>
 
 <?= $this->start("js") ?>
-<script src="<?= url("assets/js/login.js") ?>"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const inputs = document.querySelectorAll('input[type="text"]');
-        inputs.forEach((input, index) => {
-            input.addEventListener('input', function() {
-                this.value = this.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
-                if (this.value.length === 1 && index < inputs.length - 1) {
-                    inputs[index + 1].focus();
-                }
-            });
+<script src="<?= url("assets/js/password-reset/code.js") ?>"></script>
 
-            input.addEventListener('keydown', function(event) {
-                if (event.key === 'Backspace' && this.value === '' && index > 0) {
-                    inputs[index - 1].focus();
-                }
-            });
-        });
-    });
-</script>
 <?= $this->stop() ?>

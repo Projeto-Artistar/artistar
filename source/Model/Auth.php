@@ -28,4 +28,20 @@ class Auth extends Core {
         return $result['loja_id'] ?? null;
     }
 
+    public function changePassword($id, $password) {
+        $password = filter_var($password, FILTER_SANITIZE_STRING);
+        $password = md5($password);
+        $updateStatement = $this->SQL->prepare('
+            UPDATE 
+                lojas 
+            SET 
+                loja_login_senha = :password
+            WHERE 
+                loja_id = :id
+        ');
+        $updateStatement->bindParam(':password', $password, PDO::PARAM_STR);
+        $updateStatement->bindParam(':id', $id, PDO::PARAM_INT);
+        return $updateStatement->execute();
+    }
+
 }

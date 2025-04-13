@@ -23,14 +23,10 @@ class registerController extends Core {
     public function insertStore($post) {
         try { 
             $model = new Register();
-            if ($model->verifyIfEmailIsAvaliable($post['email'])) {
-                
-                $storeId = $model->insertStore($post['user'], $post['email'], $post['password']);
-                $this->setUserLogonStatus($storeId);
-                exit($this->renderApiResponse(200, 'Store inserted successfully'));
-            } else {
-                exit($this->renderApiResponse(404, 'E-mail already in use'));
-            }
+            if (!$model->verifyIfEmailIsAvaliable($post['email'])) exit($this->renderApiResponse(404, 'E-mail already in use'));
+            $storeId = $model->insertStore($post['user'], $post['email'], $post['password']);
+            $this->setUserLogonStatus($storeId);
+            exit($this->renderApiResponse(200, 'Store inserted successfully'));
         } catch (Exception $e) {
             exit($this->renderApiResponse(500, $e->getMessage()));
         }
@@ -80,7 +76,7 @@ class registerController extends Core {
             $mail->addAddress($email);
             $mail->isHTML(true);
             $mail->Subject = 'Confirmação de Email - Artistar';
-                  
+
             $halfValidationCode = ceil(strlen($validationCode) / 2);
             $validationCode = substr($validationCode, 0, $halfValidationCode) . '-' . substr($validationCode, $halfValidationCode);
             $mail->FromName = "Artistar";

@@ -24,6 +24,8 @@ $router->get("/", "beginController:home", "beginController.home");
 $router->group('auth');
 $router->post("/login", "authController:login", "authController.login");
 $router->get("/logout", "authController:logout", "authController.logout");
+$router->get("/new-password", "authController:newPassword", "authController.newPassword");
+$router->post("/change-password", "authController:changePassword", "authController.changePassword");
 
 $router->group('results');
 $router->get("/", "searchController:results", "searchController.results");
@@ -41,8 +43,9 @@ $router->post("/validate-code", "registerController:validateCode", "registerCont
 
 $router->group('password-reset');
 $router->get("/", "resetController:home", "resetController.home");
+$router->post("/", "resetController:sendEmail", "resetController.sendEmail");
 $router->get("/code", "resetController:code", "resetController.code");
-$router->get("/new-password", "resetController:newPassword", "resetController.newPassword");
+$router->post("/code", "resetController:validateCode", "resetController.validateCode");
 
 $router->group('legal');
 $router->get("/terms", "legalController:terms", "legalController.terms");

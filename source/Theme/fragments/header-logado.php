@@ -55,8 +55,8 @@
             <li>
                 <a href="#" class="nav-link link-dark d-block link-hover">
                     <div class="d-flex align-items-center">
-                        <i class="fa-solid fa-plus bi me-4" style="width:24px; text-align: center;"></i>
-                        <span>Inscrições</span>
+                        <i class="fa-solid fa-dollar-sign bi me-4" style="width:24px; text-align: center;"></i>
+                        <span>Vendas</span>
                     </div>
                 </a>
             </li>
@@ -71,8 +71,8 @@
             <li>
                 <a href="#" class="nav-link link-dark d-block link-hover">
                     <div class="d-flex align-items-center">
-                        <i class="fa-solid fa-dollar-sign bi me-4" style="width:24px; text-align: center;"></i>
-                        <span>Vendas</span>
+                        <i class="fa-solid fa-plus bi me-4" style="width:24px; text-align: center;"></i>
+                        <span>Inscrições</span>
                     </div>
                 </a>
             </li>
@@ -82,6 +82,23 @@
                     <div class="d-flex align-items-center">
                         <i class="fa-solid fa-ranking-star bi me-4" style="width:24px; text-align: center;"></i>
                         <span>Estatísticas</span>
+                    </div>
+                </a>
+            </li>
+            <li class="border-top my-3"></li>
+            <li>
+                <a href="#" class="nav-link link-dark link-hover">
+                    <div class="d-flex align-items-center">
+                        <i class="fa-solid fa-gear bi me-4" style="width:24px; text-align: center;"></i>
+                        <span>Configurações</span>
+                    </div>
+                </a>
+            </li>
+            <li>
+                <a href="<?= url("auth/new-password")?>" class="nav-link link-dark link-hover">
+                    <div class="d-flex align-items-center">
+                        <i class="fa-solid fa-lock bi me-4" style="width:24px; text-align: center;"></i>
+                        <span>Trocar Senha</span>
                     </div>
                 </a>
             </li>

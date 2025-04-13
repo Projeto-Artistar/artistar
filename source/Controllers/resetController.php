@@ -3,8 +3,11 @@
 namespace Source\Controllers;
 
 use CoffeeCode\Router\Router;
+use Exception;
 use Source\Core\Core;
 use Source\Model\Reset;
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception as PHPMailerException;
 
 class resetController extends Core {
 
@@ -16,7 +19,26 @@ class resetController extends Core {
         return;
     }
 
+    public function sendEmail($post) {
+        try { 
+            $model = new Reset();
+            $userFound = $model->searchEmail($post['email']);
+            if (empty($userFound)) exit($this->renderApiResponse(404, 'E-mail not found'));
+            $validationCode = $this->generateValidationCode(8);
+            $this->setUserPasswordChange($userFound['id']);
+            $model->updateValidationCode($userFound['id'], $validationCode);
+            $this->sendValidationEmail($userFound['email'], $validationCode);
+            exit($this->renderApiResponse(200, 'Code sent successfully'));
+        } catch (Exception $e) {
+            exit($this->renderApiResponse(500, $e->getMessage()));
+        }
+    }
+
     public function code() {
+        if (empty($this->getUserPasswordChange())) {
+            header("location: /password-reset");
+            return;
+        }
         echo $this->view->render("password-reset/code", [
             'title' =>  'Confirmar código - Artistar', 
             'footer' => $this->footer(),
@@ -24,13 +46,57 @@ class resetController extends Core {
         return;
     }
 
-    public function newPassword() {
-        echo $this->view->render("password-reset/new-password", [
-            'title' =>  'Redefinir senha - Artistar', 
-            'header' => $this->header(),
-            'footer' => $this->footer(),
-        ]);
-        return;
+    public function validateCode($post) {
+        try {
+            $model = new Reset();
+            $userId = $this->getUserPasswordChange();
+            if ($model->validateCode($userId, $post['code'])) {
+                $model->updateEmailValidationStatus($userId);
+                $this->unsetUserPasswordChange();
+                $this->setUserLogonStatus($userId);
+                exit($this->renderApiResponse(200, 'Code validated successfully'));
+            } else {
+                exit($this->renderApiResponse(404, 'Invalid code'));
+            }
+        } catch (Exception $e) {
+            exit($this->renderApiResponse(500, $e->getMessage()));
+        }
+    }
+
+    // Helpers
+    public function sendValidationEmail($email, $validationCode) {
+        $mail = new \PHPMailer\PHPMailer\PHPMailer();
+        try {
+            $mail->isSMTP();
+            $mail->Host = 'smtp.gmail.com'; // SMTP server
+            $mail->SMTPAuth = true;
+            //Use credentials
+            $mail->addAddress($email);
+            $mail->isHTML(true);
+            $mail->Subject = 'Confirmação de Email - Artistar';
+
+            $halfValidationCode = ceil(strlen($validationCode) / 2);
+            $validationCode = substr($validationCode, 0, $halfValidationCode) . '-' . substr($validationCode, $halfValidationCode);
+            $mail->FromName = "Artistar";
+            $mail->Body = 'Seu código de validação é: ' . $validationCode;
+            $mail->AltBody = 'Seu código de validação é: ' . $validationCode;
+            $mail->send();
+            return true;
+        } catch (PHPMailerException $e) {
+            return false;
+        }
+    }
+
+    public function unsetUserPasswordChange() {
+        unset($_SESSION['artistar']['password_change']);
+    }
+
+    public function setUserPasswordChange($id) {
+        $_SESSION['artistar']['password_change'] = $id;
+    }
+
+    public function getUserPasswordChange() {
+        return $_SESSION['artistar']['password_change'] ?? null;
     }
 
 }

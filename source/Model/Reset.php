@@ -6,13 +6,15 @@ namespace Source\Model;
 use PDO;
 use Source\Core\Core;
 
-class Register extends Core
+class Reset extends Core
 {
-    public function verifyIfEmailIsAvaliable($email) {
+    public function searchEmail($email) {
         $email = filter_var($email, FILTER_SANITIZE_EMAIL);
         $emailStatement = $this->SQL->prepare('
             SELECT
-                COUNT(*) qtd
+                loja_id id,
+                loja_nome nome,
+                loja_login_email email
             FROM
                 lojas 
             WHERE
@@ -21,29 +23,7 @@ class Register extends Core
         $emailStatement->bindParam(':sentEmail', $email, PDO::PARAM_STR);
         $emailStatement->execute();
         $result = $emailStatement->fetch();
-        return $result['qtd'] == 0;
-    }
-
-    public function insertStore($user, $email, $password) {
-  
-        $email = filter_var($email, FILTER_SANITIZE_EMAIL);
-        $password = md5($password);
-          
-        $storeStatement = $this->SQL->prepare('
-            INSERT INTO lojas 
-                (loja_nome, loja_login_email, loja_login_senha)
-            VALUES 
-                (:user, :email, :password)
-        ');
-
-        $storeStatement->bindParam(':user', $user, PDO::PARAM_STR);
-        $storeStatement->bindParam(':email', $email, PDO::PARAM_STR);
-        $storeStatement->bindParam(':password', $password, PDO::PARAM_STR);
-
-        $storeStatement->execute();
-
-        return $this->SQL->lastInsertId();
-
+        return $result;
     }
 
     public function updateValidationCode($id, $code) {
@@ -52,7 +32,6 @@ class Register extends Core
                 lojas 
             SET 
                 loja_codigo_validacao = :code,
-                loja_email_validado = 0,
                 loja_envio_validacao = NOW()
             WHERE 
                 loja_id = :id
@@ -87,7 +66,6 @@ class Register extends Core
             UPDATE 
                 lojas 
             SET 
-                loja_email_validado = 1,
                 loja_codigo_validacao = NULL,
                 loja_envio_validacao = NULL
             WHERE 

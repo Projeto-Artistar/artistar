@@ -18,7 +18,7 @@
             <div class="col-md-6 d-flex align-items-center justify-content-center order-1 order-md-2">
                 <div class="login-form border">
                     <h2 class="text-center">Esqueci minha senha</h2>
-                    <form id="form-login" method="get" action="<?= url("password-reset/code") ?>">
+                    <form id="form-password-reset" method="get" action="<?= url("password-reset/code") ?>">
                         <div class="mb-3">
                             <label for="email" class="form-label">E-mail</label>
                             <input type="email" class="form-control input-kiklit-2" id="email" name="email" required>
@@ -37,4 +37,5 @@
 <?= $this->stop() ?>
 
 <?= $this->start("js") ?>
+<script src="<?= url("assets/js/password-reset/home.js") ?>"></script>
 <?= $this->stop() ?>
