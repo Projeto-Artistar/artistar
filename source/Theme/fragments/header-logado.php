@@ -14,7 +14,70 @@
             <!-- <form class="col-12 col-md-auto me-md-3 d-none d-md-flex" method="GET" action="<?= url('events') ?>">
                 <input name="search" type="search" class="form-control pesquisa-superior input-kiklit-2" placeholder="Pesquisar..." aria-label="Search" value="<?= $search ?>">
             </form> -->
-
+            <div class="dropdown">
+                <button  style="border:none; background:none;" type="button" class="link-kitlit-2 link-hover" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fa-solid fa-bell" style="width:24px; text-align: center;"></i>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><h6 class="px-2"><i class="fa-solid fa-bell" style="width:24px; text-align: center;"></i>Notificações</h6></li>
+                    <li><div class="dropdown-divider"></div></li>
+                    <div style="max-height: 300px; overflow-y: scroll;">
+                        <li><h6 class="px-2">Importantes</h6></li>
+                        <li>
+                            <a class="dropdown-item d-flex align-items-start" href="#">
+                                <img src="/assets/image/logo.svg" alt="Notification Image" class="rounded-circle me-3" width="40" height="40">
+                                <div>
+                                    <h6 class="mb-1">Novo Pedido Recebido</h6>
+                                    <p class="mb-0 text-muted">Você recebeu um novo pedido de João Silva.</p>
+                                    <small class="text-muted">12/04/2025 14:30</small>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item d-flex align-items-start" href="#">
+                                <img src="/assets/image/logo.svg" alt="Notification Image" class="rounded-circle me-3" width="40" height="40">
+                                <div>
+                                    <h6 class="mb-1">Novo Pedido Recebido</h6>
+                                    <p class="mb-0 text-muted">Você recebeu um novo pedido de João Silva.</p>
+                                    <small class="text-muted">12/04/2025 14:30</small>
+                                </div>
+                            </a>
+                        </li>
+                        <li><div class="dropdown-divider"></div></li>
+                        <li><h6 class="px-2">Outras notificações</h6></li>
+                        <li>
+                            <a class="dropdown-item d-flex align-items-start" href="#">
+                                <img src="/assets/image/logo.svg" alt="Notification Image" class="rounded-circle me-3" width="40" height="40">
+                                <div>
+                                    <h6 class="mb-1">Novo Pedido Recebido</h6>
+                                    <p class="mb-0 text-muted">Você recebeu um novo pedido de João Silva.</p>
+                                    <small class="text-muted">12/04/2025 14:30</small>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item d-flex align-items-start" href="#">
+                                <img src="/assets/image/logo.svg" alt="Notification Image" class="rounded-circle me-3" width="40" height="40">
+                                <div>
+                                    <h6 class="mb-1">Novo Pedido Recebido</h6>
+                                    <p class="mb-0 text-muted">Você recebeu um novo pedido de João Silva.</p>
+                                    <small class="text-muted">12/04/2025 14:30</small>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item d-flex align-items-start" href="#">
+                                <img src="/assets/image/logo.svg" alt="Notification Image" class="rounded-circle me-3" width="40" height="40">
+                                <div>
+                                    <h6 class="mb-1">Novo Pedido Recebido</h6>
+                                    <p class="mb-0 text-muted">Você recebeu um novo pedido de João Silva.</p>
+                                    <small class="text-muted">12/04/2025 14:30</small>
+                                </div>
+                            </a>
+                        </li>
+                    </div>
+                </ul>
+            </div>
             <button data-bs-toggle="offcanvas" style="border:none; background:none;" type="button" href="#offcanvasExample" role="button" aria-controls="offcanvasExample" class="link-kitlit-2 link-hover">
                 <i class="fa-solid fa-bars" style="width:24px; text-align: center;"></i>
             </button>

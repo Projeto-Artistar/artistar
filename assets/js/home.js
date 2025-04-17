@@ -36,7 +36,7 @@ async function modeloEvento(evento) {
 
 $(document).ready(async function() {
     getEventos();
-    $('.card').each(function() {
+    $('.evento > .card').each(function() {
         var $card = $(this);
         var $cardBody = $card.find('.card-body');
         var $cardImgTop = $card.find('.card-img-top');
@@ -47,6 +47,39 @@ $(document).ready(async function() {
 
         $cardBody.on('mouseout', function() {
             $cardImgTop.css('height', '150px'); // Altura inicial
+        });
+    });
+
+    $('#carrossel-lojas').slick({
+        slidesToShow: 3,
+        slidesToScroll: 1,
+        dots: true,
+        arrows: true,
+        // autoplay: true,
+        autoplaySpeed: 2000,
+        prevArrow: '<button type="button" class="slick-prev slick-arrow" >Previous</button>',
+        nextArrow: '<button type="button" class="slick-next slick-arrow">Next</button>',
+        responsive: [
+            {
+              breakpoint: 768,
+              settings: {
+                slidesToShow: 2,
+                slidesToScroll: 1,
+              },
+            },
+            {
+              breakpoint: 576,
+              settings: {
+                slidesToShow: 1,
+                slidesToScroll: 1,
+              },
+            },
+        ],
+    });
+    $('#carrossel-lojas').on('setPosition', function() {
+        $('.slick-slide').each(function() {
+            var $slide = $(this);
+            $slide.css('height', '300px'); // Defina a altura desejada
         });
     });
 });

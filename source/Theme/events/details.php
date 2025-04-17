@@ -1,14 +1,14 @@
 <?= $this->layout("base", [
     'title' => $title, 
-    'header' => $header,
-    'footer' => $footer
-    ]
-); ?>
+    'logado' => $logado,
+    'header' => true,
+    'footer' => true
+]); ?>
 
 <?= $this->start("css") ?>
-<link rel="preload" type="text/css" href="<?= url("assets/vendors/slick-1.8.1/slick/slick.css") ?>" as="style" onload="this.onload=null;this.rel='stylesheet'"/>
-<link rel="preload" type="text/css" href="<?= url("assets/vendors/slick-1.8.1/slick/slick-theme.css") ?>" as="style" onload="this.onload=null;this.rel='stylesheet'"/>
-<link rel="stylesheet" href="<?= url("assets/css/events/details.css") ?>">
+<link type="text/css" href="<?= url("assets/vendors/slick-1.8.1/slick/slick.css") ?>"/>
+<link type="text/css" href="<?= url("assets/vendors/slick-1.8.1/slick/slick-theme.css") ?>"/>
+<link rel="stylesheet" rel="preload" href="<?= url("assets/css/events/details.css") ?>">
 <?= $this->stop() ?>
 
 <?= $this->start("conteudo") ?>

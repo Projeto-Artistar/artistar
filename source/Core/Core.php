@@ -35,16 +35,6 @@ class Core
 
     }
 
-    public function header($search = null) {
-        return $this->view->render("fragments/".($this->getLogado() ? "header-logado" : "header"), [
-            'search' => $search
-        ]);
-    }
-
-    public function footer() {
-        return $this->view->render("fragments/footer");
-    }
-
     public function setUserLogonStatus($user) {
         $_SESSION['artistar']['logon'] = $user;
     }

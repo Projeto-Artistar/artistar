@@ -16,9 +16,7 @@ class homeController extends Core {
     public function home() {
         echo $this->view->render("home", [
             'title' =>  'Artistar', 
-            'header' => $this->header(),
-            'footer' => $this->footer(),
-            'banner' => $this->view->render("fragments/home/".($this->getLogado() ? "banner" : "slide")),
+            'logado' => $this->getLogado(),
         ]);
         return;
     }
@@ -30,7 +28,6 @@ class homeController extends Core {
         }
         echo $this->view->render("login", [
             'title' =>  'Login - Artistar', 
-            'footer' => $this->footer(),
         ]);
         return;
     }

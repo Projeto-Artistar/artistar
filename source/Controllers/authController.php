@@ -26,8 +26,6 @@ class authController extends Core {
         $this->validaAcesso();
         echo $this->view->render("new-password", [
             'title' =>  'Redefinir senha - Artistar', 
-            'header' => $this->header(),
-            'footer' => $this->footer(),
         ]);
         return;
     }

@@ -15,7 +15,6 @@ class registerController extends Core {
     public function home() {
         echo $this->view->render("register/home", [
             'title' =>  'Cadastro - Artistar', 
-            'footer' => $this->footer(),
         ]);
         return;
     }
@@ -49,8 +48,7 @@ class registerController extends Core {
             }
         }
         echo $this->view->render("register/validate-email", [
-            'title' =>  'Confirmação de Email - Artistar', 
-            'footer' => $this->footer(),
+            'title' =>  'Confirmação de Email - Artistar',
         ]);
         return;
     }

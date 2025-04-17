@@ -1,8 +1,8 @@
 <?= $this->layout("base", [
     'title' => $title, 
-    'footer' => $footer
-    ]
-); ?>
+    'header' => false,
+    'footer' => true
+]); ?>
 
 <?= $this->start("css") ?>
 <link rel="stylesheet" href="<?= url("assets/css/login.css") ?>">

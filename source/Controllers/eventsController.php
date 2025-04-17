@@ -26,8 +26,7 @@ class eventsController extends Core {
 
         echo $this->view->render("events/home", [
             'title'         =>  'Eventos - Artistar', 
-            'header'        => $this->header(),
-            'footer'        => $this->footer(),
+            'logado'        => $this->getLogado(),
             'banner'        => $this->view->render("fragments/home/".($this->getLogado() ? "banner" : "slide")),
             'events'        => $dados->getEvents(),
             'estados'       => $this->getEstados(),
@@ -55,9 +54,8 @@ class eventsController extends Core {
         $prices = $dados->getEventPrices(filter_var($data['eventId'], FILTER_SANITIZE_NUMBER_INT));
         $photos = $dados->getEventPhotos(filter_var($data['eventId'], FILTER_SANITIZE_NUMBER_INT));
         echo $this->view->render("events/details", [
-            'title' =>  $event['title'].' - Artistar', 
-            'header' => $this->header(),
-            'footer' => $this->footer(),
+            'title' =>  $event['title'].' - Artistar',
+            'logado'        => $this->getLogado(),
             'event' => $event,
             'days' => $days,
             'prices' => $prices,

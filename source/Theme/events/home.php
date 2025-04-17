@@ -1,9 +1,9 @@
 <?= $this->layout("base", [
     'title' => $title, 
-    'header' => $header,
-    'footer' => $footer
-    ]
-); ?>
+    'logado' => $logado,
+    'header' => true,
+    'footer' => true
+]); ?>
 
 <?= $this->start("css") ?>
 <link rel="stylesheet" href="<?= url("assets/css/events/home.css") ?>">

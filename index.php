@@ -21,6 +21,10 @@ $router->get("/login", "homeController:login", "homeController.login");
 $router->group('begin');
 $router->get("/", "beginController:home", "beginController.home");
 
+
+$router->group('inventory');
+$router->get("/", "inventoryController:home", "inventoryController.home");
+
 $router->group('auth');
 $router->post("/login", "authController:login", "authController.login");
 $router->get("/logout", "authController:logout", "authController.logout");

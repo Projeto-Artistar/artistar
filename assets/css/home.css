@@ -61,6 +61,19 @@
     text-decoration: none;
 }
 
+.evento > .card  {
+    /* transform: scale(1); */
+    transition: box-shadow 0.3s ease-in-out;
+    box-shadow: none;
+}
+
+/* O hover deve funcionar apenas no elemento .evento, isso está certo? */
+
+.evento:hover > .card  {
+    /* transform: scale(1.1); */
+    box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
+}
+
 .evento:hover > .card > .card-img-top {
     height: 0;
 }
@@ -72,18 +85,6 @@
 .evento:hover > .card > .card-body > .descricao-evento {
     -webkit-line-clamp: 8;
 }
-
-.evento > .card  {
-    /* transform: scale(1); */
-    transition: box-shadow 0.3s ease-in-out;
-    box-shadow: none;
-}
-
-.evento:hover > .card  {
-    /* transform: scale(1.1); */
-    box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
-}
-
 
 .section-dark {
     background-color: #eeeeee;
@@ -100,17 +101,6 @@
 .img-parceiro {
     width: 200px;
     max-width: 100%;
-    height: auto;
-    display: block;
-    margin: 0 auto; /* Centraliza a imagem horizontalmente */
-    border-radius: 105px;
-    cursor: pointer;
-    transition: transform 0.3s ease-in-out;
-    transform: scale(1);
-}
-
-.img-parceiro:hover {
-    transform: scale(1.1);
 }
     
 
@@ -132,3 +122,11 @@
     }
 }
 
+.slick-prev:before, .slick-next:before {
+    color: #6D0FF2 !important;
+}
+
+.slick-slide {
+    height: 300px !important;
+    padding: 0 10px;
+ }

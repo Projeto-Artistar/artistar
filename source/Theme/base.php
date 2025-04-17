@@ -26,9 +26,9 @@
         <?= $this->section("css") ?>
     </head>
     <body>
-        <?php if(isset($header)) echo $header; ?>
+        <?php if(isset($header) && $header) require_once('fragments/'.(isset($logado) && $logado ? 'header-logado.php' : 'header.php')); ?>
         <?= $this->section("conteudo") ?>
-        <?php if(isset($footer)) echo $footer; ?>
+        <?php if(isset($footer) && $footer) require_once('fragments/footer.php'); ?>
     </body>
     <script src="<?= url("assets/vendors/bootstrap-5.3.3/js/bootstrap.bundle.min.js") ?>" defer></script>
     <script src="<?= url("assets/js/jquery-3.6.0.js") ?>"></script>
