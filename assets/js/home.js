@@ -55,7 +55,7 @@ $(document).ready(async function() {
         slidesToScroll: 1,
         dots: true,
         arrows: true,
-        // autoplay: true,
+        autoplay: true,
         autoplaySpeed: 2000,
         prevArrow: '<button type="button" class="slick-prev slick-arrow" >Previous</button>',
         nextArrow: '<button type="button" class="slick-next slick-arrow">Next</button>',
@@ -76,10 +76,10 @@ $(document).ready(async function() {
             },
         ],
     });
-    $('#carrossel-lojas').on('setPosition', function() {
-        $('.slick-slide').each(function() {
-            var $slide = $(this);
-            $slide.css('height', '300px'); // Defina a altura desejada
-        });
-    });
+    // $('#carrossel-lojas').on('setPosition', function() {
+    //     $('.slick-slide').each(function() {
+    //         var $slide = $(this);
+    //         $slide.css('height', '300px'); // Defina a altura desejada
+    //     });
+    // });
 });

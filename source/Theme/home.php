@@ -6,9 +6,9 @@
 ]); ?>
 
 <?= $this->start("css") ?>
-<link rel="stylesheet" href="<?= url("assets/css/home.css") ?>">
 <link rel="preload" type="text/css" href="<?= url("assets/vendors/slick-1.8.1/slick/slick.css") ?>" as="style" onload="this.onload=null;this.rel='stylesheet'"/>
 <link rel="preload" type="text/css" href="<?= url("assets/vendors/slick-1.8.1/slick/slick-theme.css") ?>" as="style" onload="this.onload=null;this.rel='stylesheet'"/>
+<link rel="stylesheet" href="<?= url("assets/css/home.css") ?>">
 <?= $this->stop() ?>
 
 <?= $this->start("conteudo") ?>
@@ -74,7 +74,7 @@
         <div class="row" id="eventos"></div>
     </div>
 </section>
-<section class="section-parceiros section-dark p-4 avoid-navbar">
+<section class="section-parceiros section-dark p-4">
     <div class="container">
         <div class="pb-3">
             <span class="h2">Parceiros</span>
@@ -103,17 +103,25 @@
 </section>
 <section class="section-artistas p-4">
     <div class="container">
-        <div class="py-3 d-flex justify-content-between align-items-center">
-            <span class="h2">Artistas e Lojas</span>
+        <div class="pb-3 d-flex justify-content-between align-items-center">
+            <span class="h2">Depoimentos de Artistas e Lojas</span>
             <a href="<?= url('stores')?>" class="link-kitlit-2">Ver mais</a>
         </div>
         <div id="carrossel-lojas">
             <?php for($i=0; $i<=7; $i++):?>
                 <div>
-                    <div class="card text-center">
-                        <img class="card-img-top" src="https://dcdn-us.mitiendanube.com/stores/002/915/628/themes/common/logo-108771010-1740163103-604f805e8e907da15fa73c01e1d92cbb1740163104.png?0" alt="Artista <?= $i + 1 ?>">
+                    <div class="card text-center p-3">
+                        <img class="card-img-top rounded-circle mx-auto mt-3" src="https://dcdn-us.mitiendanube.com/stores/002/915/628/themes/common/logo-108771010-1740163103-604f805e8e907da15fa73c01e1d92cbb1740163104.png?0" alt="Depoimento de Artista <?= $i + 1 ?>">
                         <div class="card-body">
                             <h5 class="card-title">Artista <?= $i + 1 ?></h5>
+                            <span class="card-text">
+                                "Este é um depoimento incrível sobre a plataforma. Adorei a experiência!"
+                                <div class="stars d-flex justify-content-center mt-2">
+                                    <?php for ($star = 1; $star <= 5; $star++): ?>
+                                        <i class="fa fa-star text-warning"></i>
+                                    <?php endfor; ?>
+                                </div>
+                            </span>
                         </div>
                     </div>
                 </div>

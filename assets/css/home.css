@@ -127,6 +127,46 @@
 }
 
 .slick-slide {
-    height: 300px !important;
+    min-height: 300px;
     padding: 0 10px;
+}
+
+@media (max-width: 991px) {
+    .slick-slide {
+        min-height: 345px ;
+    }
+}
+
+@media (max-width: 768px) {
+    .slick-slide {
+        min-height: 350px;
+    }
+}
+
+@media (max-width: 575px) {
+    .slick-slide {
+        min-height: 280px;
+    }
+}
+
+
+ .slick-slide > .card > .card-body, .slick-slide > .card > .card-body > .card-text {
+    height: auto;
  }
+
+ #carrossel-lojas .card {
+    border: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+}
+
+#carrossel-lojas .card-img-top {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border: 2px solid #ddd;
+}
+
+#carrossel-lojas .stars i {
+    margin: 0 2px;
+}
