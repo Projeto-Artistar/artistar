@@ -86,19 +86,17 @@
             <div class="col-lg-8 text-white text-lg-end order-lg-2">
                 <h2 class="h1">Deartcass</h2>
                 <p class="lead">Conheça nossos parceiros e patrocinadores, sem eles nada disso seria possível!</p>
-                <a href="#" class="btn btn-outline-light">Ver mais</a>
+                <a href="https://www.deartcass.com.br" target="_blank" class="btn btn-outline-light">Acessar</a>
             </div>
         </div>
         <div class="row bg-primary rounded-4 align-items-center p-4 mt-4">
-            <!-- Imagem -->
             <div class="col-lg-4 img-parceiros order-1 order-lg-2 text-center text-lg-end">
                 <img class="img-parceiro" src="https://media.glassdoor.com/sqll/2493337/backsite-servi%C3%A7os-online-squarelogo-1555042110500.png" alt="Parceiro 2">
             </div>
-            <!-- Texto -->
             <div class="col-lg-8 text-white order-2 order-lg-1">
                 <h2 class="h1">Backsite</h2>
                 <p class="lead">Conheça nossos parceiros e patrocinadores, sem eles nada disso seria possível!</p>
-                <a href="#" class="btn btn-outline-light">Ver mais</a>
+                <a href="https://www.backsite.com.br" target="_blank" class="btn btn-outline-light">Acessar</a>
             </div>
         </div>
     </div>
@@ -124,7 +122,6 @@
     </div>
 </section>
 <?= $this->stop() ?>
-
 <?= $this->start("js") ?>
 <script src="<?= url("assets/vendors/slick-1.8.1/slick/slick.min.js") ?>" defer></script>
 <script src="<?= url("assets/js/home.js") ?>"></script>
