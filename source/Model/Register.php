@@ -24,6 +24,22 @@ class Register extends Core
         return $result['qtd'] == 0;
     }
 
+    public function verifyIfUsernameIsAvaliable($username) {
+        $username = filter_var($username, FILTER_SANITIZE_STRING);
+        $usernameStatement = $this->SQL->prepare('
+            SELECT
+                COUNT(*) qtd
+            FROM
+                lojas 
+            WHERE
+                loja_nome = :sentUsername
+        ');
+        $usernameStatement->bindParam(':sentUsername', $username, PDO::PARAM_STR);
+        $usernameStatement->execute();
+        $result = $usernameStatement->fetch();
+        return $result['qtd'] == 0;
+    }
+
     public function insertStore($user, $email, $password) {
   
         $email = filter_var($email, FILTER_SANITIZE_EMAIL);

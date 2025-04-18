@@ -39,13 +39,17 @@ class Core
         $_SESSION['artistar']['logon'] = $user;
     }
 
+    public function getUserLogonStatus() {
+        return isset($_SESSION['artistar']['logon']) ? $_SESSION['artistar']['logon'] : null;
+    }
+
     public function unsetUserLogonStatus() {
         unset($_SESSION['artistar']['logon']);
     }
 
     public function verificaLogado(){
         $this->setLogado(false);
-        if(isset($_SESSION['artistar']['logon'])) {
+        if(!empty($this->getUserLogonStatus())) {
             $userStatement = $this->SQL->prepare('
                 SELECT
                     loja_id id,
@@ -58,7 +62,8 @@ class Core
                 WHERE
                     loja_id = :id
             ');
-            $userStatement->bindParam(':id', $_SESSION['artistar']['logon'], PDO::PARAM_INT);
+            $userId = $this->getUserLogonStatus();
+            $userStatement->bindParam(':id', $userId, PDO::PARAM_INT);
             $userStatement->execute();
             $result = $userStatement->fetch();
             if($result) {
@@ -80,6 +85,7 @@ class Core
 
     public function setUser ($user) {
         $this->user = $user;
+        $_SESSION['artistar']['user'] = $user;
     }
 
     public function getUser () {

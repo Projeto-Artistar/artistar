@@ -87,5 +87,11 @@ class registerController extends Core {
         }
     }
 
+    public function checkUsername($post) {
+        $model = new Register();
+        if ($model->verifyIfUsernameIsAvaliable($post['user'])) exit($this->renderApiResponse(404, 'Username already in use'));
+        exit($this->renderApiResponse(200, 'Username available'));
+    }
+
 
 }
