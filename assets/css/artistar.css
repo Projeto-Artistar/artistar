@@ -44,6 +44,18 @@
     border-color: #9C5EF2 !important;
 }
 
+.btn-outline-kiklit-1 {
+    color: #6D0FF2 !important;
+    background-color: transparent !important;
+    border-color: #6D0FF2 !important;
+}
+
+.btn-outline-kiklit-1:hover {
+    color: #fff !important;
+    background-color: #6D0FF2 !important;
+    border-color: #6D0FF2 !important;
+}
+
 .btn-kiklit-2 {
     color: #fff !important;
     background-color: #9C5EF2 !important;
@@ -54,6 +66,18 @@
     color: #fff !important;
     background-color: #C4A2F2 !important;
     border-color: #C4A2F2 !important;
+}
+
+.btn-outline-kiklit-2 {
+    color: #9C5EF2 !important;
+    background-color: transparent !important;
+    border-color: #9C5EF2 !important;
+}
+
+.btn-outline-kiklit-2:hover {
+    color: #fff !important;
+    background-color: #9C5EF2 !important;
+    border-color: #9C5EF2 !important;
 }
 
 .btn-kiklit-3 {
@@ -68,6 +92,18 @@
     border-color: #5005F2 !important;
 }
 
+.btn-outline-kiklit-3 {
+    color: #C4A2F2 !important;
+    background-color: transparent !important;
+    border-color: #C4A2F2 !important;
+}
+
+.btn-outline-kiklit-3:hover {
+    color: #fff !important;
+    background-color: #C4A2F2 !important;
+    border-color: #C4A2F2 !important;
+}
+
 .btn-kiklit-4 {
     color: #fff !important;
     background-color: #5005F2 !important;
@@ -80,7 +116,17 @@
     border-color: #F2F2F2 !important;
 }
 
+.btn-outline-kiklit-4 {
+    color: #5005F2 !important;
+    background-color: transparent !important;
+    border-color: #5005F2 !important;
+}
 
+.btn-outline-kiklit-4:hover {
+    color: #fff !important;
+    background-color: #5005F2 !important;
+    border-color: #5005F2 !important;
+}
 
 .btn-kiklit-5 {
     color: #fff !important;
@@ -92,6 +138,18 @@
     color: #fff !important;
     background-color: #6D0FF2 !important;
     border-color: #6D0FF2 !important;
+}
+
+.btn-outline-kiklit-5 {
+    color: #F2F2F2 !important;
+    background-color: transparent !important;
+    border-color: #F2F2F2 !important;
+}	
+
+.btn-outline-kiklit-5:hover {
+    color: #5005F2 !important;
+    background-color: #F2F2F2 !important;
+    border-color: #F2F2F2 !important;
 }
 
 .link-kitlit-1 {

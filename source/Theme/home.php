@@ -6,8 +6,8 @@
 ]); ?>
 
 <?= $this->start("css") ?>
-<link rel="preload" type="text/css" href="<?= url("assets/vendors/slick-1.8.1/slick/slick.css") ?>" as="style" onload="this.onload=null;this.rel='stylesheet'"/>
-<link rel="preload" type="text/css" href="<?= url("assets/vendors/slick-1.8.1/slick/slick-theme.css") ?>" as="style" onload="this.onload=null;this.rel='stylesheet'"/>
+<link rel="stylesheet" href="<?= url("assets/vendors/slick-1.8.1/slick/slick.css") ?>">
+<link rel="stylesheet" href="<?= url("assets/vendors/slick-1.8.1/slick/slick-theme.css") ?>">
 <link rel="stylesheet" href="<?= url("assets/css/home.css") ?>">
 <?= $this->stop() ?>
 
@@ -63,7 +63,37 @@
     </div>
 </section>
 <?php else: ?>
-
+<section class="section-beneficios avoid-navbar">
+    <div class="container">
+        <div class="row py-5">
+            <div class="col-md-6">
+                <h2 class="h1">Melhore suas vendas com Artistar!</h2>
+                <p class="lead mt-3">Descubra como nossa plataforma pode ajudar você a gerenciar suas vendas, organizar seus produtos e alcançar mais clientes de forma eficiente.</p>
+                <a href="<?= url('register') ?>" class="btn btn-kiklit-2 btn-lg mt-4">Comece Agora</a>
+            </div>
+            <div class="col-md-6 text-center">
+                <img src="https://codescandy.com/geeks-bootstrap-5/assets/images/education/course.png" alt="learning" class="img-fluid">
+            </div>
+        </div>
+        <div class="row text-center mt-5 py-5">
+            <div class="col-md-4 mb-4">
+                <img style="width: 200px;" src="https://dcdn-us.mitiendanube.com/stores/002/915/628/themes/common/logo-108771010-1740163103-604f805e8e907da15fa73c01e1d92cbb1740163104.png?0" alt="Benefício 1" class="img-fluid mb-3">
+                <h5 class="fw-bold">Fácil de Usar</h5>
+                <p class="text-muted">Nossa plataforma é intuitiva e simples de navegar.</p>
+            </div>
+            <div class="col-md-4 mb-4">
+                <img style="width: 200px;" src="https://dcdn-us.mitiendanube.com/stores/002/915/628/themes/common/logo-108771010-1740163103-604f805e8e907da15fa73c01e1d92cbb1740163104.png?0" alt="Benefício 2" class="img-fluid mb-3">
+                <h5 class="fw-bold">Resultados Rápidos</h5>
+                <p class="text-muted">Obtenha insights e resultados em tempo real.</p>
+            </div>
+            <div class="col-md-4 mb-4">
+                <img style="width: 200px;" src="https://dcdn-us.mitiendanube.com/stores/002/915/628/themes/common/logo-108771010-1740163103-604f805e8e907da15fa73c01e1d92cbb1740163104.png?0" alt="Benefício 3" class="img-fluid mb-3">
+                <h5 class="fw-bold">Suporte 24/7</h5>
+                <p class="text-muted">Estamos sempre disponíveis para ajudar você.</p>
+            </div>
+        </div>
+    </div>
+</section>
 <?php endif; ?>
 <section class="section-eventos">
     <div class="container">
@@ -129,6 +159,60 @@
         </div>
     </div>
 </section>
+<?php if (!$logado) :?>
+<section class="section-faq section-dark py-5">
+    <div class="container">
+        <div class="pb-3">
+            <span class="h2">Perguntas Frequentes</span>
+            <p class="lead mt-3">Descubra como nossa plataforma pode ajudar você a gerenciar suas vendas, organizar seus produtos e alcançar mais clientes de forma eficiente.</p>
+        </div>
+        <div class="accordion" id="accordionExample">
+            <div class="accordion-item rounded mb-3">
+                <h2 class="accordion-header" id="headingOne">
+                    <button class="accordion-button rounded bg-klikit-2 text-white" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        Como começar?
+                    </button>
+                </h2>
+                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <strong>This is the first item's accordion body.</strong> It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item rounded mb-3">
+                <h2 class="accordion-header" id="headingTwo">
+                    <button class="accordion-button rounded collapsed bg-klikit-2 text-white" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                        Como isso me beneficia?
+                    </button>
+                </h2>
+                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <strong>This is the second item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item rounded mb-3">
+                <h2 class="accordion-header" id="headingThree">
+                    <button class="accordion-button rounded collapsed bg-klikit-2 text-white" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                        Quais são os custos?
+                    </button>
+                </h2>
+                <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <strong>This is the third item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="section-lastcta bg-klikit-4 text-white d-flex align-items-center justify-content-center">
+    <div class="container text-center">
+        <h2 class="h1">Descubra como nossa plataforma pode ajudar você a gerenciar suas vendas, organizar seus produtos e alcançar mais clientes de forma eficiente.</h2>
+        <a href="<?= url('register') ?>" class="btn btn-outline-kiklit-5 btn-lg mt-4">Comece Agora</a>
+    </div>
+</section>
+<?php endif; ?>
 <?= $this->stop() ?>
 <?= $this->start("js") ?>
 <script src="<?= url("assets/vendors/slick-1.8.1/slick/slick.min.js") ?>" defer></script>

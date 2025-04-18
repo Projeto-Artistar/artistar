@@ -170,3 +170,18 @@
 #carrossel-lojas .stars i {
     margin: 0 2px;
 }
+
+.section-beneficios {
+    position: relative;
+    min-height: 90vh;
+    background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0) 60%, rgba(255, 255, 255, 1) 100%), url('/assets/image/sky.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.section-lastcta {
+    min-height: 80vh;
+    /* fazer o background color ser degrade, do tranparente para a cor atual */
+    /* background-image: linear-gradient(to bottom, #eeeeee 1%, #5005F2); */
+}
