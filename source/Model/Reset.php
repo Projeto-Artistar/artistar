@@ -12,13 +12,13 @@ class Reset extends Core
         $email = filter_var($email, FILTER_SANITIZE_EMAIL);
         $emailStatement = $this->SQL->prepare('
             SELECT
-                loja_id id,
-                loja_nome nome,
-                loja_login_email email
+                usuario_id id,
+                usuario_nome_completo nome,
+                usuario_email email
             FROM
-                lojas 
+                usuarios 
             WHERE
-                loja_login_email = :sentEmail
+                usuario_email = :sentEmail
         ');
         $emailStatement->bindParam(':sentEmail', $email, PDO::PARAM_STR);
         $emailStatement->execute();
@@ -29,12 +29,12 @@ class Reset extends Core
     public function updateValidationCode($id, $code) {
         $updateStatement = $this->SQL->prepare('
             UPDATE 
-                lojas 
+                usuarios 
             SET 
-                loja_codigo_validacao = :code,
-                loja_envio_validacao = NOW()
+                usuario_codigo_validacao = :code,
+                usuario_envio_validacao = NOW()
             WHERE 
-                loja_id = :id
+                usuario_id = :id
         ');
         $updateStatement->bindParam(':code', $code, PDO::PARAM_STR);
         $updateStatement->bindParam(':id', $id, PDO::PARAM_INT);
@@ -46,13 +46,13 @@ class Reset extends Core
             SELECT
                 COUNT(*) qtd
             FROM
-                lojas 
+                usuarios
             WHERE
-                loja_id = :id 
+                usuario_id = :id 
             AND 
-                loja_codigo_validacao = :code
+                usuario_codigo_validacao = :code
             AND
-                loja_envio_validacao > NOW() - INTERVAL 1 HOUR
+                usuario_envio_validacao > NOW() - INTERVAL 1 HOUR
         ');
         $codeStatement->bindParam(':id', $id, PDO::PARAM_INT);
         $codeStatement->bindParam(':code', $code, PDO::PARAM_STR);
@@ -64,12 +64,12 @@ class Reset extends Core
     public function updateEmailValidationStatus($id) {
         $updateStatement = $this->SQL->prepare('
             UPDATE 
-                lojas 
+                usuarios
             SET 
-                loja_codigo_validacao = NULL,
-                loja_envio_validacao = NULL
+                usuario_codigo_validacao = NULL,
+                usuario_envio_validacao = NULL
             WHERE 
-                loja_id = :id
+                usuario_id = :id
         ');
         $updateStatement->bindParam(':id', $id, PDO::PARAM_INT);
         return $updateStatement->execute();

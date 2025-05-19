@@ -16,9 +16,6 @@ $router->namespace("Source\Controllers");
 $router->group(NULL);
 $router->get("/", "homeController:home", "homeController.home");
 $router->get("/login", "homeController:login", "homeController.login");
-$router->get("/{friendly-url}", "homeController:storeProfile", "homeController.storeProfile");
-$router->get("/{userId}/{friendlyUrl}", "homeController:storeProfile", "homeController.storeProfile");
-
 
 $router->group('begin');
 $router->get("/", "beginController:home", "beginController.home");

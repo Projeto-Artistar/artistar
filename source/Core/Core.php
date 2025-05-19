@@ -52,15 +52,16 @@ class Core
         if(!empty($this->getUserLogonStatus())) {
             $userStatement = $this->SQL->prepare('
                 SELECT
-                    loja_id id,
-                    loja_nome nome,
-                    loja_login_email email,
-                    loja_email_validado email_validado,
-                    loja_envio_validacao envio_validacao
+                    usuario_id id,
+                    usuario_nome nome,
+                    usuario_nome_completo nome_completo,
+                    usuario_email email,
+                    usuario_email_validado email_validado,
+                    usuario_envio_validacao envio_validacao
                 FROM
-                    lojas 
+                    usuarios 
                 WHERE
-                    loja_id = :id
+                    usuario_id = :id
             ');
             $userId = $this->getUserLogonStatus();
             $userStatement->bindParam(':id', $userId, PDO::PARAM_INT);

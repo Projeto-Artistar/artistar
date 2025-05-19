@@ -20,14 +20,14 @@
                         <div class="mb-3">
                             <label for="user" class="form-label">Nome de Usuário</label>
                             <input type="text" class="form-control input-kiklit-2" id="user" name="user" required minlength="3">
-                            <small id="userCompleteHelp" class="form-text text-muted">Identificação única, não poderá ser alterado</small>
+                            <small id="userCompleteHelp" class="form-text text-muted">Identificação única.</small>
                             <div class="invalid-feedback">
                                 O nome de usuário deve ter pelo menos 3 caracteres.
                             </div>
                         </div>
                         <div class="mb-3">
-                            <label for="user_complete" class="form-label">Nome Completo</label>
-                            <input type="text" class="form-control input-kiklit-2" id="user_complete" name="user_complete" required>
+                            <label for="complete_user" class="form-label">Nome Completo</label>
+                            <input type="text" class="form-control input-kiklit-2" id="complete_user" name="complete_user" required>
                             <small id="userCompleteHelp" class="form-text text-muted">Nome artístico/da loja</small>
                             <div class="invalid-feedback">
                                 O nome completo é obrigatório.

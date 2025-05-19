@@ -13,6 +13,24 @@ document.addEventListener('DOMContentLoaded', function() {
                 inputs[index - 1].focus();
             }
         });
+
+        input.addEventListener('paste', function(event) {
+            event.preventDefault(); // Impede o comportamento padrão de colar
+            const pasteData = (event.clipboardData || window.clipboardData).getData('text').toUpperCase().replace(/[^A-Z0-9]/g, '');
+            
+            // Distribui os caracteres colados nos inputs
+            pasteData.split('').forEach((char, i) => {
+                if (i < inputs.length) {
+                    inputs[i].value = char;
+                }
+            });
+
+            // Move o foco para o último campo preenchido
+            const lastFilledInput = Array.from(inputs).reverse().find(input => input.value !== '');
+            if (lastFilledInput) {
+                lastFilledInput.focus();
+            }
+        });
     });
 });
 

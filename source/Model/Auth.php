@@ -13,19 +13,19 @@ class Auth extends Core {
         $password = md5($password);
         $userStatement = $this->SQL->prepare('
             SELECT
-                loja_id
+                usuario_id id
             FROM
-                lojas 
+                usuarios
             WHERE
-                loja_login_email = :sentEmail 
+                usuario_email = :sentEmail 
             AND 
-                loja_login_senha = :sentPassword
+                usuario_senha = :sentPassword
         ');
         $userStatement->bindParam(':sentEmail', $email, PDO::PARAM_STR);
         $userStatement->bindParam(':sentPassword', $password, PDO::PARAM_STR);
         $userStatement->execute();
         $result = $userStatement->fetch();
-        return $result['loja_id'] ?? null;
+        return $result['id'] ?? null;
     }
 
     public function changePassword($id, $password) {
@@ -33,11 +33,11 @@ class Auth extends Core {
         $password = md5($password);
         $updateStatement = $this->SQL->prepare('
             UPDATE 
-                lojas 
+                usuarios 
             SET 
-                loja_login_senha = :password
+                usuario_senha = :password
             WHERE 
-                loja_id = :id
+                usuario_id = :id
         ');
         $updateStatement->bindParam(':password', $password, PDO::PARAM_STR);
         $updateStatement->bindParam(':id', $id, PDO::PARAM_INT);

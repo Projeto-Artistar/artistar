@@ -6,53 +6,60 @@ namespace Source\Model;
 use PDO;
 use Source\Core\Core;
 
-class Register extends Core
-{
-    public function verifyIfEmailIsAvaliable($email) {
+class Register extends Core {
+
+    public function verifyIfEmailAndUsernameAreValid($email, $username) {
         $email = filter_var($email, FILTER_SANITIZE_EMAIL);
-        $emailStatement = $this->SQL->prepare('
-            SELECT
-                COUNT(*) qtd
-            FROM
-                lojas 
-            WHERE
-                loja_login_email = :sentEmail
-        ');
-        $emailStatement->bindParam(':sentEmail', $email, PDO::PARAM_STR);
-        $emailStatement->execute();
-        $result = $emailStatement->fetch();
-        return $result['qtd'] == 0;
-    }
-
-    public function verifyIfUsernameIsAvaliable($username) {
         $username = filter_var($username, FILTER_SANITIZE_STRING);
-        $usernameStatement = $this->SQL->prepare('
-            SELECT
-                COUNT(*) qtd
-            FROM
-                lojas 
-            WHERE
-                loja_nome = :sentUsername
+
+        $qtdStatement = $this->SQL->prepare('
+            SELECT 
+                (
+                    SELECT
+                        COUNT(*) qtd
+                    FROM
+                        lojas 
+                    WHERE
+                        loja_nome_unico = :username
+                ) AS qtd_storeUsername,
+                (
+                    SELECT
+                        COUNT(*) qtd
+                    FROM
+                        usuarios 
+                    WHERE
+                        usuario_nome = :username
+                ) AS qtd_userUsername,
+                (
+                    SELECT
+                        COUNT(*) qtd
+                    FROM
+                        usuarios 
+                    WHERE
+                        usuario_email = :useremail
+                ) AS qtd_userEmail     
         ');
-        $usernameStatement->bindParam(':sentUsername', $username, PDO::PARAM_STR);
-        $usernameStatement->execute();
-        $result = $usernameStatement->fetch();
-        return $result['qtd'] == 0;
+
+        $qtdStatement->bindParam(':useremail', $email, PDO::PARAM_STR);
+        $qtdStatement->bindParam(':username', $username, PDO::PARAM_STR);
+        $qtdStatement->execute();
+        return $qtdStatement->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function insertStore($user, $email, $password) {
+    public function insertUser($user, $complete_user, $email, $password) {
   
         $email = filter_var($email, FILTER_SANITIZE_EMAIL);
         $password = md5($password);
           
         $storeStatement = $this->SQL->prepare('
-            INSERT INTO lojas 
-                (loja_nome, loja_login_email, loja_login_senha)
+            INSERT INTO usuarios
+                (usuario_nome, usuario_nome_completo, usuario_senha, usuario_email)
             VALUES 
-                (:user, :email, :password)
+                (:user, :complete_user, :password, :email)
         ');
 
         $storeStatement->bindParam(':user', $user, PDO::PARAM_STR);
+        $storeStatement->bindParam(':complete_user', $complete_user, PDO::PARAM_STR);
         $storeStatement->bindParam(':email', $email, PDO::PARAM_STR);
         $storeStatement->bindParam(':password', $password, PDO::PARAM_STR);
 
@@ -62,16 +69,46 @@ class Register extends Core
 
     }
 
+    public function deleteUser($user_id) {
+        $deleteStatement = $this->SQL->prepare('
+            DELETE FROM 
+                usuarios 
+            WHERE 
+                usuario_id = :id
+        ');
+        $deleteStatement->bindParam(':id', $user_id, PDO::PARAM_INT);
+        return $deleteStatement->execute();
+    }
+
+    public function insertStore($user, $complete_user, $user_id) {
+          
+        $storeStatement = $this->SQL->prepare('
+            INSERT INTO lojas 
+                (loja_nome, loja_nome_unico, loja_proprietario)
+            VALUES 
+                (:user, :complete_user, :id_user)
+        ');
+
+        $storeStatement->bindParam(':user', $user, PDO::PARAM_STR);
+        $storeStatement->bindParam(':complete_user', $complete_user, PDO::PARAM_STR);
+        $storeStatement->bindParam(':id_user', $user_id, PDO::PARAM_INT);
+        
+        $storeStatement->execute();
+
+        return $this->SQL->lastInsertId();
+
+    }
+
     public function updateValidationCode($id, $code) {
         $updateStatement = $this->SQL->prepare('
             UPDATE 
-                lojas 
+                usuarios
             SET 
-                loja_codigo_validacao = :code,
-                loja_email_validado = 0,
-                loja_envio_validacao = NOW()
+                usuario_codigo_validacao = :code,
+                usuario_email_validado = 0,
+                usuario_envio_validacao = NOW()
             WHERE 
-                loja_id = :id
+                usuario_id = :id
         ');
         $updateStatement->bindParam(':code', $code, PDO::PARAM_STR);
         $updateStatement->bindParam(':id', $id, PDO::PARAM_INT);
@@ -83,13 +120,13 @@ class Register extends Core
             SELECT
                 COUNT(*) qtd
             FROM
-                lojas 
+                usuarios 
             WHERE
-                loja_id = :id 
+                usuario_id = :id 
             AND 
-                loja_codigo_validacao = :code
+                usuario_codigo_validacao = :code
             AND
-                loja_envio_validacao > NOW() - INTERVAL 1 HOUR
+                usuario_envio_validacao > NOW() - INTERVAL 1 HOUR
         ');
         $codeStatement->bindParam(':id', $id, PDO::PARAM_INT);
         $codeStatement->bindParam(':code', $code, PDO::PARAM_STR);
@@ -101,13 +138,13 @@ class Register extends Core
     public function updateEmailValidationStatus($id) {
         $updateStatement = $this->SQL->prepare('
             UPDATE 
-                lojas 
+                usuarios
             SET 
-                loja_email_validado = 1,
-                loja_codigo_validacao = NULL,
-                loja_envio_validacao = NULL
+                usuario_email_validado = 1,
+                usuario_codigo_validacao = NULL,
+                usuario_envio_validacao = NULL
             WHERE 
-                loja_id = :id
+                usuario_id = :id
         ');
         $updateStatement->bindParam(':id', $id, PDO::PARAM_INT);
         return $updateStatement->execute();

@@ -22,9 +22,45 @@ class registerController extends Core {
     public function insertStore($post) {
         try { 
             $model = new Register();
-            if (!$model->verifyIfEmailIsAvaliable($post['email'])) exit($this->renderApiResponse(404, 'E-mail already in use'));
-            $storeId = $model->insertStore($post['user'], $post['email'], $post['password']);
-            $this->setUserLogonStatus($storeId);
+            $qtd = $model->verifyIfEmailAndUsernameAreValid($post['email'], $post['user']);
+            $errors = [];
+            if ($qtd['qtd_storeUsername'] > 0) $errors[] = [
+                'field' => 'username', 
+                'message' => 'Username already in use by a store'
+            ];
+
+            if ($qtd['qtd_userUsername'] > 0) $errors[] = [
+                'field' => 'username', 
+                'message' => 'Username already in use by a user'
+            ];
+
+            if ($qtd['qtd_userEmail'] > 0) $errors[] = [
+                'field' => 'email', 
+                'message' => 'E-mail already in use by a user'
+            ];
+
+            if (strlen($post['user']) < 3) $errors[] = [
+                'field' => 'username', 
+                'message' => 'Username must be at least 3 characters long'
+            ];
+
+            if (!filter_var($post['email'], FILTER_VALIDATE_EMAIL)) $errors[] = [
+                'field' => 'email', 
+                'message' => 'Invalid email format'
+            ];
+
+            if (!empty($errors)) exit($this->renderApiResponse(403, 'Validation failed', $errors));
+
+            $userId = $model->insertUser($post['user'], $post['complete_user'], $post['email'], $post['password']);
+            if (!$userId) exit($this->renderApiResponse(500, 'Failed to insert user'));
+            $storeId = $model->insertStore($post['user'], $post['complete_user'], $userId);
+            if (!$storeId) {
+                $model->deleteUser($userId);
+                exit($this->renderApiResponse(500, 'Failed to insert store'));
+            }
+            
+            $this->setUserLogonStatus($userId);
+
             exit($this->renderApiResponse(200, 'Store inserted successfully'));
         } catch (Exception $e) {
             exit($this->renderApiResponse(500, $e->getMessage()));
@@ -43,8 +79,8 @@ class registerController extends Core {
             if ($diff > 1) {
                 $validationCode = $this->generateValidationCode(8);
                 $model = new Register();
-                $model->updateValidationCode($this->getUser()['id'], $validationCode);
-                $this->sendValidationEmail($this->getUser()['email'], $validationCode);
+                if ($this->sendValidationEmail($this->getUser()['email'], $validationCode))
+                    $model->updateValidationCode($this->getUser()['id'], $validationCode);
             }
         }
         echo $this->view->render("register/validate-email", [
@@ -70,11 +106,12 @@ class registerController extends Core {
             $mail->isSMTP();
             $mail->Host = 'smtp.gmail.com'; // SMTP server
             $mail->SMTPAuth = true;
-            //Use credentials
-            $mail->addAddress($email);
             $mail->isHTML(true);
             $mail->Subject = 'Confirmação de Email - Artistar';
+            //Use credentials
 
+            //End of credentials
+            $mail->addAddress($email);
             $halfValidationCode = ceil(strlen($validationCode) / 2);
             $validationCode = substr($validationCode, 0, $halfValidationCode) . '-' . substr($validationCode, $halfValidationCode);
             $mail->FromName = "Artistar";
@@ -86,12 +123,5 @@ class registerController extends Core {
             return false;
         }
     }
-
-    public function checkUsername($post) {
-        $model = new Register();
-        if ($model->verifyIfUsernameIsAvaliable($post['user'])) exit($this->renderApiResponse(404, 'Username already in use'));
-        exit($this->renderApiResponse(200, 'Username available'));
-    }
-
 
 }
