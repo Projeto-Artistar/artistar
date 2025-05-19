@@ -59,9 +59,9 @@
                             <i class="fas fa-search"></i> <!-- Ícone de lupa -->
                         </button>
                     </div>
-                    <button class="btn btn-outline-kiklit-2 btn-md" id="filter-button" data-bs-toggle="modal" data-bs-target="#filterModal">
+                    <a class="btn btn-outline-kiklit-2 btn-md" id="filter-button" data-bs-toggle="modal" data-bs-target="#filterModal">
                         Filtros
-                    </button>
+                    </a>
                 </form>
             </div>
         </div>
@@ -78,6 +78,14 @@
                         <option value="name_desc">Nome (Z-A)</option>
                         <option value="price_asc">Preço (Menor para Maior)</option>
                         <option value="price_desc">Preço (Maior para Menor)</option>
+                        <option value="discount_asc">Desconto (Menor para Maior)</option>
+                        <option value="discount_desc">Desconto (Maior para Menor)</option>
+                        <option value="date_asc">Data (Mais Antigo)</option>
+                        <option value="date_desc">Data (Mais Recente)</option>
+                        <option value="stock_asc">Estoque (Menor para Maior)</option>
+                        <option value="stock_desc">Estoque (Maior para Menor)</option>
+                        <option value="status_asc">Status (Ativo para Inativo)</option>
+                        <option value="status_desc">Status (Inativo para Ativo)</option>
                     </select>
                 </div>
             </div>
