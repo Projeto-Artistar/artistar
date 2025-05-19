@@ -124,7 +124,7 @@
                 </a>
             </li>
             <li>
-                <a href="#" class="nav-link link-dark d-block link-hover">
+                <a href="<?= url('stock')?>" class="nav-link link-dark d-block link-hover">
                     <div class="d-flex align-items-center">
                         <i class="fa-solid fa-list bi me-4" style="width:24px; text-align: center;"></i>
                         <span>Inventário</span>
@@ -171,7 +171,7 @@
             <div href="#" class="d-flex justify-content-between align-items-center">
                 <div class="d-flex align-items-center px-2">
                     <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-4">
-                    <span><strong><?= $_SESSION['artistar']['user']['nome'] ?></strong></span>
+                    <span><strong><?= $_SESSION['artistar']['user']['nome_completo'] ?></strong></span>
                 </div>
             </div>
             <button style="border:none; background:none;" onclick="window.location.href='/auth/logout';" class="link-hover"><i class="fa-solid fa-right-from-bracket px-2"></i></button>

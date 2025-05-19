@@ -16,7 +16,7 @@
                 <h2 class="text-center">Confirmação de E-mail</h2>
                 <form id="form-confirmacao" method="post" action="<?= url("") ?>">
                     <div class="mb-3">
-                        <label for="codigo" class="form-label">Código de Confirmação</label>
+                        <label for="codigo" class="form-label">Insira o código de confirmação enviado para o seu e-mail</label>
                         <div class="d-flex justify-content-between">
                             <input type="text" class="form-control text-center m-1 input-validate input-kiklit-2" id="codigo1" name="code[0]" maxlength="1" required style="text-transform: uppercase;">
                             <input type="text" class="form-control text-center m-1 input-validate input-kiklit-2" id="codigo2" name="code[1]" maxlength="1" required style="text-transform: uppercase;">

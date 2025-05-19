@@ -13,7 +13,7 @@
 
 <?= $this->start("conteudo") ?>
 <?php if($logado) : ?>
-    <section class="section-slide avoid-navbar">
+<section class="section-slide avoid-navbar">
     <div class="col-12">
         <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-indicators">
