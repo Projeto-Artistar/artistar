@@ -7,7 +7,7 @@
 
             <ul class="nav col-12 me-md-auto mb-2 justify-content-center mb-md-0 d-none d-md-flex">
                 <li><a href="/begin" class="nav-link px-2 link-kitlit-1 link-hover">Iniciar</a></li>
-                <li><a href="#" class="nav-link px-2 link-kitlit-1 link-hover">Mostruário</a></li>
+                <li><a href="/stock" class="nav-link px-2 link-kitlit-1 link-hover">Inventário</a></li>
             </ul>
         </div>
         <div id="barra-direita" class="d-flex">

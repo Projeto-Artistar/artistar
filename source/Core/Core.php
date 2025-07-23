@@ -26,10 +26,12 @@ class Core
     protected $SQL = NULL;
 
     public function __construct($router = ROOT){
+        global $db;
         $this->router=$router;
         $this->view = new Engine(dirname(__DIR__,1)."/Theme");
         $this->nucleo = $this->view;
-        $this->SQL = new PDO('mysql:host=localhost;dbname=artistar', 'root', '');
+        
+        $this->SQL = $db;
         $this->verificaLogado();
         $this->view->addData(["router"=> $this->router]);
 
@@ -52,16 +54,19 @@ class Core
         if(!empty($this->getUserLogonStatus())) {
             $userStatement = $this->SQL->prepare('
                 SELECT
-                    usuario_id id,
-                    usuario_nome nome,
-                    usuario_nome_completo nome_completo,
-                    usuario_email email,
-                    usuario_email_validado email_validado,
-                    usuario_envio_validacao envio_validacao
+                    usu.usuario_id id,
+                    usu.usuario_nome nome,
+                    usu.usuario_nome_completo nome_completo,
+                    usu.usuario_email email,
+                    usu.usuario_email_validado email_validado,
+                    usu.usuario_envio_validacao envio_validacao,
+                    loj.loja_id loja_id
                 FROM
-                    usuarios 
+                    usuarios usu
+                LEFT JOIN
+                    lojas loj ON usu.usuario_id = loj.loja_proprietario
                 WHERE
-                    usuario_id = :id
+                    usu.usuario_id = :id
             ');
             $userId = $this->getUserLogonStatus();
             $userStatement->bindParam(':id', $userId, PDO::PARAM_INT);
@@ -154,4 +159,19 @@ class Core
         ]);
     }
 
+    public function moveFile($source, $destination) {
+        if (!file_exists($source)) {
+            return false;
+        }
+        $root = dirname(__DIR__, 2) . "/datafiles/";
+        $fullDestination = $root . $destination;
+        if (!file_exists(dirname($fullDestination))) {
+            mkdir(dirname($fullDestination), 0777, true);
+        }
+        if (move_uploaded_file($source, $fullDestination)) {
+            return "/datafiles/" . $destination;
+        } else {
+            return false;
+        }
+    }
 }

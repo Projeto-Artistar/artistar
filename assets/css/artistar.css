@@ -451,3 +451,52 @@
     }
 
 }
+
+.color-nocturne-purple {color: #572C5F;}
+.color-stellar-blue {color: #8B84D7}
+.color-snow-white {color: #FFFFFF;}
+.color-lavanda {color: #BF9BDE}
+.color-cotton-candy {color: #FCAEBB}
+.color-sunshine-yellow {color: #F8E08E;}
+.color-gray {color: #777777;}
+.color-graphite-gray {color: #4B4B4B;}
+.color-cloud-gray {color: #AFAFAF;}
+.color-fog-gray {color: #E5E5E5;}
+.color-polar-gray {color: #F7F7F7;}
+
+
+.bg-nocturne-purple {background-color: #572C5F;}
+.bg-stellar-blue {background-color: #8B84D7}
+.bg-snow-white {background-color: #FFFFFF;}
+.bg-lavanda {background-color: #BF9BDE}
+.bg-cotton-candy {background-color: #FCAEBB;}
+.bg-sunshine-yellow {background-color: #F8E08E;}
+.bg-gray {background-color: #777777;}
+.bg-graphite-gray {background-color: #4B4B4B;}
+.bg-cloud-gray {background-color: #AFAFAF;}
+.bg-fog-gray {background-color: #E5E5E5;}
+.bg-polar-gray {background-color: #F7F7F7;}
+
+
+.link-nocturne-purple {color: #572C5F;text-decoration: none;}
+.link-nocturne-purple:hover {color: #954DA2;text-decoration: underline;}
+.link-stellar-blue {color: #8B84D7;text-decoration: none;}
+.link-stellar-blue:hover {color: #A099EE;text-decoration: underline}
+/* .link-snow-white {color: #FCAEBB;text-decoration: none;} */
+.link-cotton-candy {color: #FCAEBB;text-decoration: none;}
+.link-cotton-candy:hover {color: #FDB8C3;text-decoration: underline;}
+.link-lavanda {color: #BF9BDE;text-decoration: none;}
+.link-lavanda:hover {color: #D0ACF0;text-decoration: underline;}
+.link-sunshine-yellow {color: #F8E08E;text-decoration: none;}
+.link-sunshine-yellow:hover {color: #FFEAA4;text-decoration: underline;}
+.link-gray {color: #777777;text-decoration: none;}
+.link-gray:hover {color: #AFAFAF;text-decoration: underline;}
+.link-graphite-gray {color: #4B4B4B;text-decoration: none;}
+.link-graphite-gray:hover {color: #777777;text-decoration: underline;}
+.link-cloud-gray {color: #AFAFAF;text-decoration: none;}
+.link-cloud-gray:hover {color: #E5E5E5;text-decoration: underline;}
+.link-fog-gray {color: #E5E5E5;text-decoration: none;}
+.link-fog-gray:hover {color: #AFAFAF;text-decoration: underline;}
+.link-polar-gray {color: #F7F7F7;text-decoration: none;}
+.link-polar-gray:hover {color: #E5E5E5;text-decoration: underline;}
+

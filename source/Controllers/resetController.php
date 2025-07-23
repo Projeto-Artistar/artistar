@@ -69,6 +69,12 @@ class resetController extends Core {
             $mail->Host = 'smtp.gmail.com'; // SMTP server
             $mail->SMTPAuth = true;
             //Use credentials
+            $mail->Username = "leo.caselato@gmail.com";
+            $mail->Password = "lees awqi ahom efgz";
+            $mail->SMTPSecure = 'tls';
+            $mail->Port = 587;
+            $mail->setFrom("leo.caselato@gmail.com");
+            
             $mail->addAddress($email);
             $mail->isHTML(true);
             $mail->Subject = 'Confirmação de Email - Artistar';

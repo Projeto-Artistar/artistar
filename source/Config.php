@@ -6,11 +6,6 @@ define("PROJETO", "artistar");
 define("ROOT", 'http://'.$_SERVER['HTTP_HOST']."/".PROJETO);
 define("KEY", "Art1st4r-C4t-S0u1");
 
-
-//home
-$active = PROJETO == str_replace('/' ,'', $_SERVER['REQUEST_URI']) ? "ative" : "";
-define("ACTIVE", $active);
-
 $host = $_SERVER['HTTP_HOST'];
 // $raizSetup = dirname( __FILE__, 2)."/setup";
 
@@ -36,23 +31,23 @@ $host = $_SERVER['HTTP_HOST'];
 // $port = $setup['db']['port'];
 
 // define("BUCKET_URL", $bucket['url']);
-define('DETALHES', '#CEA506');
-define('FUNDOICONE', '#E6ECF0');
-define('PRINCIPAL', '#071641');
-define('FUNDONAVHOVER', '#010242');
 
-// try{
-    
-//     $db = new PDO("mysql:host=$host;dbname=$db;port=$port;charset=utf8;", $user, $password, array(
-//         PDO::MYSQL_ATTR_FOUND_ROWS => true, 
-//         PDO::ATTR_TIMEOUT => 60, 
-//         PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'
-//     ));
-//     $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+$host = 'localhost';
+$db = 'artistar';
+$user = 'root';
+$password = '';
+$port = 3306;
 
-// }catch(PDOException $e){
-//     die($e->getMessage());
-// }
+try{
+    $db = new PDO("mysql:host=$host;dbname=$db;port=$port;charset=utf8;", $user, $password, array(
+        PDO::MYSQL_ATTR_FOUND_ROWS => true, 
+        PDO::ATTR_TIMEOUT => 60, 
+        PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'
+    ));
+    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+}catch(PDOException $e){
+    die($e->getMessage());
+}
 
 
 function url($path)

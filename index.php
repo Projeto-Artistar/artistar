@@ -23,6 +23,7 @@ $router->get("/", "beginController:home", "beginController.home");
 
 $router->group('stock');
 $router->get("/", "stockController:home", "stockController.home");
+$router->post("/newProduct", "stockController:newProduct", "stockController.newProduct");
 
 $router->group('auth');
 $router->post("/login", "authController:login", "authController.login");
