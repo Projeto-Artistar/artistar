@@ -134,7 +134,7 @@
         </div>
         <div class="card-body d-flex flex-column">
             <h5 class="card-title d-flex justify-content-between align-items-center">
-                <a href="/" class="link-stellar-blue nome-produto"><?= $product['nome'] ?></a>
+                <a href="<?=url('stock/product/'.$product['id'])?>" class="link-stellar-blue nome-produto"><?= $product['nome'] ?></a>
                 <?= $product['ativo'] ? '<span class="badge bg-success">Ativo</span>' : '<span class="badge bg-secondary">Inativo</span>' ?>
             </h5> 
             <p class="card-text mt-auto">
