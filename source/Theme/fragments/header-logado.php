@@ -95,11 +95,11 @@
     </div>
         <div class="offcanvas-body d-flex flex-column justify-content-between">
         <ul class="nav nav-pills flex-column mb-auto">
-            <li class="d-md-none">
+            <!-- <li class="d-md-none">
                 <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
                     <input type="search" class="form-control" placeholder="Pesquisar..." aria-label="Search">
                 </form>
-            </li>
+            </li> -->
             <li class="d-md-none">
                 <a href="#" class="nav-link color-klikit-1">
                     <div class="d-flex align-items-center">
@@ -108,9 +108,9 @@
                 </a>
             </li>
             <li class="d-md-none">
-                <a href="#" class="nav-link color-klikit-1">
+                <a href="<?= url('stock')?>" class="nav-link color-klikit-1">
                     <div class="d-flex align-items-center">
-                        <span>Mostruário</span>
+                        <span>Inventário</span>
                     </div>
                 </a>
             </li>
@@ -124,10 +124,10 @@
                 </a>
             </li>
             <li>
-                <a href="<?= url('stock')?>" class="nav-link link-dark d-block link-hover">
+               <a href="#" class="nav-link link-dark link-hover">
                     <div class="d-flex align-items-center">
-                        <i class="fa-solid fa-list bi me-4" style="width:24px; text-align: center;"></i>
-                        <span>Inventário</span>
+                        <i class="fa-solid fa-ranking-star bi me-4" style="width:24px; text-align: center;"></i>
+                        <span>Estatísticas</span>
                     </div>
                 </a>
             </li>
@@ -139,15 +139,34 @@
                     </div>
                 </a>
             </li>
+
             <li class="border-top my-3"></li>
             <li>
                 <a href="#" class="nav-link link-dark link-hover">
                     <div class="d-flex align-items-center">
                         <i class="fa-solid fa-ranking-star bi me-4" style="width:24px; text-align: center;"></i>
-                        <span>Estatísticas</span>
+                        <span>Minha Loja</span>
                     </div>
                 </a>
             </li>
+            <li>
+                <a href="#" class="nav-link link-dark link-hover">
+                    <div class="d-flex align-items-center">
+                        <i class="fa-solid fa-ranking-star bi me-4" style="width:24px; text-align: center;"></i>
+                        <span>Meus Ajudantes</span>
+                    </div>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="nav-link link-dark link-hover">
+                    <div class="d-flex align-items-center">
+                        <i class="fa-solid fa-ranking-star bi me-4" style="width:24px; text-align: center;"></i>
+                        <span>Lojas que eu Ajudo</span>
+                    </div>
+                </a>
+            </li>
+            
+
             <li class="border-top my-3"></li>
             <li>
                 <a href="#" class="nav-link link-dark link-hover">

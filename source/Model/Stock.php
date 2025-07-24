@@ -8,7 +8,53 @@ use Source\Core\Core;
 
 class Stock extends Core {
 
-    public function getStocks($store) {
+    public function buildWhereStock($search = [], $filter = []) {
+        $where = [];
+        if (!empty($search)) {
+            $where[] = "(produto_nome LIKE '%{$search}%' OR produto_palavras_chave LIKE '%{$search}%')";
+        }
+        if (!empty($filter['status'])) {
+            if ($filter['status'] == 'active') {
+                $where[] = "produto_ativo = '1'";
+            } elseif ($filter['status'] == 'inactive') {
+                $where[] = "produto_ativo = '0'";
+            }
+        }
+        if (!empty($filter['category'])) {
+            $categories = array_map('intval', $filter['category']);
+            if (!empty($categories)) {
+                $placeholders = implode(',', $categories);
+                $where[] = "produto_id IN (SELECT categoria_produto_produto FROM categoria_produtos WHERE categoria_produto_categoria IN ({$placeholders}))";
+            }
+        }
+        if (!empty($filter['price'])) {
+            $price = (float)$filter['price'];
+            $where[] = "produto_valor = {$price}";
+        }
+        if (!empty($filter['cost'])) {
+            $cost = (float)$filter['cost'];
+            $where[] = "produto_custo = {$cost}";
+        }
+        if (!empty($filter['discount'])) {
+            $discount = (float)$filter['discount'];
+            $where[] = "produto_valor_desconto = {$discount}";
+        }
+        if (!empty($filter['real_price'])) {
+            $realPrice = (float)$filter['real_price'];
+            $where[] = "(produto_valor - produto_valor_desconto) = {$realPrice}";
+        }
+        if (!empty($filter['stock'])) {
+            $stock = (int)$filter['stock'];
+            $where[] = "produto_estoque = {$stock}";
+        }
+        if (!empty($filter['min_stock'])) {
+            $minStock = (int)$filter['min_stock'];
+            $where[] = "produto_estoque_minimo = {$minStock}";
+        }
+        return !empty($where) ? 'AND ' . implode(' AND ', $where) : '';
+    }
+
+    public function getStocks($store, $where = '') {
         $stmt = $this->SQL->prepare("
             SELECT 
                 COUNT(IF(produto_estoque >= produto_estoque_minimo AND produto_estoque > 0 AND produto_ativo = 1, 1, NULL)) AS goodStock,
@@ -20,6 +66,7 @@ class Stock extends Core {
                 produtos
             WHERE
                 produto_loja = :store
+            {$where}
         ");
         $stmt->bindValue(":store", $store);
         $stmt->execute();
@@ -55,8 +102,79 @@ class Stock extends Core {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function getProducts($store, $pagination = [], $search = []) {
-        $stmt = $this->SQL->prepare("
+    
+    public function getOrderList($sort) {
+        $orderList = [
+            'name_asc' => [
+                'label' => 'Nome (A-Z)',
+                'value' => 'produto_nome ASC'
+            ],
+            'name_desc' => [
+                'label' => 'Nome (Z-A)',
+                'value' => 'produto_nome DESC'
+            ],
+            'price_asc' => [
+                'label' => 'Preço (Menor para Maior)',
+                'value' => 'produto_valor ASC'
+            ],
+            'price_desc' => [
+                'label' => 'Preço (Maior para Menor)',
+                'value' => 'produto_valor DESC'
+            ],
+            'discount_asc' => [
+                'label' => 'Desconto (Menor para Maior)',
+                'value' => 'produto_valor_desconto ASC'
+            ],
+            'discount_desc' => [
+                'label' => 'Desconto (Maior para Menor)',
+                'value' => 'produto_valor_desconto DESC'
+            ],
+            'final_price_asc' => [
+                'label' => 'Preço Atual (Menor para Maior)',
+                'value' => '(produto_valor - produto_valor_desconto) ASC'
+            ],
+            'final_price_desc' => [
+                'label' => 'Preço Atual (Maior para Menor)',
+                'value' => '(produto_valor - produto_valor_desconto) DESC'
+            ],
+            'date_asc' => [
+                'label' => 'Data da Última Venda (Mais Antigo)',
+                'value' => 'produto_data_cadastro ASC'
+            ],
+            'date_desc' => [
+                'label' => 'Data da Última Venda (Mais Recente)',
+                'value' => 'produto_data_cadastro DESC'
+            ],
+            'stock_asc' => [
+                'label' => 'Estoque (Menor para Maior)',
+                'value' => 'produto_estoque ASC'
+            ],
+            'stock_desc' => [
+                'label' => 'Estoque (Maior para Menor)',
+                'value' => 'produto_estoque DESC'
+                ]
+            ];
+            
+            foreach($orderList as $key => $value) {
+                if ($key === $sort) {
+                    $orderList[$key]['selected'] = true;
+                } else {
+                    $orderList[$key]['selected'] = false;
+                }
+            }
+            return $orderList;
+        }
+        
+        public function buildOrderBy($orderList, $order = 'name_asc') {
+            $orderBy = 'produto_nome ASC'; // Default order
+            if (isset($orderList[$order])) {
+                $orderBy = $orderList[$order]['value'];
+            }
+            return $orderBy;
+        }
+
+        public function getProducts($store, $pagination = [], $where = '', $order = '') {
+            $stmt = $this->SQL->prepare("
             SELECT 
                 produto_id id,
                 produto_nome nome,
@@ -71,8 +189,9 @@ class Stock extends Core {
                 produtos 
             WHERE 
                 produto_loja = :store
-           ORDER BY
-                nome ASC
+            {$where}
+            ORDER BY
+                {$order}
             LIMIT :offset, :limit
         ");
         $stmt->bindValue(":store", $store);
@@ -85,6 +204,7 @@ class Stock extends Core {
     public function insertProduct($data) {
         $stmt = $this->SQL->prepare("
             INSERT INTO produtos (
+                produto_data_cadastro,
                 produto_nome, 
                 produto_descricao, 
                 produto_valor, 
@@ -96,6 +216,7 @@ class Stock extends Core {
                 produto_ativo, 
                 produto_palavras_chave
             ) VALUES ( 
+                NOW(),
                 :produto_nome, 
                 :produto_descricao, 
                 :produto_valor, 

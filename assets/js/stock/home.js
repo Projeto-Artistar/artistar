@@ -66,6 +66,17 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         });
 
+        $('#filter-category').select2({
+            placeholder: "Selecione uma ou mais categorias",
+            allowClear: true,
+            dropdownParent: $('#filterModal'),
+            language: {
+                noResults: function() {
+                    return "Nenhuma categoria encontrada";
+                }
+            }
+        });
+
         $('#newModal').on('shown.bs.modal', function () {
             $('#new-category').select2({
                 tags: true,
@@ -86,6 +97,16 @@ document.addEventListener("DOMContentLoaded", function() {
                 language: {
                     noResults: function() {
                         return "Adicione uma nova palavra-chave";
+                    }
+                }
+            });
+            $('#filter-category').select2({
+                placeholder: "Selecione uma ou mais categorias",
+                allowClear: true,
+                dropdownParent: $('#filterModal'),
+                language: {
+                    noResults: function() {
+                        return "Nenhuma categoria encontrada";
                     }
                 }
             });
@@ -178,6 +199,12 @@ $(document).on('click', '#create-product-btn', function() {
     var form = $('#form-new-product')[0];
     var formData = new FormData(form);
 
+    //Verifica se o campo de nome e preço estão preenchidos
+    if (!formData.get('name') || !formData.get('price')) {
+        alert('Por favor, preencha os campos de nome e preço.');
+        return;
+    }
+
     $.ajax({
         url: '/stock/newProduct',
         type: 'POST',
@@ -189,10 +216,10 @@ $(document).on('click', '#create-product-btn', function() {
         if (response.code == 200) {
             location.href = $('#form-new-product').attr('action'); // Redireciona para a ação do formulário
         } else {
-            console.log(response.data); // Exibe a mensagem de erro do servidor
+            console.error('Erro ao criar produto:', response.message);
         }
     }).fail(function (error) {
-        console.log('An error occurred');
+        console.error('An error occurred:', error);
     });
 });
     

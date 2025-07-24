@@ -44,7 +44,7 @@
                 <form id="search-form" class="d-flex align-items-center mb-4">
                     <!-- Input de pesquisa com ícone de lupa -->
                     <div class="input-group me-3">
-                        <input type="search" class="form-control input-kiklit-2" placeholder="Pesquisar produtos..." name="search" value="<?= $get['search'] ?? '' ?>">
+                        <input type="search" class="form-control input-kiklit-2" placeholder="Pesquisar produtos..." name="search" value="<?= $search ?>">
                         <!-- <button class="btn btn-outline-kiklit-2" type="submit">
                             <i class="fas fa-search"></i> 
                         </button> -->
@@ -52,31 +52,62 @@
                     <a class="btn btn-outline-kiklit-2 btn-md" id="filter-button" data-bs-toggle="modal" data-bs-target="#filterModal">
                         Filtros
                     </a>
+                    <?php
+                        if (!empty($filter['status'])) echo '<input type="hidden" name="filter[status]" value="' . htmlspecialchars($filter['status']) . '">';
+                        if (!empty($filter['category'])) 
+                            foreach ($filter['category'] as $cat)
+                                echo '<input type="hidden" name="filter[category][]" value="' . htmlspecialchars($cat) . '">';
+                        if (!empty($filter['price'])) echo '<input type="hidden" name="filter[price]" value="' . htmlspecialchars($filter['price']) . '">';
+                        if (!empty($filter['cost'])) echo '<input type="hidden" name="filter[cost]" value="' . htmlspecialchars($filter['cost']) . '">';
+                        if (!empty($filter['discount'])) echo '<input type="hidden" name="filter[discount]" value="' . htmlspecialchars($filter['discount']) . '">';
+                        if (!empty($filter['profit'])) echo '<input type="hidden" name="filter[profit]" value="' . htmlspecialchars($filter['profit']) . '">';
+                        if (!empty($filter['stock'])) echo '<input type="hidden" name="filter[stock]" value="' . htmlspecialchars($filter['stock']) . '">';
+                        if (!empty($filter['min_stock'])) echo '<input type="hidden" name="filter[min_stock]" value="' . htmlspecialchars($filter['min_stock']) . '">';
+                    ?>
                 </form>
             </div>
         </div>
         <div class="row" id="filters">
             <div class="col-lg-12 col-md-12 col-sm-12 d-flex justify-content-between align-items-center mb-3">
                 <div class="d-flex align-items-center">
-                    <span class="badge bg-light text-dark me-1">X Badge 1</span>
-                    <span class="badge bg-light text-dark me-1">X Badge 1</span>
-                    <span class="badge bg-light text-dark me-1">X Badge 1</span>
+                    <?php
+                        if (!empty($filter['status'])) echo '<span class="badge bg-light text-dark me-1">Situação : ' . ($filter['status'] == 'active' ? 'Ativo' : 'Inativo') . '</span>';
+                        if (!empty($filter['category'])) {
+                            $selectedCategoriesLabels = [];
+                            foreach ($categories as $category)
+                                if (in_array($category['id'], $filter['category']))
+                                    $selectedCategoriesLabels[] = htmlspecialchars($category['nome']);
+                            echo '<span class="badge bg-light text-dark me-1">Categoria(s): ' . implode(', ', $selectedCategoriesLabels) . '</span>';
+                        }
+                        if (!empty($filter['price'])) echo '<span class="badge bg-light text-dark me-1">Preço: R$ ' . htmlspecialchars($filter['price']) . '</span>';
+                        if (!empty($filter['cost'])) echo '<span class="badge bg-light text-dark me-1">Custo: R$ ' . htmlspecialchars($filter['cost']) . '</span>';
+                        if (!empty($filter['discount'])) echo '<span class="badge bg-light text-dark me-1">Desconto: R$ ' . htmlspecialchars($filter['discount']) . '</span>';
+                        if (!empty($filter['profit'])) echo '<span class="badge bg-light text-dark me-1">Preço Atual: R$ ' . htmlspecialchars($filter['real_price']) . '</span>';
+                        if (!empty($filter['stock'])) echo '<span class="badge bg-light text-dark me-1">Estoque: ' . htmlspecialchars($filter['stock']) . '</span>';
+                        if (!empty($filter['min_stock'])) echo '<span class="badge bg-light text-dark me-1">Estoque Mínimo: ' . htmlspecialchars($filter['min_stock']) . '</span>';
+                    ?>
                 </div>
                 <div class="d-flex align-items-center">
-                    <select class="form-select form-select-sm input-kiklit-2 me-2" id="sort-options">
-                        <option value="name_asc">Nome (A-Z)</option>
-                        <option value="name_desc">Nome (Z-A)</option>
-                        <option value="price_asc">Preço (Menor para Maior)</option>
-                        <option value="price_desc">Preço (Maior para Menor)</option>
-                        <option value="discount_asc">Desconto (Menor para Maior)</option>
-                        <option value="discount_desc">Desconto (Maior para Menor)</option>
-                        <option value="date_asc">Data (Mais Antigo)</option>
-                        <option value="date_desc">Data (Mais Recente)</option>
-                        <option value="stock_asc">Estoque (Menor para Maior)</option>
-                        <option value="stock_desc">Estoque (Maior para Menor)</option>
-                        <option value="status_asc">Status (Ativo para Inativo)</option>
-                        <option value="status_desc">Status (Inativo para Ativo)</option>
-                    </select>
+                    <form id="id-sort-form" class="d-flex align-items-center me-3" method="GET" action="<?= url("stock") ?>">
+                        <?php
+                        if (!empty($search)) echo '<input type="hidden" name="search" value="' . htmlspecialchars($search) . '">';
+                        if (!empty($filter['status'])) echo '<input type="hidden" name="filter[status]" value="' . htmlspecialchars($filter['status']) . '">';
+                        if (!empty($filter['category']))
+                            foreach ($filter['category'] as $cat)
+                                echo '<input type="hidden" name="filter[category][]" value="' . htmlspecialchars($cat) . '">';
+                        if (!empty($filter['price'])) echo '<input type="hidden" name="filter[price]" value="' . htmlspecialchars($filter['price']) . '">';
+                        if (!empty($filter['cost'])) echo '<input type="hidden" name="filter[cost]" value="' . htmlspecialchars($filter['cost']) . '">';
+                        if (!empty($filter['discount'])) echo '<input type="hidden" name="filter[discount]" value="' . htmlspecialchars($filter['discount']) . '">';
+                        if (!empty($filter['real_price'])) echo '<input type="hidden" name="filter[real_price]" value="' . htmlspecialchars($filter['real_price']) . '">';
+                        if (!empty($filter['stock'])) echo '<input type="hidden" name="filter[stock]" value="' . htmlspecialchars($filter['stock']) . '">';
+                        if (!empty($filter['min_stock'])) echo '<input type="hidden" name="filter[min_stock]" value="' . htmlspecialchars($filter['min_stock']) . '">';
+                        ?>
+                        <select class="form-select form-select-sm input-kiklit-2 me-2" id="sort-options" name="sort" onchange="this.form.submit()">
+                            <?php foreach ($orderList as $key => $value): ?>
+                                <option value="<?= $key ?>" <?= $value['selected'] ? 'selected' : '' ?>><?= $value['label'] ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </form>
                     <a class="btn btn-outline-kiklit-2 btn-md" id="newProduct" data-bs-toggle="modal" data-bs-target="#newModal">
                         Novo
                     </a>
@@ -147,9 +178,23 @@
             <div class="col-md-6 col-12 d-flex justify-content-md-end justify-content-center">
                 <nav aria-label="Page navigation example">
                     <ul class="pagination">
+                        <?php
+                            $url = url("stock").'?';
+                            if (!empty($search)) $url .= '&search=' . urlencode($search);
+                            if (!empty($filter['status'])) $url .= '&filter[status]=' . urlencode($filter['status']);
+                            if (!empty($filter['category']))
+                                foreach ($filter['category'] as $cat)
+                                    $url .= '&filter[category][]=' . urlencode($cat);
+                            if (!empty($filter['price'])) $url .= '&filter[price]=' . urlencode($filter['price']);
+                            if (!empty($filter['cost'])) $url .= '&filter[cost]=' . urlencode($filter['cost']);
+                            if (!empty($filter['discount'])) $url .= '&filter[discount]=' . urlencode($filter['discount']);
+                            if (!empty($filter['real_price'])) $url .= '&filter[real_price]=' . urlencode($filter['real_price']);
+                            if (!empty($filter['stock'])) $url .= '&filter[stock]=' . urlencode($filter['stock']);
+                            if (!empty($filter['min_stock'])) $url .= '&filter[min_stock]=' . urlencode($filter['min_stock']);                       
+                        ?>
                         <?php if ($pages['current'] > 1): ?>
                         <li class="page-item">
-                            <a class="page-link" href="?pagination[offset]=<?= ($pages['current'] - 2) * $pagination['limit'] ?>&search=<?= $get['search'] ?? '' ?>">Anterior</a>
+                            <a class="page-link" href="<?= $url ?>&pagination[offset]=<?= ($pages['current'] - 2) * $pagination['limit'] ?>">Anterior</a>
                         </li>
                         <?php else: ?>
                         <li class="page-item disabled">
@@ -162,12 +207,12 @@
                         $end = min($pages['total'], $pages['current'] + 4);
                         for ($i = $start; $i <= $end; $i++): ?>
                             <li class="page-item <?= $i == $pages['current'] ? 'active' : 'd-none d-md-flex' ?>" >
-                                <a class="page-link" href="?pagination[offset]=<?= ($i - 1) * $pagination['limit'] ?>&search=<?= $get['search'] ?? '' ?>"><?= $i ?></a>
+                                <a class="page-link" href="<?= $url ?>&pagination[offset]=<?= ($i - 1) * $pagination['limit'] ?>"><?= $i ?></a>
                             </li>
                         <?php endfor; ?>
                         <?php if ($pages['current'] < $pages['total']): ?>
                         <li class="page-item">
-                            <a class="page-link" href="?pagination[offset]=<?= $pages['current'] * $pagination['limit'] ?>&search=<?= $get['search'] ?? '' ?>">Próxima</a>
+                            <a class="page-link" href="<?= $url ?>&pagination[offset]=<?= $pages['current'] * $pagination['limit'] ?>">Próxima</a>
                         </li>
                         <?php else: ?>
                         <li class="page-item disabled">
@@ -189,28 +234,56 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="filter-form">
-                    <div class="mb-3">
-                        <label for="filter-category" class="form-label">Categoria</label>
-                        <select class="form-select" id="filter-category" name="category">
-                            <option value="">Selecione</option>
-                            <option value="categoria1">Categoria 1</option>
-                            <option value="categoria2">Categoria 2</option>
-                            <option value="categoria3">Categoria 3</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="filter-price" class="form-label">Preço</label>
-                        <input type="number" class="form-control" id="filter-price" name="price" placeholder="Digite o preço máximo">
-                    </div>
+                <form id="filter-form" method="GET" action="<?= url('stock') ?>">
                     <div class="mb-3">
                         <label for="filter-status" class="form-label">Status</label>
-                        <select class="form-select" id="filter-status" name="status">
+                        <select class="form-select" id="filter-status" name="filter[status]">
                             <option value="">Selecione</option>
-                            <option value="ativo">Ativo</option>
-                            <option value="inativo">Inativo</option>
+                            <option value="active" <?= $filter['status'] == 'active' ? 'selected' : '' ?>>Ativo</option>
+                            <option value="inactive" <?= $filter['status'] == 'inactive' ? 'selected' : '' ?>>Inativo</option>
                         </select>
                     </div>
+                    <div class="mb-3">
+                        <label for="filter-category" class="form-label">Categoria</label>
+                        <select class="form-select" id="filter-category" name="filter[category][]" multiple>
+                            <?php 
+                            foreach ($categories as $category): 
+                            ?>
+                                <option value="<?= $category['id'] ?>" <?= in_array($category['id'], $filter['category']) ? 'selected' : '' ?>><?= $category['nome'] ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <div class="row">
+                        <div class="mb-3 col-6">
+                            <label for="filter-price" class="form-label">Preço</label>
+                            <input type="text" class="form-control moedaReal" id="filter-price" name="filter[price]" value="<?= $filter['price'] ?? '0,00' ?>">
+                        </div>
+                        <div class="mb-3 col-6">
+                            <label for="filter-cost" class="form-label">Custo</label>
+                            <input type="text" class="form-control moedaReal" id="filter-cost" name="filter[cost]" value="<?= $filter['cost'] ?? '0,00' ?>">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="mb-3 col-6">
+                            <label for="filter-discount" class="form-label">Desconto</label>
+                            <input type="text" class="form-control moedaReal" id="filter-discount" name="filter[discount]" value="<?= $filter['discount'] ?? '0,00' ?>">
+                        </div>
+                        <div class="mb-3 col-6">
+                            <label for="filter-profit" class="form-label">Lucro</label>
+                            <input type="text" disabled class="form-control" id="filter-profit" name="filter[profit]" value="<?= $filter['profit'] ?? '0,00' ?>">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="mb-3 col-6">
+                            <label for="filter-stock" class="form-label">Estoque</label>
+                            <input type="number" class="form-control" id="filter-stock" name="filter[stock]" value="<?= $filter['stock'] ?? '0' ?>" min="0">
+                        </div>
+                        <div class="mb-3 col-6">
+                            <label for="filter-min-stock" class="form-label">Estoque mín.</label>
+                            <input type="number" class="form-control" id="filter-min-stock" name="filter[min_stock]" value="<?= $filter['min_stock'] ?? '0' ?>" min="0">
+                        </div>
+                    </div>
+                    <input type="hidden" name="search" value="<?= $get['search'] ?? '' ?>">
                 </form>
             </div>
             <div class="modal-footer">

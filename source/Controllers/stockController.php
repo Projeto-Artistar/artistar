@@ -16,18 +16,34 @@ class stockController extends Core {
     public function home() {
         $stockModel = new Stock();
         $store = $this->getUser()['loja_id'] ?? 0;
-        $search = $_GET['search'] ?? [];
+        $search = $_GET['search'] ?? '';
+        $filter = $_GET['filter'] ?? [];
+        if (!isset($filter['status'])) $filter['status'] = '';
+        if (!isset($filter['category'])) $filter['category'] = [];
+        if (!isset($filter['price'])) $filter['price'] = '';
+        if (!isset($filter['cost'])) $filter['cost'] = '';
+        if (!isset($filter['discount'])) $filter['discount'] = '';
+        if (!isset($filter['real_price'])) $filter['real_price'] = '';
+        if (!isset($filter['stock'])) $filter['stock'] = '';
+        if (!isset($filter['min_stock'])) $filter['min_stock'] = '';
         $pagination = $_GET['pagination'] ?? [
             'offset' => 0
         ];
         $pagination['limit'] = 12;
 
-        $stocks = $stockModel->getStocks($store);
+
+        $whereStock = $stockModel->buildWhereStock($search, $filter);
+
+        $stocks = $stockModel->getStocks($store, $whereStock);
 
         $pages = [
             'current' => ($pagination['offset'] / $pagination['limit']) + 1,
             'total' => ceil($stocks['totalProducts'] / $pagination['limit'])
-        ];
+        ]; 
+        
+        $sort = $_GET['sort'] ?? 'name_asc';
+        $orderList = $stockModel->getOrderList($sort);
+        $order = $stockModel->buildOrderBy($orderList, $sort);
 
         echo $this->view->render("stock/home", [
             'layout' => [
@@ -38,9 +54,12 @@ class stockController extends Core {
             ],
             'stocks' => $stocks,
             'categories' => $stockModel->getCategories($store),
-            'products' => $stockModel->getProducts($store, $pagination, $search),
+            'products' => $stockModel->getProducts($store, $pagination, $whereStock, $order),
             'pagination' => $pagination,
             'pages' => $pages,
+            'orderList' => $orderList,
+            'search' => $search ?? '',
+            'filter' => $filter ?? [],
             'get' => $_GET,
         ]);
         return;

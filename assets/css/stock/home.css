@@ -39,4 +39,5 @@ width:100%!important;
 .thumbnail-product {
     aspect-ratio: 300 / 200;
     object-fit: cover;
+    width: 100%;
 }
