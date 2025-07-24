@@ -44,12 +44,12 @@
                 <form id="search-form" class="d-flex align-items-center mb-4">
                     <!-- Input de pesquisa com ícone de lupa -->
                     <div class="input-group me-3">
-                        <input type="search" class="form-control input-kiklit-2" placeholder="Pesquisar produtos..." name="search" value="<?= $search ?>">
+                        <input type="search" class="form-control input-stellar-blue" placeholder="Pesquisar produtos..." name="search" value="<?= $search ?>">
                         <!-- <button class="btn btn-outline-kiklit-2" type="submit">
                             <i class="fas fa-search"></i> 
                         </button> -->
                     </div>
-                    <a class="btn btn-outline-kiklit-2 btn-md" id="filter-button" data-bs-toggle="modal" data-bs-target="#filterModal">
+                    <a class="btn btn-outline-stellar-blue btn-md" id="filter-button" data-bs-toggle="modal" data-bs-target="#filterModal">
                         Filtros
                     </a>
                     <?php
@@ -82,7 +82,7 @@
                         if (!empty($filter['price'])) echo '<span class="badge bg-light text-dark me-1">Preço: R$ ' . htmlspecialchars($filter['price']) . '</span>';
                         if (!empty($filter['cost'])) echo '<span class="badge bg-light text-dark me-1">Custo: R$ ' . htmlspecialchars($filter['cost']) . '</span>';
                         if (!empty($filter['discount'])) echo '<span class="badge bg-light text-dark me-1">Desconto: R$ ' . htmlspecialchars($filter['discount']) . '</span>';
-                        if (!empty($filter['profit'])) echo '<span class="badge bg-light text-dark me-1">Preço Atual: R$ ' . htmlspecialchars($filter['real_price']) . '</span>';
+                        if (!empty($filter['real_price'])) echo '<span class="badge bg-light text-dark me-1">Preço Atual: R$ ' . htmlspecialchars($filter['real_price']) . '</span>';
                         if (!empty($filter['stock'])) echo '<span class="badge bg-light text-dark me-1">Estoque: ' . htmlspecialchars($filter['stock']) . '</span>';
                         if (!empty($filter['min_stock'])) echo '<span class="badge bg-light text-dark me-1">Estoque Mínimo: ' . htmlspecialchars($filter['min_stock']) . '</span>';
                     ?>
@@ -108,7 +108,7 @@
                             <?php endforeach; ?>
                         </select>
                     </form>
-                    <a class="btn btn-outline-kiklit-2 btn-md" id="newProduct" data-bs-toggle="modal" data-bs-target="#newModal">
+                    <a class="btn btn-outline-stellar-blue btn-md" id="newProduct" data-bs-toggle="modal" data-bs-target="#newModal">
                         Novo
                     </a>
                 </div>
@@ -134,7 +134,7 @@
         </div>
         <div class="card-body d-flex flex-column">
             <h5 class="card-title d-flex justify-content-between align-items-center">
-                <a href="/" class="link-kitlit-1 nome-produto"><?= $product['nome'] ?></a>
+                <a href="/" class="link-stellar-blue nome-produto"><?= $product['nome'] ?></a>
                 <?= $product['ativo'] ? '<span class="badge bg-success">Ativo</span>' : '<span class="badge bg-secondary">Inativo</span>' ?>
             </h5> 
             <p class="card-text mt-auto">
@@ -169,6 +169,7 @@
         </div>
     </div>
 </section>
+
 <section class="section-pagination">
     <div class="container">
         <div class="row justify-content-between align-items-center" id="pagination-controls">
@@ -176,10 +177,12 @@
                 <p class="text-muted">Mostrando <span id="result-count"><?= count($products)?></span> resultados de <span id="total-count"><?= $stocks['totalProducts'] ?></span></p>
             </div>
             <div class="col-md-6 col-12 d-flex justify-content-md-end justify-content-center">
+                <?php if (!empty($products)): ?>
                 <nav aria-label="Page navigation example">
                     <ul class="pagination">
                         <?php
                             $url = url("stock").'?';
+                            $url .= 'sort=' . urlencode($sort);
                             if (!empty($search)) $url .= '&search=' . urlencode($search);
                             if (!empty($filter['status'])) $url .= '&filter[status]=' . urlencode($filter['status']);
                             if (!empty($filter['category']))
@@ -190,7 +193,8 @@
                             if (!empty($filter['discount'])) $url .= '&filter[discount]=' . urlencode($filter['discount']);
                             if (!empty($filter['real_price'])) $url .= '&filter[real_price]=' . urlencode($filter['real_price']);
                             if (!empty($filter['stock'])) $url .= '&filter[stock]=' . urlencode($filter['stock']);
-                            if (!empty($filter['min_stock'])) $url .= '&filter[min_stock]=' . urlencode($filter['min_stock']);                       
+                            if (!empty($filter['min_stock'])) $url .= '&filter[min_stock]=' . urlencode($filter['min_stock']);  
+                                                 
                         ?>
                         <?php if ($pages['current'] > 1): ?>
                         <li class="page-item">
@@ -221,6 +225,7 @@
                         <?php endif; ?>
                     </ul>
                 </nav>
+                <?php endif; ?>
             </div>
         </div>
     </div>
@@ -269,8 +274,8 @@
                             <input type="text" class="form-control moedaReal" id="filter-discount" name="filter[discount]" value="<?= $filter['discount'] ?? '0,00' ?>">
                         </div>
                         <div class="mb-3 col-6">
-                            <label for="filter-profit" class="form-label">Lucro</label>
-                            <input type="text" disabled class="form-control" id="filter-profit" name="filter[profit]" value="<?= $filter['profit'] ?? '0,00' ?>">
+                            <label for="filter-real_price" class="form-label">Preço Atual</label>
+                            <input type="text" class="form-control moedaReal" id="filter-real_price" name="filter[real_price]" value="<?= $filter['real_price'] ?? '0,00' ?>">
                         </div>
                     </div>
                     <div class="row">
@@ -287,8 +292,9 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                <button type="submit" class="btn btn-primary" form="filter-form">Aplicar Filtros</button>
+                <button type="button" class="btn btn-fog-gray" data-bs-dismiss="modal">Fechar</button>
+                <a href="<?= url('stock') ?>" class="btn btn-sunshine-yellow" id="clear-filters">Limpar Filtros</a>
+                <button type="submit" class="btn btn-stellar-blue" form="filter-form">Aplicar Filtros</button>
             </div>
         </div>
     </div>
@@ -363,7 +369,7 @@
                             <input type="text" class="form-control moedaReal" id="new-discount" name="discount" value="0,00">
                         </div>
                         <div class="mb-3 col-6">
-                            <label for="new-profit" class="form-label">Lucro</label>
+                            <label for="new-profit" class="form-label">Margem</label>
                             <input type="text" disabled class="form-control" id="new-profit" name="profit" value="0,00">
                         </div>
                     </div>
@@ -381,8 +387,8 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                <button type="submit" class="btn btn-primary" id="create-product-btn" form="new-product-form">Inserir</button>
+                <button type="button" class="btn btn-fog-gray" data-bs-dismiss="modal">Fechar</button>
+                <button type="submit" class="btn btn-stellar-blue" id="create-product-btn" form="new-product-form">Inserir</button>
             </div>
         </div>
     </div>

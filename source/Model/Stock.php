@@ -28,19 +28,19 @@ class Stock extends Core {
             }
         }
         if (!empty($filter['price'])) {
-            $price = (float)$filter['price'];
+            $price = str_replace(',', '.', $filter['price']);
             $where[] = "produto_valor = {$price}";
         }
         if (!empty($filter['cost'])) {
-            $cost = (float)$filter['cost'];
+            $cost = str_replace(',', '.', $filter['cost']);
             $where[] = "produto_custo = {$cost}";
         }
         if (!empty($filter['discount'])) {
-            $discount = (float)$filter['discount'];
+            $discount = str_replace(',', '.', $filter['discount']);
             $where[] = "produto_valor_desconto = {$discount}";
         }
         if (!empty($filter['real_price'])) {
-            $realPrice = (float)$filter['real_price'];
+            $realPrice = str_replace(',', '.', $filter['real_price']);
             $where[] = "(produto_valor - produto_valor_desconto) = {$realPrice}";
         }
         if (!empty($filter['stock'])) {

@@ -2,12 +2,12 @@
     <div class="container-fluid px-3 bg-white">
         <div class="d-flex">
             <a href="/" class="d-flex align-items-center text-dark text-decoration-none">
-                <img src="<?= url("assets/image/logo.svg") ?>" alt="mdo" class="bi me-2" width="40" height="32">
+                <img src="<?= url("assets/image/logo.png") ?>" alt="mdo" class="bi me-2 logo-artistar" width="80">
             </a>
 
-            <ul class="nav col-12 me-md-auto mb-2 justify-content-center mb-md-0 d-none d-md-flex">
-                <li><a href="/begin" class="nav-link px-2 link-kitlit-1 link-hover">Iniciar</a></li>
-                <li><a href="/stock" class="nav-link px-2 link-kitlit-1 link-hover">Inventário</a></li>
+            <ul class="nav col-12 me-md-auto mb-2 mb-md-0 d-none d-md-flex">
+                <li><a href="/begin" class="nav-link px-2 link-nocturne-purple link-hover">Iniciar</a></li>
+                <li><a href="/stock" class="nav-link px-2 link-nocturne-purple link-hover">Inventário</a></li>
             </ul>
         </div>
         <div id="barra-direita" class="d-flex">
@@ -15,7 +15,7 @@
                 <input name="search" type="search" class="form-control pesquisa-superior input-kiklit-2" placeholder="Pesquisar..." aria-label="Search" value="<?= $search ?>">
             </form> -->
             <div class="dropdown">
-                <button  style="border:none; background:none;" type="button" class="link-kitlit-2 link-hover" data-bs-toggle="dropdown" aria-expanded="false">
+                <button  style="border:none; background:none;" type="button" class="link-nocturne-purple link-hover" data-bs-toggle="dropdown" aria-expanded="false">
                     <i class="fa-solid fa-bell" style="width:24px; text-align: center;"></i>
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end">
@@ -78,7 +78,7 @@
                     </div>
                 </ul>
             </div>
-            <button data-bs-toggle="offcanvas" style="border:none; background:none;" type="button" href="#offcanvasExample" role="button" aria-controls="offcanvasExample" class="link-kitlit-2 link-hover">
+            <button data-bs-toggle="offcanvas" style="border:none; background:none;" type="button" href="#offcanvasExample" role="button" aria-controls="offcanvasExample" class="link-nocturne-purple link-hover">
                 <i class="fa-solid fa-bars" style="width:24px; text-align: center;"></i>
             </button>
         </div>
@@ -88,7 +88,7 @@
 <nav class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
     <div class="offcanvas-header px-4 d-flex justify-content-between align-items-center">
         <a href="/" class="d-flex align-items-center me-md-auto link-dark text-decoration-none">
-            <img src="<?= url("assets/image/logo.svg") ?>" alt="mdo" class="bi me-2" width="40" height="32">
+            <img src="<?= url("assets/image/logo.png") ?>" alt="mdo" class="bi me-2 logo-artistar" width="80">
         </a>
         <button type="button" class="btn-close text-reset input-kiklit-2" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         

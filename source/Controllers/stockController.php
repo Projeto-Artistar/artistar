@@ -60,6 +60,7 @@ class stockController extends Core {
             'orderList' => $orderList,
             'search' => $search ?? '',
             'filter' => $filter ?? [],
+            'sort' => $sort,
             'get' => $_GET,
         ]);
         return;

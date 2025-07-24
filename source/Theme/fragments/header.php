@@ -2,7 +2,7 @@
     <div class="container-fluid px-3 bg-white">
         <div class="d-flex">
             <a href="/" class="d-flex align-items-center text-dark text-decoration-none">
-                <img src="<?= url("assets/image/logo.svg") ?>" alt="mdo" class="bi me-2" width="40" height="32">
+                <img src="<?= url("assets/image/logo.png") ?>" alt="mdo" class="bi me-2" width="40" height="32">
             </a>
 
 
