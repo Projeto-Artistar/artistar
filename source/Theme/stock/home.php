@@ -1,8 +1,8 @@
 <?= $this->layout("base", $layout); ?>
 
 <?= $this->start("css") ?>
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 <link rel="stylesheet" href="<?= url("assets/css/stock/home.css") ?>">
- <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 <?= $this->stop() ?>
 
 <?= $this->start("conteudo") ?>
@@ -102,14 +102,14 @@
                         if (!empty($filter['stock'])) echo '<input type="hidden" name="filter[stock]" value="' . htmlspecialchars($filter['stock']) . '">';
                         if (!empty($filter['min_stock'])) echo '<input type="hidden" name="filter[min_stock]" value="' . htmlspecialchars($filter['min_stock']) . '">';
                         ?>
-                        <select class="form-select form-select-sm input-kiklit-2 me-2" id="sort-options" name="sort" onchange="this.form.submit()">
+                        <select class="form-select form-select-sm input-stellar-blue me-2" id="sort-options" name="sort" onchange="this.form.submit()">
                             <?php foreach ($orderList as $key => $value): ?>
                                 <option value="<?= $key ?>" <?= $value['selected'] ? 'selected' : '' ?>><?= $value['label'] ?></option>
                             <?php endforeach; ?>
                         </select>
                     </form>
-                    <a class="btn btn-outline-stellar-blue btn-md" id="newProduct" data-bs-toggle="modal" data-bs-target="#newModal">
-                        Novo
+                    <a class="btn btn-stellar-blue btn-md" id="newProduct" data-bs-toggle="modal" data-bs-target="#newModal">
+                        <i class="fa-solid fa-plus bi" style="width:24px; text-align: center;"></i> Novo Produto
                     </a>
                 </div>
             </div>
@@ -135,7 +135,7 @@
         <div class="card-body d-flex flex-column">
             <h5 class="card-title d-flex justify-content-between align-items-center">
                 <a href="<?=url('stock/product/'.$product['id'])?>" class="link-stellar-blue nome-produto"><?= $product['nome'] ?></a>
-                <?= $product['ativo'] ? '<span class="badge bg-success">Ativo</span>' : '<span class="badge bg-secondary">Inativo</span>' ?>
+                <?= $product['ativo'] ? '<span class="badge bg-lavanda">Ativo</span>' : '<span class="badge bg-graphite-gray">Inativo</span>' ?>
             </h5> 
             <p class="card-text mt-auto">
                 <?php
@@ -147,7 +147,8 @@
             </p>
             <div class="card-text">
                 <div class="d-flex justify-content-between align-items-center">
-                    <div>Preço Base:<br>
+                    <div>
+                        <span>Preço Base:</span><br>
                         <?php if ($product['valor_desconto'] > 0): ?>
                             <span class="badge bg-light text-dark me-1 text-decoration-line-through">R$ <?= number_format($product['valor'], 2, ',', '.') ?></span>
                         <?php else: ?>
@@ -155,7 +156,7 @@
                         <?php endif; ?>
                     </div>
                     <div>
-                        Preço Atual: <br>
+                        <span >Preço Atual:</span> <br>
                         <div class="text-end">
                             <span class="badge bg-light text-dark me-1">R$ <?= number_format($product['valor']-$product['valor_desconto'], 2, ',', '.') ?></span>
                         </div>
@@ -198,11 +199,11 @@
                         ?>
                         <?php if ($pages['current'] > 1): ?>
                         <li class="page-item">
-                            <a class="page-link" href="<?= $url ?>&pagination[offset]=<?= ($pages['current'] - 2) * $pagination['limit'] ?>">Anterior</a>
+                            <a class="page-link stellar-blue" href="<?= $url ?>&pagination[offset]=<?= ($pages['current'] - 2) * $pagination['limit'] ?>">Anterior</a>
                         </li>
                         <?php else: ?>
                         <li class="page-item disabled">
-                            <span class="page-link">Anterior</span>
+                            <span class="page-link stellar-blue">Anterior</span>
                         </li>
                         <?php endif; ?>
                         <!-- Max of 4 pages before and 4 after -->
@@ -211,16 +212,16 @@
                         $end = min($pages['total'], $pages['current'] + 4);
                         for ($i = $start; $i <= $end; $i++): ?>
                             <li class="page-item <?= $i == $pages['current'] ? 'active' : 'd-none d-md-flex' ?>" >
-                                <a class="page-link" href="<?= $url ?>&pagination[offset]=<?= ($i - 1) * $pagination['limit'] ?>"><?= $i ?></a>
+                                <a class="page-link stellar-blue" href="<?= $i == $pages['current'] ? '#' : $url.'&pagination[offset]='.(($i - 1) * $pagination['limit']) ?>"><?= $i ?></a>
                             </li>
                         <?php endfor; ?>
                         <?php if ($pages['current'] < $pages['total']): ?>
                         <li class="page-item">
-                            <a class="page-link" href="<?= $url ?>&pagination[offset]=<?= $pages['current'] * $pagination['limit'] ?>">Próxima</a>
+                            <a class="page-link stellar-blue" href="<?= $url ?>&pagination[offset]=<?= $pages['current'] * $pagination['limit'] ?>">Próxima</a>
                         </li>
                         <?php else: ?>
                         <li class="page-item disabled">
-                            <span class="page-link">Próxima</span>
+                            <span class="page-link stellar-blue">Próxima</span>
                         </li>
                         <?php endif; ?>
                     </ul>
@@ -236,7 +237,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="filterModalLabel">Opções de Filtros</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close input-stellar-blue" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <form id="filter-form" method="GET" action="<?= url('stock') ?>">
@@ -293,7 +294,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-fog-gray" data-bs-dismiss="modal">Fechar</button>
-                <a href="<?= url('stock') ?>" class="btn btn-sunshine-yellow" id="clear-filters">Limpar Filtros</a>
+                <a href="<?= url('stock') ?>" class="btn btn-cotton-candy" id="clear-filters">Limpar Filtros</a>
                 <button type="submit" class="btn btn-stellar-blue" form="filter-form">Aplicar Filtros</button>
             </div>
         </div>
@@ -304,7 +305,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="filterModalLabel">Novo Produto</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close input-stellar-blue" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <form id="form-new-product" method="post" action="<?= url("stock") ?>">

@@ -311,4 +311,36 @@ class Stock extends Core {
         if (!empty($trueCategories)) $this->insertExistingCategories($trueCategories, $store, $productId);
         return $trueCategories;
     }
+
+    public function getProductById($productId, $store) {
+        $stmt = $this->SQL->prepare("
+            SELECT 
+                produto.produto_id id,
+                produto.produto_nome nome,
+                produto.produto_descricao descricao,
+                produto.produto_valor valor,
+                produto.produto_valor_desconto valor_desconto,
+                produto.produto_custo custo,
+                produto.produto_estoque estoque,
+                produto.produto_estoque_minimo estoque_minimo,
+                produto.produto_loja loja,
+                produto.produto_ativo ativo,
+                produto.produto_thumbnail thumbnail,
+                produto.produto_codigo_interno identificacao_interno,
+                produto.produto_palavras_chave palavras_chave,
+                GROUP_CONCAT(categorias.categoria_produto_categoria) AS categoriasIds
+            FROM 
+                produtos produto
+            LEFT JOIN
+                categoria_produtos categorias ON produto.produto_id = categorias.categoria_produto_produto
+            WHERE 
+                produto.produto_id = :productId
+            AND
+                produto.produto_loja = :store
+        ");
+        $stmt->bindValue(":productId", $productId);
+        $stmt->bindValue(":store", $store);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
 }

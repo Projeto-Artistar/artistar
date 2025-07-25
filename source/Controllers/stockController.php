@@ -99,23 +99,22 @@ class stockController extends Core {
 
     }
 
-    public function productDetails($productId) {
+    public function productDetails($get) {
+        $productId = $get['productId'] ?? 0;
         $stockModel = new Stock();
         $store = $this->getUser()['loja_id'] ?? 0;
         if (empty($store)) exit($this->renderApiResponse(400, "Loja não encontrada."));
-        // $product = $stockModel->getProductById($productId, $store);
-        // if (!$product) {
-        //     exit($this->renderApiResponse(404, "Produto não encontrado."));
-        // }
+        $product = $stockModel->getProductById($productId, $store);
+        if (!$product) exit($this->renderApiResponse(404, "Produto não encontrado."));
         echo $this->view->render("stock/productDetails", [
             'layout' => [
-                'title' =>  'Detalhes do Produto - Artistar', 
+                'title' =>  $product['nome'].'- Artistar', 
                 'logado' => $this->getLogado(),
                 'header' => true,
                 'footer' => true
             ],
-            // 'product' => $product,
-            // 'categories' => $stockModel->getCategories($store),
+            'product' => $product,
+            'categories' => $stockModel->getCategories($store)
         ]);
         return;
     }

@@ -1,0 +1,135 @@
+<?= $this->layout("base", $layout); ?>
+
+<?= $this->start("css") ?>
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="<?= url("assets/css/stock/productDetails.css") ?>">
+<?= $this->stop() ?>
+
+<?= $this->start("conteudo") ?>
+<form id="product-details-form" class="container avoid-navbar pt-3 mb-3">
+    <div class="row">
+        <div class="col-sm-6 col-12 mb-3 mb-sm-0 px-sm-0">
+            <div>
+                <input type="text" value="<?= $product['nome'] ?>" class="form-control input-stellar-blue" id="filter-name" name="name" placeholder="Digite o nome do produto">
+            </div>
+        </div>
+        <div class="col-sm-6 col-12 px-sm-0">
+            <div class="d-flex justify-content-end">
+                <!-- 3 dots button with dropdown -->
+                <button type="button" class="btn btn-nocturne-purple dropdown-toggle mx-3" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item" href="#">Duplicar</a></li>
+                    <li><a class="dropdown-item" href="#">Excluir</a></li>
+                </ul>
+                <button type="submit" class="btn btn-stellar-blue" id="create-product-btn" form="new-product-form">Salvar Alterações</button>
+            </div>
+        </div>
+    </div>
+    <div class="row px-sm-0 p-3">
+        <div class="col-lg-4 border rounded col-12 mb-3">
+            <div class="row p-3">
+                <div class="col-12">
+                    <div class="mb-3">
+                        <div id="image-drop-area" class="image-drop-area d-flex align-items-center justify-content-center">
+                            <?php if ($product['thumbnail']): ?>
+                                <img id="image-preview" src="<?= $product['thumbnail'] ?>" alt="Preview" style="max-width:100%;max-height:100%;border-radius:12px;">
+                            <?php else: ?>
+                                <span id="image-drop-text">Clique ou arraste uma imagem aqui</span>
+                            <?php endif; ?>
+                        </div>
+                        <input type="file" id="image" name="thumbnail" accept="image/*" style="display:none;">
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="mb-3">
+                        <label for="insideId" class="form-label">Identificação Interna</label>
+                        <input type="text" value="<?= $product['identificacao_interno']?>" class="form-control input-stellar-blue" id="insideId" name="insideId" placeholder="Digite a identificação interna">
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Descrição</label>
+                        <textarea class="form-control input-stellar-blue" id="description" name="description" rows="6" placeholder="Digite a descrição do produto"><?= $product['descricao'] ?></textarea>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="mb-3form-check form-switch form-switch-sm">
+                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" name="active" checked>
+                        <label class="form-check-label" for="flexSwitchCheckDefault" value="1" <?= $product['ativo'] ?? 'checked' ?>>Produto Ativo</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-8 col-12 mb-lg-3">
+            <div class="row ps-lg-3">
+                <div class="col-12 border rounded p-3 mb-3">
+                    <div class="row">
+                        <div class="mb-3 col-4">
+                            <label for="price" class="form-label">Preço</label>
+                            <input type="text" class="form-control moedaReal" id="price" name="price" value="<?= $product['valor'] ?>">
+                        </div>
+                        <div class="mb-3 col-4">
+                            <label for="discount" class="form-label">Desconto (R$)</label>
+                            <input type="text" class="form-control moedaReal" id="discount" name="discount" value="<?= $product['valor_desconto'] ?>">
+                        </div>
+                        <div class="mb-3 col-4">
+                        <label for="cost" class="form-label">Custo</label>
+                            <input type="text" class="form-control moedaReal" id="cost" name="cost" value="<?= $product['custo'] ?>">
+                        </div>
+                        <div class="mb-3 col-4">
+                            <label for="real_price" class="form-label">Preço Atual</label>
+                            <input type="text" disabled class="form-control moedaReal" id="real_price" name="real_price" value="<?= $product['valor'] - $product['valor_desconto'] ?>">
+                        </div>
+                        <div class="mb-3 col-4">
+                            <label for="discount_percentage" class="form-label">Desconto (%)</label>
+                            <input type="text" disabled class="form-control moedaReal" id="discount_percentage" name="discount_percentage" value="<?= (($product['valor_desconto'] * 100) / $product['valor']) ?>">
+                        </div>
+                        <div class="mb-3 col-4">
+                            <label for="margin" class="form-label">Margem</label>
+                            <input type="text" disabled class="form-control moedaReal" id="margin" name="margin" value="<?= ($product['valor'] - $product['valor_desconto']) - $product['custo'] ?>">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 border rounded p-3 mb-3">
+                    <div class="mb-3">
+                        <label for="category" class="form-label">Categorias</label>
+                        <select class="form-select select2" id="category" name="category[]" multiple="multiple">
+                            <?php 
+                            $selectedCategories = explode(',', $product['categoriasIds'] ?? '');
+                            foreach ($categories as $category): ?>
+                                <option value="<?= $category['id'] ?>" <?= in_array($category['id'], $selectedCategories) ? 'selected' : '' ?>><?= $category['nome'] ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-12 border rounded p-3 mb-3">
+                    <div class="mb-3">
+                        <label for="keywords" class="form-label">Palavras-Chave</label>
+                        <select class="form-select select2" id="keywords" name="keywords[]" multiple="multiple">
+                            <?php 
+                            $keywords = explode('|', $product['palavras_chave'] ?? '');
+                            foreach ($keywords as $keyword): ?>
+                                <option selected value="<?= $keyword ?>" selected><?= $keyword ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-12 px-0 mb-3">
+                    <div class="d-flex justify-content-end">
+                        <button type="submit" class="btn btn-cotton-candy  mx-3" id="discard-changes-btn" form="new-product-form">Descartar Alterações</button>
+                        <button type="submit" class="btn btn-stellar-blue" id="create-product-btn-2" form="new-product-form">Salvar Alterações</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<?= $this->stop() ?>
+
+<?= $this->start("js") ?>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.8/jquery.inputmask.min.js"></script>
+<script src="<?= url("assets/js/stock/productDetails.js") ?>"></script>
+<?= $this->stop() ?>
