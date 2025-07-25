@@ -6,8 +6,8 @@
 <?= $this->stop() ?>
 
 <?= $this->start("conteudo") ?>
-<form id="product-details-form" class="container avoid-navbar pt-3 mb-3">
-    <div class="row">
+<form id="product-details-form" class="container pt-3 minimum-height">
+    <div class="row avoid-navbar">
         <div class="col-sm-6 col-12 mb-3 mb-sm-0 px-sm-0">
             <div>
                 <input type="text" value="<?= $product['nome'] ?>" class="form-control input-stellar-blue" id="filter-name" name="name" placeholder="Digite o nome do produto">
@@ -84,7 +84,7 @@
                         </div>
                         <div class="mb-3 col-4">
                             <label for="discount_percentage" class="form-label">Desconto (%)</label>
-                            <input type="text" disabled class="form-control moedaReal" id="discount_percentage" name="discount_percentage" value="<?= (($product['valor_desconto'] * 100) / $product['valor']) ?>">
+                            <input type="text" disabled class="form-control moedaReal" id="discount_percentage" name="discount_percentage" value="<?= $product['valor'] > 0 ? (($product['valor_desconto'] * 100) / $product['valor']) : 0.00?>">
                         </div>
                         <div class="mb-3 col-4">
                             <label for="margin" class="form-label">Margem</label>

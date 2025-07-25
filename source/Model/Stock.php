@@ -245,11 +245,32 @@ class Stock extends Core {
         $stmt->execute();
     }
 
-    public function insertExistingCategories($categories, $store, $productId) {
+    public function insertNewStoreCategory($category, $store) {
+        if (empty($category)) return NULL;
+        $stmt = $this->SQL->prepare("
+            INSERT INTO categoria_loja (categoria_loja, categoria_nome, categoria_ativa)
+            VALUES (:store, :category, 1)
+        ");
+        $stmt->execute([
+            ':store' => $store,
+            ':category' => $category
+        ]);
+        return $this->SQL->lastInsertId();
+    }
 
+    public function insertProductCategories($categories, $store, $productId) {
         if (empty($categories)) return [];
+        $trueCategories = [];
+        foreach ($categories as $key => $category) {
+            if (strpos($category, '{existing}') === 0) {
+                $trueCategories[] = str_replace('{existing}', '', $category);
+            } else {
+                $trueCategories[] = $this->insertNewStoreCategory($category, $store);
+            }
+        }
+        unset($categories);  
 
-        $trueCategories = array_map('intval', $categories);
+        $trueCategories = array_map('intval', $trueCategories);
         $trueCategories = array_filter($trueCategories);
 
         $placeholders = [0];
@@ -274,8 +295,6 @@ class Stock extends Core {
         $existingCategories = $this->SQL->prepare($sql);
         $existingCategories->execute($params);
         $existingCategories = $existingCategories->fetchAll(PDO::FETCH_COLUMN);
-
-        $remainingCategories = array_diff($categories, $existingCategories);
         
         if (!empty($existingCategories))  {
             $stmt = $this->SQL->prepare("
@@ -290,26 +309,7 @@ class Stock extends Core {
             }
         }
     
-        return $remainingCategories;
-        
-    }
-
-    public function insertNewStoreCategories($categories, $productId, $store) {
-        if (empty($categories)) return [];
-        $trueCategories = [];
-        $stmt = $this->SQL->prepare("
-            INSERT INTO categoria_loja (categoria_loja, categoria_nome, categoria_ativa)
-            VALUES (:store, :category, 1)
-        ");
-        foreach ($categories as $category) {
-            $stmt->execute([
-                ':store' => $store,
-                ':category' => $category
-            ]);
-            $trueCategories[] = $this->SQL->lastInsertId();
-        }
-        if (!empty($trueCategories)) $this->insertExistingCategories($trueCategories, $store, $productId);
-        return $trueCategories;
+        return true;     
     }
 
     public function getProductById($productId, $store) {

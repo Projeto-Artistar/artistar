@@ -6,10 +6,11 @@
 <?= $this->stop() ?>
 
 <?= $this->start("conteudo") ?>
-<section class="section-banner avoid-navbar p-5">
+<section class="minimum-height">
+<section class="section-banner">
     <div class="container">
         <div class="row">
-            <div class="bg-klikit-5 rounded-4 p-5">
+            <div class="bg-klikit-5 rounded-4 py-5 avoid-navbar">
                 <div class="row align-items-center">
                     <div class="col-xl-6 col-12">
                         <h2 class="h1 mb-3">Inventário</h2>
@@ -231,6 +232,7 @@
         </div>
     </div>
 </section>
+</section>
 <section class="modal-form">
 <div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -326,20 +328,28 @@
 
                     
                     <div class="mb-3">
-                        <label for="filter-name" class="form-label">Nome</label>
-                        <input type="text" class="form-control" id="filter-name" name="name" placeholder="Digite o nome do produto">
+                        <label for="filter-name" class="form-label">*Nome</label>
+                        <input type="text" class="form-control" id="new-name" name="name" placeholder="Digite o nome do produto">
+                        <small id="new-nameHelp" class="form-text text-muted d-flex justify-content-between">
+                            <span>Nome oficial do produto</span>
+                            <span><span id="new-nameCount">0</span>/50</span>
+                        </small>
                     </div>
 
                     <div class="mb-3">
                         <label for="filter-insideId" class="form-label">Identificação Interna</label>
-                        <input type="text" class="form-control" id="filter-insideId" name="insideId" placeholder="Digite a identificação interna">
+                        <input type="text" class="form-control" id="new-insideId" name="insideId" placeholder="Digite a identificação interna">
+                        <small id="new-insideIdHelp" class="form-text text-muted d-flex justify-content-between">
+                            <span>Um nome não oficial do produto</span>
+                            <span><span id="new-insideIdCount">0</span>/50</span>
+                        </small>
                     </div>
 
                     <div class="mb-3">
                         <label for="new-category" class="form-label">Categorias</label>
                         <select class="form-select select2" id="new-category" name="category[]" multiple="multiple">
                             <?php foreach ($categories as $category): ?>
-                                <option value="<?= $category['id'] ?>"><?= $category['nome'] ?></option>
+                                <option value="{existing}<?= $category['id'] ?>"><?= $category['nome'] ?></option>
                             <?php endforeach; ?>
                         </select>
                     </div>

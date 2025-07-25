@@ -115,8 +115,8 @@ $(document).on('click', '#create-product-btn', function() {
     var formData = new FormData(form);
 
     //Verifica se o campo de nome e preço estão preenchidos
-    if (!formData.get('name') || !formData.get('price')) {
-        alert('Por favor, preencha os campos de nome e preço.');
+    if (!formData.get('name')) {
+        alert('Por favor, preencha os campo de nome');
         return;
     }
 

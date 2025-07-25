@@ -82,16 +82,15 @@ class stockController extends Core {
             'produto_ativo' => isset($post['active']) ? 1 : 0,
             'produto_palavras_chave' => isset($post['keywords']) ? implode('|', $post['keywords']) : '',
         ];
-        if (empty($insertData['produto_nome']) || empty($insertData['produto_valor'])) {
-            exit($this->renderApiResponse(400, "Nome e preço do produto são obrigatórios."));
+        if (empty($insertData['produto_nome'])) {
+            exit($this->renderApiResponse(400, "Nome do produto é obrigatório."));
         }
         $productId = $stockModel->insertProduct($insertData);
         if (!$productId) {
             exit($this->renderApiResponse(500, "Erro ao inserir produto."));
         } else {
             $categories = $post['category'] ?? [];
-            $remainingCategories = $stockModel->insertExistingCategories($categories, $store, $productId);
-            $stockModel->insertNewStoreCategories($remainingCategories, $productId, $store);
+            $stockModel->insertProductCategories($categories, $store, $productId);
             $post['thumbnail'] = $this->moveFile($_FILES['thumbnail']['tmp_name'] ?? '', 'uploads/products/'.$productId.'/thumbnail.'. pathinfo($_FILES['thumbnail']['name'] ?? '', PATHINFO_EXTENSION));
             $stockModel->updateThumbnail($post['thumbnail'], $productId);
         }
@@ -105,7 +104,7 @@ class stockController extends Core {
         $store = $this->getUser()['loja_id'] ?? 0;
         if (empty($store)) exit($this->renderApiResponse(400, "Loja não encontrada."));
         $product = $stockModel->getProductById($productId, $store);
-        if (!$product) exit($this->renderApiResponse(404, "Produto não encontrado."));
+        if (empty($product['id'])) header("Location: ".url('stock'));
         echo $this->view->render("stock/productDetails", [
             'layout' => [
                 'title' =>  $product['nome'].'- Artistar', 

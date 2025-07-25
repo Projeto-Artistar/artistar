@@ -42,12 +42,47 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 });
 
-    $(document).ready(function() {
+$(document).ready(function() {
+    $('#new-category').select2({
+        tags: true,
+        placeholder: "Selecione ou adicione uma nova categoria",
+        allowClear: true,
+        dropdownParent: $('#newModal'),
+        language: {
+            noResults: function() {
+                return "Adicione uma nova categoria";
+            }
+        }
+    });
+    $('#new-keywords').select2({
+        tags: true,
+        placeholder: "Selecione ou adicione uma nova palavra-chave",
+        allowClear: true,
+        dropdownParent: $('#newModal'),
+        language: {
+            noResults: function() {
+                return "Adicione uma nova palavra-chave";
+            }
+        }
+    });
+
+    $('#filter-category').select2({
+        placeholder: "Selecione uma ou mais categorias",
+        allowClear: true,
+        dropdownParent: $('#filterModal'),
+        language: {
+            noResults: function() {
+                return "Nenhuma categoria encontrada";
+            }
+        }
+    });
+
+    $('#newModal').on('shown.bs.modal', function () {
         $('#new-category').select2({
             tags: true,
             placeholder: "Selecione ou adicione uma nova categoria",
             allowClear: true,
-            dropdownParent: $('#newModal'),
+            dropdownParent: $('#newModal .modal-body'),
             language: {
                 noResults: function() {
                     return "Adicione uma nova categoria";
@@ -58,14 +93,13 @@ document.addEventListener("DOMContentLoaded", function() {
             tags: true,
             placeholder: "Selecione ou adicione uma nova palavra-chave",
             allowClear: true,
-            dropdownParent: $('#newModal'),
+            dropdownParent: $('#newModal .modal-body'),
             language: {
                 noResults: function() {
                     return "Adicione uma nova palavra-chave";
                 }
             }
         });
-
         $('#filter-category').select2({
             placeholder: "Selecione uma ou mais categorias",
             allowClear: true,
@@ -76,76 +110,64 @@ document.addEventListener("DOMContentLoaded", function() {
                 }
             }
         });
-
-        $('#newModal').on('shown.bs.modal', function () {
-            $('#new-category').select2({
-                tags: true,
-                placeholder: "Selecione ou adicione uma nova categoria",
-                allowClear: true,
-                dropdownParent: $('#newModal .modal-body'),
-                language: {
-                    noResults: function() {
-                        return "Adicione uma nova categoria";
-                    }
-                }
-            });
-            $('#new-keywords').select2({
-                tags: true,
-                placeholder: "Selecione ou adicione uma nova palavra-chave",
-                allowClear: true,
-                dropdownParent: $('#newModal .modal-body'),
-                language: {
-                    noResults: function() {
-                        return "Adicione uma nova palavra-chave";
-                    }
-                }
-            });
-            $('#filter-category').select2({
-                placeholder: "Selecione uma ou mais categorias",
-                allowClear: true,
-                dropdownParent: $('#filterModal'),
-                language: {
-                    noResults: function() {
-                        return "Nenhuma categoria encontrada";
-                    }
-                }
-            });
-        });
-
-        $('.moedaReal').inputmask('decimal', {
-            radixPoint:",",
-            groupSeparator: ".",
-            autoGroup: true,
-            digits: 2,
-            digitsOptional: false,
-            placeholder: '0',
-            rightAlign: false,
-            onBeforeMask: function (value, opts) {
-                return value;
-            }
-        });
-
-        function calcularLucro() {
-            let preco = $('#new-price').val();
-            let desconto = $('#new-discount').val();
-            let custo = $('#new-cost').val();
-
-            // Remove apenas pontos de milhares e troca vírgula por ponto
-            preco = preco ? parseFloat(preco.replace(/\./g, '').replace(',', '.')) : 0;
-            desconto = desconto ? parseFloat(desconto.replace(/\./g, '').replace(',', '.')) : 0;
-            custo = custo ? parseFloat(custo.replace(/\./g, '').replace(',', '.')) : 0;
-
-            let lucro = preco - (custo + desconto);
-
-            let lucroFormatado = lucro.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2});
-            $('#new-profit').val(lucroFormatado);
-        }
-
-        $('#new-price, #new-discount, #new-cost').on('input keyup change', calcularLucro);
-        $('#newModal').on('shown.bs.modal', calcularLucro);
     });
 
-   $(function() {
+    $('.moedaReal').inputmask('decimal', {
+        radixPoint:",",
+        groupSeparator: ".",
+        autoGroup: true,
+        digits: 2,
+        digitsOptional: false,
+        placeholder: '0',
+        rightAlign: false,
+        onBeforeMask: function (value, opts) {
+            return value;
+        }
+    });
+
+    function calcularLucro() {
+        let preco = $('#new-price').val();
+        let desconto = $('#new-discount').val();
+        let custo = $('#new-cost').val();
+
+        // Remove apenas pontos de milhares e troca vírgula por ponto
+        preco = preco ? parseFloat(preco.replace(/\./g, '').replace(',', '.')) : 0;
+        desconto = desconto ? parseFloat(desconto.replace(/\./g, '').replace(',', '.')) : 0;
+        custo = custo ? parseFloat(custo.replace(/\./g, '').replace(',', '.')) : 0;
+
+        let lucro = preco - (custo + desconto);
+
+        let lucroFormatado = lucro.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+        $('#new-profit').val(lucroFormatado);
+    }
+
+    $('#new-price, #new-discount, #new-cost').on('input keyup change', calcularLucro);
+    $('#newModal').on('shown.bs.modal', calcularLucro);
+
+    $('#new-name').on('input keyup change', function() {
+        $('#new-nameCount').text($(this).val().length);
+        if ($(this).val().length > 50) {
+            $(this).addClass('is-invalid');
+            $('#new-nameHelp').addClass('text-danger');
+        } else {
+            $(this).removeClass('is-invalid');
+            $('#new-nameHelp').removeClass('text-danger');
+        }
+    });
+
+    $('#new-insideId').on('input keyup change', function() {
+        $('#new-insideIdCount').text($(this).val().length);
+        if ($(this).val().length > 50) {
+            $(this).addClass('is-invalid');
+            $('#new-insideIdHelp').addClass('text-danger');
+        } else {
+            $(this).removeClass('is-invalid');
+            $('#new-insideIdHelp').removeClass('text-danger');
+        }
+    });
+});
+
+$(function() {
     const $area = $('#image-drop-area');
     const $input = $('#new-image');
     const $text = $('#image-drop-text');
@@ -200,8 +222,8 @@ $(document).on('click', '#create-product-btn', function() {
     var formData = new FormData(form);
 
     //Verifica se o campo de nome e preço estão preenchidos
-    if (!formData.get('name') || !formData.get('price')) {
-        alert('Por favor, preencha os campos de nome e preço.');
+    if (!formData.get('name')) {
+        alert('Por favor, preencha o campos de nome');
         return;
     }
 
