@@ -128,9 +128,11 @@ $(function() {
     calculaCaracteres($('#name'), '#nameHelp', '#nameCount');
 });
 
-$(document).on('click', '#create-product-btn', function() {
+$(document).on('click', '#create-product-btn, #create-product-btn-2', function() {
 
-    var form = $('#form-new-product')[0];
+    event.preventDefault();
+
+    var form = $('#product-details-form')[0];
     var formData = new FormData(form);
 
     //Verifica se o campo de nome e preço estão preenchidos
@@ -139,8 +141,10 @@ $(document).on('click', '#create-product-btn', function() {
         return;
     }
 
+    formData.append('productId', productId);
+
     $.ajax({
-        url: '/stock/newProduct',
+        url: '/stock/product/alter',
         type: 'POST',
         data: formData,
         processData: false,
@@ -148,9 +152,9 @@ $(document).on('click', '#create-product-btn', function() {
     }).done(function (response) {
         response = JSON.parse(response);
         if (response.code == 200) {
-            location.href = $('#form-new-product').attr('action'); // Redireciona para a ação do formulário
+            // location.href = $('#product-details-form').attr('action');
         } else {
-            console.error('Erro ao criar produto:', response.message);
+            console.error('Erro ao salvar as alterações do produto:', response.message);
         }
     }).fail(function (error) {
         console.error('An error occurred:', error);

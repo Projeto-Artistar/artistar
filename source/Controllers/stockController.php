@@ -117,4 +117,15 @@ class stockController extends Core {
         ]);
         return;
     }
+
+    public function alterProduct($post) {
+        $productId = $post['productId'] ?? 0;
+        $store = $this->getUser()['loja_id'] ?? 0; 
+        $stockModel = new Stock();
+        $product = $stockModel->getProductById($productId, $store);
+        if (empty($store)) exit($this->renderApiResponse(400, "Loja não encontrada."));
+        if (empty($product)) exit($this->renderApiResponse(400, "Produto não encontrado."));
+        
+        return;
+    }
 }

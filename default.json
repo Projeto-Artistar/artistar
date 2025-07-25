@@ -1,0 +1,44 @@
+{
+    "licenciamento": "1",
+    "auth": "1",
+    "log": "1",
+    "db": {
+        "host": "localhost",
+        "user": "root",
+        "pass": "",
+        "port": "",
+        "name": "homologa_turismo",
+        "timezone": "America/Sao_Paulo"
+    },
+	"access": "C:/Users/leoca/Desktop/ambientes/storage/database/credentials/",
+    "storage": {
+        "s3": {
+            "suppress_php_deprecation_warning": true,
+            "version": "2006-03-01",
+            "region": "us-east-1",
+            "credentials": {
+                "key": "AKIAXZ2FRCFMTGQCC4TT",
+                "secret": "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"
+            },
+            "buckets": {
+                "privado": {
+                    "name": "backsite-storage-lab-privado-01",
+                    "folder": "corporativo.localhost/",
+                    "url": "https://backsite-storage-lab-privado-01.s3.amazonaws.com/corporativo.localhost/"
+                },
+                "publico": {
+                    "name": "backsite-storage-lab-publico-01",
+                    "folder": "corporativo.localhost/",
+                    "url": "https://backsite-storage-lab-publico-01.s3.amazonaws.com/corporativo.localhost/"
+                }
+            }
+        },
+        "local": {
+            "privado": "C:/Users/leoca/Desktop/ambientes/storage/database/",
+            "publico": {
+                "path": "C:/Users/leoca/Desktop/ambientes/storage/web/datafiles/",
+                "url": "http://storage.localhost/datafiles/"
+            }
+       }    
+   }
+}

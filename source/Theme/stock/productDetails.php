@@ -27,7 +27,7 @@
                     <li><a class="dropdown-item" href="#">Duplicar</a></li>
                     <li><a class="dropdown-item" href="#">Excluir</a></li>
                 </ul>
-                <button type="submit" class="btn btn-stellar-blue" id="create-product-btn" form="new-product-form">Salvar Alterações</button>
+                <button type="submit" class="btn btn-stellar-blue" id="create-product-btn" form="product-details-form">Salvar Alterações</button>
             </div>
         </div>
     </div>
@@ -103,7 +103,7 @@
                             <?php 
                             $selectedCategories = explode(',', $product['categoriasIds'] ?? '');
                             foreach ($categories as $category): ?>
-                                <option value="<?= $category['id'] ?>" <?= in_array($category['id'], $selectedCategories) ? 'selected' : '' ?>><?= $category['nome'] ?></option>
+                                <option value="{existing}<?= $category['id'] ?>" <?= in_array($category['id'], $selectedCategories) ? 'selected' : '' ?>><?= $category['nome'] ?></option>
                             <?php endforeach; ?>
                         </select>
                     </div>
@@ -123,8 +123,8 @@
                 </div>
                 <div class="col-12 px-0 mb-3">
                     <div class="d-flex justify-content-sm-end justify-content-between">
-                        <button type="submit" class="btn btn-cotton-candy mx-sm-3" id="discard-changes-btn" form="new-product-form">Descartar Alterações</button>
-                        <button type="submit" class="btn btn-stellar-blue" id="create-product-btn-2" form="new-product-form">Salvar Alterações</button>
+                        <a class="btn btn-cotton-candy mx-sm-3" id="discard-changes-btn" href="<?=url('stock/product/'.$product['id'])?>">Descartar Alterações</a>
+                        <button type="submit" class="btn btn-stellar-blue" id="create-product-btn-2" form="product-details-form">Salvar Alterações</button>
                     </div>
                 </div>
             </div>
@@ -136,5 +136,8 @@
 <?= $this->start("js") ?>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.8/jquery.inputmask.min.js"></script>
+<script>
+    const productId = <?= $product['id'] ?>;
+</script>
 <script src="<?= url("assets/js/stock/productDetails.js") ?>"></script>
 <?= $this->stop() ?>
