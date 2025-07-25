@@ -48,6 +48,7 @@ $(document).ready(function() {
         placeholder: "Selecione ou adicione uma nova categoria",
         allowClear: true,
         dropdownParent: $('#newModal'),
+        width: '100%',
         language: {
             noResults: function() {
                 return "Adicione uma nova categoria";
@@ -59,6 +60,7 @@ $(document).ready(function() {
         placeholder: "Selecione ou adicione uma nova palavra-chave",
         allowClear: true,
         dropdownParent: $('#newModal'),
+        width: '100%',
         language: {
             noResults: function() {
                 return "Adicione uma nova palavra-chave";

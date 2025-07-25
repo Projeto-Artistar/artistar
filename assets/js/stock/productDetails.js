@@ -3,6 +3,7 @@ $(document).ready(function() {
         tags: true,
         placeholder: "Selecione ou adicione uma nova categoria",
         allowClear: true,
+        width: '100%',
         language: {
             noResults: function() {
                 return "Adicione uma nova categoria";
@@ -13,6 +14,7 @@ $(document).ready(function() {
         tags: true,
         placeholder: "Selecione ou adicione uma nova palavra-chave",
         allowClear: true,
+        width: '100%',
         language: {
             noResults: function() {
                 return "Adicione uma nova palavra-chave";
@@ -107,6 +109,23 @@ $(function() {
     }
 
     $('#price, #discount, #cost').on('input keyup change', calcularLucro);
+
+    function calculaCaracteres(input, help, count) {
+        $(count).text($(input).val().length);
+        if ($(input).val().length > 50) {
+            $(input).addClass('is-invalid');
+            $(help).addClass('text-danger');
+        } else {
+            $(input).removeClass('is-invalid');
+            $(help).removeClass('text-danger');
+        }
+    }
+
+    $('#name').on('input keyup change', function() {
+        calculaCaracteres(this, '#nameHelp', '#nameCount');
+    });
+
+    calculaCaracteres($('#name'), '#nameHelp', '#nameCount');
 });
 
 $(document).on('click', '#create-product-btn', function() {

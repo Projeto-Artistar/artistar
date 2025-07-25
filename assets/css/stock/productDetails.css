@@ -28,6 +28,10 @@
     z-index: 2;
 }
 
-.select2 {
-    width:100%!important;
-}
+/* .select2-container {
+    width: 100% !important;;
+    min-width: 0 !important;
+} */
+/* .select2-selection--multiple {
+    box-sizing: border-box;
+} */

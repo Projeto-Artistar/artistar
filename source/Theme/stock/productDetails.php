@@ -10,13 +10,17 @@
     <div class="row avoid-navbar">
         <div class="col-sm-6 col-12 mb-3 mb-sm-0 px-sm-0">
             <div>
-                <input type="text" value="<?= $product['nome'] ?>" class="form-control input-stellar-blue" id="filter-name" name="name" placeholder="Digite o nome do produto">
+                <input type="text" value="<?= $product['nome'] ?>" class="form-control input-stellar-blue" id="name" name="name" placeholder="Digite o nome do produto">
+                <small id="nameHelp" class="form-text text-muted d-flex justify-content-between">
+                    <span>Nome oficial do produto</span>
+                    <span><span id="nameCount">0</span>/50</span>
+                </small>
             </div>
         </div>
         <div class="col-sm-6 col-12 px-sm-0">
-            <div class="d-flex justify-content-end">
+            <div class="d-flex justify-content-sm-end justify-content-between">
                 <!-- 3 dots button with dropdown -->
-                <button type="button" class="btn btn-nocturne-purple dropdown-toggle mx-3" data-bs-toggle="dropdown" aria-expanded="false">
+                <button type="button" class="btn btn-nocturne-purple dropdown-toggle mx-sm-3" data-bs-toggle="dropdown" aria-expanded="false">
                     <i class="fa-solid fa-ellipsis-vertical"></i>
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end">
@@ -66,33 +70,33 @@
             <div class="row ps-lg-3">
                 <div class="col-12 border rounded p-3 mb-3">
                     <div class="row">
-                        <div class="mb-3 col-4">
+                        <div class="mb-3 col-md-4 col-sm-6 col-12">
                             <label for="price" class="form-label">Preço</label>
                             <input type="text" class="form-control moedaReal" id="price" name="price" value="<?= $product['valor'] ?>">
                         </div>
-                        <div class="mb-3 col-4">
+                        <div class="mb-3 col-md-4 col-sm-6 col-12">
                             <label for="discount" class="form-label">Desconto (R$)</label>
                             <input type="text" class="form-control moedaReal" id="discount" name="discount" value="<?= $product['valor_desconto'] ?>">
                         </div>
-                        <div class="mb-3 col-4">
+                        <div class="mb-3 col-md-4 col-sm-6 col-12">
                         <label for="cost" class="form-label">Custo</label>
                             <input type="text" class="form-control moedaReal" id="cost" name="cost" value="<?= $product['custo'] ?>">
                         </div>
-                        <div class="mb-3 col-4">
+                        <div class="mb-3 col-md-4 col-sm-6 col-12">
                             <label for="real_price" class="form-label">Preço Atual</label>
                             <input type="text" disabled class="form-control moedaReal" id="real_price" name="real_price" value="<?= $product['valor'] - $product['valor_desconto'] ?>">
                         </div>
-                        <div class="mb-3 col-4">
+                        <div class="mb-3 col-md-4 col-sm-6 col-12">
                             <label for="discount_percentage" class="form-label">Desconto (%)</label>
                             <input type="text" disabled class="form-control moedaReal" id="discount_percentage" name="discount_percentage" value="<?= $product['valor'] > 0 ? (($product['valor_desconto'] * 100) / $product['valor']) : 0.00?>">
                         </div>
-                        <div class="mb-3 col-4">
+                        <div class="mb-3 col-md-4 col-sm-6 col-12">
                             <label for="margin" class="form-label">Margem</label>
                             <input type="text" disabled class="form-control moedaReal" id="margin" name="margin" value="<?= ($product['valor'] - $product['valor_desconto']) - $product['custo'] ?>">
                         </div>
                     </div>
                 </div>
-                <div class="col-12 border rounded p-3 mb-3">
+                <div id="category-box" class="col-12 border rounded p-3 mb-3">
                     <div class="mb-3">
                         <label for="category" class="form-label">Categorias</label>
                         <select class="form-select select2" id="category" name="category[]" multiple="multiple">
@@ -110,6 +114,7 @@
                         <select class="form-select select2" id="keywords" name="keywords[]" multiple="multiple">
                             <?php 
                             $keywords = explode('|', $product['palavras_chave'] ?? '');
+                            if (empty($keywords[0])) $keywords = [];
                             foreach ($keywords as $keyword): ?>
                                 <option selected value="<?= $keyword ?>" selected><?= $keyword ?></option>
                             <?php endforeach; ?>
@@ -117,8 +122,8 @@
                     </div>
                 </div>
                 <div class="col-12 px-0 mb-3">
-                    <div class="d-flex justify-content-end">
-                        <button type="submit" class="btn btn-cotton-candy  mx-3" id="discard-changes-btn" form="new-product-form">Descartar Alterações</button>
+                    <div class="d-flex justify-content-sm-end justify-content-between">
+                        <button type="submit" class="btn btn-cotton-candy mx-sm-3" id="discard-changes-btn" form="new-product-form">Descartar Alterações</button>
                         <button type="submit" class="btn btn-stellar-blue" id="create-product-btn-2" form="new-product-form">Salvar Alterações</button>
                     </div>
                 </div>

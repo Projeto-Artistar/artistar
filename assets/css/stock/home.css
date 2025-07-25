@@ -32,10 +32,6 @@
     z-index: 2;
 }
 
-.select2 {
-    width:100%!important;
-}
-
 .thumbnail-product {
     aspect-ratio: 300 / 200;
     object-fit: cover;
