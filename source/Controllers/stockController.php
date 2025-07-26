@@ -125,7 +125,72 @@ class stockController extends Core {
         $product = $stockModel->getProductById($productId, $store);
         if (empty($store)) exit($this->renderApiResponse(400, "Loja não encontrada."));
         if (empty($product)) exit($this->renderApiResponse(400, "Produto não encontrado."));
-        
+        $update = [
+            'produto_nome' => $post['name'] ?? '',
+            'produto_descricao' => $post['description'] ?? '',
+            'produto_valor' => desconverteMoedaReal($post['price']),
+            'produto_valor_desconto' => desconverteMoedaReal($post['discount'] ?? '0'),
+            'produto_custo' => desconverteMoedaReal($post['cost'] ?? '0'),
+            'produto_estoque' => $post['stock'] ?? 0,
+            'produto_estoque_minimo' => $post['min_stock'] ?? 0,
+            'produto_ativo' => isset($post['active']) ? 1 : 0,
+            'produto_palavras_chave' => isset($post['keywords']) ? implode('|', $post['keywords']) : '',
+            'produto_codigo_interno' => $post['insideId'] ?? ''
+        ];
+        try {
+            $stockModel->updateProduct($productId, $store, $update);
+            if (!isset($post['category'])) $post['category'] = [];
+            $stockModel->addNewProductCategories($post['category'], $store, $productId);
+            if (!empty($_FILES['thumbnail']['tmp_name'])) {
+                $newThumbnail = $this->moveFile($_FILES['thumbnail']['tmp_name'] ?? '', 'uploads/products/'.$productId.'/thumbnail.'. pathinfo($_FILES['thumbnail']['name'] ?? '', PATHINFO_EXTENSION));
+                $stockModel->updateThumbnail($newThumbnail, $productId);
+            }
+        } catch (Exception $e) {
+            exit($this->renderApiResponse(500, "Erro ao atualizar produto: " . $e->getMessage()));
+        }
+
+        exit($this->renderApiResponse(200, "Produto atualizado com sucesso."));
+
         return;
+    }
+
+    public function duplicateProduct($post) {
+        $productId = $post['productId'] ?? 0;
+        $store = $this->getUser()['loja_id'] ?? 0; 
+        $stockModel = new Stock();
+        $product = $stockModel->getProductById($productId, $store);
+        if (empty($store)) exit($this->renderApiResponse(400, "Loja não encontrada."));
+        if (empty($product)) exit($this->renderApiResponse(400, "Produto não encontrado."));
+        
+        try {
+            $newProductId = $stockModel->duplicateProduct($productId, $store);
+            if (!$newProductId) exit($this->renderApiResponse(500, "Erro ao duplicar produto."));
+            $stockModel->duplicateProductCategories($productId, $newProductId, $store);
+            $newThumbnail = $this->copyFile($product['thumbnail'], 'uploads/products/'.$newProductId.'/thumbnail.'. pathinfo($product['thumbnail'], PATHINFO_EXTENSION));  
+            if($newThumbnail) $stockModel->updateThumbnail($newThumbnail, $newProductId);
+        } catch (Exception $e) {
+            exit($this->renderApiResponse(500, "Erro ao duplicar produto: " . $e->getMessage()));
+        }
+
+        exit($this->renderApiResponse(200, "Produto duplicado com sucesso.", ['newProductId' => $newProductId]));
+    }
+
+    public function deleteProduct($post) {
+        $productId = $post['productId'] ?? 0;
+        $store = $this->getUser()['loja_id'] ?? 0; 
+        $stockModel = new Stock();
+        $product = $stockModel->getProductById($productId, $store);
+        if (empty($store)) exit($this->renderApiResponse(400, "Loja não encontrada."));
+        if (empty($product)) exit($this->renderApiResponse(400, "Produto não encontrado."));
+        
+        try {
+            $stockModel->deleteProduct($productId, $store);
+            $stockModel->deleteProductCategories($productId, $store);
+            $this->deleteFile('uploads/products/'.$productId.'/thumbnail.'. pathinfo($product['thumbnail'], PATHINFO_EXTENSION));
+        } catch (Exception $e) {
+            exit($this->renderApiResponse(500, "Erro ao excluir produto: " . $e->getMessage()));
+        }
+
+        exit($this->renderApiResponse(200, "Produto excluído com sucesso."));
     }
 }

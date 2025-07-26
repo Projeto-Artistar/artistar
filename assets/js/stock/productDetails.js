@@ -125,7 +125,13 @@ $(function() {
         calculaCaracteres(this, '#nameHelp', '#nameCount');
     });
 
+    $('#insideId').on('input keyup change', function() {
+        calculaCaracteres(this, '#insideIdHelp', '#insideIdCount');
+    });
+
+    calcularLucro();
     calculaCaracteres($('#name'), '#nameHelp', '#nameCount');
+    calculaCaracteres($('#insideId'), '#insideIdHelp', '#insideIdCount');
 });
 
 $(document).on('click', '#create-product-btn, #create-product-btn-2', function() {
@@ -152,12 +158,117 @@ $(document).on('click', '#create-product-btn, #create-product-btn-2', function()
     }).done(function (response) {
         response = JSON.parse(response);
         if (response.code == 200) {
-            // location.href = $('#product-details-form').attr('action');
+            // Update toast content for success
+            $('#toastTitle').text('Alteração Salva!');
+            $('#toastBody').text(response.message);
+            $('#myToast').removeClass('bg-danger')
+            $('#myToast').addClass('bg-success');
+            // Show the toast
+            var myToast = new bootstrap.Toast(document.getElementById('myToast'));
+            myToast.show();
         } else {
             console.error('Erro ao salvar as alterações do produto:', response.message);
+            // Update toast content for error
+            $('#toastTitle').text('Erro ao Salvar!');
+            $('#toastBody').text('Ocorreu um erro: ' + response.message);
+            //remove class bg-success
+            $('#myToast').removeClass('bg-success');
+            // Add class bg-danger
+            $('#myToast').addClass('bg-danger');
+            // Show the toast
+            var myToast = new bootstrap.Toast(document.getElementById('myToast'));
+            myToast.show();
         }
     }).fail(function (error) {
-        console.error('An error occurred:', error);
+        console.error('Ocorreu um erro:', error);
+        // Update toast content for error
+        $('#toastTitle').text('Erro ao Salvar!');
+        $('#toastBody').text('Ocorreu um erro ao salvar as alterações do produto.');
+                    //remove class bg-success
+            $('#myToast').removeClass('bg-success');
+            // Add class bg-danger
+            $('#myToast').addClass('bg-danger');
+        // Show the toast
+        var myToast = new bootstrap.Toast(document.getElementById('myToast'));
+        myToast.show();
     });
 });
     
+$(document).on('click', '#accept-duplicate', function() {
+    $.ajax({
+        url: '/stock/product/duplicate',
+        type: 'POST',
+        //Send data not as a object, just the productId
+        data: { productId: productId },
+        // processData: false,
+        // contentType: false
+    }).done(function (response) {
+        response = JSON.parse(response);
+        if (response.code == 200) {
+            // Update toast content for success
+            window.location.href = '/stock/product/' + response.data.newProductId;
+        } else {
+            console.error('Erro ao duplicar o produto:', response.message);
+            // Update toast content for error
+            $('#toastTitle').text('Erro ao Duplicar!');
+            $('#toastBody').text('Ocorreu um erro: ' + response.message);
+            //remove class bg-success
+            $('#myToast').removeClass('bg-success');
+            // Add class bg-danger
+            $('#myToast').addClass('bg-danger');
+            // Show the toast
+            var myToast = new bootstrap.Toast(document.getElementById('myToast'));
+            myToast.show();
+        }
+    }).fail(function (error) {
+        console.error('Ocorreu um erro:', error);
+        // Update toast content for error
+        $('#toastTitle').text('Erro ao Duplicar!');
+        $('#toastBody').text('Ocorreu um erro ao duplicar o produto.');
+        //remove class bg-success
+        $('#myToast').removeClass('bg-success');
+        // Add class bg-danger
+        $('#myToast').addClass('bg-danger');
+        // Show the toast
+        var myToast = new bootstrap.Toast(document.getElementById('myToast'));
+        myToast.show();
+    });
+});
+
+$(document).on('click', '#accept-delete', function() {
+    $.ajax({
+        url: '/stock/product/delete',
+        type: 'POST',
+        data: { productId: productId }
+    }).done(function (response) {
+        response = JSON.parse(response);
+        if (response.code == 200) {
+            alert('Produto excluído com sucesso!');
+            window.location.href = '/stock';
+        } else {
+            console.error('Erro ao excluir o produto:', response.message);
+            // Update toast content for error
+            $('#toastTitle').text('Erro ao Excluir!');
+            $('#toastBody').text('Ocorreu um erro: ' + response.message);
+            //remove class bg-success
+            $('#myToast').removeClass('bg-success');
+            // Add class bg-danger
+            $('#myToast').addClass('bg-danger');
+        }
+        // Show the toast
+        var myToast = new bootstrap.Toast(document.getElementById('myToast'));
+        myToast.show();
+    }).fail(function (error) {
+        console.error('Ocorreu um erro:', error);
+        // Update toast content for error
+        $('#toastTitle').text('Erro ao Excluir!');
+        $('#toastBody').text('Ocorreu um erro ao excluir o produto.');
+        //remove class bg-success
+        $('#myToast').removeClass('bg-success');
+        // Add class bg-danger
+        $('#myToast').addClass('bg-danger');
+        // Show the toast
+        var myToast = new bootstrap.Toast(document.getElementById('myToast'));
+        myToast.show();
+    });
+});

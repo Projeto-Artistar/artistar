@@ -174,4 +174,28 @@ class Core
             return false;
         }
     }
+
+    public function copyFile($source, $destination) {
+        if (!file_exists(dirname(__DIR__, 2) . $source)) return false;
+        $root = dirname(__DIR__, 2) . "/datafiles/";
+        $fullDestination = $root . $destination;
+        if (!file_exists(dirname($fullDestination))) {
+            mkdir(dirname($fullDestination), 0777, true);
+        }
+        if (copy(dirname(__DIR__, 2) . $source, $fullDestination)) {
+            return "/datafiles/" . $destination;
+        } else {
+            return false;
+        }
+    }
+
+    public function deleteFile($path) {
+        $fullPath = dirname(__DIR__, 2) . "/datafiles/" . $path;
+        if (file_exists($fullPath)) {
+            unlink($fullPath);
+            if (empty(glob(dirname($fullPath) . '/*'))) rmdir(dirname($fullPath));
+            return true;
+        }
+        return false;
+    }
 }

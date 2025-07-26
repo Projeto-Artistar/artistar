@@ -46,9 +46,9 @@
                     <!-- Input de pesquisa com ícone de lupa -->
                     <div class="input-group me-3">
                         <input type="search" class="form-control input-stellar-blue" placeholder="Pesquisar produtos..." name="search" value="<?= $search ?>">
-                        <!-- <button class="btn btn-outline-kiklit-2" type="submit">
+                        <button class="btn btn-outline-stellar-blue" type="submit">
                             <i class="fas fa-search"></i> 
-                        </button> -->
+                        </button>
                     </div>
                     <a class="btn btn-outline-stellar-blue btn-md" id="filter-button" data-bs-toggle="modal" data-bs-target="#filterModal">
                         Filtros
@@ -72,7 +72,7 @@
             <div class="col-lg-12 col-md-12 col-sm-12 d-flex justify-content-between align-items-center mb-3">
                 <div class="d-flex align-items-center">
                     <?php
-                        if (!empty($filter['status'])) echo '<span class="badge bg-light text-dark me-1">Situação : ' . ($filter['status'] == 'active' ? 'Ativo' : 'Inativo') . '</span>';
+                        if (!empty($filter['status'])) echo '<span class="badge bg-light text-dark me-1">Status : ' . ($filter['status'] == 'active' ? 'Ativo' : 'Inativo') . '</span>';
                         if (!empty($filter['category'])) {
                             $selectedCategoriesLabels = [];
                             foreach ($categories as $category)

@@ -24,8 +24,16 @@
                     <i class="fa-solid fa-ellipsis-vertical"></i>
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end">
-                    <li><a class="dropdown-item" href="#">Duplicar</a></li>
-                    <li><a class="dropdown-item" href="#">Excluir</a></li>
+                    <li>
+                        <a class="dropdown-item" href="#" id="duplicate-product" data-bs-toggle="modal" data-bs-target="#duplicateModal">
+                            <i class="fa fa-clone me-1" aria-hidden="true"></i> Duplicar
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="#" id="delete-product" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                            <i class="fa fa-trash me-1" aria-hidden="true"></i> Excluir
+                        </a>
+                    </li>
                 </ul>
                 <button type="submit" class="btn btn-stellar-blue" id="create-product-btn" form="product-details-form">Salvar Alterações</button>
             </div>
@@ -50,6 +58,10 @@
                     <div class="mb-3">
                         <label for="insideId" class="form-label">Identificação Interna</label>
                         <input type="text" value="<?= $product['identificacao_interno']?>" class="form-control input-stellar-blue" id="insideId" name="insideId" placeholder="Digite a identificação interna">
+                        <small id="insideIdHelp" class="form-text text-muted d-flex justify-content-between">
+                            <span>Um nome não oficial do produto</span>
+                            <span><span id="insideIdCount">0</span>/50</span>
+                        </small>
                     </div>
                 </div>
                 <div class="col-12">
@@ -60,8 +72,8 @@
                 </div>
                 <div class="col-12">
                     <div class="mb-3form-check form-switch form-switch-sm">
-                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" name="active" checked>
-                        <label class="form-check-label" for="flexSwitchCheckDefault" value="1" <?= $product['ativo'] ?? 'checked' ?>>Produto Ativo</label>
+                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" name="active" value="1" <?= $product['ativo'] ? 'checked' : '' ?>>
+                        <label class="form-check-label" for="flexSwitchCheckDefault">Produto Ativo</label>
                     </div>
                 </div>
             </div>
@@ -72,27 +84,27 @@
                     <div class="row">
                         <div class="mb-3 col-md-4 col-sm-6 col-12">
                             <label for="price" class="form-label">Preço</label>
-                            <input type="text" class="form-control moedaReal" id="price" name="price" value="<?= $product['valor'] ?>">
+                            <input type="text" class="form-control moedaReal" id="price" name="price" value="<?= moedaReal($product['valor']) ?>">
                         </div>
                         <div class="mb-3 col-md-4 col-sm-6 col-12">
                             <label for="discount" class="form-label">Desconto (R$)</label>
-                            <input type="text" class="form-control moedaReal" id="discount" name="discount" value="<?= $product['valor_desconto'] ?>">
+                            <input type="text" class="form-control moedaReal" id="discount" name="discount" value="<?= moedaReal($product['valor_desconto']) ?>">
                         </div>
                         <div class="mb-3 col-md-4 col-sm-6 col-12">
                         <label for="cost" class="form-label">Custo</label>
-                            <input type="text" class="form-control moedaReal" id="cost" name="cost" value="<?= $product['custo'] ?>">
+                            <input type="text" class="form-control moedaReal" id="cost" name="cost" value="<?= moedaReal($product['custo']) ?>">
                         </div>
                         <div class="mb-3 col-md-4 col-sm-6 col-12">
                             <label for="real_price" class="form-label">Preço Atual</label>
-                            <input type="text" disabled class="form-control moedaReal" id="real_price" name="real_price" value="<?= $product['valor'] - $product['valor_desconto'] ?>">
+                            <input type="text" disabled class="form-control moedaReal" id="real_price" name="real_price" value="<?= moedaReal($product['valor'] - $product['valor_desconto']) ?>">
                         </div>
                         <div class="mb-3 col-md-4 col-sm-6 col-12">
                             <label for="discount_percentage" class="form-label">Desconto (%)</label>
-                            <input type="text" disabled class="form-control moedaReal" id="discount_percentage" name="discount_percentage" value="<?= $product['valor'] > 0 ? (($product['valor_desconto'] * 100) / $product['valor']) : 0.00?>">
+                            <input type="text" disabled class="form-control" id="discount_percentage" name="discount_percentage" value="<?= $product['valor'] > 0 ? (($product['valor_desconto'] * 100) / $product['valor']) : 0.00 ?>">
                         </div>
                         <div class="mb-3 col-md-4 col-sm-6 col-12">
                             <label for="margin" class="form-label">Margem</label>
-                            <input type="text" disabled class="form-control moedaReal" id="margin" name="margin" value="<?= ($product['valor'] - $product['valor_desconto']) - $product['custo'] ?>">
+                            <input type="text" disabled class="form-control moedaReal" id="margin" name="margin" value="<?= moedaReal(($product['valor'] - $product['valor_desconto']) - $product['custo']) ?>">
                         </div>
                     </div>
                 </div>
@@ -103,7 +115,7 @@
                             <?php 
                             $selectedCategories = explode(',', $product['categoriasIds'] ?? '');
                             foreach ($categories as $category): ?>
-                                <option value="{existing}<?= $category['id'] ?>" <?= in_array($category['id'], $selectedCategories) ? 'selected' : '' ?>><?= $category['nome'] ?></option>
+                                <option value="<?= in_array($category['id'], $selectedCategories) ? '{selected}' : ''?>{existing}<?= $category['id'] ?>" <?= in_array($category['id'], $selectedCategories) ? 'selected' : '' ?>><?= $category['nome'] ?></option>
                             <?php endforeach; ?>
                         </select>
                     </div>
@@ -121,6 +133,18 @@
                         </select>
                     </div>
                 </div>
+                <div class="col-12 border rounded p-3 mb-3">
+                    <div class="row">
+                        <div class="mb-3 col-sm-6 col-12">
+                            <label for="stock" class="form-label">Estoque</label>
+                            <input type="number" min="0" class="form-control" id="stock" name="stock" value="<?= $product['estoque'] ?>">
+                        </div>
+                        <div class="mb-3 col-sm-6 col-12">
+                            <label for="min_stock" class="form-label">Estoque Mínimo</label>
+                            <input type="number" min="0" class="form-control" id="min_stock" name="min_stock" value="<?= $product['estoque_minimo'] ?>">
+                        </div>
+                    </div>
+                </div>
                 <div class="col-12 px-0 mb-3">
                     <div class="d-flex justify-content-sm-end justify-content-between">
                         <a class="btn btn-cotton-candy mx-sm-3" id="discard-changes-btn" href="<?=url('stock/product/'.$product['id'])?>">Descartar Alterações</a>
@@ -131,6 +155,55 @@
         </div>
     </div>
 </form>
+<section id="toasts-section">
+    <div class="toast align-items-center text-light bg-success border-0 toast-sucesso m-3" id="myToast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="3000">
+        <div class="toast-header">
+            <strong class="me-auto" id="toastTitle">Título</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body" id="toastBody">
+            Mensagem do toast.
+        </div>
+    </div>
+</section>
+<section class="modal-form">
+    <div class="modal fade" id="duplicateModal" tabindex="-1" aria-labelledby="duplicateModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="duplicateModalLabel">Duplicar</h5>
+                    <button type="button" class="btn-close input-stellar-blue" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Você tem certeza que deseja duplicar o produto <strong>"<?= $product['nome'] ?>"</strong> com o nome <strong>"Cópia - <?= $product['nome'] ?>"</strong>?<br>
+                    Esta ação criará uma cópia do produto com todas as informações, exceto o ID do produto, que será novo.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-fog-gray" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-stellar-blue" id="accept-duplicate">Duplicar!</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">Excluir</h5>
+                    <button type="button" class="btn-close input-stellar-blue" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Você tem certeza que deseja excluir o produto <strong>"<?= $product['nome'] ?>"</strong>?<br>
+                    Esta ação não poderá ser desfeita.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-fog-gray" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-nocturne-purple" id="accept-delete">Excluir!</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 <?= $this->stop() ?>
 
 <?= $this->start("js") ?>

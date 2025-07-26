@@ -59,6 +59,8 @@ function url($path)
     return "/";
 }
 
+include 'Functions/money.php';
+
 // function getBucket($path){
 //     if($path){
 //         return explode("/datafiles", BUCKET_URL)[0]."/{$path}";

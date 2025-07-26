@@ -11,7 +11,15 @@ class Stock extends Core {
     public function buildWhereStock($search = [], $filter = []) {
         $where = [];
         if (!empty($search)) {
-            $where[] = "(produto_nome LIKE '%{$search}%' OR produto_palavras_chave LIKE '%{$search}%')";
+            $where[] = "(
+                produto_nome LIKE '%{$search}%' 
+            OR 
+                produto_palavras_chave LIKE '%{$search}%'
+            OR
+                produto_descricao LIKE '%{$search}%'
+            OR
+                produto_codigo_interno LIKE '%{$search}%'
+            )";
         }
         if (!empty($filter['status'])) {
             if ($filter['status'] == 'active') {
@@ -343,4 +351,163 @@ class Stock extends Core {
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+
+    public function updateProduct($productId, $store, $data) {
+        $stmt = $this->SQL->prepare("
+            UPDATE produtos SET
+                produto_nome = :produto_nome,
+                produto_descricao = :produto_descricao,
+                produto_valor = :produto_valor,
+                produto_valor_desconto = :produto_valor_desconto,
+                produto_custo = :produto_custo,
+                produto_estoque = :produto_estoque,
+                produto_estoque_minimo = :produto_estoque_minimo,
+                produto_ativo = :produto_ativo,
+                produto_palavras_chave = :produto_palavras_chave,
+                produto_codigo_interno = :produto_codigo_interno
+            WHERE
+                produto_id = :produto_id
+            AND
+                produto_loja = :produto_loja
+        ");
+        $data[':produto_id'] = $productId;
+        $data[':produto_loja'] = $store;
+        return $stmt->execute($data);
+    }
+
+    public function addNewProductCategories($categories, $store, $productId) {
+        if (empty($categories)) return [];
+        $trueCategories = [];
+        $insertCategories = [];
+        foreach ($categories as $category) {
+            
+            if (strpos($category, '{selected}') === 0) {
+                $categoryId = str_replace('{selected}', '', $category);
+                $categoryId = str_replace('{existing}', '', $categoryId);
+                $trueCategories[] = $categoryId;
+                continue;
+            }
+            $categoryId = NULL;
+            if (strpos($category, '{existing}') === 0) {
+                $categoryId = str_replace('{existing}', '', $category);
+            } else {
+                $categoryId = $this->insertNewStoreCategory($category, $store);
+                $insertCategories[] = $categoryId;
+            }
+            $insertCategories[] = $categoryId;
+            $trueCategories[] = $categoryId;
+        }
+        
+        unset($categories);  
+
+        $trueCategories = array_map('intval', $trueCategories);
+        $trueCategories = array_filter($trueCategories);
+
+        $stmt = $this->SQL->prepare("
+            INSERT INTO categoria_produtos (categoria_produto_categoria, categoria_produto_produto)
+            VALUES (:category, :productId)
+        ");
+        foreach ($insertCategories as $category) {
+            $stmt->execute([
+                ':category' => $category,
+                ':productId' => $productId,
+            ]);
+        }
+
+        if (empty($trueCategories)) $trueCategories[] = 0;
+
+        $stmt = $this->SQL->prepare("
+            DELETE FROM 
+                categoria_produtos 
+            WHERE 
+                categoria_produto_produto = :productId 
+            AND 
+                categoria_produto_categoria NOT IN (" . implode(',', $trueCategories) . ")
+        ");
+        $stmt->execute([':productId' => $productId]);
+
+        return true;
+    }
+
+    public function duplicateProduct($productId, $store) {
+        $stmt = $this->SQL->prepare("
+            INSERT INTO produtos (
+                produto_nome, 
+                produto_descricao, 
+                produto_valor, 
+                produto_valor_desconto, 
+                produto_custo, produto_estoque, 
+                produto_estoque_minimo, produto_ativo, 
+                produto_palavras_chave, 
+                produto_codigo_interno, 
+                produto_loja
+            )
+            SELECT 
+                CONCAT('Cópia - ', produto_nome), 
+                produto_descricao, 
+                produto_valor, 
+                produto_valor_desconto, 
+                produto_custo, 
+                produto_estoque, 
+                produto_estoque_minimo, 
+                produto_ativo, 
+                produto_palavras_chave, 
+                produto_codigo_interno, 
+                :store
+            FROM 
+                produtos
+            WHERE 
+                produto_id = :productId 
+            AND 
+                produto_loja = :store
+        ");
+        $stmt->bindValue(":productId", $productId);
+        $stmt->bindValue(":store", $store);
+        $stmt->execute();
+
+        return $this->SQL->lastInsertId();
+    }
+
+    public function duplicateProductCategories($productId, $newProductId, $store) {
+        $stmt = $this->SQL->prepare("
+            INSERT INTO 
+                categoria_produtos (categoria_produto_categoria, categoria_produto_produto)
+            SELECT 
+                categoria_produto_categoria, 
+                :newProductId
+            FROM 
+                categoria_produtos
+            WHERE 
+                categoria_produto_produto = :productId
+        ");
+        $stmt->bindValue(":productId", $productId);
+        $stmt->bindValue(":newProductId", $newProductId);
+        return $stmt->execute();
+    }
+
+    public function deleteProduct($productId, $store) {
+        $stmt = $this->SQL->prepare("
+            DELETE FROM 
+                produtos 
+            WHERE 
+                produto_id = :productId 
+            AND 
+                produto_loja = :store
+        ");
+        $stmt->bindValue(":productId", $productId);
+        $stmt->bindValue(":store", $store);
+        return $stmt->execute();
+    }
+
+    public function deleteProductCategories($productId) {
+        $stmt = $this->SQL->prepare("
+            DELETE FROM 
+                categoria_produtos 
+            WHERE 
+                categoria_produto_produto = :productId 
+        ");
+        $stmt->bindValue(":productId", $productId);
+        return $stmt->execute();
+    }
+
 }

@@ -72,6 +72,7 @@ $(document).ready(function() {
         placeholder: "Selecione uma ou mais categorias",
         allowClear: true,
         dropdownParent: $('#filterModal'),
+        width: '100%',
         language: {
             noResults: function() {
                 return "Nenhuma categoria encontrada";
@@ -85,6 +86,7 @@ $(document).ready(function() {
             placeholder: "Selecione ou adicione uma nova categoria",
             allowClear: true,
             dropdownParent: $('#newModal .modal-body'),
+            width: '100%',
             language: {
                 noResults: function() {
                     return "Adicione uma nova categoria";
@@ -96,6 +98,7 @@ $(document).ready(function() {
             placeholder: "Selecione ou adicione uma nova palavra-chave",
             allowClear: true,
             dropdownParent: $('#newModal .modal-body'),
+            width: '100%',
             language: {
                 noResults: function() {
                     return "Adicione uma nova palavra-chave";
@@ -106,6 +109,7 @@ $(document).ready(function() {
             placeholder: "Selecione uma ou mais categorias",
             allowClear: true,
             dropdownParent: $('#filterModal'),
+            width: '100%',
             language: {
                 noResults: function() {
                     return "Nenhuma categoria encontrada";
@@ -225,7 +229,7 @@ $(document).on('click', '#create-product-btn', function() {
 
     //Verifica se o campo de nome e preço estão preenchidos
     if (!formData.get('name')) {
-        alert('Por favor, preencha o campos de nome');
+        alert('Por favor, preencha o campo de nome');
         return;
     }
 
