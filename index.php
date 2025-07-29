@@ -17,8 +17,8 @@ $router->group(NULL);
 $router->get("/", "homeController:home", "homeController.home");
 $router->get("/login", "homeController:login", "homeController.login");
 
-$router->group('begin');
-$router->get("/", "beginController:home", "beginController.home");
+$router->group('sales');
+$router->get("/", "salesController:home", "salesController.home");
 
 
 

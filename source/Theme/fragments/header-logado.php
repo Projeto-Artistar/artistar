@@ -7,11 +7,11 @@
 
             <ul class="nav col-12 me-md-auto mb-2 mb-md-0 d-none d-md-flex">
                 <li>
-                    <a href="/sales" class="btn btn-nocturne-purple mx-2">
+                    <a href="<?= url("sales") ?>" class="btn btn-nocturne-purple mx-2">
                         <i class="fa-solid fa-plus bi" style="width:24px; text-align: center;"></i> Nova Venda
                     </a>
                 </li>
-                <li><a href="/stock" class="nav-link px-2 link-nocturne-purple link-hover">Inventário</a></li>
+                <li><a href="<?= url("stock") ?>" class="nav-link px-2 link-nocturne-purple link-hover">Inventário</a></li>
             </ul>
         </div>
         <div id="barra-direita" class="d-flex">
