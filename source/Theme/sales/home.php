@@ -45,6 +45,44 @@
             </div>
         </div>
     </div>
+    <section class="modal-form">
+        <div class="modal fade" id="insertModal" tabindex="-1" aria-labelledby="insertModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="insertModalLabel">Finalizar Venda</h5>
+                        <button type="button" class="btn-close input-stellar-blue" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Você está prestes a finalizar a venda. Por favor, confirme os detalhes abaixo:
+                        <div class="my-3">
+                            Total da Venda: <span class="color-nocturne-purple">R$<span id="total-price-modal">0,00</span></span>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-sm-6 col-12">
+                                <div class="mb-3 form-check form-switch form-switch-sm">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" name="paid" checked value="1">
+                                    <label class="form-check-label" for="flexSwitchCheckDefault">Pedido pago</label>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-12">
+                                <div class="mb-3 form-check form-switch form-switch-sm">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" name="paid" checked value="1">
+                                    <label class="form-check-label" for="flexSwitchCheckDefault">Pedido entregue</label>
+                                </div>
+                            </div>
+                        </div>
+ 
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-fog-gray" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-nocturne-purple" id="accept-insert">Finalizar!</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 </form>
 <section id="toasts-section">
     <div class="toast align-items-center text-light bg-success border-0 toast-sucesso m-3" id="myToast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="3000">
@@ -54,44 +92,6 @@
         </div>
         <div class="toast-body" id="toastBody">
             Mensagem do toast.
-        </div>
-    </div>
-</section>
-<section class="modal-form">
-    <div class="modal fade" id="duplicateModal" tabindex="-1" aria-labelledby="duplicateModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="duplicateModalLabel">Duplicar</h5>
-                    <button type="button" class="btn-close input-stellar-blue" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    Você tem certeza que deseja duplicar o produto <strong>""</strong> com o nome <strong>"Cópia - ""</strong>?<br>
-                    Esta ação criará uma cópia do produto com todas as informações, exceto o ID do produto, que será novo.
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-fog-gray" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-stellar-blue" id="accept-duplicate">Duplicar!</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="deleteModalLabel">Excluir</h5>
-                    <button type="button" class="btn-close input-stellar-blue" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    Você tem certeza que deseja excluir o produto <strong>""</strong>?<br>
-                    Esta ação não poderá ser desfeita.
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-fog-gray" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-nocturne-purple" id="accept-delete">Excluir!</button>
-                </div>
-            </div>
         </div>
     </div>
 </section>

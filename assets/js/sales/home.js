@@ -13,6 +13,7 @@ $(document).ready(function () {
             }
         });
         $('#total-price').text(total.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2}));
+        $('#total-price-modal').text(total.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2}));
     }
 
     $('#search').on('input', atualizarSugestoes);
@@ -241,4 +242,13 @@ $(document).ready(function () {
         atualizarValorTotal();
     }
 
+});
+
+$(document).on('click', '#finalizar-venda', function () {
+    if ($('#selected .card-product').length === 0) {
+        alert('Adicione pelo menos um produto ao carrinho antes de finalizar a venda.');
+        return;
+    }
+
+    $('#insertModal').modal('show');
 });

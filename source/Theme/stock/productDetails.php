@@ -71,7 +71,7 @@
                     </div>
                 </div>
                 <div class="col-12">
-                    <div class="mb-3form-check form-switch form-switch-sm">
+                    <div class="mb-3 form-check form-switch form-switch-sm">
                         <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" name="active" value="1" <?= $product['ativo'] ? 'checked' : '' ?>>
                         <label class="form-check-label" for="flexSwitchCheckDefault">Produto Ativo</label>
                     </div>
