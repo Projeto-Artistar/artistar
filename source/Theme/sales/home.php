@@ -24,22 +24,23 @@
         </div>
         <div class="col-lg-8 col-12">
             <div class="row ps-lg-3">
-                <div class="col-12 border rounded p-3 mb-3 produtos-adicionados">
+                <div class="col-12 border rounded p-3 mb-3">
                     <h5 class="mb-3">Carrinho</h5>
                     <form id="product-form">
                         <div class="row selected-products" id="selected">
+                            <div class="no-products">Adicione produtos ao carrinho para iniciar a venda.</div>
                         </div>
                     </form>
                     <div class="row">
                         <div class="col-12 text-end">
-                            Total: R$<span id="total-price">0,00</span>
+                            Total: <span class="color-nocturne-purple">R$<span id="total-price" >0,00</span></span>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-12 text-end pe-0">
-                    <button type="button" class="btn btn-primary" id="finalizar-venda">Finalizar Venda</button>
+                    <button type="button" class="btn btn-stellar-blue" id="finalizar-venda">Finalizar Venda</button>
                 </div>
             </div>
         </div>

@@ -12,7 +12,7 @@ $(document).ready(function () {
                 total += valor;
             }
         });
-        $('#total-price').text(total.toFixed(2));
+        $('#total-price').text(total.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2}));
     }
 
     $('#search').on('input', atualizarSugestoes);
@@ -123,6 +123,7 @@ $(document).ready(function () {
             selecionados.delete(prod.id);
             card.remove();
             atualizarSugestoes();
+            atualizarValorTotal();
         });
 
         card.find('.qtd').on('click', function () {

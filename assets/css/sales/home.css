@@ -66,9 +66,9 @@
     cursor: pointer;
 }
 
-.produtos-adicionados {
+/* .selected-products {
     min-height: 300px;
-}
+} */
 
 .product-img {
     width: 60px;
@@ -85,4 +85,15 @@
     position: absolute;
     top: 0.5rem;
     right: 0.5rem;
+}
+
+/* .no-products has display none when father has other items */
+
+.no-products {
+    text-align: center;
+    color: #999;
+}
+
+.selected-products:has(.card-product) .no-products {
+    display: none;
 }
