@@ -13,9 +13,12 @@ class Sales extends Core {
             SELECT 
                 produto_id id,
                 produto_nome nome,
+                produto_palavras_chave palavra_chave,
+                produto_descricao descricao,
                 produto_codigo_interno subtitulo,
                 produto_valor preco,
                 produto_valor_desconto desconto,
+                produto_estoque estoque,
                 IF(produto_thumbnail != '', produto_thumbnail, 'assets/image/200x300.png') imagem
             FROM 
                 produtos

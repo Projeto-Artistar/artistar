@@ -72,6 +72,7 @@ class stockController extends Core {
         if (empty($store)) exit($this->renderApiResponse(400, "Loja não encontrada."));
         $insertData = [
             'produto_nome' => $post['name'] ?? '',
+            'produto_codigo_interno' => $post['insideId'] ?? '',
             'produto_descricao' => $post['description'] ?? '',
             'produto_valor' => str_replace(',', '.', str_replace('.', '', $post['price'])),
             'produto_valor_desconto' => str_replace(',', '.', str_replace('.', '', $post['discount'] ?? '0')),

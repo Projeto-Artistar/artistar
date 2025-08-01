@@ -17,16 +17,29 @@
     <div class="row px-sm-0 p-3">
         <div class="col-lg-4 border rounded col-12 mb-3">
             <div class="row p-3">
-                <input type="text" id="search" placeholder="Digite o nome do produto...">
-                <div id="suggestions"></div>
+                <input type="text" id="search" class="form-control" placeholder="Digite o nome do produto...">
+                <div id="suggestions" class="list-group rounded mt-1 shadow-sm" style="max-height: 200px; overflow-y: auto;">
+                </div>
             </div>
         </div>
-        <div class="col-lg-8 col-12 mb-lg-3">
+        <div class="col-lg-8 col-12">
             <div class="row ps-lg-3">
-                <div class="col-12 border rounded p-3 mb-3">
+                <div class="col-12 border rounded p-3 mb-3 produtos-adicionados">
+                    <h5 class="mb-3">Carrinho</h5>
+                    <form id="product-form">
+                        <div class="row selected-products" id="selected">
+                        </div>
+                    </form>
                     <div class="row">
-                        <div id="selected" class="selected-products"></div>
+                        <div class="col-12 text-end">
+                            Total: R$<span id="total-price">0,00</span>
+                        </div>
                     </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 text-end pe-0">
+                    <button type="button" class="btn btn-primary" id="finalizar-venda">Finalizar Venda</button>
                 </div>
             </div>
         </div>
@@ -87,7 +100,7 @@
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.8/jquery.inputmask.min.js"></script>
 <script>
-  const produtos = <?= json_encode($products); ?>
+  const produtos = <?php array_walk_recursive($products,function(&$item){$item=strval($item);}); echo json_encode($products); ?>
 </script>
   <script src="<?= url("assets/js/sales/home.js") ?>"></script>
 <?= $this->stop() ?>

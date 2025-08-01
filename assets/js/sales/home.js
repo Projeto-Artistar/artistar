@@ -1,23 +1,50 @@
 const selecionados = new Set(); // <- Aqui guardamos os IDs dos produtos selecionados
 
 $(document).ready(function () {
-    $('#search').on('input', function () {
-    const termo = $(this).val().toLowerCase();
+
+    function atualizarValorTotal() {
+        let total = 0;
+        $('#selected .card-product').each(function () {
+            let id = $(this).data('id');
+            console.log(id);
+            let valor = parseFloat($(this).find('#total-price-' + id).val().replace(/\./g, '').replace(',', '.'));
+            if (!isNaN(valor)) {
+                total += valor;
+            }
+        });
+        $('#total-price').text(total.toFixed(2));
+    }
+
+    $('#search').on('input', atualizarSugestoes);
+
+    function atualizarSugestoes() {
+    const termo = $('#search').val().toLowerCase();
     $('#suggestions').empty();
 
     if (termo.length === 0) return;
 
     const resultados = produtos.filter(p =>
-        p.nome.toLowerCase().includes(termo) && !selecionados.has(p.id)
+        (
+            p.nome.toLowerCase().includes(termo) || 
+            p.subtitulo.toLowerCase().includes(termo) ||
+            p.palavra_chave.toLowerCase().includes(termo) ||
+            p.descricao.toLowerCase().includes(termo)
+        ) && !selecionados.has(p.id)
     );
 
     resultados.forEach(prod => {
         const item = $(`
-        <div class="suggestion-item">
-            <img src="${prod.imagem}" alt="${prod.nome}">
-            <div>
-            <strong>${prod.nome}</strong><br>
-            <small>${prod.subtitulo} - ${prod.preco}</small>
+        <div class="row suggestion-item">
+            <div class="col-3">
+                <img src="${prod.imagem}" alt="${prod.nome}">
+            </div>
+            <div class="col-6 card-body py-3">
+                <span class="mb-1">${prod.nome}</span>
+                <p class="card-text mb-1"><small class="text-muted">${prod.subtitulo}</small></p>
+            </div>
+            <div class="col-3 text-end">
+                <span class="card-text fw-bold text-success">R$${prod.total}</span>
+                <p class="card-text mb-1"><small class="text-muted">${prod.estoque} uni</small></p>
             </div>
         </div>
         `);
@@ -30,31 +57,187 @@ $(document).ready(function () {
 
         $('#suggestions').append(item);
     });
-    });
+    }
 
     function adicionarProduto(prod) {
-    if (selecionados.has(prod.id)) return;
+        if (selecionados.has(prod.id)) return;
 
-    selecionados.add(prod.id); // Adiciona o ID à lista de selecionados
+        selecionados.add(prod.id);
 
-    const card = $(`
-        <div class="product-card" data-id="${prod.id}">
-        <img src="${prod.imagem}" alt="${prod.nome}">
-        <div class="product-info">
-            <h4>${prod.nome}</h4>
-            <p>${prod.subtitulo}</p>
-            <p><strong>${prod.preco}</strong></p>
-        </div>
-        <button class="remove-btn" title="Remover">❌</button>
-        </div>
-    `);
+        const card = $(`
+            <div class="col-12 mb-3">
+                <div class="card card-product shadow-sm p-0" data-id="${prod.id}">
+                    <div class="row g-0 align-items-center">
+                        <div class="col-md-2 col-12">
+                            <img src="${prod.imagem}" class="product-img m-3" alt="${prod.nome}">
+                        </div>
+                        <div class="col-sm-6 col-12">
+                            <div class="card-body py-3">
+                                <h5 class="card-title mb-1">${prod.nome}</h5>
+                                <p class="card-text mb-1"><small class="text-muted">${prod.subtitulo}</small></p>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6 col-12">
+                            <div class="card-body py-3">
+                                <span class="card-text fw-bold text-success">R$${prod.preco}</span>
+                                <p class="card-text mb-1"><small class="text-muted">${prod.estoque} uni</small></p>
+                            </div>
+                        </div>
+                        <div class="col-md-1 col-12 text-end">
+                            <button type="button" class="btn-close btn-remove" aria-label="Remover"></button>
+                        </div>
+                    </div>
+                    <div class="row g-0 align-items-center mb-3">
+                        <div class="col-md-4 col-12 align-items-center px-3">
+                            <label for="qtd-items-${prod.id}" class="">Quantidade</label>
+                            <div class="d-flex align-items-center justify-content-between">
+                                <button type="button" class="btn btn-sm btn-danger qtd" data-id="${prod.id}" data-action="decrement">
+                                    <i class="fa fa-minus"></i>
+                                </button>
+                                <input id="stock-${prod.id}" type="hidden" value="${prod.estoque}">
+                                <input id="qtd-items-${prod.id}" type="text" class="form-control mx-2" value="1" min="1" readonly> 
+                                <button type="button" class="btn btn-sm btn-success qtd" data-id="${prod.id}" data-action="increment">
+                                    <i class="fa fa-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-12 my-md-0 my-3 align-items-center px-3">
+                            <label for="discount-${prod.id}" class="">Desconto (R$)</label>
+                            <div class="text-end">
+                                <input id="discount-${prod.id}" type="text" class="form-control moedaReal" value="${prod.desconto}">
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-12 align-items-center px-3">
+                            <label for="total-price-${prod.id}" class="">Valor (R$)</label>
+                            <div class="text-end">
+                                <input id="base-price-${prod.id}" type="hidden" value="${prod.preco}">
+                                <input id="total-price-${prod.id}" type="text" class="form-control moedaReal" value="${prod.total}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `);
 
-    card.find('.remove-btn').on('click', function () {
-        selecionados.delete(prod.id);
-        card.remove();
-        atualizarSugestoes(); // Reexibe na lista se fizer sentido
-    });
+        card.find('.btn-remove').on('click', function () {
+            selecionados.delete(prod.id);
+            card.remove();
+            atualizarSugestoes();
+        });
 
-    $('#selected').append(card);
+        card.find('.qtd').on('click', function () {
+            const action = $(this).data('action');
+            const id = $(this).data('id');
+            const input = $(`#qtd-items-${id}`);
+            let currentValue = parseInt(input.val());
+            let previousValue = currentValue;
+            if (action === 'increment') {
+                currentValue += 1;
+            } else if (action === 'decrement' && currentValue > 1) {
+                currentValue -= 1;
+            }
+            input.val(currentValue);
+            verificarEstoque(id);
+            atualizarDesconto(id, previousValue, currentValue);
+            atualizarTotal(id);
+            atualizarValorTotal();
+        });
+
+        function verificarEstoque(id) {
+            const estoque = parseInt($(`#stock-${id}`).val());
+            const quantidade = parseInt($(`#qtd-items-${id}`).val());
+            if (quantidade > estoque) {
+                $(`#qtd-items-${id}`).addClass('is-invalid');
+            } else {
+                $(`#qtd-items-${id}`).removeClass('is-invalid');
+            }
+        }
+
+        function atualizarDesconto(id, previousValue, currentValue) {
+
+            let desconto = $(`#discount-${id}`).val();
+            desconto = desconto ? parseFloat(desconto.replace(/\./g, '').replace(',', '.')) : 0;
+
+            let descontoTotal = (desconto / previousValue) * currentValue;
+            $(`#discount-${id}`).val(descontoTotal.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2}));
+        }
+
+
+        function atualizarTotal(id) {
+            const quantidade = parseInt($(`#qtd-items-${id}`).val());
+
+            let precoUnitario = $(`#base-price-${id}`).val();
+            precoUnitario = precoUnitario ? parseFloat(precoUnitario.replace(/\./g, '').replace(',', '.')) : 0;
+
+            let desconto = $(`#discount-${id}`).val();
+            desconto = desconto ? parseFloat(desconto.replace(/\./g, '').replace(',', '.')) : 0;
+
+            const total = ((precoUnitario * quantidade) - desconto).toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+
+            $(`#total-price-${id}`).val(total);
+        }
+
+        // Keep adding continuously on mousedown
+        card.find('.qtd').on('mousedown', function () {
+            const id = $(this).data('id');
+            const input = $(`#qtd-items-${id}`);
+            let previousValue = parseInt(input.val());
+            let currentValue = parseInt(input.val());
+            const action = $(this).data('action');
+
+            const interval = setInterval(function () {
+                previousValue = currentValue;
+                if (action === 'increment') {
+                    currentValue += 1;
+                } else if (action === 'decrement' && currentValue > 1) {
+                    currentValue -= 1;
+                }
+                input.val(currentValue);
+                verificarEstoque(id);
+                atualizarDesconto(id, previousValue, currentValue);
+                atualizarTotal(id);
+                atualizarValorTotal();
+            }, 100);
+
+            $(document).on('mouseup', function () {
+                clearInterval(interval);
+            });
+        });
+
+        card.find('#discount-' + prod.id).on('input', function () {
+            const id = prod.id;
+            let desconto = $(this).val();
+            desconto = desconto ? parseFloat(desconto.replace(/\./g, '').replace(',', '.')) : 0; 
+            atualizarTotal(id);
+            atualizarValorTotal();
+        });
+
+        card.find('#total-price-' + prod.id).on('input', function () {
+            const id = prod.id;
+            let total = $(this).val();
+            total = total ? parseFloat(total.replace(/\./g, '').replace(',', '.')) : 0;
+            const precoUnitario = parseFloat($(`#base-price-${id}`).val().replace(/\./g, '').replace(',', '.'));
+            const quantidade = parseInt($(`#qtd-items-${id}`).val());
+            const desconto = (precoUnitario * quantidade) - total;
+            $(`#discount-${id}`).val(desconto.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2}));
+            atualizarValorTotal();
+        });
+
+        card.find('.moedaReal').inputmask({
+            alias: 'numeric',
+            groupSeparator: '.',
+            radixPoint: ',',
+            autoGroup: true,
+            digits: 2,
+            digitsOptional: false,
+            placeholder: '0',
+            rightAlign: false,
+            removeMaskOnSubmit: true // remove a máscara ao submeter o form
+        });
+
+        $('#selected').append(card);
+        verificarEstoque(prod.id);
+        atualizarValorTotal();
     }
+
 });

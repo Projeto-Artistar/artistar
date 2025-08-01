@@ -214,6 +214,7 @@ class Stock extends Core {
             INSERT INTO produtos (
                 produto_data_cadastro,
                 produto_nome, 
+                produto_codigo_interno,
                 produto_descricao, 
                 produto_valor, 
                 produto_valor_desconto, 
@@ -226,6 +227,7 @@ class Stock extends Core {
             ) VALUES ( 
                 NOW(),
                 :produto_nome, 
+                :produto_codigo_interno,
                 :produto_descricao, 
                 :produto_valor, 
                 :produto_valor_desconto, 

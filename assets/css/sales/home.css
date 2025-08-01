@@ -41,8 +41,8 @@
 }
 
 .product-card img {
-    width: 60px;
-    height: 60px;
+    /* width: 60px;
+    height: 60px; */
     object-fit: cover;
     margin-right: 15px;
 }
@@ -64,4 +64,25 @@
     color: red;
     font-size: 20px;
     cursor: pointer;
+}
+
+.produtos-adicionados {
+    min-height: 300px;
+}
+
+.product-img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+}
+
+.card-product {
+    position: relative;
+    padding-right: 2.5rem;
+}
+
+.btn-remove {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
 }
