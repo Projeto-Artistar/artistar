@@ -10,7 +10,7 @@
     <div class="row avoid-navbar">
         <div class="col-sm-6 col-12 mb-3 mb-sm-0 px-sm-0">
             <div>
-                <h1 class="text-center text-sm-start">Nova Venda</h1>
+                <h1 class="text-center text-sm-start color-nocturne-purple">Nova Venda</h1>
             </div>
         </div>
     </div>

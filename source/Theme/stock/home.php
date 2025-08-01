@@ -13,7 +13,7 @@
             <div class="bg-klikit-5 rounded-4 py-5 avoid-navbar">
                 <div class="row align-items-center">
                     <div class="col-xl-6 col-12">
-                        <h2 class="h1 mb-3">Inventário</h2>
+                        <h2 class="h1 mb-3 color-nocturne-purple">Inventário</h2>
                         <p class="fs-4">Últimas informações de estoque</p>
                         <ul class="list-unstyled">
                             <li class="d-flex align-items-center mb-2">
