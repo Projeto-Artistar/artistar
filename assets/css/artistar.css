@@ -78,29 +78,29 @@ body {
 .bg-fog-gray {background-color: var(--fog-gray);}
 .bg-polar-gray {background-color: var(--polar-gray);}
 
-.link-nocturne-purple {color: var(--nocturne-purple);text-decoration: none;}
-.link-stellar-blue {color: var(--stellar-blue);text-decoration: none;}
-.link-snow-white {color: var(--snow-white);text-decoration: none;}
-.link-lavanda {color: var(--lavanda);text-decoration: none;}
-.link-cotton-candy {color: var(--cotton-candy);text-decoration: none;}
-.link-sunshine-yellow {color: var(--sunshine-yellow);text-decoration: none;}
-.link-gray {color: var(--gray);text-decoration: none;}
-.link-graphite-gray {color: var(--graphite-gray);text-decoration: none;}
-.link-cloud-gray {color: var(--cloud-gray);text-decoration: none;}
-.link-fog-gray {color: var(--fog-gray);text-decoration: none;}
-.link-polar-gray {color: var(--polar-gray);text-decoration: none;}
+.link-nocturne-purple {color: var(--nocturne-purple);text-decoration: none; cursor: pointer;}
+.link-stellar-blue {color: var(--stellar-blue);text-decoration: none; cursor: pointer;}
+.link-snow-white {color: var(--snow-white);text-decoration: none; cursor: pointer;}
+.link-lavanda {color: var(--lavanda);text-decoration: none; cursor: pointer;}
+.link-cotton-candy {color: var(--cotton-candy);text-decoration: none; cursor: pointer;}
+.link-sunshine-yellow {color: var(--sunshine-yellow);text-decoration: none; cursor: pointer;}
+.link-gray {color: var(--gray);text-decoration: none; cursor: pointer;}
+.link-graphite-gray {color: var(--graphite-gray);text-decoration: none; cursor: pointer;}
+.link-cloud-gray {color: var(--cloud-gray);text-decoration: none; cursor: pointer;}
+.link-fog-gray {color: var(--fog-gray);text-decoration: none; cursor: pointer;}
+.link-polar-gray {color: var(--polar-gray);text-decoration: none; cursor: pointer;}
 
-.link-nocturne-purple:hover {color: var(--nocturne-purple-light);text-decoration: underline;}
-.link-stellar-blue:hover {color: var(--stellar-blue-light);text-decoration: underline;}
-.link-snow-white:hover {color: var(--snow-white-light);text-decoration: underline;}
-.link-lavanda:hover {color: var(--lavanda-light);text-decoration: underline;}
-.link-cotton-candy:hover {color: var(--cotton-candy-light);text-decoration: underline;}
-.link-sunshine-yellow:hover {color: var(--sunshine-yellow-light);text-decoration: underline;}
-.link-gray:hover {color: var(--gray-light);text-decoration: underline;}
-.link-graphite-gray:hover {color: var(--graphite-gray-light);text-decoration: underline;}
-.link-cloud-gray:hover {color: var(--cloud-gray-light);text-decoration: underline;}
-.link-fog-gray:hover {color: var(--fog-gray-light);text-decoration: underline;}
-.link-polar-gray:hover {color: var(--polar-gray-light);text-decoration: underline;}
+.link-nocturne-purple:hover {color: var(--nocturne-purple-light);text-decoration: underline; cursor: pointer;}
+.link-stellar-blue:hover {color: var(--stellar-blue-light);text-decoration: underline; cursor: pointer;}
+.link-snow-white:hover {color: var(--snow-white-light);text-decoration: underline; cursor: pointer;}
+.link-lavanda:hover {color: var(--lavanda-light);text-decoration: underline; cursor: pointer;}
+.link-cotton-candy:hover {color: var(--cotton-candy-light);text-decoration: underline; cursor: pointer;}
+.link-sunshine-yellow:hover {color: var(--sunshine-yellow-light);text-decoration: underline; cursor: pointer;}
+.link-gray:hover {color: var(--gray-light);text-decoration: underline; cursor: pointer;}
+.link-graphite-gray:hover {color: var(--graphite-gray-light);text-decoration: underline; cursor: pointer;}
+.link-cloud-gray:hover {color: var(--cloud-gray-light);text-decoration: underline; cursor: pointer;}
+.link-fog-gray:hover {color: var(--fog-gray-light);text-decoration: underline; cursor: pointer;}
+.link-polar-gray:hover {color: var(--polar-gray-light);text-decoration: underline; cursor: pointer;}
 
 .page-link.nocturne-purple {color: var(--nocturne-purple);}
 .page-link.stellar-blue {color: var(--stellar-blue);}
@@ -245,6 +245,8 @@ body {
 .form-check-input.check-cloud-gray:focus {box-shadow: 0 0 0 .2rem var(--cloud-gray-shadow); border-color: var(--cloud-gray);}
 .form-check-input.check-fog-gray:focus {box-shadow: 0 0 0 .2rem var(--fog-gray-shadow); border-color: var(--fog-gray);}
 .form-check-input.check-polar-gray:focus {box-shadow: 0 0 0 .2rem var(--polar-gray-shadow); border-color: var(--polar-gray);}
+
+.bg-none {background-color: transparent !important;}
 
 .link-hover {
     transition: color .15s ease-in-out;

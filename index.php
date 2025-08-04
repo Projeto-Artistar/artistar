@@ -19,8 +19,10 @@ $router->get("/login", "homeController:login", "homeController.login");
 
 $router->group('sales');
 $router->get("/", "salesController:home", "salesController.home");
+$router->post("/insert", "salesController:insert", "salesController.insert");
 
-
+$router->group('sales-statement');
+$router->get("/", "salesStatementController:home", "salesStatementController.home");
 
 $router->group('stock');
 $router->get("/", "stockController:home", "stockController.home");
@@ -69,12 +71,14 @@ $router->post("/cities", "apiController:cities", "apiController.cities");
 
 $router->group("error");
 $router->get("/404", "errorController:error404", "errorController.error404");
+$router->get("/400", "errorController:error400", "errorController.error400");
 
 
 $router->dispatch();
 
-if($router->error())
+if($router->error()){
     header("location: /error/".$router->error());
+}
 
 
 

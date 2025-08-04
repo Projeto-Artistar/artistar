@@ -146,12 +146,20 @@ class Stock extends Core {
                 'value' => '(produto_valor - produto_valor_desconto) DESC'
             ],
             'date_asc' => [
-                'label' => 'Data da Última Venda (Mais Antigo)',
+                'label' => 'Data de Cadastro (Mais Antigo)',
                 'value' => 'produto_data_cadastro ASC'
             ],
             'date_desc' => [
-                'label' => 'Data da Última Venda (Mais Recente)',
+                'label' => 'Data de Cadastro (Mais Recente)',
                 'value' => 'produto_data_cadastro DESC'
+            ],
+            'last_sale_asc' => [
+                'label' => 'Data da Última Venda (Mais Antigo)',
+                'value' => 'produto_ultima_venda ASC'
+            ],
+            'last_sale_desc' => [
+                'label' => 'Data da Última Venda (Mais Recente)',
+                'value' => 'produto_ultima_venda DESC'
             ],
             'stock_asc' => [
                 'label' => 'Estoque (Menor para Maior)',

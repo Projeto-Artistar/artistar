@@ -12,4 +12,9 @@ class errorController extends Core {
         return;
     }
 
+    public function error400() {
+        echo $this->view->render("error/400");
+        return;
+    }
+
 }

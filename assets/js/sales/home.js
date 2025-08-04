@@ -1,18 +1,33 @@
 const selecionados = new Set(); // <- Aqui guardamos os IDs dos produtos selecionados
 
+function atualizarToast(toast, title, body, isSuccess = true) {
+    $('#toastTitle').text(title);
+    $('#toastBody').text(body);
+    //remove class bg-success
+    if (isSuccess) {
+        $('#'+toast).removeClass('bg-danger');
+        $('#'+toast).addClass('bg-success');
+    } else {
+        $('#'+toast).removeClass('bg-success');
+        $('#'+toast).addClass('bg-danger');
+    }
+    var myToast = new bootstrap.Toast(document.getElementById(toast));
+    myToast.show();
+}
+
 $(document).ready(function () {
 
     function atualizarValorTotal() {
         let total = 0;
         $('#selected .card-product').each(function () {
             let id = $(this).data('id');
-            console.log(id);
             let valor = parseFloat($(this).find('#total-price-' + id).val().replace(/\./g, '').replace(',', '.'));
             if (!isNaN(valor)) {
                 total += valor;
             }
         });
         $('#total-price').text(total.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2}));
+        $('#total-input').val(total.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2}));
         $('#total-price-modal').text(total.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2}));
     }
 
@@ -68,6 +83,7 @@ $(document).ready(function () {
         const card = $(`
             <div class="col-12 mb-3">
                 <div class="card card-product shadow-sm p-0" data-id="${prod.id}">
+                    <input type="hidden" name="items[${prod.id}][id]" value="${prod.id}">
                     <div class="row g-0 align-items-center">
                         <div class="col-md-2 col-12">
                             <img src="${prod.imagem}" class="product-img m-3" alt="${prod.nome}">
@@ -96,7 +112,7 @@ $(document).ready(function () {
                                     <i class="fa fa-minus"></i>
                                 </button>
                                 <input id="stock-${prod.id}" type="hidden" value="${prod.estoque}">
-                                <input id="qtd-items-${prod.id}" type="text" class="form-control mx-2" value="1" min="1" readonly> 
+                                <input id="qtd-items-${prod.id}" name="items[${prod.id}][qtd]" type="text" class="form-control mx-2" value="1" min="1" readonly>
                                 <button type="button" class="btn btn-sm btn-success qtd" data-id="${prod.id}" data-action="increment">
                                     <i class="fa fa-plus"></i>
                                 </button>
@@ -105,14 +121,14 @@ $(document).ready(function () {
                         <div class="col-md-4 col-12 my-md-0 my-3 align-items-center px-3">
                             <label for="discount-${prod.id}" class="">Desconto (R$)</label>
                             <div class="text-end">
-                                <input id="discount-${prod.id}" type="text" class="form-control moedaReal" value="${prod.desconto}">
+                                <input id="discount-${prod.id}" name="items[${prod.id}][discount]" type="text" class="form-control moedaReal" value="${prod.desconto}">
                             </div>
                         </div>
                         <div class="col-md-4 col-12 align-items-center px-3">
                             <label for="total-price-${prod.id}" class="">Valor (R$)</label>
                             <div class="text-end">
                                 <input id="base-price-${prod.id}" type="hidden" value="${prod.preco}">
-                                <input id="total-price-${prod.id}" type="text" class="form-control moedaReal" value="${prod.total}">
+                                <input id="total-price-${prod.id}" name="items[${prod.id}][total_price]" type="text" class="form-control moedaReal" value="${prod.total}">
                             </div>
                         </div>
                     </div>
@@ -251,4 +267,29 @@ $(document).on('click', '#finalizar-venda', function () {
     }
 
     $('#insertModal').modal('show');
+});
+
+$(document).on('click', '#accept-insert', function () {
+
+    const formData = new FormData($('#new-sale-form')[0]);
+
+    $.ajax({
+        url: '/sales/insert',
+        type: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false
+    }).done(function (response) {
+        response = JSON.parse(response);
+        if (response.code == 200) {
+            $('#insertModal').modal('hide');
+            $('#saleInsertedModal').modal('show');
+        } else {
+            console.error('Erro ao criar produto:', response.message);
+        }
+    }).fail(function (error) {
+        atualizarToast('myToast', 'Erro ao registrar venda', 'Ocorreu um erro ao tentar registrar a venda. Por favor, tente novamente.', false);
+        // Update toast content for error
+
+    });
 });

@@ -120,10 +120,10 @@
             </li>
             <li class="d-md-none border-top my-3"></li>
             <li>
-                <a href="#" class="nav-link link-dark d-block link-hover">
+                <a href="<?= url('sales-statement') ?>" class="nav-link link-dark d-block link-hover">
                     <div class="d-flex align-items-center">
                         <i class="fa-solid fa-dollar-sign bi me-4" style="width:24px; text-align: center;"></i>
-                        <span>Vendas</span>
+                        <span>Extrato de Vendas</span>
                     </div>
                 </a>
             </li>

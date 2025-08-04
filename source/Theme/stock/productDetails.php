@@ -137,7 +137,7 @@
                     <div class="row">
                         <div class="mb-3 col-sm-6 col-12">
                             <label for="stock" class="form-label">Estoque</label>
-                            <input type="number" min="0" class="form-control" id="stock" name="stock" value="<?= $product['estoque'] ?>">
+                            <input type="number" class="form-control" id="stock" name="stock" value="<?= $product['estoque'] ?>">
                         </div>
                         <div class="mb-3 col-sm-6 col-12">
                             <label for="min_stock" class="form-label">Estoque Mínimo</label>
