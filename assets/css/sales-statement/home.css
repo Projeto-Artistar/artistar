@@ -1,0 +1,15 @@
+.tr-accordion {
+    display: none;
+}
+
+.tr-accordion:has(td > .accordion-collapse.show, .accordion-collapse.collapsing) {
+    display: table-row;
+}
+
+.hoverable-text {
+    cursor: pointer;
+}
+
+.hoverable-text:hover {
+    text-decoration: underline;
+}

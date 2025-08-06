@@ -247,6 +247,8 @@ body {
 .form-check-input.check-polar-gray:focus {box-shadow: 0 0 0 .2rem var(--polar-gray-shadow); border-color: var(--polar-gray);}
 
 .bg-none {background-color: transparent !important;}
+.text-decoration-none {text-decoration: none !important;}
+.text-decoration-none:hover {text-decoration: none !important;}
 
 .link-hover {
     transition: color .15s ease-in-out;

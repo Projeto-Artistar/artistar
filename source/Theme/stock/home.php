@@ -7,231 +7,231 @@
 
 <?= $this->start("conteudo") ?>
 <section class="minimum-height">
-<section class="section-banner">
-    <div class="container">
-        <div class="row">
-            <div class="bg-klikit-5 rounded-4 py-5 avoid-navbar">
-                <div class="row align-items-center">
-                    <div class="col-xl-6 col-12">
-                        <h2 class="h1 mb-3 color-nocturne-purple">Inventário</h2>
-                        <p class="fs-4">Últimas informações de estoque</p>
-                        <ul class="list-unstyled">
-                            <li class="d-flex align-items-center mb-2">
-                                <span class="dot bg-success me-2 rounded-5" style="height:10px; width:10px;"></span> Estoque bom
-                            </li>
-                            <li class="d-flex align-items-center mb-2">
-                                <span class="dot bg-warning me-2 rounded-5" style="height:10px; width:10px;"></span> Estoque baixo
-                            </li>
-                            <li class="d-flex align-items-center mb-2">
-                                <span class="dot bg-danger me-2 rounded-5" style="height:10px; width:10px;"></span> Sem estoque
-                            </li>
-                            <li class="d-flex align-items-center mb-2">
-                                <span class="dot bg-secondary me-2 rounded-5" style="height:10px; width:10px;"></span> Estoque morto
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="col-xl-6 col-12 text-center">
-                        <canvas id="myChart" class="w-100 h-100"></canvas>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>    
-</section>
-<section class="section-filter">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12 col-md-12 col-sm-12">
-                <form id="search-form" class="d-flex align-items-center mb-4">
-                    <!-- Input de pesquisa com ícone de lupa -->
-                    <div class="input-group me-3">
-                        <input type="search" class="form-control input-stellar-blue" placeholder="Pesquisar produtos..." name="search" value="<?= $search ?>">
-                        <button class="btn btn-outline-stellar-blue" type="submit">
-                            <i class="fas fa-search"></i> 
-                        </button>
-                    </div>
-                    <a class="btn btn-outline-stellar-blue btn-md" id="filter-button" data-bs-toggle="modal" data-bs-target="#filterModal">
-                        Filtros
-                    </a>
-                    <?php
-                        if (!empty($filter['status'])) echo '<input type="hidden" name="filter[status]" value="' . htmlspecialchars($filter['status']) . '">';
-                        if (!empty($filter['category'])) 
-                            foreach ($filter['category'] as $cat)
-                                echo '<input type="hidden" name="filter[category][]" value="' . htmlspecialchars($cat) . '">';
-                        if (!empty($filter['price'])) echo '<input type="hidden" name="filter[price]" value="' . htmlspecialchars($filter['price']) . '">';
-                        if (!empty($filter['cost'])) echo '<input type="hidden" name="filter[cost]" value="' . htmlspecialchars($filter['cost']) . '">';
-                        if (!empty($filter['discount'])) echo '<input type="hidden" name="filter[discount]" value="' . htmlspecialchars($filter['discount']) . '">';
-                        if (!empty($filter['profit'])) echo '<input type="hidden" name="filter[profit]" value="' . htmlspecialchars($filter['profit']) . '">';
-                        if (!empty($filter['stock'])) echo '<input type="hidden" name="filter[stock]" value="' . htmlspecialchars($filter['stock']) . '">';
-                        if (!empty($filter['min_stock'])) echo '<input type="hidden" name="filter[min_stock]" value="' . htmlspecialchars($filter['min_stock']) . '">';
-                    ?>
-                </form>
-            </div>
-        </div>
-        <div class="row" id="filters">
-            <div class="col-lg-12 col-md-12 col-sm-12 d-flex justify-content-between align-items-center mb-3">
-                <div class="d-flex align-items-center">
-                    <?php
-                        if (!empty($filter['status'])) echo '<span class="badge bg-light text-dark me-1">Status : ' . ($filter['status'] == 'active' ? 'Ativo' : 'Inativo') . '</span>';
-                        if (!empty($filter['category'])) {
-                            $selectedCategoriesLabels = [];
-                            foreach ($categories as $category)
-                                if (in_array($category['id'], $filter['category']))
-                                    $selectedCategoriesLabels[] = htmlspecialchars($category['nome']);
-                            echo '<span class="badge bg-light text-dark me-1">Categoria(s): ' . implode(', ', $selectedCategoriesLabels) . '</span>';
-                        }
-                        if (!empty($filter['price'])) echo '<span class="badge bg-light text-dark me-1">Preço: R$ ' . htmlspecialchars($filter['price']) . '</span>';
-                        if (!empty($filter['cost'])) echo '<span class="badge bg-light text-dark me-1">Custo: R$ ' . htmlspecialchars($filter['cost']) . '</span>';
-                        if (!empty($filter['discount'])) echo '<span class="badge bg-light text-dark me-1">Desconto: R$ ' . htmlspecialchars($filter['discount']) . '</span>';
-                        if (!empty($filter['real_price'])) echo '<span class="badge bg-light text-dark me-1">Preço Atual: R$ ' . htmlspecialchars($filter['real_price']) . '</span>';
-                        if (!empty($filter['stock'])) echo '<span class="badge bg-light text-dark me-1">Estoque: ' . htmlspecialchars($filter['stock']) . '</span>';
-                        if (!empty($filter['min_stock'])) echo '<span class="badge bg-light text-dark me-1">Estoque Mínimo: ' . htmlspecialchars($filter['min_stock']) . '</span>';
-                    ?>
-                </div>
-                <div class="d-flex align-items-center">
-                    <form id="id-sort-form" class="d-flex align-items-center me-3" method="GET" action="<?= url("stock") ?>">
-                        <?php
-                        if (!empty($search)) echo '<input type="hidden" name="search" value="' . htmlspecialchars($search) . '">';
-                        if (!empty($filter['status'])) echo '<input type="hidden" name="filter[status]" value="' . htmlspecialchars($filter['status']) . '">';
-                        if (!empty($filter['category']))
-                            foreach ($filter['category'] as $cat)
-                                echo '<input type="hidden" name="filter[category][]" value="' . htmlspecialchars($cat) . '">';
-                        if (!empty($filter['price'])) echo '<input type="hidden" name="filter[price]" value="' . htmlspecialchars($filter['price']) . '">';
-                        if (!empty($filter['cost'])) echo '<input type="hidden" name="filter[cost]" value="' . htmlspecialchars($filter['cost']) . '">';
-                        if (!empty($filter['discount'])) echo '<input type="hidden" name="filter[discount]" value="' . htmlspecialchars($filter['discount']) . '">';
-                        if (!empty($filter['real_price'])) echo '<input type="hidden" name="filter[real_price]" value="' . htmlspecialchars($filter['real_price']) . '">';
-                        if (!empty($filter['stock'])) echo '<input type="hidden" name="filter[stock]" value="' . htmlspecialchars($filter['stock']) . '">';
-                        if (!empty($filter['min_stock'])) echo '<input type="hidden" name="filter[min_stock]" value="' . htmlspecialchars($filter['min_stock']) . '">';
-                        ?>
-                        <select class="form-select form-select-sm input-stellar-blue me-2" id="sort-options" name="sort" onchange="this.form.submit()">
-                            <?php foreach ($orderList as $key => $value): ?>
-                                <option value="<?= $key ?>" <?= $value['selected'] ? 'selected' : '' ?>><?= $value['label'] ?></option>
-                            <?php endforeach; ?>
-                        </select>
-                    </form>
-                    <a class="btn btn-stellar-blue btn-md" id="newProduct" data-bs-toggle="modal" data-bs-target="#newModal">
-                        <i class="fa-solid fa-plus bi" style="width:24px; text-align: center;"></i> Novo Produto
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-<section class="section-products">
-    <div class="container">
-        <div class="row align-items-stretch" id="produtos">
-            <?php foreach($products as $product): ?>
-            <div class="col-lg-3 col-md-4 col-sm-6 mb-4 evento">
-    <div class="card h-100 d-flex flex-column">
-        <div class="card-img-top position-relative pt-2 px-2">
-            <img src="<?= empty($product['thumbnail']) ? url('assets/image/200x300.png') : $product['thumbnail'] ?>" class="img-fluid rounded thumbnail-product" alt="Evento">
-            <?php if ($product['estoque'] <= 0): ?>
-            <span class="badge bg-danger position-absolute top-0 end-0 m-3">Sem Estoque</span>
-            <?php elseif ($product['estoque'] < $product['estoque_minimo']): ?>
-            <span class="badge bg-warning text-dark position-absolute top-0 end-0 m-3"><?= $product['estoque'] ?> uni</span>
-            <?php else: ?>
-            <span class="badge bg-white text-dark position-absolute top-0 end-0 m-3"><?= $product['estoque'] ?> uni</span>
-            <?php endif; ?>
-        </div>
-        <div class="card-body d-flex flex-column">
-            <h5 class="card-title d-flex justify-content-between align-items-center">
-                <a href="<?=url('stock/product/'.$product['id'])?>" class="link-stellar-blue nome-produto"><?= $product['nome'] ?></a>
-                <?= $product['ativo'] ? '<span class="badge bg-lavanda">Ativo</span>' : '<span class="badge bg-graphite-gray">Inativo</span>' ?>
-            </h5> 
-            <p class="card-text mt-auto">
-                <?php
-                    $productKeywords = explode('|', $product['palavras_chave']);
-                    foreach ($productKeywords as $keyword) {
-                        echo '<span class="badge bg-light text-dark me-1">' . htmlspecialchars($keyword) . '</span>';
-                    }
-                ?>
-            </p>
-            <div class="card-text">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <span>Preço Base:</span><br>
-                        <?php if ($product['valor_desconto'] > 0): ?>
-                            <span class="badge bg-light text-dark me-1 text-decoration-line-through">R$ <?= number_format($product['valor'], 2, ',', '.') ?></span>
-                        <?php else: ?>
-                            <span class="badge bg-light text-dark me-1">R$ <?= number_format($product['valor'], 2, ',', '.') ?></span>
-                        <?php endif; ?>
-                    </div>
-                    <div>
-                        <span >Preço Atual:</span> <br>
-                        <div class="text-end">
-                            <span class="badge bg-light text-dark me-1">R$ <?= number_format($product['valor']-$product['valor_desconto'], 2, ',', '.') ?></span>
+    <section class="section-banner">
+        <div class="container">
+            <div class="row">
+                <div class="bg-klikit-5 rounded-4 py-5 avoid-navbar">
+                    <div class="row align-items-center">
+                        <div class="col-xl-6 col-12">
+                            <h2 class="h1 mb-3 color-nocturne-purple">Inventário</h2>
+                            <p class="fs-4">Últimas informações de estoque</p>
+                            <ul class="list-unstyled">
+                                <li class="d-flex align-items-center mb-2">
+                                    <span class="dot bg-success me-2 rounded-5" style="height:10px; width:10px;"></span> Estoque bom
+                                </li>
+                                <li class="d-flex align-items-center mb-2">
+                                    <span class="dot bg-warning me-2 rounded-5" style="height:10px; width:10px;"></span> Estoque baixo
+                                </li>
+                                <li class="d-flex align-items-center mb-2">
+                                    <span class="dot bg-danger me-2 rounded-5" style="height:10px; width:10px;"></span> Sem estoque
+                                </li>
+                                <li class="d-flex align-items-center mb-2">
+                                    <span class="dot bg-secondary me-2 rounded-5" style="height:10px; width:10px;"></span> Estoque morto
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-xl-6 col-12 text-center">
+                            <canvas id="myChart" class="w-100 h-100"></canvas>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-</div>
-            <?php endforeach; ?>
-        </div>
-    </div>
-</section>
-
-<section class="section-pagination">
-    <div class="container">
-        <div class="row justify-content-between align-items-center" id="pagination-controls">
-            <div class="col-md-6 col-12 d-flex justify-content-md-start justify-content-center mb-2 mb-md-0">
-                <p class="text-muted">Mostrando <span id="result-count"><?= count($products)?></span> resultados de <span id="total-count"><?= $stocks['totalProducts'] ?></span></p>
-            </div>
-            <div class="col-md-6 col-12 d-flex justify-content-md-end justify-content-center">
-                <?php if (!empty($products)): ?>
-                <nav aria-label="Page navigation example">
-                    <ul class="pagination">
+        </div>    
+    </section>
+    <section class="section-filter">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <form id="search-form" class="d-flex align-items-center mb-4">
+                        <!-- Input de pesquisa com ícone de lupa -->
+                        <div class="input-group me-3">
+                            <input type="search" class="form-control input-stellar-blue" placeholder="Pesquisar produtos..." name="search" value="<?= $search ?>">
+                            <button class="btn btn-outline-stellar-blue" type="submit">
+                                <i class="fas fa-search"></i> 
+                            </button>
+                        </div>
+                        <a class="btn btn-outline-stellar-blue btn-md" id="filter-button" data-bs-toggle="modal" data-bs-target="#filterModal">
+                            Filtros
+                        </a>
                         <?php
-                            $url = url("stock").'?';
-                            $url .= 'sort=' . urlencode($sort);
-                            if (!empty($search)) $url .= '&search=' . urlencode($search);
-                            if (!empty($filter['status'])) $url .= '&filter[status]=' . urlencode($filter['status']);
+                            if (!empty($filter['status'])) echo '<input type="hidden" name="filter[status]" value="' . htmlspecialchars($filter['status']) . '">';
+                            if (!empty($filter['category'])) 
+                                foreach ($filter['category'] as $cat)
+                                    echo '<input type="hidden" name="filter[category][]" value="' . htmlspecialchars($cat) . '">';
+                            if (!empty($filter['price'])) echo '<input type="hidden" name="filter[price]" value="' . htmlspecialchars($filter['price']) . '">';
+                            if (!empty($filter['cost'])) echo '<input type="hidden" name="filter[cost]" value="' . htmlspecialchars($filter['cost']) . '">';
+                            if (!empty($filter['discount'])) echo '<input type="hidden" name="filter[discount]" value="' . htmlspecialchars($filter['discount']) . '">';
+                            if (!empty($filter['profit'])) echo '<input type="hidden" name="filter[profit]" value="' . htmlspecialchars($filter['profit']) . '">';
+                            if (!empty($filter['stock'])) echo '<input type="hidden" name="filter[stock]" value="' . htmlspecialchars($filter['stock']) . '">';
+                            if (!empty($filter['min_stock'])) echo '<input type="hidden" name="filter[min_stock]" value="' . htmlspecialchars($filter['min_stock']) . '">';
+                        ?>
+                    </form>
+                </div>
+            </div>
+            <div class="row" id="filters">
+                <div class="col-lg-12 col-md-12 col-sm-12 d-flex justify-content-between align-items-center mb-3">
+                    <div class="d-flex align-items-center">
+                        <?php
+                            if (!empty($filter['status'])) echo '<span class="badge bg-light text-dark me-1">Status : ' . ($filter['status'] == 'active' ? 'Ativo' : 'Inativo') . '</span>';
+                            if (!empty($filter['category'])) {
+                                $selectedCategoriesLabels = [];
+                                foreach ($categories as $category)
+                                    if (in_array($category['id'], $filter['category']))
+                                        $selectedCategoriesLabels[] = htmlspecialchars($category['nome']);
+                                echo '<span class="badge bg-light text-dark me-1">Categoria(s): ' . implode(', ', $selectedCategoriesLabels) . '</span>';
+                            }
+                            if (!empty($filter['price'])) echo '<span class="badge bg-light text-dark me-1">Preço: R$ ' . htmlspecialchars($filter['price']) . '</span>';
+                            if (!empty($filter['cost'])) echo '<span class="badge bg-light text-dark me-1">Custo: R$ ' . htmlspecialchars($filter['cost']) . '</span>';
+                            if (!empty($filter['discount'])) echo '<span class="badge bg-light text-dark me-1">Desconto: R$ ' . htmlspecialchars($filter['discount']) . '</span>';
+                            if (!empty($filter['real_price'])) echo '<span class="badge bg-light text-dark me-1">Preço Atual: R$ ' . htmlspecialchars($filter['real_price']) . '</span>';
+                            if (!empty($filter['stock'])) echo '<span class="badge bg-light text-dark me-1">Estoque: ' . htmlspecialchars($filter['stock']) . '</span>';
+                            if (!empty($filter['min_stock'])) echo '<span class="badge bg-light text-dark me-1">Estoque Mínimo: ' . htmlspecialchars($filter['min_stock']) . '</span>';
+                        ?>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <form id="id-sort-form" class="d-flex align-items-center me-3" method="GET" action="<?= url("stock") ?>">
+                            <?php
+                            if (!empty($search)) echo '<input type="hidden" name="search" value="' . htmlspecialchars($search) . '">';
+                            if (!empty($filter['status'])) echo '<input type="hidden" name="filter[status]" value="' . htmlspecialchars($filter['status']) . '">';
                             if (!empty($filter['category']))
                                 foreach ($filter['category'] as $cat)
-                                    $url .= '&filter[category][]=' . urlencode($cat);
-                            if (!empty($filter['price'])) $url .= '&filter[price]=' . urlencode($filter['price']);
-                            if (!empty($filter['cost'])) $url .= '&filter[cost]=' . urlencode($filter['cost']);
-                            if (!empty($filter['discount'])) $url .= '&filter[discount]=' . urlencode($filter['discount']);
-                            if (!empty($filter['real_price'])) $url .= '&filter[real_price]=' . urlencode($filter['real_price']);
-                            if (!empty($filter['stock'])) $url .= '&filter[stock]=' . urlencode($filter['stock']);
-                            if (!empty($filter['min_stock'])) $url .= '&filter[min_stock]=' . urlencode($filter['min_stock']);  
-                                                 
-                        ?>
-                        <?php if ($pages['current'] > 1): ?>
-                        <li class="page-item">
-                            <a class="page-link stellar-blue" href="<?= $url ?>&pagination[offset]=<?= ($pages['current'] - 2) * $pagination['limit'] ?>">Anterior</a>
-                        </li>
-                        <?php else: ?>
-                        <li class="page-item disabled">
-                            <span class="page-link stellar-blue">Anterior</span>
-                        </li>
-                        <?php endif; ?>
-                        <!-- Max of 4 pages before and 4 after -->
-                        <?php
-                        $start = max(1, $pages['current'] - 4);
-                        $end = min($pages['total'], $pages['current'] + 4);
-                        for ($i = $start; $i <= $end; $i++): ?>
-                            <li class="page-item <?= $i == $pages['current'] ? 'active' : 'd-none d-md-flex' ?>" >
-                                <a class="page-link stellar-blue" href="<?= $i == $pages['current'] ? '#' : $url.'&pagination[offset]='.(($i - 1) * $pagination['limit']) ?>"><?= $i ?></a>
-                            </li>
-                        <?php endfor; ?>
-                        <?php if ($pages['current'] < $pages['total']): ?>
-                        <li class="page-item">
-                            <a class="page-link stellar-blue" href="<?= $url ?>&pagination[offset]=<?= $pages['current'] * $pagination['limit'] ?>">Próxima</a>
-                        </li>
-                        <?php else: ?>
-                        <li class="page-item disabled">
-                            <span class="page-link stellar-blue">Próxima</span>
-                        </li>
-                        <?php endif; ?>
-                    </ul>
-                </nav>
-                <?php endif; ?>
+                                    echo '<input type="hidden" name="filter[category][]" value="' . htmlspecialchars($cat) . '">';
+                            if (!empty($filter['price'])) echo '<input type="hidden" name="filter[price]" value="' . htmlspecialchars($filter['price']) . '">';
+                            if (!empty($filter['cost'])) echo '<input type="hidden" name="filter[cost]" value="' . htmlspecialchars($filter['cost']) . '">';
+                            if (!empty($filter['discount'])) echo '<input type="hidden" name="filter[discount]" value="' . htmlspecialchars($filter['discount']) . '">';
+                            if (!empty($filter['real_price'])) echo '<input type="hidden" name="filter[real_price]" value="' . htmlspecialchars($filter['real_price']) . '">';
+                            if (!empty($filter['stock'])) echo '<input type="hidden" name="filter[stock]" value="' . htmlspecialchars($filter['stock']) . '">';
+                            if (!empty($filter['min_stock'])) echo '<input type="hidden" name="filter[min_stock]" value="' . htmlspecialchars($filter['min_stock']) . '">';
+                            ?>
+                            <select class="form-select form-select-sm input-stellar-blue me-2" id="sort-options" name="sort" onchange="this.form.submit()">
+                                <?php foreach ($orderList as $key => $value): ?>
+                                    <option value="<?= $key ?>" <?= $value['selected'] ? 'selected' : '' ?>><?= $value['label'] ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </form>
+                        <a class="btn btn-stellar-blue btn-md" id="newProduct" data-bs-toggle="modal" data-bs-target="#newModal">
+                            <i class="fa-solid fa-plus bi" style="width:24px; text-align: center;"></i> Novo Produto
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
+    <section class="section-products">
+        <div class="container">
+            <div class="row align-items-stretch" id="produtos">
+                <?php foreach($products as $product): ?>
+                <div class="col-lg-3 col-md-4 col-sm-6 mb-4 evento">
+                    <div class="card h-100 d-flex flex-column">
+                        <div class="card-img-top position-relative pt-2 px-2">
+                            <img src="<?= empty($product['thumbnail']) ? url('assets/image/200x300.png') : $product['thumbnail'] ?>" class="img-fluid rounded thumbnail-product" alt="Evento">
+                            <?php if ($product['estoque'] <= 0): ?>
+                            <span class="badge bg-danger position-absolute top-0 end-0 m-3">Sem Estoque</span>
+                            <?php elseif ($product['estoque'] < $product['estoque_minimo']): ?>
+                            <span class="badge bg-warning text-dark position-absolute top-0 end-0 m-3"><?= $product['estoque'] ?> uni</span>
+                            <?php else: ?>
+                            <span class="badge bg-white text-dark position-absolute top-0 end-0 m-3"><?= $product['estoque'] ?> uni</span>
+                            <?php endif; ?>
+                        </div>
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title d-flex justify-content-between align-items-center">
+                                <a href="<?=url('stock/product/'.$product['id'])?>" class="link-stellar-blue nome-produto"><?= $product['nome'] ?></a>
+                                <?= $product['ativo'] ? '<span class="badge bg-lavanda">Ativo</span>' : '<span class="badge bg-graphite-gray">Inativo</span>' ?>
+                            </h5> 
+                            <p class="card-text mt-auto">
+                                <?php
+                                    $productKeywords = explode('|', $product['palavras_chave']);
+                                    foreach ($productKeywords as $keyword) {
+                                        echo '<span class="badge bg-light text-dark me-1">' . htmlspecialchars($keyword) . '</span>';
+                                    }
+                                ?>
+                            </p>
+                            <div class="card-text">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <span>Preço Base:</span><br>
+                                        <?php if ($product['valor_desconto'] > 0): ?>
+                                            <span class="badge bg-light text-dark me-1 text-decoration-line-through">R$ <?= number_format($product['valor'], 2, ',', '.') ?></span>
+                                        <?php else: ?>
+                                            <span class="badge bg-light text-dark me-1">R$ <?= number_format($product['valor'], 2, ',', '.') ?></span>
+                                        <?php endif; ?>
+                                    </div>
+                                    <div>
+                                        <span >Preço Atual:</span> <br>
+                                        <div class="text-end">
+                                            <span class="badge bg-light text-dark me-1">R$ <?= number_format($product['valor']-$product['valor_desconto'], 2, ',', '.') ?></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <?php endforeach; ?>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-pagination">
+        <div class="container">
+            <div class="row justify-content-between align-items-center" id="pagination-controls">
+                <div class="col-md-6 col-12 d-flex justify-content-md-start justify-content-center mb-2 mb-md-0">
+                    <p class="text-muted">Mostrando <span id="result-count"><?= count($products)?></span> resultados de <span id="total-count"><?= $stocks['totalProducts'] ?></span></p>
+                </div>
+                <div class="col-md-6 col-12 d-flex justify-content-md-end justify-content-center">
+                    <?php if (!empty($products)): ?>
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination">
+                            <?php
+                                $url = url("stock").'?';
+                                $url .= 'sort=' . urlencode($sort);
+                                if (!empty($search)) $url .= '&search=' . urlencode($search);
+                                if (!empty($filter['status'])) $url .= '&filter[status]=' . urlencode($filter['status']);
+                                if (!empty($filter['category']))
+                                    foreach ($filter['category'] as $cat)
+                                        $url .= '&filter[category][]=' . urlencode($cat);
+                                if (!empty($filter['price'])) $url .= '&filter[price]=' . urlencode($filter['price']);
+                                if (!empty($filter['cost'])) $url .= '&filter[cost]=' . urlencode($filter['cost']);
+                                if (!empty($filter['discount'])) $url .= '&filter[discount]=' . urlencode($filter['discount']);
+                                if (!empty($filter['real_price'])) $url .= '&filter[real_price]=' . urlencode($filter['real_price']);
+                                if (!empty($filter['stock'])) $url .= '&filter[stock]=' . urlencode($filter['stock']);
+                                if (!empty($filter['min_stock'])) $url .= '&filter[min_stock]=' . urlencode($filter['min_stock']);  
+                                                    
+                            ?>
+                            <?php if ($pages['current'] > 1): ?>
+                            <li class="page-item">
+                                <a class="page-link stellar-blue" href="<?= $url ?>&pagination[offset]=<?= ($pages['current'] - 2) * $pagination['limit'] ?>">Anterior</a>
+                            </li>
+                            <?php else: ?>
+                            <li class="page-item disabled">
+                                <span class="page-link stellar-blue">Anterior</span>
+                            </li>
+                            <?php endif; ?>
+                            <!-- Max of 4 pages before and 4 after -->
+                            <?php
+                            $start = max(1, $pages['current'] - 4);
+                            $end = min($pages['total'], $pages['current'] + 4);
+                            for ($i = $start; $i <= $end; $i++): ?>
+                                <li class="page-item <?= $i == $pages['current'] ? 'active' : 'd-none d-md-flex' ?>" >
+                                    <a class="page-link stellar-blue" href="<?= $i == $pages['current'] ? '#' : $url.'&pagination[offset]='.(($i - 1) * $pagination['limit']) ?>"><?= $i ?></a>
+                                </li>
+                            <?php endfor; ?>
+                            <?php if ($pages['current'] < $pages['total']): ?>
+                            <li class="page-item">
+                                <a class="page-link stellar-blue" href="<?= $url ?>&pagination[offset]=<?= $pages['current'] * $pagination['limit'] ?>">Próxima</a>
+                            </li>
+                            <?php else: ?>
+                            <li class="page-item disabled">
+                                <span class="page-link stellar-blue">Próxima</span>
+                            </li>
+                            <?php endif; ?>
+                        </ul>
+                    </nav>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </div>
+    </section>
 </section>
 <section class="modal-form">
 <div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">

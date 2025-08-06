@@ -80,8 +80,8 @@ class Sales extends Core {
                     break;
             }
             $stmt->bindValue(":pagamento", $saleData['payment_method'], PDO::PARAM_STR);
-            $stmt->bindValue(":pago", ($saleData['paid'] == '1' ? 1 : 0), PDO::PARAM_BOOL);
-            $stmt->bindValue(":entregue", ($saleData['delivered'] == '1' ? 1 : 0), PDO::PARAM_BOOL);
+            $stmt->bindValue(":pago", (isset($saleData['paid']) && $saleData['paid'] == '1' ? 1 : 0), PDO::PARAM_BOOL);
+            $stmt->bindValue(":entregue", (isset($saleData['delivered']) && $saleData['delivered'] == '1' ? 1 : 0), PDO::PARAM_BOOL);
             $stmt->execute();
             $saleId = $this->SQL->lastInsertId();
             foreach ($saleData['items'] as $item) {
@@ -109,20 +109,6 @@ class Sales extends Core {
                 $stmt->bindValue(":preco", $item['total_price'], PDO::PARAM_STR);
                 $stmt->bindValue(":desconto", $item['discount'], PDO::PARAM_STR);
                 $stmt->execute();
-
-                //Update product stock and last sale date
-                $updateStockStmt = $this->SQL->prepare("
-                    UPDATE 
-                        produtos 
-                    SET 
-                        produto_estoque = produto_estoque - :quantidade,
-                        produto_ultima_venda = NOW()
-                    WHERE  
-                        produto_id = :produto_id
-                ");
-                $updateStockStmt->bindValue(":quantidade", $item['qtd'], PDO::PARAM_INT);
-                $updateStockStmt->bindValue(":produto_id", $item['id'], PDO::PARAM_INT);
-                $updateStockStmt->execute();
             }
 
 

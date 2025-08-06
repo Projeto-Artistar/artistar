@@ -23,6 +23,10 @@ $router->post("/insert", "salesController:insert", "salesController.insert");
 
 $router->group('sales-statement');
 $router->get("/", "salesStatementController:home", "salesStatementController.home");
+$router->post("/sale/edit", "salesStatementController:editSale", "salesStatementController.editSale");
+$router->post("/sale/cancel", "salesStatementController:cancelSale", "salesStatementController.cancelSale");
+$router->post("/sale/reactive", "salesStatementController:reactiveSale", "salesStatementController.reactiveSale");
+$router->get("/sale/{saleId}", "salesStatementController:saleDetails", "salesStatementController.saleDetails");
 
 $router->group('stock');
 $router->get("/", "stockController:home", "stockController.home");

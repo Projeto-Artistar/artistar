@@ -36,19 +36,19 @@ class Stock extends Core {
             }
         }
         if (!empty($filter['price'])) {
-            $price = str_replace(',', '.', $filter['price']);
+            $price = desconverteMoedaReal($filter['price']);
             $where[] = "produto_valor = {$price}";
         }
         if (!empty($filter['cost'])) {
-            $cost = str_replace(',', '.', $filter['cost']);
+            $cost = desconverteMoedaReal($filter['cost']);
             $where[] = "produto_custo = {$cost}";
         }
         if (!empty($filter['discount'])) {
-            $discount = str_replace(',', '.', $filter['discount']);
+            $discount = desconverteMoedaReal($filter['discount']);
             $where[] = "produto_valor_desconto = {$discount}";
         }
         if (!empty($filter['real_price'])) {
-            $realPrice = str_replace(',', '.', $filter['real_price']);
+            $realPrice = desconverteMoedaReal($filter['real_price']);
             $where[] = "(produto_valor - produto_valor_desconto) = {$realPrice}";
         }
         if (!empty($filter['stock'])) {
@@ -168,29 +168,29 @@ class Stock extends Core {
             'stock_desc' => [
                 'label' => 'Estoque (Maior para Menor)',
                 'value' => 'produto_estoque DESC'
-                ]
-            ];
+            ]
+        ];
             
-            foreach($orderList as $key => $value) {
-                if ($key === $sort) {
-                    $orderList[$key]['selected'] = true;
-                } else {
-                    $orderList[$key]['selected'] = false;
-                }
+        foreach($orderList as $key => $value) {
+            if ($key === $sort) {
+                $orderList[$key]['selected'] = true;
+            } else {
+                $orderList[$key]['selected'] = false;
             }
-            return $orderList;
         }
+        return $orderList;
+    }
         
-        public function buildOrderBy($orderList, $order = 'name_asc') {
-            $orderBy = 'produto_nome ASC'; // Default order
-            if (isset($orderList[$order])) {
-                $orderBy = $orderList[$order]['value'];
-            }
-            return $orderBy;
+    public function buildOrderBy($orderList, $order = 'name_asc') {
+        $orderBy = 'produto_nome ASC'; // Default order
+        if (isset($orderList[$order])) {
+            $orderBy = $orderList[$order]['value'];
         }
+        return $orderBy;
+    }
 
-        public function getProducts($store, $pagination = [], $where = '', $order = '') {
-            $stmt = $this->SQL->prepare("
+    public function getProducts($store, $pagination = [], $where = '', $order = '') {
+        $stmt = $this->SQL->prepare("
             SELECT 
                 produto_id id,
                 produto_nome nome,
