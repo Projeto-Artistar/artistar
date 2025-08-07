@@ -1,4 +1,15 @@
 document.addEventListener("DOMContentLoaded", function () {
+    $('#user').on('input', function () {
+        //Ao digitar espaços, trocar por -
+        this.value = this.value.replace(/\s+/g, '-');
+        //Apenas permitir letras, numeros, _, - e .
+        this.value = this.value.replace(/[^a-zA-Z0-9_.-]/g, '');
+        //Caracteres minúsculos
+        this.value = this.value.toLowerCase();
+        //Colocar o valor no campo de nome completo
+        $('#complete_user').val(this.value);
+    });
+
     const forms = document.querySelectorAll(".needs-validation");
 
     Array.from(forms).forEach(function (form) {

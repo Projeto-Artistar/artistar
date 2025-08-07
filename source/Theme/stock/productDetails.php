@@ -100,7 +100,7 @@
                         </div>
                         <div class="mb-3 col-md-4 col-sm-6 col-12">
                             <label for="discount_percentage" class="form-label">Desconto (%)</label>
-                            <input type="text" disabled class="form-control" id="discount_percentage" name="discount_percentage" value="<?= $product['valor'] > 0 ? (($product['valor_desconto'] * 100) / $product['valor']) : 0.00 ?>">
+                            <input type="text" disabled class="form-control" id="discount_percentage" name="discount_percentage" value="<?= moedaReal($product['valor'] > 0 ? (($product['valor_desconto'] * 100) / $product['valor']) : 0.00) ?>">
                         </div>
                         <div class="mb-3 col-md-4 col-sm-6 col-12">
                             <label for="margin" class="form-label">Margem</label>

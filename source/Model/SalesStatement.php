@@ -199,8 +199,11 @@ class SalesStatement extends Core {
                 DATE_FORMAT(v.venda_data_criacao, '%d/%m/%Y') data_criacao,
                 DATE_FORMAT(v.venda_data_criacao, '%H:%i') hora_criacao,
                 v.venda_pago pago,
+                DATE_FORMAT(v.venda_data_pagamento, '%d/%m/%Y %H:%i') data_pagamento,
                 v.venda_entregue entregue,
-                v.venda_cancelada cancelada
+                DATE_FORMAT(v.venda_data_entrega, '%d/%m/%Y %H:%i') data_entrega,
+                v.venda_cancelada cancelada,
+                DATE_FORMAT(v.venda_data_cancelamento, '%d/%m/%Y %H:%i') data_cancelamento
             FROM
                 vendas AS v
             WHERE

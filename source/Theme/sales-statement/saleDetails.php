@@ -6,7 +6,7 @@
 <?= $this->stop() ?>
 
 <?= $this->start("conteudo") ?>
-<form id="new-sale-form" class="container pt-3 minimum-height" method="post" action="<?= url("/sales/insert") ?>">
+<form id="new-sale-form" class="container pt-3 minimum-height" method="post" action="<?= url("sales/edit") ?>">
     <div class="row avoid-navbar">
         <div class="col-sm-6 col-12 mb-3 mb-sm-0 px-sm-0">
             <div class="d-flex align-items-baseline gap-3">
@@ -14,44 +14,48 @@
                 <h5 class="text-center text-sm-start color-gray"><?= $saleInfo['data_criacao'] ?> às <?= $saleInfo['hora_criacao'] ?></h5>
             </div>
         </div>
+        <div class="col-sm-6 col-12 px-sm-0">
+            <div class="d-flex justify-content-sm-end justify-content-between">
+                <a class="btn btn-gray mx-sm-3" id="discard-changes-btn" href="<?=url('stock/product/'.$product['id'])?>">Cancelar Venda</a>
+                <button type="submit" class="btn btn-stellar-blue" id="save-sale" form="sale-form">Salvar Alterações</button>
+            </div>
+        </div>
     </div>
     <div class="row px-sm-0 p-3">
         <div class="col-lg-4 border rounded col-12 mb-3">
             <div class="row p-3">
-                <input type="text" id="search" class="form-control" placeholder="Digite o nome do produto...">
-                <div id="suggestions" class="list-group rounded mt-1 shadow-sm" style="max-height: 200px; overflow-y: auto;">
+                <div class="col-12 mb-3">
+                    <input type="text" id="search" class="form-control" placeholder="Digite o nome do produto...">
+                    <div id="suggestions" class="list-group rounded mt-1 shadow-sm" style="max-height: 200px; overflow-y: auto;">
+                    </div>
                 </div>
-            </div>
-            <div class="col-12 mb-3">
-                <label for="payment-select" class="form-label">Método de Pagamento</label>
-                <select class="form-select form-select-sm" id="payment-select" name="payment_method" aria-label="Método de pagamento">
-                    <option value="dinheiro" selected>Dinheiro</option>
-                    <option value="pix">Pix</option>
-                    <option value="cartao-debito">Cartão de Débito</option>
-                    <option value="cartao-credito">Cartão de Crédito</option>
-                    <option value="boleto">Boleto</option>
-                    <option value="transferencia">Transferência</option>
-                    <option value="outro">Outro</option>
-                </select>
-            </div>
-            <div class="col-12 mb-3">
-                <div class="form-check form-switch form-switch-sm">
-                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckPaid" name="paid" value="1" <?= $saleInfo['pago'] ? 'checked' : '' ?>>
-                    <label class="form-check-label" for="flexSwitchCheckPaid">Pago</label>
+                <div class="col-12 mb-3">
+                    <label for="payment-select" class="form-label">Método de Pagamento</label>
+                    <select class="form-select form-select-sm" id="payment-select" name="payment_method" aria-label="Método de pagamento">
+                        <option value="dinheiro" selected>Dinheiro</option>
+                        <option value="pix">Pix</option>
+                        <option value="cartao-debito">Cartão de Débito</option>
+                        <option value="cartao-credito">Cartão de Crédito</option>
+                        <option value="boleto">Boleto</option>
+                        <option value="transferencia">Transferência</option>
+                        <option value="outro">Outro</option>
+                    </select>
                 </div>
-            </div>
-            <div class="col-12 mb-3">
-                <div class="form-check form-switch form-switch-sm">
-                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDelivered" name="delivered" value="1" <?= $saleInfo['entregue'] ? 'checked' : '' ?>>
-                    <label class="form-check-label" for="flexSwitchCheckDelivered">
-                        Entregue <small> (Uma data) </small>
-                    </label>
+                <div class="col-12 mb-3">
+                    <div class="form-check form-switch form-switch-sm">
+                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckPaid" name="paid" value="1" <?= $saleInfo['pago'] ? 'checked' : '' ?>>
+                        <label class="form-check-label" for="flexSwitchCheckPaid">
+                            Pago <small class="color-gray"><?php if ($saleInfo['pago']) echo '('.$saleInfo['data_pagamento'].')'; ?></small>
+                        </label>
+                    </div>
                 </div>
-            </div>
-            <div class="col-12 mb-3">
-                <div class="form-check form-switch form-switch-sm">
-                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckCancelled" name="cancelled" value="1" <?= $saleInfo['cancelada'] ? 'checked' : '' ?>>
-                    <label class="form-check-label" for="flexSwitchCheckCancelled">Cancelada</label>
+                <div class="col-12 mb-3">
+                    <div class="form-check form-switch form-switch-sm">
+                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDelivered" name="delivered" value="1" <?= $saleInfo['entregue'] ? 'checked' : '' ?>>
+                        <label class="form-check-label" for="flexSwitchCheckDelivered">
+                            Entregue <small class="color-gray"><?php if ($saleInfo['entregue']) echo '('.$saleInfo['data_entrega'].')'; ?></small>
+                        </label>
+                    </div>
                 </div>
             </div>
         </div>
@@ -72,7 +76,8 @@
             </div>
             <div class="row">
                 <div class="col-12 text-end pe-0">
-                    <button type="button" class="btn btn-stellar-blue" id="finalizar-venda">Finalizar Venda</button>
+                    <a class="btn btn-cotton-candy mx-sm-3" id="discard-changes-btn" href="<?=url('stock/product/'.$product['id'])?>">Descartar Alterações</a>
+                    <button type="submit" class="btn btn-stellar-blue" id="save-sale-2" form="sale-form">Salvar Alterações</button>
                 </div>
             </div>
         </div>

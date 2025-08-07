@@ -122,7 +122,7 @@
             <div class="row align-items-stretch" id="produtos">
                 <?php foreach($products as $product): ?>
                 <div class="col-lg-3 col-md-4 col-sm-6 mb-4 evento">
-                    <div class="card h-100 d-flex flex-column">
+                    <a class="card h-100 d-flex flex-column product-card" href="<?=url('stock/product/'.$product['id'])?>">
                         <div class="card-img-top position-relative pt-2 px-2">
                             <img src="<?= empty($product['thumbnail']) ? url('assets/image/200x300.png') : $product['thumbnail'] ?>" class="img-fluid rounded thumbnail-product" alt="Evento">
                             <?php if ($product['estoque'] <= 0): ?>
@@ -135,7 +135,7 @@
                         </div>
                         <div class="card-body d-flex flex-column">
                             <h5 class="card-title d-flex justify-content-between align-items-center">
-                                <a href="<?=url('stock/product/'.$product['id'])?>" class="link-stellar-blue nome-produto"><?= $product['nome'] ?></a>
+                                <span class="color-stellar-blue nome-produto"><?= $product['nome'] ?></span>
                                 <?= $product['ativo'] ? '<span class="badge bg-lavanda">Ativo</span>' : '<span class="badge bg-graphite-gray">Inativo</span>' ?>
                             </h5> 
                             <p class="card-text mt-auto">
@@ -165,7 +165,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
                 <?php endforeach; ?>
             </div>

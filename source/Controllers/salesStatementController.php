@@ -113,7 +113,7 @@ class salesStatementController extends Core {
 
         echo $this->view->render("sales-statement/saleDetails", [
             'layout' => [
-                'title' =>  'Nova Venda - Artistar', 
+                'title' =>  'Venda #'.$saleInfo['numero'].' - Artistar', 
                 'logado' => $this->getLogado(),
                 'header' => true,
                 'footer' => true
