@@ -84,7 +84,7 @@ class Register extends Core {
           
         $storeStatement = $this->SQL->prepare('
             INSERT INTO lojas 
-                (loja_nome, loja_nome_unico, loja_proprietario)
+                (loja_nome_unico, loja_nome, loja_proprietario)
             VALUES 
                 (:user, :complete_user, :id_user)
         ');

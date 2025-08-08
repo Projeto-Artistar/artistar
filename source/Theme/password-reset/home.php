@@ -9,7 +9,7 @@
 <?= $this->stop() ?>
 
 <?= $this->start("conteudo") ?>
-<section class="container-fluid min-vh-100 d-flex align-items-center justify-content-center bg-kitlit-btp-gradient">
+<section class="container-fluid min-vh-100 d-flex align-items-center justify-content-center bg-nocturne-purple-stellar-blue-gradient">
     <div class="row min-h-75 outer-box">
         <div class="py-5 d-flex flex-column-reverse flex-md-row">
             <div class="col-md-6 d-flex align-items-center justify-content-center order-2 order-md-1">
@@ -21,11 +21,11 @@
                     <form id="form-password-reset" method="get" action="<?= url("password-reset/code") ?>">
                         <div class="mb-3">
                             <label for="email" class="form-label">E-mail</label>
-                            <input type="email" class="form-control input-kiklit-2" id="email" name="email" required>
+                            <input type="email" class="form-control input-stellar-blue" id="email" name="email" required>
                         </div>
                         <div class="d-flex justify-content-between align-items-center">
-                            <a href="<?= url('login') ?>" class="link-kitlit-2">Cancelar</a>
-                            <button type="submit" class="btn btn-kiklit-2">Enviar e-mail</button>
+                            <a href="<?= url('login') ?>" class="link-stellar-blue">Cancelar</a>
+                            <button type="submit" class="btn btn-nocturne-purple">Enviar e-mail</button>
                         </div>
                     </form>
                 </div>

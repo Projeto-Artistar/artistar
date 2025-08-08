@@ -17,7 +17,7 @@
     <div class="row px-sm-0 p-3">
         <div class="col-lg-4 border rounded col-12 mb-3">
             <div class="row p-3">
-                <input type="text" id="search" class="form-control" placeholder="Digite o nome do produto...">
+                <input type="text" id="search" class="form-control input-stellar-blue" placeholder="Digite o nome do produto...">
                 <div id="suggestions" class="list-group rounded mt-1 shadow-sm" style="max-height: 200px; overflow-y: auto;">
                 </div>
             </div>

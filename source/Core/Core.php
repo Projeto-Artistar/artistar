@@ -72,6 +72,7 @@ class Core
             $userStatement->bindParam(':id', $userId, PDO::PARAM_INT);
             $userStatement->execute();
             $result = $userStatement->fetch();
+            $result['foto_perfil'] = url('assets/image/favicon.png');
             if($result) {
                 $this->setLogado(true);
                 $this->setUser($result);

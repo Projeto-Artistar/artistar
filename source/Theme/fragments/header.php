@@ -2,7 +2,7 @@
     <div class="container-fluid px-3 bg-white">
         <div class="d-flex">
             <a href="/" class="d-flex align-items-center text-dark text-decoration-none">
-                <img src="<?= url("assets/image/logo.png") ?>" alt="mdo" class="bi me-2" width="40" height="32">
+                <img src="<?= url("assets/image/logo.png") ?>" alt="mdo" class="bi me-2 logo-artistar" width="100">
             </a>
 
 
@@ -24,9 +24,9 @@
 
 <nav class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
     <div class="offcanvas-header px-4 d-flex justify-content-between align-items-center">
-        <a href="/" class="d-flex align-items-center me-md-auto link-dark text-decoration-none">
-            <img src="<?= url("assets/image/logo.svg") ?>" alt="mdo" class="bi me-2" width="40" height="32">
-        </a>
+            <a href="/" class="d-flex align-items-center text-dark text-decoration-none">
+                <img src="<?= url("assets/image/logo.png") ?>" alt="mdo" class="bi me-2 logo-artistar" width="100">
+            </a>
         <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         
     </div>

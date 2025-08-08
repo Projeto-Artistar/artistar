@@ -94,7 +94,7 @@
         <a href="/" class="d-flex align-items-center me-md-auto link-dark text-decoration-none">
             <img src="<?= url("assets/image/logo.png") ?>" alt="mdo" class="bi me-2 logo-artistar" width="100">
         </a>
-        <button type="button" class="btn-close text-reset input-kiklit-2" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        <button type="button" class="btn-close text-reset input-stellar-blue" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         
     </div>
         <div class="offcanvas-body d-flex flex-column justify-content-between">
@@ -105,14 +105,14 @@
                 </form>
             </li> -->
             <li class="d-md-none">
-                <a href="#" class="nav-link color-klikit-1">
+                <a href="<?= url("sales") ?>" class="nav-link btn btn-nocturne-purple ">
                     <div class="d-flex align-items-center">
                         <span>Iniciar</span>
                     </div>
                 </a>
             </li>
             <li class="d-md-none">
-                <a href="<?= url('stock')?>" class="nav-link color-klikit-1">
+                <a href="<?= url('stock')?>" class="nav-link link-nocturne-purple">
                     <div class="d-flex align-items-center">
                         <span>Inventário</span>
                     </div>
@@ -135,7 +135,7 @@
                     </div>
                 </a>
             </li>
-            <li>
+            <!-- <li>
                 <a href="#" class="nav-link link-dark d-block link-hover">
                     <div class="d-flex align-items-center">
                         <i class="fa-solid fa-plus bi me-4" style="width:24px; text-align: center;"></i>
@@ -168,18 +168,18 @@
                         <span>Lojas que eu Ajudo</span>
                     </div>
                 </a>
-            </li>
+            </li> -->
             
 
             <li class="border-top my-3"></li>
-            <li>
+            <!-- <li>
                 <a href="#" class="nav-link link-dark link-hover">
                     <div class="d-flex align-items-center">
                         <i class="fa-solid fa-gear bi me-4" style="width:24px; text-align: center;"></i>
                         <span>Configurações</span>
                     </div>
                 </a>
-            </li>
+            </li> -->
             <li>
                 <a href="<?= url("auth/new-password")?>" class="nav-link link-dark link-hover">
                     <div class="d-flex align-items-center">
@@ -193,7 +193,7 @@
         <div class="d-flex justify-content-between align-items-center">
             <div href="#" class="d-flex justify-content-between align-items-center">
                 <div class="d-flex align-items-center px-2">
-                    <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-4">
+                    <img src="<?= $_SESSION['artistar']['user']['foto_perfil'] ?>" class="rounded-circle me-4 store-logo">
                     <span><strong><?= $_SESSION['artistar']['user']['nome_completo'] ?></strong></span>
                 </div>
             </div>

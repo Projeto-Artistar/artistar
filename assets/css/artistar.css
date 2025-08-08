@@ -78,6 +78,9 @@ body {
 .bg-fog-gray {background-color: var(--fog-gray);}
 .bg-polar-gray {background-color: var(--polar-gray);}
 
+.bg-nocturne-purple-stellar-blue-gradient {background: linear-gradient(90deg, var(--nocturne-purple), var(--stellar-blue));}
+.bg-stellar-blue-nocturne-purple-gradient {background: linear-gradient(90deg, var(--stellar-blue), var(--nocturne-purple));}
+
 .link-nocturne-purple {color: var(--nocturne-purple);text-decoration: none; cursor: pointer;}
 .link-stellar-blue {color: var(--stellar-blue);text-decoration: none; cursor: pointer;}
 .link-snow-white {color: var(--snow-white);text-decoration: none; cursor: pointer;}
@@ -338,3 +341,9 @@ body {
     aspect-ratio: 3000 / 1168;
 }
 
+.store-logo {
+    width: 32px;
+    height: 32px;
+    object-fit: cover;
+    border-radius: 50%;
+}
