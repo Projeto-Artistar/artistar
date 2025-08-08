@@ -46,24 +46,26 @@ class ValidationCode extends Core {
     }
 
     public function sendValidationEmail($email, $validationCode) {
+        $credentials = EMAIL_CREDENTIALS;
         $mail = new \PHPMailer\PHPMailer\PHPMailer();
         try {
             $mail->isSMTP();
-            $mail->Host = 'smtp.gmail.com'; // SMTP server
+            $mail->Host = $credentials['host']; // SMTP server
             $mail->SMTPAuth = true;
             $mail->isHTML(true);
+            $mail->CharSet = $credentials['char_set'];
             $mail->Subject = 'Confirmação de Email - Artistar';
             //Use credentials
-            $mail->Username = "leo.caselato@gmail.com";
-            $mail->Password = "lees awqi ahom efgz";
-            $mail->SMTPSecure = 'tls';
-            $mail->Port = 587;
-            $mail->setFrom("leo.caselato@gmail.com");
+            $mail->Username = $credentials['user'];
+            $mail->Password = $credentials['pass'];
+            $mail->SMTPSecure = $credentials['smtp_secure'];
+            $mail->Port = $credentials['port'];
+            $mail->setFrom($credentials['from']);
             //End of credentials
             $mail->addAddress($email);
             $halfValidationCode = ceil(strlen($validationCode) / 2);
             $validationCode = substr($validationCode, 0, $halfValidationCode) . '-' . substr($validationCode, $halfValidationCode);
-            $mail->FromName = "Artistar";
+            $mail->FromName = $credentials['name'];
             $mail->Body = 'Seu código de validação é: ' . $validationCode;
             $mail->AltBody = 'Seu código de validação é: ' . $validationCode;
             $mail->send();

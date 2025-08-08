@@ -3,6 +3,7 @@
 namespace Source\Controllers;
 use Source\Core\Core;
 use Source\Model\Stock;
+use Source\Model\Helpers\Storage;
 
 class stockController extends Core {
 
@@ -143,7 +144,9 @@ class stockController extends Core {
             if (!isset($post['category'])) $post['category'] = [];
             $stockModel->addNewProductCategories($post['category'], $store, $productId);
             if (!empty($_FILES['thumbnail']['tmp_name'])) {
-                $newThumbnail = $this->moveFile($_FILES['thumbnail']['tmp_name'] ?? '', 'uploads/products/'.$productId.'/thumbnail.'. pathinfo($_FILES['thumbnail']['name'] ?? '', PATHINFO_EXTENSION));
+                $storage = new Storage();
+                $imageName = 'uploads/products/'.$productId.'/thumbnail.'. pathinfo($_FILES['thumbnail']['name'] ?? '', PATHINFO_EXTENSION);
+                $newThumbnail = $storage->sendFileToBucket($_FILES['thumbnail']['tmp_name'], $imageName, true)['message'];
                 $stockModel->updateThumbnail($newThumbnail, $productId);
             }
         } catch (Exception $e) {
