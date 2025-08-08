@@ -1,4 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // Formata segundos em mm:ss
+
     const inputs = document.querySelectorAll('input[type="text"]');
     inputs.forEach((input, index) => {
         input.addEventListener('input', function() {
@@ -36,6 +38,71 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+function formatTime(seconds) {
+    const min = Math.floor(seconds / 60).toString().padStart(2, '0');
+    const sec = (seconds % 60).toString().padStart(2, '0');
+    return `${min}:${sec}`;
+}
+
+function resendCode() {
+    $('#spinner-resend').show();
+    $('#text-resend').hide();
+
+    $('#resend-code').addClass('disabled').off('click');
+
+    $.ajax({
+        url: '/auth/resend-code',
+        type: 'POST',
+        data: {
+            email: $('#email').val(),
+        },
+        success: function(response) {
+            response = JSON.parse(response);
+            if (response.code == 200) {
+
+                $('#toastTitle').text('E-mail reenviado com sucesso!');
+                $('#toastBody').text('O código enviado será válido por 1 hora. Aguarde 1 minuto para tentar novamente!');
+                //remove class bg-success
+                // Add class bg-danger
+                $('#myToast').addClass('bg-success');
+                $('#myToast').removeClass('bg-danger');
+
+                var myToast = new bootstrap.Toast(document.getElementById('myToast'));
+                myToast.show();
+
+                let timeLeft = 60; // 1 minute in seconds
+                $('#text-resend').text(formatTime(timeLeft));
+                const timer = setInterval(function() {
+                    timeLeft--;
+                    $('#text-resend').text(formatTime(timeLeft));
+                    if (timeLeft <= 0) {
+                        clearInterval(timer);
+                        $('#text-resend').text('Reenviar');
+                        $('#resend-code').removeClass('disabled');
+                        $('#resend-code').on('click', resendCode);
+                    }
+                }, 1000);
+
+                $('#spinner-resend').hide();
+                $('#text-resend').show();
+            } else {
+                $('#text-resend').text('Reenviar');
+                $('#resend-code').removeClass('disabled');
+                $('#resend-code').on('click', resendCode);
+                alert(response.message);
+            }
+        },
+        error: function(error) {
+            console.log('An error occurred');
+        }
+    });
+    
+}
+
+$('#resend-code').on('click', function(e) {
+    resendCode();
+});
+
 $('#form-confirmacao').on('submit', function(e) {
     e.preventDefault();
     let code = Array.from({ length: 9 }, (_, i) => $('#codigo' + i).val()).join('');
@@ -50,7 +117,13 @@ $('#form-confirmacao').on('submit', function(e) {
             if (response.code == 200) {
                 location.href = $('#form-confirmacao').attr('action');
             }  else {    
-                alert(response.message);
+                $('#toastTitle').text('Código inválido');
+                $('#toastBody').text('O código enviado é inválido (outro código foi enviado ou expirou), tente novamente!');
+                $('#myToast').addClass('bg-danger');
+                $('#myToast').removeClass('bg-success');
+
+                var myToast = new bootstrap.Toast(document.getElementById('myToast'));
+                myToast.show();
             }
         },
         error: function(error) {

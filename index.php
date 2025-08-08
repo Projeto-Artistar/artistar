@@ -41,6 +41,7 @@ $router->post("/login", "authController:login", "authController.login");
 $router->get("/logout", "authController:logout", "authController.logout");
 $router->get("/new-password", "authController:newPassword", "authController.newPassword");
 $router->post("/change-password", "authController:changePassword", "authController.changePassword");
+$router->post("/resend-code", "authController:resendCode", "authController.resendCode");
 
 $router->group('results');
 $router->get("/", "searchController:results", "searchController.results");
@@ -53,6 +54,8 @@ $router->get("/{eventId}/{friendlyUrl}", "eventsController:details", "eventsCont
 $router->group('register');
 $router->get("/", "registerController:home", "registerController.home");
 $router->post("/", "registerController:insertStore", "registerController.insertStore");
+$router->post("/validate-user", "registerController:validateUser", "registerController.validateUser");
+$router->post("/validate-email", "registerController:validateEmail", "registerController.validateEmail");
 $router->get("/validate-email", "registerController:validate", "registerController.validate");
 $router->post("/validate-code", "registerController:validateCode", "registerController.validateCode");
 

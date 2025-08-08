@@ -2,12 +2,13 @@
 
 namespace Source\Controllers;
 
-use CoffeeCode\Router\Router;
 use Exception;
-use Source\Core\Core;
-use Source\Model\Reset;
+use CoffeeCode\Router\Router;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception as PHPMailerException;
+use Source\Core\Core;
+use Source\Model\Reset;
+use Source\Model\Helpers\ValidationCode;
 
 class resetController extends Core {
 
@@ -20,13 +21,13 @@ class resetController extends Core {
 
     public function sendEmail($post) {
         try { 
-            $model = new Reset();
-            $userFound = $model->searchEmail($post['email']);
+            $helper = new ValidationCode();
+            $userFound = $helper->searchEmail($post['email']);
             if (empty($userFound)) exit($this->renderApiResponse(404, 'E-mail not found'));
-            $validationCode = $this->generateValidationCode(8);
+            $validationCode = $helper->generateValidationCode(8);
             $this->setUserPasswordChange($userFound['id']);
-            $model->updateValidationCode($userFound['id'], $validationCode);
-            $this->sendValidationEmail($userFound['email'], $validationCode);
+            $helper->updateValidationCode($userFound['id'], $validationCode);
+            $helper->sendValidationEmail($userFound['email'], $validationCode);
             exit($this->renderApiResponse(200, 'Code sent successfully'));
         } catch (Exception $e) {
             exit($this->renderApiResponse(500, $e->getMessage()));
@@ -45,11 +46,13 @@ class resetController extends Core {
     }
 
     public function validateCode($post) {
+
         try {
             $model = new Reset();
+            $helper = new ValidationCode();
             $userId = $this->getUserPasswordChange();
-            if ($model->validateCode($userId, $post['code'])) {
-                $model->updateEmailValidationStatus($userId);
+            if ($helper->validateCode($userId, $post['code'])) {
+                $helper->updateEmailValidationStatus($userId);
                 $this->unsetUserPasswordChange();
                 $this->setUserLogonStatus($userId);
                 exit($this->renderApiResponse(200, 'Code validated successfully'));
@@ -58,36 +61,6 @@ class resetController extends Core {
             }
         } catch (Exception $e) {
             exit($this->renderApiResponse(500, $e->getMessage()));
-        }
-    }
-
-    // Helpers
-    public function sendValidationEmail($email, $validationCode) {
-        $mail = new \PHPMailer\PHPMailer\PHPMailer();
-        try {
-            $mail->isSMTP();
-            $mail->Host = 'smtp.gmail.com'; // SMTP server
-            $mail->SMTPAuth = true;
-            //Use credentials
-            $mail->Username = "leo.caselato@gmail.com";
-            $mail->Password = "lees awqi ahom efgz";
-            $mail->SMTPSecure = 'tls';
-            $mail->Port = 587;
-            $mail->setFrom("leo.caselato@gmail.com");
-            
-            $mail->addAddress($email);
-            $mail->isHTML(true);
-            $mail->Subject = 'Confirmação de Email - Artistar';
-
-            $halfValidationCode = ceil(strlen($validationCode) / 2);
-            $validationCode = substr($validationCode, 0, $halfValidationCode) . '-' . substr($validationCode, $halfValidationCode);
-            $mail->FromName = "Artistar";
-            $mail->Body = 'Seu código de validação é: ' . $validationCode;
-            $mail->AltBody = 'Seu código de validação é: ' . $validationCode;
-            $mail->send();
-            return true;
-        } catch (PHPMailerException $e) {
-            return false;
         }
     }
 

@@ -6,6 +6,7 @@ use CoffeeCode\Router\Router;
 use Exception;
 use Source\Core\Core;
 use Source\Model\Auth;
+use Source\Model\Helpers\ValidationCode;
 
 class authController extends Core {
 
@@ -42,5 +43,21 @@ class authController extends Core {
         }
     }
 
+    public function resendCode($post) {
+        try {
+            $userEmail = $this->getUser();
+            $helper = new ValidationCode();
+            $validationCode = $helper->generateValidationCode(8);
+            if ($helper->sendValidationEmail($userEmail['email'], $validationCode)) {
+                $helper->updateValidationCode($userEmail['id'], $validationCode);
+                exit($this->renderApiResponse(200, 'Passou'));
+            } else {
+                exit($this->renderApiResponse(404, 'Error sending email'));
+            }
+        } catch (Exception $e) {
+            exit($this->renderApiResponse(500, $e->getMessage()));
+        }
+        
+    }
 
 }

@@ -2,12 +2,11 @@
 
 namespace Source\Controllers;
 
-use CoffeeCode\Router\Router;
 use Exception;
+use CoffeeCode\Router\Router;
 use Source\Core\Core;
 use Source\Model\Register;
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception as PHPMailerException;
+use Source\Model\Helpers\ValidationCode;
 
 class registerController extends Core {
 
@@ -77,10 +76,10 @@ class registerController extends Core {
             $now = strtotime(date("Y-m-d H:i:s"));
             $diff = ($now - $createdAt) / 3600;
             if ($diff > 1) {
-                $validationCode = $this->generateValidationCode(8);
-                $model = new Register();
-                if ($this->sendValidationEmail($this->getUser()['email'], $validationCode))
-                    $model->updateValidationCode($this->getUser()['id'], $validationCode);
+                $helper = new ValidationCode();
+                $validationCode = $helper->generateValidationCode(8);
+                if ($helper->sendValidationEmail($this->getUser()['email'], $validationCode))
+                    $helper->updateValidationCode($this->getUser()['id'], $validationCode);
             }
         }
         echo $this->view->render("register/validate-email", [
@@ -99,29 +98,30 @@ class registerController extends Core {
         }
     }
 
-    // Helper functions
-    public function sendValidationEmail($email, $validationCode) {
-        $mail = new \PHPMailer\PHPMailer\PHPMailer();
-        try {
-            $mail->isSMTP();
-            $mail->Host = 'smtp.gmail.com'; // SMTP server
-            $mail->SMTPAuth = true;
-            $mail->isHTML(true);
-            $mail->Subject = 'Confirmação de Email - Artistar';
-            //Use credentials
+    public function validateUser($post) {
+        
+        if (empty($post['user'])) exit($this->renderApiResponse(403, 'Sem nome de usuário inserido'));
+        if (strlen($post['user']) < 3) exit($this->renderApiResponse(403, 'Nome de usuário deve ter pelo menos 3 caracteres'));
+        $model = new Register();
 
-            //End of credentials
-            $mail->addAddress($email);
-            $halfValidationCode = ceil(strlen($validationCode) / 2);
-            $validationCode = substr($validationCode, 0, $halfValidationCode) . '-' . substr($validationCode, $halfValidationCode);
-            $mail->FromName = "Artistar";
-            $mail->Body = 'Seu código de validação é: ' . $validationCode;
-            $mail->AltBody = 'Seu código de validação é: ' . $validationCode;
-            $mail->send();
-            return true;
-        } catch (PHPMailerException $e) {
-            return false;
-        }
+        $username = $model->verifyIfEmailAndUsernameAreValid('', $post['user']);
+        if ($username['qtd_storeUsername'] < 1 && $username['qtd_userUsername'] < 1) exit($this->renderApiResponse(200, 'Nome de usuário está disponível'));
+        exit($this->renderApiResponse(404, 'Nome de usuário está indisponível'));
+
+        return;
+    }
+
+    public function validateEmail($post) {
+
+        if (empty($post['email'])) exit($this->renderApiResponse(403, 'Sem email inserido'));
+        if (!filter_var($post['email'], FILTER_VALIDATE_EMAIL)) exit($this->renderApiResponse(403, 'Email inválido'));
+        $model = new Register();
+
+        $email = $model->verifyIfEmailAndUsernameAreValid($post['email'], '');
+        if ($email['qtd_userEmail'] < 1) exit($this->renderApiResponse(200, 'Email está disponível'));
+        exit($this->renderApiResponse(404, 'Email está indisponível'));
+
+        return;
     }
 
 }

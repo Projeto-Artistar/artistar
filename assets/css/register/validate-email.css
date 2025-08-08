@@ -9,7 +9,7 @@
 }
 
 .container-fluid {
-    background-color: #f8f9fa;
+    /* background-color: #f8f9fa; */
 }
 
 .img-fluid {
@@ -22,11 +22,11 @@
     margin-bottom: 20px;
 }
 
-.login-form a {
+.cadastre-se {
     text-decoration: none;
 }
 
-.login-form a:hover {
+.cadastre-se:hover {
     text-decoration: underline;
 }
 
@@ -40,6 +40,11 @@
     border-radius: 8px; /* Adiciona bordas arredondadas */
     background-color: #fff;
     width: 75% !important;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 75vh;
 }
 
 .input-validate {
@@ -52,7 +57,11 @@
     justify-content: center;
 }
 
-@media (max-width: 768px) {
+.toast-success {
+    top: 0;
+}
+
+@media (max-width: 769px) {
     .outer-box {
         width: 100% !important;
     }

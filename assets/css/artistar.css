@@ -347,3 +347,10 @@ body {
     object-fit: cover;
     border-radius: 50%;
 }
+
+.toast-success {
+    position: fixed;
+    z-index: 1030;
+    top: 70px;
+    right: 0;
+}

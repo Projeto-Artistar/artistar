@@ -3,8 +3,11 @@
 
 namespace Source\Core;
 
-use League\Plates\Engine;
 use PDO;
+use Exception;
+use League\Plates\Engine;
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception as PHPMailerException;
 
 class Core
 {
@@ -144,10 +147,6 @@ class Core
             ['id' => 26, 'name' => 'Sergipe', 'uf' => 'SE'],
             ['id' => 27, 'name' => 'Tocantins', 'uf' => 'TO'],
         ];
-    }
-
-    public function generateValidationCode($length = 6) {
-        return substr(str_shuffle('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, $length);
     }
 
     public function renderApiResponse($code, $message, $data = null) {

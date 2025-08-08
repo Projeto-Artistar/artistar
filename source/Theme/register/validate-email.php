@@ -5,11 +5,11 @@
 ]); ?>
 
 <?= $this->start("css") ?>
-<link rel="stylesheet" href="<?= url("assets/css/login.css") ?>">
+<link rel="stylesheet" href="<?= url("assets/css/register/validate-email.css") ?>">
 <?= $this->stop() ?>
 
 <?= $this->start("conteudo") ?>
-<section class="container-fluid vh-100 d-flex align-items-center justify-content-center bg-btp-kitlit-gradient">
+<section class="container-fluid vh-100 d-flex align-items-center justify-content-center bg-stellar-blue-nocturne-purple-gradient">
     <!-- <div class="row w-75 h-75 outer-box"> -->
         <div class="col-md-6 d-flex align-items-center justify-content-center">
             <div class="login-form border">
@@ -18,27 +18,43 @@
                     <div class="mb-3">
                         <label for="codigo" class="form-label">Insira o código de confirmação enviado para o seu e-mail</label>
                         <div class="d-flex justify-content-between">
-                            <input type="text" class="form-control text-center m-1 input-validate input-kiklit-2" id="codigo1" name="code[0]" maxlength="1" required style="text-transform: uppercase;">
-                            <input type="text" class="form-control text-center m-1 input-validate input-kiklit-2" id="codigo2" name="code[1]" maxlength="1" required style="text-transform: uppercase;">
-                            <input type="text" class="form-control text-center m-1 input-validate input-kiklit-2" id="codigo3" name="code[2]" maxlength="1" required style="text-transform: uppercase;">
-                            <input type="text" class="form-control text-center m-1 input-validate input-kiklit-2" id="codigo4" name="code[3]" maxlength="1" required style="text-transform: uppercase;">
+                            <input type="text" class="form-control text-center m-1 input-validate input-stellar-blue" id="codigo1" name="code[0]" maxlength="1" required style="text-transform: uppercase;">
+                            <input type="text" class="form-control text-center m-1 input-validate input-stellar-blue" id="codigo2" name="code[1]" maxlength="1" required style="text-transform: uppercase;">
+                            <input type="text" class="form-control text-center m-1 input-validate input-stellar-blue" id="codigo3" name="code[2]" maxlength="1" required style="text-transform: uppercase;">
+                            <input type="text" class="form-control text-center m-1 input-validate input-stellar-blue" id="codigo4" name="code[3]" maxlength="1" required style="text-transform: uppercase;">
                             <span class="mx-2">-</span>
-                            <input type="text" class="form-control text-center m-1 input-validate input-kiklit-2" id="codigo5" name="code[4]" maxlength="1" required style="text-transform: uppercase;">
-                            <input type="text" class="form-control text-center m-1 input-validate input-kiklit-2" id="codigo6" name="code[5]" maxlength="1" required style="text-transform: uppercase;">
-                            <input type="text" class="form-control text-center m-1 input-validate input-kiklit-2" id="codigo7" name="code[6]" maxlength="1" required style="text-transform: uppercase;">
-                            <input type="text" class="form-control text-center m-1 input-validate input-kiklit-2" id="codigo8" name="code[7]" maxlength="1" required style="text-transform: uppercase;">
+                            <input type="text" class="form-control text-center m-1 input-validate input-stellar-blue" id="codigo5" name="code[4]" maxlength="1" required style="text-transform: uppercase;">
+                            <input type="text" class="form-control text-center m-1 input-validate input-stellar-blue" id="codigo6" name="code[5]" maxlength="1" required style="text-transform: uppercase;">
+                            <input type="text" class="form-control text-center m-1 input-validate input-stellar-blue" id="codigo7" name="code[6]" maxlength="1" required style="text-transform: uppercase;">
+                            <input type="text" class="form-control text-center m-1 input-validate input-stellar-blue" id="codigo8" name="code[7]" maxlength="1" required style="text-transform: uppercase;">
                         </div>
                     </div>
+                    <div class="mb-3">
+                        <a href="#" class="link-stellar-blue" id="resend-code">
+                            <span id="spinner-resend" class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display:none;"></span>
+                            <span id="text-resend">Reenviar</span>
+                        </a>
+                    </div>
                     <div class="d-flex justify-content-end align-items-center">
-                        <a class="btn btn-kiklit-2 mx-1" href="<?= url('auth/logout')?>">Cancelar</a>
-                        <button type="submit" class="btn btn-kiklit-2">Confirmar</button>
+                        <a class="btn btn-gray mx-1" href="<?= url('auth/logout')?>">Cancelar</a>
+                        <button type="submit" class="btn btn-nocturne-purple">Confirmar</button>
                     </div>
                 </form>
             </div>
         </div>
     <!-- </div> -->
 </section>
-
+<section id="toasts-section">
+    <div class="toast align-items-center text-light bg-success border-0 toast-success m-3" id="myToast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="3000">
+        <div class="toast-header">
+            <strong class="me-auto" id="toastTitle">Título</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body" id="toastBody">
+            Mensagem do toast.
+        </div>
+    </div>
+</section>
 <?= $this->stop() ?>
 
 <?= $this->start("js") ?>

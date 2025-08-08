@@ -21,17 +21,13 @@
                             <label for="user" class="form-label">Nome de Usuário</label>
                             <input type="text" class="form-control input-stellar-blue" id="user" name="user" required minlength="3">
                             <small id="userCompleteHelp" class="form-text text-muted">Identificação única.</small>
-                            <div class="invalid-feedback">
-                                O nome de usuário deve ter pelo menos 3 caracteres.
-                            </div>
+                            <div class="invalid-feedback" id="userInvalidFeedback"></div>
                         </div>
                         <div class="mb-3">
                             <label for="complete_user" class="form-label">Nome Completo</label>
                             <input type="text" class="form-control input-stellar-blue" id="complete_user" name="complete_user" required>
                             <small id="userCompleteHelp" class="form-text text-muted">Nome artístico/da loja</small>
-                            <div class="invalid-feedback">
-                                O nome completo é obrigatório.
-                            </div>
+                            <div class="invalid-feedback" id="completeUserInvalidFeedback"></div>
                         </div>
                         <div class="mb-3">
                             <label for="email" class="form-label">E-mail</label>
@@ -59,7 +55,11 @@
                             <label class="form-check label" for="aceito-termos">Li e aceito as <a href="<?= url('legal/privacy')?>" target="_blank" class="link-kitlit-2">Políticas de Privacidade</a> e os <a href="<?= url('legal/terms')?>" target="_blank" class="link-kitlit-2">Termos de Uso</a></label>
                         </div> -->
                         <div class="d-flex justify-content-end align-items-center">
-                            <button type="submit" class="btn btn-nocturne-purple" id="btn-confirm-register">Confirmar</button>
+                            
+                            <button type="submit" class="btn btn-nocturne-purple" id="btn-confirm-register">
+                                <span id="spinner-confirm" class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display:none;"></span>
+                                <span id="text-confirm">Confirmar</span>
+                            </button>
                         </div>
                     </form>
                 </div>
