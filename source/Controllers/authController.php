@@ -45,8 +45,13 @@ class authController extends Core {
 
     public function resendCode($post) {
         try {
-            $userEmail = $this->getUser();
             $helper = new ValidationCode();
+            if (isset($_SESSION['artistar']['password_change'])) {
+                $userEmail = $helper->searchUser($_SESSION['artistar']['password_change']);
+            } else {
+                $userEmail = $this->getUser();
+            }
+            
             $validationCode = $helper->generateValidationCode(8);
             if ($helper->sendValidationEmail($userEmail['email'], $validationCode)) {
                 $helper->updateValidationCode($userEmail['id'], $validationCode);

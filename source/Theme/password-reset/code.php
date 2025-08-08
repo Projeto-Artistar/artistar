@@ -5,7 +5,7 @@
 ]); ?>
 
 <?= $this->start("css") ?>
-<link rel="stylesheet" href="<?= url("assets/css/login.css") ?>">
+<link rel="stylesheet" href="<?= url("assets/css/password-reset/new-password.css") ?>">
 <?= $this->stop() ?>
 
 <?= $this->start("conteudo") ?>
@@ -30,14 +30,35 @@
                             <img src="<?= url("assets/images/loader.gif") ?>" id="loader" class="d-none" alt="Loading...">
                         </div>
                     </div>
+                    <div class="mb-3">
+                        <a href="#" class="link-stellar-blue" id="resend-code">
+                            <span id="spinner-resend" class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display:none;"></span>
+                            <span id="text-resend">Reenviar</span>
+                        </a>
+                    </div>
                     <div class="d-flex justify-content-end align-items-center">
                         <a class="btn btn-gray mx-1" href="<?= url('auth/logout')?>">Cancelar</a>
-                        <button type="submit" class="btn btn-nocturne-purple">Confirmar</button>
+                        <button type="submit" class="btn btn-nocturne-purple" id="confirm-button">
+                            <span id="spinner-confirm" class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display:none;"></span>
+                            <span id="text-confirm">Confirmar</span>
+                        </button>
                     </div>
                 </form>
             </div>
         </div>
     <!-- </div> -->
+</section>
+
+<section id="toasts-section">
+    <div class="toast align-items-center text-light bg-success border-0 toast-success m-3" id="myToast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="3000">
+        <div class="toast-header">
+            <strong class="me-auto" id="toastTitle">Título</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body" id="toastBody">
+            Mensagem do toast.
+        </div>
+    </div>
 </section>
 
 <?= $this->stop() ?>

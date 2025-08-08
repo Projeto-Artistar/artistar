@@ -38,6 +38,8 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+
+
 function formatTime(seconds) {
     const min = Math.floor(seconds / 60).toString().padStart(2, '0');
     const sec = (seconds % 60).toString().padStart(2, '0');
@@ -103,32 +105,49 @@ $('#resend-code').on('click', function(e) {
     resendCode();
 });
 
+function disableRegisterBtn() {
+    $('#btn-confirm-password-reset').prop('disabled', true);
+    $('#spinner-confirm').show();
+    $('#text-confirm').hide();
+}
+
+function enableRegisterBtn() {
+    $('#btn-confirm-password-reset').prop('disabled', false);
+    $('#spinner-confirm').hide();
+    $('#text-confirm').show();
+}
+
 $('#form-confirmacao').on('submit', function(e) {
     e.preventDefault();
+    disableRegisterBtn();
     let code = Array.from({ length: 9 }, (_, i) => $('#codigo' + i).val()).join('');
-    $.ajax({
-        url: '/register/validate-code',
-        type: 'POST',
-        data: {
-            code: code,
-        },
-        success: function(response) {
-            response = JSON.parse(response);
-            if (response.code == 200) {
-                location.href = $('#form-confirmacao').attr('action');
-            }  else {    
-                $('#toastTitle').text('Código inválido');
-                $('#toastBody').text('O código enviado é inválido (outro código foi enviado ou expirou), tente novamente!');
-                $('#myToast').addClass('bg-danger');
-                $('#myToast').removeClass('bg-success');
+    setTimeout(function() {
+        $.ajax({
+            url: '/register/validate-code',
+            type: 'POST',
+            data: {
+                code: code,
+            },
+            success: function(response) {
+                response = JSON.parse(response);
+                if (response.code == 200) {
+                    location.href = $('#form-confirmacao').attr('action');
+                }  else {    
+                    $('#toastTitle').text('Código inválido');
+                    $('#toastBody').text('O código enviado é inválido (outro código foi enviado ou expirou), tente novamente!');
+                    $('#myToast').addClass('bg-danger');
+                    $('#myToast').removeClass('bg-success');
 
-                var myToast = new bootstrap.Toast(document.getElementById('myToast'));
-                myToast.show();
+                    var myToast = new bootstrap.Toast(document.getElementById('myToast'));
+                    myToast.show();
+                }
+                enableRegisterBtn();
+            },
+            error: function(error) {
+                console.error(error);
+                enableRegisterBtn();
             }
-        },
-        error: function(error) {
-            console.log('An error occurred');
-        }
-    });
+        });
+    }, 10);
 });
 

@@ -37,7 +37,10 @@
                     </div>
                     <div class="d-flex justify-content-end align-items-center">
                         <a class="btn btn-gray mx-1" href="<?= url('auth/logout')?>">Cancelar</a>
-                        <button type="submit" class="btn btn-nocturne-purple">Confirmar</button>
+                        <button type="submit" class="btn btn-nocturne-purple" id="confirm-button">
+                            <span id="spinner-confirm" class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display:none;"></span>
+                            <span id="text-confirm">Confirmar</span>
+                        </button>
                     </div>
                 </form>
             </div>

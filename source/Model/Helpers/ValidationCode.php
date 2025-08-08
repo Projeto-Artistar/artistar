@@ -27,6 +27,24 @@ class ValidationCode extends Core {
         return $result;
     }
 
+    public function searchUser($id) {
+        $id = filter_var($id, FILTER_SANITIZE_NUMBER_INT);
+        $userStatement = $this->SQL->prepare('
+            SELECT
+                usuario_id id,
+                usuario_nome_completo nome,
+                usuario_email email
+            FROM
+                usuarios
+            WHERE
+                usuario_id = :id
+        ');
+        $userStatement->bindParam(':id', $id, PDO::PARAM_INT);
+        $userStatement->execute();
+        $result = $userStatement->fetch();
+        return $result;
+    }
+
     public function sendValidationEmail($email, $validationCode) {
         $mail = new \PHPMailer\PHPMailer\PHPMailer();
         try {

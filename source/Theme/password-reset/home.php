@@ -25,11 +25,26 @@
                         </div>
                         <div class="d-flex justify-content-between align-items-center">
                             <a href="<?= url('login') ?>" class="link-stellar-blue">Cancelar</a>
-                            <button type="submit" class="btn btn-nocturne-purple">Enviar e-mail</button>
+                            <button type="submit" class="btn btn-nocturne-purple" id="btn-confirm-password-reset">
+                                <span id="spinner-confirm" class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display:none;"></span>
+                                <span id="text-confirm">Enviar e-mail</span>
+                            </button>
                         </div>
                     </form>
                 </div>
             </div>
+        </div>
+    </div>
+</section>
+
+<section id="toasts-section">
+    <div class="toast align-items-center text-light bg-success border-0 toast-success m-3" id="myToast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="3000">
+        <div class="toast-header">
+            <strong class="me-auto" id="toastTitle">Título</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body" id="toastBody">
+            Mensagem do toast.
         </div>
     </div>
 </section>
