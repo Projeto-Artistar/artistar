@@ -136,10 +136,6 @@ class Marshaler
 
         // Handle string values.
         if ($type === 'string') {
-            if ($value === '') {
-                return $this->handleInvalid('empty strings are invalid');
-            }
-
             return ['S' => $value];
         }
 
@@ -179,7 +175,7 @@ class Marshaler
                 $data[] = current($marshaled);
             }
 
-            return [$previousType . 'S' => array_unique($data)];
+            return [$previousType . 'S' => array_values(array_unique($data))];
         }
 
         // Handle list and map values.
@@ -237,12 +233,13 @@ class Marshaler
      * returned instead.
      *
      * @param array $data Item from a DynamoDB result.
+     * @param bool  $mapAsObject Whether maps should be represented as stdClass.
      *
      * @return array|\stdClass
      */
-    public function unmarshalItem(array $data)
+    public function unmarshalItem(array $data, $mapAsObject = false)
     {
-        return $this->unmarshalValue(['M' => $data]);
+        return $this->unmarshalValue(['M' => $data], $mapAsObject);
     }
 
     /**
@@ -258,7 +255,8 @@ class Marshaler
      */
     public function unmarshalValue(array $value, $mapAsObject = false)
     {
-        list($type, $value) = each($value);
+        $type = key($value);
+        $value = $value[$type];
         switch ($type) {
             case 'S':
             case 'BOOL':
@@ -268,10 +266,10 @@ class Marshaler
             case 'N':
                 if ($this->options['wrap_numbers']) {
                     return new NumberValue($value);
-                } else {
-                    // Use type coercion to unmarshal numbers to int/float.
-                    return $value + 0;
                 }
+
+                // Use type coercion to unmarshal numbers to int/float.
+                return $value + 0;
             case 'M':
                 if ($mapAsObject) {
                     $data = new \stdClass;
@@ -282,8 +280,8 @@ class Marshaler
                 }
                 // NOBREAK: Unmarshal M the same way as L, for arrays.
             case 'L':
-                foreach ($value as &$v) {
-                    $v = $this->unmarshalValue($v, $mapAsObject);
+                foreach ($value as $k => $v) {
+                    $value[$k] = $this->unmarshalValue($v, $mapAsObject);
                 }
                 return $value;
             case 'B':
@@ -291,8 +289,8 @@ class Marshaler
             case 'SS':
             case 'NS':
             case 'BS':
-                foreach ($value as &$v) {
-                    $v = $this->unmarshalValue([$type[0] => $v]);
+                foreach ($value as $k => $v) {
+                    $value[$k] = $this->unmarshalValue([$type[0] => $v]);
                 }
                 return new SetValue($value);
         }
@@ -311,7 +309,9 @@ class Marshaler
     {
         if ($this->options['ignore_invalid']) {
             return null;
-        } elseif ($this->options['nullify_invalid']) {
+        }
+
+        if ($this->options['nullify_invalid']) {
             return ['NULL' => true];
         }
 

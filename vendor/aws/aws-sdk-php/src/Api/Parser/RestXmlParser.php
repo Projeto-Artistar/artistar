@@ -4,14 +4,14 @@ namespace Aws\Api\Parser;
 use Aws\Api\StructureShape;
 use Aws\Api\Service;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\StreamInterface;
 
 /**
  * @internal Implements REST-XML parsing (e.g., S3, CloudFront, etc...)
  */
 class RestXmlParser extends AbstractRestParser
 {
-    /** @var XmlParser */
-    private $parser;
+    use PayloadParserTrait;
 
     /**
      * @param Service   $api    Service description
@@ -28,7 +28,15 @@ class RestXmlParser extends AbstractRestParser
         StructureShape $member,
         array &$result
     ) {
-        $xml = new \SimpleXMLElement($response->getBody());
-        $result += $this->parser->parse($member, $xml);
+        $result += $this->parseMemberFromStream($response->getBody(), $member, $response);
+    }
+
+    public function parseMemberFromStream(
+        StreamInterface $stream,
+        StructureShape $member,
+        $response
+    ) {
+        $xml = $this->parseXml($stream, $response);
+        return $this->parser->parse($member, $xml);
     }
 }

@@ -48,6 +48,7 @@ class salesStatementController extends Core {
             $item['desconto_unitario'] = moedaReal($item['desconto'] / $item['qtd']);
             $item['valor'] = moedaReal($item['valor']);
             $item['desconto'] = moedaReal($item['desconto']);
+            $item['thumbnail'] = empty($item['thumbnail']) ? url('assets/image/200x300.png') : storageURL($item['thumbnail']);
             if (!isset($salesItems[$item['id_venda']])) {
                 $salesItems[$item['id_venda']] = [];
             }
@@ -100,6 +101,7 @@ class salesStatementController extends Core {
             $item['preco'] = moedaReal($item['preco']);
             $item['valor'] = moedaReal($item['valor']);
             $item['desconto'] = moedaReal($item['desconto']);
+            $item['thumbnail'] = empty($item['thumbnail']) ? url('assets/image/200x300.png') : storageURL($item['thumbnail']);
         }
 
         $products = $salesStatementModel->getProducts($store);
@@ -108,6 +110,7 @@ class salesStatementController extends Core {
             $product['total'] = moedaReal($product['preco'] - $product['desconto']);
             $product['preco'] = moedaReal($product['preco']);
             $product['desconto'] = moedaReal($product['desconto']);
+            $product['imagem'] = empty($product['imagem']) ? url('assets/image/200x300.png') : storageURL($product['imagem']);
         }
 
 

@@ -124,7 +124,7 @@
                 <div class="col-lg-3 col-md-4 col-sm-6 mb-4 evento">
                     <a class="card h-100 d-flex flex-column product-card" href="<?=url('stock/product/'.$product['id'])?>">
                         <div class="card-img-top position-relative pt-2 px-2">
-                            <img src="<?= empty($product['thumbnail']) ? url('assets/image/200x300.png') : $product['thumbnail'] ?>" class="img-fluid rounded thumbnail-product" alt="Evento">
+                            <img src="<?= empty($product['thumbnail']) ? url('assets/image/200x300.png') : storageURL($product['thumbnail']) ?>" class="img-fluid rounded thumbnail-product" alt="Evento">
                             <?php if ($product['estoque'] <= 0): ?>
                             <span class="badge bg-danger position-absolute top-0 end-0 m-3">Sem Estoque</span>
                             <?php elseif ($product['estoque'] < $product['estoque_minimo']): ?>

@@ -2,7 +2,8 @@
 namespace Aws;
 
 use Aws\Exception\AwsException;
-use GuzzleHttp\Promise;
+use GuzzleHttp\Promise\Coroutine;
+use GuzzleHttp\Promise\PromiseInterface;
 use GuzzleHttp\Promise\PromisorInterface;
 use GuzzleHttp\Promise\RejectedPromise;
 
@@ -86,9 +87,12 @@ class Waiter implements PromisorInterface
         }
     }
 
-    public function promise()
+    /**
+     * @return Coroutine
+     */
+    public function promise(): PromiseInterface
     {
-        return Promise\coroutine(function () {
+        return Coroutine::of(function () {
             $name = $this->config['operation'];
             for ($state = 'retry', $attempt = 1; $state === 'retry'; $attempt++) {
                 // Execute the operation.
@@ -175,7 +179,7 @@ class Waiter implements PromisorInterface
     }
 
     /**
-     * @param result $result   Result or exception.
+     * @param Result $result   Result or exception.
      * @param array  $acceptor Acceptor configuration being checked.
      *
      * @return bool
@@ -188,7 +192,7 @@ class Waiter implements PromisorInterface
     }
 
     /**
-     * @param result $result   Result or exception.
+     * @param Result $result   Result or exception.
      * @param array  $acceptor Acceptor configuration being checked.
      *
      * @return bool
@@ -210,7 +214,7 @@ class Waiter implements PromisorInterface
     }
 
     /**
-     * @param result $result   Result or exception.
+     * @param Result $result   Result or exception.
      * @param array  $acceptor Acceptor configuration being checked.
      *
      * @return bool
@@ -222,17 +226,11 @@ class Waiter implements PromisorInterface
         }
 
         $actuals = $result->search($acceptor['argument']) ?: [];
-        foreach ($actuals as $actual) {
-            if ($actual == $acceptor['expected']) {
-                return true;
-            }
-        }
-
-        return false;
+        return in_array($acceptor['expected'], $actuals);
     }
 
     /**
-     * @param result $result   Result or exception.
+     * @param Result $result   Result or exception.
      * @param array  $acceptor Acceptor configuration being checked.
      *
      * @return bool
@@ -241,23 +239,28 @@ class Waiter implements PromisorInterface
     {
         if ($result instanceof ResultInterface) {
             return $acceptor['expected'] == $result['@metadata']['statusCode'];
-        } elseif ($result instanceof AwsException) {
-            return $acceptor['expected'] == $result->getResponse()->getStatusCode();
-        } else {
-            return false;
         }
+
+        if ($result instanceof AwsException && $response = $result->getResponse()) {
+            return $acceptor['expected'] == $response->getStatusCode();
+        }
+
+        return false;
     }
 
     /**
-     * @param result $result   Result or exception.
+     * @param Result $result   Result or exception.
      * @param array  $acceptor Acceptor configuration being checked.
      *
      * @return bool
      */
     private function matchesError($result, array $acceptor)
     {
-        return !($result instanceof AwsException)
-            ? false
-            : $result->getAwsErrorCode() == $acceptor['expected'];
+        if ($result instanceof AwsException) {
+            return $result->isConnectionError()
+                || $result->getAwsErrorCode() == $acceptor['expected'];
+        }
+
+        return false;
     }
 }

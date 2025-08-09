@@ -13,6 +13,8 @@ use Psr\Http\Message\ResponseInterface;
  */
 abstract class AbstractRestParser extends AbstractParser
 {
+    use PayloadParserTrait;
+
     /**
      * Parses a payload from a response.
      *
@@ -53,7 +55,10 @@ abstract class AbstractRestParser extends AbstractParser
             }
         }
 
-        if (!$payload && $response->getBody()->getSize() > 0) {
+        if (!$payload
+            && $response->getBody()->getSize() > 0
+            && count($output->getMembers()) > 0
+        ) {
             // if no payload was found, then parse the contents of the body
             $this->payload($response, $output, $result);
         }
@@ -69,7 +74,13 @@ abstract class AbstractRestParser extends AbstractParser
     ) {
         $member = $output->getMember($payload);
 
-        if ($member instanceof StructureShape) {
+        if (!empty($member['eventstream'])) {
+            $result[$payload] = new EventParsingIterator(
+                $response->getBody(),
+                $member,
+                $this
+            );
+        } else if ($member instanceof StructureShape) {
             // Structure members parse top-level data into a specific key.
             $result[$payload] = [];
             $this->payload($response, $member, $result[$payload]);
@@ -89,18 +100,49 @@ abstract class AbstractRestParser extends AbstractParser
         &$result
     ) {
         $value = $response->getHeaderLine($shape['locationName'] ?: $name);
-        $type = $shape->getType();
 
-        if ($type === 'blob') {
-            $value = base64_decode($value);
-        } elseif ($type === 'timestamp') {
-            try {
-                $value = new DateTimeResult($value);
-            } catch (\Exception $e) {
-                // If the value cannot be parsed, then do not add it to the
-                // output structure.
-                return;
-            }
+        switch ($shape->getType()) {
+            case 'float':
+            case 'double':
+                $value = (float) $value;
+                break;
+            case 'long':
+                $value = (int) $value;
+                break;
+            case 'boolean':
+                $value = filter_var($value, FILTER_VALIDATE_BOOLEAN);
+                break;
+            case 'blob':
+                $value = base64_decode($value);
+                break;
+            case 'timestamp':
+                try {
+                    $value = DateTimeResult::fromTimestamp(
+                        $value,
+                        !empty($shape['timestampFormat']) ? $shape['timestampFormat'] : null
+                    );
+                    break;
+                } catch (\Exception $e) {
+                    // If the value cannot be parsed, then do not add it to the
+                    // output structure.
+                    return;
+                }
+            case 'string':
+                try {
+                    if ($shape['jsonvalue']) {
+                        $value = $this->parseJson(base64_decode($value), $response);
+                    }
+
+                    // If value is not set, do not add to output structure.
+                    if (!isset($value)) {
+                        return;
+                    }
+                    break;
+                } catch (\Exception $e) {
+                    //If the value cannot be parsed, then do not add it to the
+                    //output structure.
+                    return;
+                }
         }
 
         $result[$name] = $value;
@@ -118,7 +160,7 @@ abstract class AbstractRestParser extends AbstractParser
         // Check if the headers are prefixed by a location name
         $result[$name] = [];
         $prefix = $shape['locationName'];
-        $prefixLen = strlen($prefix);
+        $prefixLen = $prefix !== null ? strlen($prefix) : 0;
 
         foreach ($response->getHeaders() as $k => $values) {
             if (!$prefixLen) {

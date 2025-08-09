@@ -24,6 +24,7 @@ class salesController extends Core {
             $product['total'] = moedaReal($product['preco'] - $product['desconto']);
             $product['preco'] = moedaReal($product['preco']);
             $product['desconto'] = moedaReal($product['desconto']);
+            $product['imagem'] = empty($product['imagem']) ? url('assets/image/200x300.png') : storageURL($product['imagem']);
         }
         echo $this->view->render("sales/home", [
             'layout' => [

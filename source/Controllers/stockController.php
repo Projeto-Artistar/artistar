@@ -1,6 +1,7 @@
 <?php
 
 namespace Source\Controllers;
+use Exception;
 use Source\Core\Core;
 use Source\Model\Stock;
 use Source\Model\Helpers\Storage;
@@ -93,8 +94,15 @@ class stockController extends Core {
         } else {
             $categories = $post['category'] ?? [];
             $stockModel->insertProductCategories($categories, $store, $productId);
-            $post['thumbnail'] = $this->moveFile($_FILES['thumbnail']['tmp_name'] ?? '', 'uploads/products/'.$productId.'/thumbnail.'. pathinfo($_FILES['thumbnail']['name'] ?? '', PATHINFO_EXTENSION));
-            $stockModel->updateThumbnail($post['thumbnail'], $productId);
+            if (!empty($_FILES['thumbnail']['tmp_name'])) {
+                $storage = new Storage();
+                $folder = 'uploads/products/'.$productId.'/';
+                $imageName = $folder.'thumbnail.'. pathinfo($_FILES['thumbnail']['name'] ?? '', PATHINFO_EXTENSION);
+                $thumbnail = $storage->sendFileToBucket($_FILES['thumbnail']['tmp_name'], $imageName, true)['message'];
+                $stockModel->updateThumbnail($thumbnail, $productId);
+            }
+            
+            
         }
         exit($this->renderApiResponse(200, "Produto inserido com sucesso.", ['productId' => $productId]));
 
@@ -145,7 +153,9 @@ class stockController extends Core {
             $stockModel->addNewProductCategories($post['category'], $store, $productId);
             if (!empty($_FILES['thumbnail']['tmp_name'])) {
                 $storage = new Storage();
-                $imageName = 'uploads/products/'.$productId.'/thumbnail.'. pathinfo($_FILES['thumbnail']['name'] ?? '', PATHINFO_EXTENSION);
+                $folder = 'uploads/products/'.$productId.'/';
+                $imageName = $folder.'thumbnail.'. pathinfo($_FILES['thumbnail']['name'] ?? '', PATHINFO_EXTENSION);
+                $storage->cleanFolderFromBucket($folder);
                 $newThumbnail = $storage->sendFileToBucket($_FILES['thumbnail']['tmp_name'], $imageName, true)['message'];
                 $stockModel->updateThumbnail($newThumbnail, $productId);
             }
@@ -170,7 +180,9 @@ class stockController extends Core {
             $newProductId = $stockModel->duplicateProduct($productId, $store);
             if (!$newProductId) exit($this->renderApiResponse(500, "Erro ao duplicar produto."));
             $stockModel->duplicateProductCategories($productId, $newProductId, $store);
-            $newThumbnail = $this->copyFile($product['thumbnail'], 'uploads/products/'.$newProductId.'/thumbnail.'. pathinfo($product['thumbnail'], PATHINFO_EXTENSION));  
+            $storage = new Storage();
+            $folder = 'uploads/products/'.$newProductId.'/';
+            $newThumbnail = $storage->copyFileFromBucket($product['thumbnail'], $folder.'thumbnail.'. pathinfo($product['thumbnail'], PATHINFO_EXTENSION))['message'] ?? '';
             if($newThumbnail) $stockModel->updateThumbnail($newThumbnail, $newProductId);
         } catch (Exception $e) {
             exit($this->renderApiResponse(500, "Erro ao duplicar produto: " . $e->getMessage()));
@@ -190,7 +202,8 @@ class stockController extends Core {
         try {
             $stockModel->deleteProduct($productId, $store);
             $stockModel->deleteProductCategories($productId, $store);
-            $this->deleteFile('uploads/products/'.$productId.'/thumbnail.'. pathinfo($product['thumbnail'], PATHINFO_EXTENSION));
+            $storage = new Storage();
+            $storage->deleteFileFromBucket('uploads/products/'.$productId.'/thumbnail.'. pathinfo($product['thumbnail'], PATHINFO_EXTENSION), true);
         } catch (Exception $e) {
             exit($this->renderApiResponse(500, "Erro ao excluir produto: " . $e->getMessage()));
         }

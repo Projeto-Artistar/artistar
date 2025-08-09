@@ -1,11 +1,13 @@
 <?php
 namespace Aws\Api\Serializer;
 
+use Aws\Api\MapShape;
 use Aws\Api\Service;
 use Aws\Api\Shape;
 use Aws\Api\StructureShape;
 use Aws\Api\ListShape;
 use Aws\Api\TimestampShape;
+use XMLWriter;
 
 /**
  * @internal Formats the XML body of a REST-XML services.
@@ -33,16 +35,16 @@ class XmlBody
      */
     public function build(Shape $shape, array $args)
     {
-        $xml = new \XMLWriter();
+        $xml = new XMLWriter();
         $xml->openMemory();
         $xml->startDocument('1.0', 'UTF-8');
-        $this->format($shape, $shape['locationName'], $args, $xml);
+        $this->format($shape, $shape['locationName'] ?: $shape['name'], $args, $xml);
         $xml->endDocument();
 
         return $xml->outputMemory();
     }
 
-    private function startElement(Shape $shape, $name, \XMLWriter $xml)
+    private function startElement(Shape $shape, $name, XMLWriter $xml)
     {
         $xml->startElement($name);
 
@@ -54,7 +56,7 @@ class XmlBody
         }
     }
 
-    private function format(Shape $shape, $name, $value, \XMLWriter $xml)
+    private function format(Shape $shape, $name, $value, XMLWriter $xml)
     {
         // Any method mentioned here has a custom serialization handler.
         static $methods = [
@@ -75,10 +77,10 @@ class XmlBody
         }
     }
 
-    private function defaultShape(Shape $shape, $name, $value, \XMLWriter $xml)
+    private function defaultShape(Shape $shape, $name, $value, XMLWriter $xml)
     {
         $this->startElement($shape, $name, $xml);
-        $xml->writeRaw($value);
+        $xml->text($value);
         $xml->endElement();
     }
 
@@ -129,7 +131,7 @@ class XmlBody
         ListShape $shape,
         $name,
         array $value,
-        \XMLWriter $xml
+        XMLWriter $xml
     ) {
         $items = $shape->getMember();
 
@@ -140,7 +142,7 @@ class XmlBody
             $elementName = $items['locationName'] ?: 'member';
         }
 
-        foreach ($value as &$v) {
+        foreach ($value as $v) {
             $this->format($items, $elementName, $v, $xml);
         }
 
@@ -149,7 +151,29 @@ class XmlBody
         }
     }
 
-    private function add_blob(Shape $shape, $name, $value, \XMLWriter $xml)
+    private function add_map(
+        MapShape $shape,
+        $name,
+        array $value,
+        XMLWriter $xml
+    ) {
+        $xmlEntry = $shape['flattened'] ? $shape['locationName'] : 'entry';
+        $xmlKey = $shape->getKey()['locationName'] ?: 'key';
+        $xmlValue = $shape->getValue()['locationName'] ?: 'value';
+
+        $this->startElement($shape, $name, $xml);
+
+        foreach ($value as $key => $v) {
+            $this->startElement($shape, $xmlEntry, $xml);
+            $this->format($shape->getKey(), $xmlKey, $key, $xml);
+            $this->format($shape->getValue(), $xmlValue, $v, $xml);
+            $xml->endElement();
+        }
+
+        $xml->endElement();
+    }
+
+    private function add_blob(Shape $shape, $name, $value, XMLWriter $xml)
     {
         $this->startElement($shape, $name, $xml);
         $xml->writeRaw(base64_encode($value));
@@ -160,10 +184,13 @@ class XmlBody
         TimestampShape $shape,
         $name,
         $value,
-        \XMLWriter $xml
+        XMLWriter $xml
     ) {
         $this->startElement($shape, $name, $xml);
-        $xml->writeRaw(TimestampShape::format($value, 'iso8601'));
+        $timestampFormat = !empty($shape['timestampFormat'])
+            ? $shape['timestampFormat']
+            : 'iso8601';
+        $xml->writeRaw(TimestampShape::format($value, $timestampFormat));
         $xml->endElement();
     }
 
@@ -171,7 +198,7 @@ class XmlBody
         Shape $shape,
         $name,
         $value,
-        \XMLWriter $xml
+        XMLWriter $xml
     ) {
         $this->startElement($shape, $name, $xml);
         $xml->writeRaw($value ? 'true' : 'false');
@@ -182,7 +209,7 @@ class XmlBody
         Shape $shape,
         $name,
         $value,
-        \XMLWriter $xml
+        XMLWriter $xml
     ) {
         if ($shape['xmlAttribute']) {
             $xml->writeAttribute($shape['locationName'] ?: $name, $value);

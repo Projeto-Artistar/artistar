@@ -69,12 +69,14 @@ class BatchDelete implements PromisorInterface
         $fn = function (BatchDelete $that) use ($iter) {
             return $iter->each(function ($result) use ($that) {
                 $promises = [];
-                foreach ($result['Contents'] as $object) {
-                    if ($promise = $that->enqueue($object)) {
-                        $promises[] = $promise;
+                if (is_array($result['Contents'])) {
+                    foreach ($result['Contents'] as $object) {
+                        if ($promise = $that->enqueue($object)) {
+                            $promises[] = $promise;
+                        }
                     }
                 }
-                return $promises ? Promise\all($promises) : null;
+                return $promises ? Promise\Utils::all($promises) : null;
             });
         };
 
@@ -98,7 +100,7 @@ class BatchDelete implements PromisorInterface
         array $options = []
     ) {
         $fn = function (BatchDelete $that) use ($iter) {
-            return \GuzzleHttp\Promise\coroutine(function () use ($that, $iter) {
+            return Promise\Coroutine::of(function () use ($that, $iter) {
                 foreach ($iter as $obj) {
                     if ($promise = $that->enqueue($obj)) {
                         yield $promise;
@@ -110,7 +112,10 @@ class BatchDelete implements PromisorInterface
         return new self($client, $bucket, $fn, $options);
     }
 
-    public function promise()
+    /**
+     * @return PromiseInterface
+     */
+    public function promise(): PromiseInterface
     {
         if (!$this->cachedPromise) {
             $this->cachedPromise = $this->createPromise();
@@ -223,12 +228,12 @@ class BatchDelete implements PromisorInterface
         // When done, ensure cleanup and that any remaining are processed.
         return $promise->then(
             function () use ($cleanup)  {
-                return Promise\promise_for($this->flushQueue())
+                return Promise\Create::promiseFor($this->flushQueue())
                     ->then($cleanup);
             },
             function ($reason) use ($cleanup)  {
                 $cleanup();
-                return Promise\rejection_for($reason);
+                return Promise\Create::rejectionFor($reason);
             }
         );
     }

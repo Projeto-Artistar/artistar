@@ -19,7 +19,7 @@ class Sales extends Core {
                 produto_valor preco,
                 produto_valor_desconto desconto,
                 produto_estoque estoque,
-                IF(produto_thumbnail != '', produto_thumbnail, 'assets/image/200x300.png') imagem
+                produto_thumbnail imagem
             FROM 
                 produtos
             WHERE 

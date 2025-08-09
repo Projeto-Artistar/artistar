@@ -67,6 +67,9 @@ class ApiProvider
         // Execute the provider and return the result, if there is one.
         $result = $provider($type, $service, $version);
         if (is_array($result)) {
+            if (!isset($result['metadata']['serviceIdentifier'])) {
+                $result['metadata']['serviceIdentifier'] = $service;
+            }
             return $result;
         }
 
@@ -162,7 +165,7 @@ class ApiProvider
     }
 
     /**
-     * Execute the the provider.
+     * Execute the provider.
      *
      * @param string $type    Type of data ('api', 'waiter', 'paginator').
      * @param string $service Service name.

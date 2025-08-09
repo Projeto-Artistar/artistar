@@ -46,7 +46,7 @@
                     <div class="mb-3">
                         <div id="image-drop-area" class="image-drop-area d-flex align-items-center justify-content-center">
                             <?php if ($product['thumbnail']): ?>
-                                <img id="image-preview" src="<?= $product['thumbnail'] ?>" alt="Preview" style="max-width:100%;max-height:100%;border-radius:12px;">
+                                <img id="image-preview" src="<?= storageURL($product['thumbnail']) ?>" alt="Preview" style="max-width:100%;max-height:100%;border-radius:12px;">
                             <?php else: ?>
                                 <span id="image-drop-text">Clique ou arraste uma imagem aqui</span>
                             <?php endif; ?>

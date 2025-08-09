@@ -50,3 +50,4 @@ function url($path)
 }
 
 include 'Functions/money.php';
+include 'Functions/storage.php';
