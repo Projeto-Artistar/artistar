@@ -97,7 +97,11 @@ $(function() {
 
         let lucro = preco - (custo + desconto);
         let precoAtual = preco - desconto;
-        let descontoPercentual = (desconto * 100) / preco;
+        if (preco > 0) {
+            let descontoPercentual = (desconto * 100) / preco;
+        } else {
+            let descontoPercentual = 0;
+        }
 
         let lucroFormatado = lucro.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2});
         let precoAtualFormatado = precoAtual.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2});

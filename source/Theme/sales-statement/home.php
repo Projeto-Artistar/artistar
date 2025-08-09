@@ -60,7 +60,7 @@
                             <span class="color-nocturne-purple">Valor</span><br>
                             <span class="color-nocturne-purple">Desconto</span>
                         </th>
-                        <th scope="col">&nbsp;</th>
+                        <!-- <th scope="col">&nbsp;</th> -->
                     </tr>
                 </thead>
                 <tbody class="accordion accordion-flush">
@@ -100,9 +100,8 @@
                             <span class="color-nocturne-purple">R$<?= moedaReal($sale['total_valor']) ?></span><br>
                             <small class="color-gray">R$<?= moedaReal($sale['total_desconto']) ?></small>
                         </td>
-                        <td class="text-center align-middle">
+                        <!-- <td class="text-center align-middle">
                             <div class="d-flex justify-content-sm-end justify-content-between">
-                                <!-- 3 dots button with dropdown -->
                                 <button type="button" class="btn btn-stellar-blue text-white mx-sm-3 text-decoration-none" data-bs-toggle="dropdown" aria-expanded="false">
                                     <i class="fa fa-ellipsis-h"></i>
                                 </button>
@@ -119,10 +118,10 @@
                                     </li>
                                 </ul>
                             </div>
-                        </td>
+                        </td> -->
                     </tr>
                     <tr class="tr-accordion">
-                        <td colspan="9" class="p-0 px-2">
+                        <td colspan="8" class="p-0 px-2">
                             <div            
                                 id="collapse-<?= $sale['id'] ?>" 
                                 class="accordion-collapse collapse" 
