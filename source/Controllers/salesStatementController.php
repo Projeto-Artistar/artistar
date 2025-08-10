@@ -32,10 +32,11 @@ class salesStatementController extends Core {
         $sales = $salesStatementModel->getSales($store, $pagination, $whereSales, $order);
 
         $totalSales = $salesStatementModel->getTotalSales($store, $pagination, $whereSales);
+        $totalSales = array_merge($salesStatementModel->getInfoBanner($store, $whereSales), $totalSales);
 
         $pages = [
             'current' => ($pagination['offset'] / $pagination['limit']) + 1,
-            'total' => ceil($totalSales / $pagination['limit'])
+            'total' => ceil($totalSales['total_sales'] / $pagination['limit'])
         ]; 
 
         $salesIds = array_column($sales, 'id');

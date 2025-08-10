@@ -107,7 +107,7 @@
             <li class="d-md-none">
                 <a href="<?= url("sales") ?>" class="nav-link btn btn-nocturne-purple ">
                     <div class="d-flex align-items-center">
-                        <span>Iniciar</span>
+                        <span>Nova Venda</span>
                     </div>
                 </a>
             </li>
@@ -127,14 +127,14 @@
                     </div>
                 </a>
             </li>
-            <li>
+            <!-- <li>
                <a href="#" class="nav-link link-dark link-hover">
                     <div class="d-flex align-items-center">
                         <i class="fa-solid fa-ranking-star bi me-4" style="width:24px; text-align: center;"></i>
                         <span>Estatísticas</span>
                     </div>
                 </a>
-            </li>
+            </li> -->
             <!-- <li>
                 <a href="#" class="nav-link link-dark d-block link-hover">
                     <div class="d-flex align-items-center">
@@ -171,7 +171,7 @@
             </li> -->
             
 
-            <li class="border-top my-3"></li>
+            <!-- <li class="border-top my-3"></li> -->
             <!-- <li>
                 <a href="#" class="nav-link link-dark link-hover">
                     <div class="d-flex align-items-center">
@@ -180,14 +180,14 @@
                     </div>
                 </a>
             </li> -->
-            <li>
+            <!-- <li>
                 <a href="<?= url("auth/new-password")?>" class="nav-link link-dark link-hover">
                     <div class="d-flex align-items-center">
                         <i class="fa-solid fa-lock bi me-4" style="width:24px; text-align: center;"></i>
                         <span>Trocar Senha</span>
                     </div>
                 </a>
-            </li>
+            </li> -->
         </ul>
         <div class="border-top my-3"></div>
         <div class="d-flex justify-content-between align-items-center">

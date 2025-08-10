@@ -16,6 +16,23 @@
             </div>
         </div>
     </div>
+    <div class="row" id="sales-banner">
+        <div class="col-12 mb-3 px-sm-0 px-4">
+            <div class="row mt-4 p-5 bg-lavanda text-white rounded">
+                <div class="col-12">
+                    <h1>Você já vendeu R$<?= moedaReal($totalSales['total_value'])?> em <?= $totalSales['total_sales']-$totalSales['total_canceled'] ?> Vendas!</h1> 
+                </div>
+                <div class="col-md-6 col-12">
+                    <h5>Valor Médio das Vendas: R$<?= moedaReal($totalSales['total_value'] / $totalSales['total_sales']) ?></h5>
+                    <h5>Unidades Vendidas: <?= $totalSales['total_items'] ?></h5>
+                </div>
+                <div class="col-md-6 col-12">
+                    <h5>Produtos Diferentes Vendidos: <?= $totalSales['total_products'] ?></h5>
+                    <h5>Vendas Canceladas: <?= $totalSales['total_canceled'] ?></h5>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="row" id="filters">
         <div class="col-lg-12 col-md-12 col-sm-12 d-flex justify-content-between align-items-center mb-3">
             <div class="d-flex align-items-center">
@@ -32,7 +49,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-12 table-responsive-md">
+        <div class="col-12 table-responsive-lg">
             <table class="table">
                 <thead>
                     <tr>
@@ -77,7 +94,8 @@
                             </i>
                         </td>
                         <th class="align-middle" scope="row" data-bs-toggle="collapse" data-bs-target="#collapse-<?= $sale['id'] ?>">
-                            <span class="color-stellar-blue">#<?= $sale['numero'] ?></span>
+                            <span class="color-stellar-blue">#<?= $sale['numero'] ?></span><br>
+                            <small class="text-danger"><?php if ($sale['cancelada'] == 1) echo 'Cancelada'; ?></small>
                         </th>
                         <td class="text-center align-middle" data-bs-toggle="collapse" data-bs-target="#collapse-<?= $sale['id'] ?>">
                             <?= $sale['data_criacao'] ?><br>
@@ -181,7 +199,7 @@
         <div class="container">
             <div class="row justify-content-between align-items-center" id="pagination-controls">
                 <div class="col-md-6 col-12 d-flex justify-content-md-start justify-content-center mb-2 mb-md-0 px-0">
-                    <p class="text-muted">Mostrando <span id="result-count"><?= count($sales)?></span> resultados de <span id="total-count"><?= $totalSales ?></span></p>
+                    <p class="text-muted">Mostrando <span id="result-count"><?= count($sales)?></span> resultados de <span id="total-count"><?= $totalSales['total_sales'] ?></span></p>
                 </div>
                 <div class="col-md-6 col-12 d-flex justify-content-md-end justify-content-center px-0">
                     <?php if (!empty($sales)): ?>

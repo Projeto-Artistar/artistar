@@ -17,51 +17,51 @@ class SalesStatement extends Core {
         $orderList = [
             'venda_desc' => [
                 'label' => 'Venda (Maior para Menor)',
-                'value' => 'numero DESC'
+                'value' => 'numero DESC, data_criacao DESC'
             ],
             'venda_asc' => [
                 'label' => 'Venda (Menor para Maior)',
-                'value' => 'numero ASC'
+                'value' => 'numero ASC, data_criacao ASC'
             ],
             'payment_asc' => [
                 'label' => 'Método de Pagamento (A-Z)',
-                'value' => 'pagamento ASC'
+                'value' => 'pagamento ASC, data_criacao ASC'
             ],
             'payment_desc' => [
                 'label' => 'Método de Pagamento (Z-A)',
-                'value' => 'pagamento DESC'
+                'value' => 'pagamento DESC, data_criacao DESC'
             ],
             'products_desc' => [
                 'label' => 'Produtos (Maior para Menor)',
-                'value' => 'total_itens DESC'
+                'value' => 'total_itens DESC, data_criacao DESC'
             ],
             'products_asc' => [
                 'label' => 'Produtos (Menor para Maior)',
-                'value' => 'total_itens ASC'
+                'value' => 'total_itens ASC, data_criacao ASC'
             ],
             'qtd_desc' => [
                 'label' => 'Unidades (Maior para Menor)',
-                'value' => 'total_unidades DESC'
+                'value' => 'total_unidades DESC, data_criacao DESC'
             ],
             'qtd_asc' => [
                 'label' => 'Unidades (Menor para Maior)',
-                'value' => 'total_unidades ASC'
+                'value' => 'total_unidades ASC, data_criacao ASC'
             ],
             'value_desc' => [
                 'label' => 'Valor (Maior para Menor)',
-                'value' => 'total_valor DESC'
+                'value' => 'total_valor DESC, data_criacao DESC'
             ],
             'value_asc' => [
                 'label' => 'Valor (Menor para Maior)',
-                'value' => 'total_valor ASC'
+                'value' => 'total_valor ASC, data_criacao ASC'
             ],
             'discount_desc' => [
                 'label' => 'Desconto (Maior para Menor)',
-                'value' => 'total_desconto DESC'
+                'value' => 'total_desconto DESC, data_criacao DESC'
             ],
             'discount_asc' => [
                 'label' => 'Desconto (Menor para Maior)',
-                'value' => 'total_desconto ASC'
+                'value' => 'total_desconto ASC, data_criacao ASC'
             ]
         ];
 
@@ -120,8 +120,9 @@ class SalesStatement extends Core {
 
     public function getTotalSales($store, $pagination = [], $where = '') { 
         $stmt = $this->SQL->prepare("
-            SELECT 
-                COUNT(v.venda_id) AS total_sales
+            SELECT
+                COUNT(v.venda_id) AS total_sales,
+                COUNT(IF(v.venda_cancelada = 1, 1, NULL)) AS total_canceled
             FROM
                 vendas AS v
             WHERE
@@ -130,7 +131,7 @@ class SalesStatement extends Core {
         ");
         $stmt->bindValue(":store", $store);
         $stmt->execute();
-        return $stmt->fetchColumn();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
     public function getItems($sales) {
@@ -246,6 +247,26 @@ class SalesStatement extends Core {
         $stmt->bindValue(":sale_id", $saleId, PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getInfoBanner($store, $where = '') {
+        $stmt = $this->SQL->prepare("
+            SELECT
+                SUM(vi.venda_item_valor) AS total_value,
+                COUNT(DISTINCT vi.venda_item_produto) AS total_products,
+                SUM(vi.venda_item_unidades) AS total_items
+            FROM
+                vendas_itens AS vi
+            INNER JOIN
+                vendas AS v ON v.venda_id = vi.venda_item_venda
+            WHERE
+                v.venda_loja_id = :store_id
+            AND
+                COALESCE(v.venda_cancelada, 0) = 0
+        ");
+        $stmt->bindValue(":store_id", $store, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
 }

@@ -180,10 +180,12 @@ class stockController extends Core {
             $newProductId = $stockModel->duplicateProduct($productId, $store);
             if (!$newProductId) exit($this->renderApiResponse(500, "Erro ao duplicar produto."));
             $stockModel->duplicateProductCategories($productId, $newProductId, $store);
-            $storage = new Storage();
-            $folder = 'uploads/products/'.$newProductId.'/';
-            $newThumbnail = $storage->copyFileFromBucket($product['thumbnail'], $folder.'thumbnail.'. pathinfo($product['thumbnail'], PATHINFO_EXTENSION))['message'] ?? '';
-            if($newThumbnail) $stockModel->updateThumbnail($newThumbnail, $newProductId);
+            if (!empty($product['thumbnail'])) {
+                $storage = new Storage();
+                $folder = 'uploads/products/'.$newProductId.'/';
+                $newThumbnail = $storage->copyFileFromBucket($product['thumbnail'], $folder.'thumbnail.'. pathinfo($product['thumbnail'], PATHINFO_EXTENSION))['message'] ?? '';
+                if($newThumbnail) $stockModel->updateThumbnail($newThumbnail, $newProductId);
+            }
         } catch (Exception $e) {
             exit($this->renderApiResponse(500, "Erro ao duplicar produto: " . $e->getMessage()));
         }
@@ -202,8 +204,10 @@ class stockController extends Core {
         try {
             $stockModel->deleteProduct($productId, $store);
             $stockModel->deleteProductCategories($productId, $store);
-            $storage = new Storage();
-            $storage->deleteFileFromBucket('uploads/products/'.$productId.'/thumbnail.'. pathinfo($product['thumbnail'], PATHINFO_EXTENSION), true);
+            if (!empty($product['thumbnail'])) {
+                $storage = new Storage();
+                $storage->deleteFileFromBucket('uploads/products/'.$productId.'/thumbnail.'. pathinfo($product['thumbnail'], PATHINFO_EXTENSION), true);
+            }
         } catch (Exception $e) {
             exit($this->renderApiResponse(500, "Erro ao excluir produto: " . $e->getMessage()));
         }

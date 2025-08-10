@@ -115,59 +115,59 @@ class Stock extends Core {
         $orderList = [
             'name_asc' => [
                 'label' => 'Nome (A-Z)',
-                'value' => 'produto_nome ASC'
+                'value' => 'produto_nome ASC, produto_id ASC'
             ],
             'name_desc' => [
                 'label' => 'Nome (Z-A)',
-                'value' => 'produto_nome DESC'
+                'value' => 'produto_nome DESC, produto_id DESC'
             ],
             'price_asc' => [
                 'label' => 'Preço (Menor para Maior)',
-                'value' => 'produto_valor ASC'
+                'value' => 'produto_valor ASC, produto_id ASC'
             ],
             'price_desc' => [
                 'label' => 'Preço (Maior para Menor)',
-                'value' => 'produto_valor DESC'
+                'value' => 'produto_valor DESC, produto_id DESC'
             ],
             'discount_asc' => [
                 'label' => 'Desconto (Menor para Maior)',
-                'value' => 'produto_valor_desconto ASC'
+                'value' => 'produto_valor_desconto ASC, produto_id ASC'
             ],
             'discount_desc' => [
                 'label' => 'Desconto (Maior para Menor)',
-                'value' => 'produto_valor_desconto DESC'
+                'value' => 'produto_valor_desconto DESC, produto_id DESC'
             ],
             'final_price_asc' => [
                 'label' => 'Preço Atual (Menor para Maior)',
-                'value' => '(produto_valor - produto_valor_desconto) ASC'
+                'value' => '(produto_valor - produto_valor_desconto) ASC, produto_id ASC'
             ],
             'final_price_desc' => [
                 'label' => 'Preço Atual (Maior para Menor)',
-                'value' => '(produto_valor - produto_valor_desconto) DESC'
+                'value' => '(produto_valor - produto_valor_desconto) DESC, produto_id DESC'
             ],
             'date_asc' => [
                 'label' => 'Data de Cadastro (Mais Antigo)',
-                'value' => 'produto_data_cadastro ASC'
+                'value' => 'produto_data_cadastro ASC, produto_id ASC'
             ],
             'date_desc' => [
                 'label' => 'Data de Cadastro (Mais Recente)',
-                'value' => 'produto_data_cadastro DESC'
+                'value' => 'produto_data_cadastro DESC, produto_id DESC'
             ],
             'last_sale_asc' => [
                 'label' => 'Data da Última Venda (Mais Antigo)',
-                'value' => 'produto_ultima_venda ASC'
+                'value' => 'produto_ultima_venda ASC, produto_id ASC'
             ],
             'last_sale_desc' => [
                 'label' => 'Data da Última Venda (Mais Recente)',
-                'value' => 'produto_ultima_venda DESC'
+                'value' => 'produto_ultima_venda DESC, produto_id DESC'
             ],
             'stock_asc' => [
                 'label' => 'Estoque (Menor para Maior)',
-                'value' => 'produto_estoque ASC'
+                'value' => 'produto_estoque ASC, produto_id ASC'
             ],
             'stock_desc' => [
                 'label' => 'Estoque (Maior para Menor)',
-                'value' => 'produto_estoque DESC'
+                'value' => 'produto_estoque DESC, produto_id DESC'
             ]
         ];
             
