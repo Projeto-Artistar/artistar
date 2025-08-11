@@ -14,37 +14,37 @@ class Statistics extends Core {
             'day' => [
                 'name' => '24h',
                 'following' => 'week',
-                'where' => 'v.venda_data_criacao BETWEEN :dataReferencia - INTERVAL 1 DAY AND :dataReferencia',
+                'where' => 'v.venda_data_criacao BETWEEN :dataInicio AND :dataFim',
                 'group_by' => 'DATE_FORMAT(v.venda_data_criacao, "%H")'
             ],
             'week' => [
                 'name' => '7 Dias',
                 'following' => 'fortnight',
-                'where' => 'v.venda_data_criacao BETWEEN :dataReferencia - INTERVAL 1 WEEK AND :dataReferencia',
+                'where' => 'v.venda_data_criacao BETWEEN :dataInicio AND :dataFim',
                 'group_by' => 'DATE_FORMAT(v.venda_data_criacao, "%d")'
             ],
             'fortnight' => [
                 'name' => '15 Dias',
                 'following' => 'month',
-                'where' => 'v.venda_data_criacao BETWEEN :dataReferencia - INTERVAL 15 DAY AND :dataReferencia',
+                'where' => 'v.venda_data_criacao BETWEEN :dataInicio AND :dataFim',
                 'group_by' => 'DATE_FORMAT(v.venda_data_criacao, "%d")'
             ],
             'month' => [
                 'name' => '1 Mês',
                 'following' => 'semester',
-                'where' => 'v.venda_data_criacao BETWEEN :dataReferencia - INTERVAL 1 MONTH AND :dataReferencia',
+                'where' => 'v.venda_data_criacao BETWEEN :dataInicio AND :dataFim',
                 'group_by' => 'DATE_FORMAT(v.venda_data_criacao, "%d")'
             ],
             'semester' => [
                 'name' => '6 Meses',
                 'following' => 'year',
-                'where' => 'v.venda_data_criacao BETWEEN :dataReferencia - INTERVAL 6 MONTH AND :dataReferencia',
+                'where' => 'v.venda_data_criacao BETWEEN :dataInicio AND :dataFim',
                 'group_by' => 'DATE_FORMAT(v.venda_data_criacao, "%m")'
             ],
             'year' => [
                 'name' => 'Ano',
                 'following' => null,
-                'where' => 'v.venda_data_criacao BETWEEN :dataReferencia - INTERVAL 1 YEAR AND :dataReferencia',
+                'where' => 'v.venda_data_criacao BETWEEN :dataInicio AND :dataFim',
                 'group_by' => 'DATE_FORMAT(v.venda_data_criacao, "%m")'
             ]
         ];
@@ -73,7 +73,10 @@ class Statistics extends Core {
         ";
         $stmt = $this->SQL->prepare($query);
         $stmt->bindValue(':store', $store, PDO::PARAM_INT);
-        $stmt->bindValue(':dataReferencia', $dataReferencia, PDO::PARAM_STR);
+        // Calcular datas de início e fim conforme o período
+        list($dataInicio, $dataFim) = $this->getDataInicioFim($dataReferencia, $periodo);
+        $stmt->bindValue(':dataInicio', $dataInicio);
+        $stmt->bindValue(':dataFim', $dataFim);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -166,11 +169,13 @@ class Statistics extends Core {
                 LIMIT 1
             ) AS valor_maior_venda;
         ";
-        $stmt = $this->SQL->prepare($query);
-        $stmt->bindValue(':store', $store, PDO::PARAM_INT);
-        $stmt->bindValue(':dataReferencia', $dataReferencia, PDO::PARAM_STR);
-        $stmt->execute();
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+    $stmt = $this->SQL->prepare($query);
+    $stmt->bindValue(':store', $store, PDO::PARAM_INT);
+    list($dataInicio, $dataFim) = $this->getDataInicioFim($dataReferencia, $periodo);
+    $stmt->bindValue(':dataInicio', $dataInicio);
+    $stmt->bindValue(':dataFim', $dataFim);
+    $stmt->execute();
+    return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
     public function arrangeGraphData($totais, $periodoSelecionado, $dataReferencia) {
@@ -271,11 +276,49 @@ class Statistics extends Core {
                 total_faturado DESC, total_vendido DESC, p.produto_nome ASC
         ";
 
-        $stmt = $this->SQL->prepare($query);
-        $stmt->bindValue(':store', $store, PDO::PARAM_INT);
-        $stmt->bindValue(':dataReferencia', $dataReferencia, PDO::PARAM_STR);
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $stmt = $this->SQL->prepare($query);
+    $stmt->bindValue(':store', $store, PDO::PARAM_INT);
+    list($dataInicio, $dataFim) = $this->getDataInicioFim($dataReferencia, $periodo);
+    $stmt->bindValue(':dataInicio', $dataInicio);
+    $stmt->bindValue(':dataFim', $dataFim);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * Calcula as datas de início e fim para cada período
+     */
+    private function getDataInicioFim($dataReferencia, $periodo) {
+        switch ($periodo['name']) {
+            case '24h':
+                $dataInicio = $dataReferencia . ' 00:00:00';
+                $dataFim = $dataReferencia . ' 23:59:59';
+                break;
+            case '7 Dias':
+                $dataInicio = date('Y-m-d 00:00:00', strtotime($dataReferencia . ' -6 days'));
+                $dataFim = $dataReferencia . ' 23:59:59';
+                break;
+            case '15 Dias':
+                $dataInicio = date('Y-m-d 00:00:00', strtotime($dataReferencia . ' -14 days'));
+                $dataFim = $dataReferencia . ' 23:59:59';
+                break;
+            case '1 Mês':
+                $dataInicio = date('Y-m-d 00:00:00', strtotime($dataReferencia . ' -1 month +1 day'));
+                $dataFim = $dataReferencia . ' 23:59:59';
+                break;
+            case '6 Meses':
+                $dataInicio = date('Y-m-d 00:00:00', strtotime($dataReferencia . ' -5 months'));
+                $dataFim = $dataReferencia . ' 23:59:59';
+                break;
+            case 'Ano':
+                $dataInicio = date('Y-m-d 00:00:00', strtotime($dataReferencia . ' -11 months'));
+                $dataFim = $dataReferencia . ' 23:59:59';
+                break;
+            default:
+                $dataInicio = $dataReferencia . ' 00:00:00';
+                $dataFim = $dataReferencia . ' 23:59:59';
+        }
+        return [$dataInicio, $dataFim];
     }
 
 }
