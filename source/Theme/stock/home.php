@@ -10,7 +10,7 @@
     <section class="section-banner">
         <div class="container">
             <div class="row">
-                <div class="bg-klikit-5 rounded-4 py-5 avoid-navbar">
+                <div class="py-5 avoid-navbar">
                     <div class="row align-items-center">
                         <div class="col-xl-6 col-12">
                             <h2 class="h1 mb-3 color-nocturne-purple">Inventário</h2>

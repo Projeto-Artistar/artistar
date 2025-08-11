@@ -127,14 +127,14 @@
                     </div>
                 </a>
             </li>
-            <!-- <li>
-               <a href="#" class="nav-link link-dark link-hover">
+            <li>
+               <a href="<?= url('statistics') ?>" class="nav-link link-dark link-hover">
                     <div class="d-flex align-items-center">
                         <i class="fa-solid fa-ranking-star bi me-4" style="width:24px; text-align: center;"></i>
                         <span>Estatísticas</span>
                     </div>
                 </a>
-            </li> -->
+            </li>
             <!-- <li>
                 <a href="#" class="nav-link link-dark d-block link-hover">
                     <div class="d-flex align-items-center">

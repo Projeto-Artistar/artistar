@@ -24,6 +24,9 @@ $password = $setup['db']['pass'];
 $port = $setup['db']['port'];
 $timezone = $setup['db']['timezone'];
 
+//Set php timezone
+date_default_timezone_set("America/Sao_Paulo");
+
 define("EMAIL_CREDENTIALS", $setup['email']);
 define("STORAGE_CONFIG", $setup['storage']);
 
@@ -51,3 +54,4 @@ function url($path)
 
 include 'Functions/money.php';
 include 'Functions/storage.php';
+include 'Functions/date.php';

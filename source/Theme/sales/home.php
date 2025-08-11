@@ -102,7 +102,7 @@
                     <h5 class="modal-title" id="saleInsertedModalLabel">Venda Registrada!</h5>
                 </div>
                 <div class="modal-body">
-                    A venda foi registrada com sucesso! Você pode visualizar os detalhes da venda na seção de vendas.
+                    A venda <span class="fw-bold color-stellar-blue">#<span id="sale-id"></span></span> foi registrada com sucesso! Você pode visualizar os detalhes da venda na seção de vendas.
                 </div>
                 <div class="modal-footer">
                     <a href="<?= url("sales-statement") ?>" class="btn btn-nocturne-purple">Ver Extrato</a>

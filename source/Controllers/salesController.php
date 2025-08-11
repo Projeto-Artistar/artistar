@@ -43,7 +43,7 @@ class salesController extends Core {
         $store = $this->getUser()['loja_id'] ?? 0;
         $newSale = $salesModel->insertSale($post, $store);
         if ($newSale) {
-            exit($this->renderApiResponse(200, "Venda registrada com sucesso.", ['saleId' => $newSale]));
+            exit($this->renderApiResponse(200, "Venda registrada com sucesso.", $newSale));
         }
     }
 

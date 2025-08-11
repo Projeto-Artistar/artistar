@@ -111,10 +111,18 @@ class Sales extends Core {
                 $stmt->execute();
             }
 
+            $stmt = $this->SQL->prepare("SELECT venda_numero FROM vendas WHERE venda_id = :id");
+            $stmt->bindValue(":id", $saleId, PDO::PARAM_INT);
+            $stmt->execute();
+            $numero = $stmt->fetchColumn();
+
 
             //Commit transaction
             $this->SQL->commit();
-            return $saleId;
+            return [
+                'id' => $saleId,
+                'numero' => $numero
+            ];
         } catch (\Exception $e) {
             //Rollback transaction in case of error
             $this->SQL->rollBack();

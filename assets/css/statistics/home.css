@@ -1,0 +1,55 @@
+.toggle-container {
+    position: relative;
+    display: flex;
+    min-width: 220px;
+    background-color: var(--bs-secondary-bg);
+    border-radius: 50px;
+    overflow: hidden;
+    padding: 2px;
+    cursor: pointer;
+}
+
+.toggle-btn {
+    flex: 1;
+    text-align: center;
+    padding: 8px 0;
+    z-index: 2;
+    transition: color 0.3s ease;
+    font-weight: 500;
+}
+
+.slider {
+    position: absolute;
+    top: 2px;
+    bottom: 2px;
+    width: calc(50% - 4px);
+    background-color: var(--nocturne-purple);
+    border-radius: 50px;
+    transition: transform 0.3s ease;
+    z-index: 1;
+}
+
+.slider.left {
+    transform: translateX(0%);
+}
+
+.slider.right {
+    transform: translateX(100%);
+}
+
+.toggle-container > .active {
+    color: white !important;
+}
+
+.nav-link {
+    color: var(--stellar-blue);
+}
+
+.nav-link:hover {
+    color: var(--stellar-blue-light);
+}
+
+.nav-tabs .nav-link.active {
+    color: var(--nocturne-purple);     
+}
+

@@ -269,6 +269,10 @@ $(document).on('click', '#finalizar-venda', function () {
     $('#insertModal').modal('show');
 });
 
+$('#new-sale-form').on('submit', function (e) {
+    e.preventDefault();
+});
+
 $(document).on('click', '#accept-insert', function () {
 
     const formData = new FormData($('#new-sale-form')[0]);
@@ -282,6 +286,7 @@ $(document).on('click', '#accept-insert', function () {
     }).done(function (response) {
         response = JSON.parse(response);
         if (response.code == 200) {
+            $('#sale-id').text(response.data.numero);
             $('#insertModal').modal('hide');
             $('#saleInsertedModal').modal('show');
         } else {

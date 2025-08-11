@@ -10,20 +10,20 @@
     /* Animação customizada para collapse */
     </style>
     <div class="row avoid-navbar">
-        <div class="col-sm-6 col-12 mb-3 mb-sm-0">
+        <div class="col-sm-6 col-12 mb-2 mt-2 ">
             <div>
                 <h1 class="text-center text-sm-start color-nocturne-purple">Extrato de Vendas</h1>
             </div>
         </div>
     </div>
     <div class="row" id="sales-banner">
-        <div class="col-12 mb-3 px-sm-0 px-4">
-            <div class="row mt-4 p-5 bg-lavanda text-white rounded">
+        <div class="col-12 mb-3 px-4">
+            <div class="row p-md-5 p-3 bg-lavanda text-white rounded">
                 <div class="col-12">
                     <h1>Você já vendeu R$<?= moedaReal($totalSales['total_value'])?> em <?= $totalSales['total_sales']-$totalSales['total_canceled'] ?> Vendas!</h1> 
                 </div>
                 <div class="col-md-6 col-12">
-                    <h5>Valor Médio das Vendas: R$<?= moedaReal($totalSales['total_value'] / $totalSales['total_sales']) ?></h5>
+                    <h5>Valor Médio das Vendas: R$<?= moedaReal($totalSales['total_value'] / ($totalSales['total_sales']-$totalSales['total_canceled']  ?: 1)) ?></h5>
                     <h5>Unidades Vendidas: <?= $totalSales['total_items'] ?></h5>
                 </div>
                 <div class="col-md-6 col-12">
