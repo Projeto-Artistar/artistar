@@ -145,29 +145,61 @@ $('#productsByQuantity').on('click', function() {
 
 var colors = [
     {
-        color: 'rgba(255, 99, 132, 1)',
-        backgroundColor: 'rgba(255, 99, 132, 0.2)'
+        //#D00000 in rgba
+        color: 'rgba(255, 0, 0, 1)',
+        backgroundColor: 'rgba(255, 0, 0, 0.2)'
     },
     {
-        color: 'rgba(54, 162, 235, 1)',
-        backgroundColor: 'rgba(54, 162, 235, 0.2)'
+        //3185FC
+        color: 'rgba(49, 133, 252, 1)',
+        backgroundColor: 'rgba(49, 133, 252, 0.2)'
     },
     {
-        color: 'rgba(255, 206, 86, 1)',
-        backgroundColor: 'rgba(255, 206, 86, 0.2)'
+        //FFBA08
+        color: 'rgba(255, 186, 8, 1)',
+        backgroundColor: 'rgba(255, 186, 8, 0.2)'
     },
     {
-        color: 'rgba(75, 192, 192, 1)',
-        backgroundColor: 'rgba(75, 192, 192, 0.2)'
+        //CBFF8C
+        color: 'rgba(203, 255, 140, 1)',
+        backgroundColor: 'rgba(203, 255, 140, 0.2)'
     },
     {
-        color: 'rgba(153, 102, 255, 1)',
-        backgroundColor: 'rgba(153, 102, 255, 0.2)'
+        //FF7B9C
+        color: 'rgba(255, 123, 156, 1)',
+        backgroundColor: 'rgba(255, 123, 156, 0.2)'
     },
     {
-        color: 'rgba(255, 159, 64, 1)',
-        backgroundColor: 'rgba(255, 159, 64, 0.2)'
-    }
+       //46237A
+       color: 'rgba(70, 35, 122, 1)',
+       backgroundColor: 'rgba(70, 35, 122, 0.2)'
+    },
+    {
+        //FF9B85
+        color: 'rgba(255, 155, 133, 1)',
+        backgroundColor: 'rgba(255, 155, 133, 0.2)'
+    },
+    {
+        //1B998B
+        color: 'rgba(27, 153, 139, 1)',
+        backgroundColor: 'rgba(27, 153, 139, 0.2)'
+    },
+    {
+       //5D2E8C
+       color: 'rgba(93, 46, 140, 1)',
+       backgroundColor: 'rgba(93, 46, 140, 0.2)'
+    },
+    {
+        //8FE388
+        color: 'rgba(143, 227, 136, 1)',
+        backgroundColor: 'rgba(143, 227, 136, 0.2)'
+    },
+
+
+
+
+
+
 ];
 
 for (const [key, graph] of Object.entries(customGraphs)) {
