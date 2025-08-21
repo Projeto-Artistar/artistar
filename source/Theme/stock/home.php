@@ -17,16 +17,16 @@
                             <p class="fs-4">Últimas informações de estoque</p>
                             <ul class="list-unstyled">
                                 <li class="d-flex align-items-center mb-2">
-                                    <span class="dot bg-success me-2 rounded-5" style="height:10px; width:10px;"></span> Estoque bom
+                                    <span class="dot bg-success me-2 rounded-5" style="height:10px; width:10px;"></span> <a href="/stock?filter%5Bstock_status%5D=good" class="link-nocturne-purple">Estoque bom</a>
                                 </li>
                                 <li class="d-flex align-items-center mb-2">
-                                    <span class="dot bg-warning me-2 rounded-5" style="height:10px; width:10px;"></span> Estoque baixo
+                                    <span class="dot bg-warning me-2 rounded-5" style="height:10px; width:10px;"></span> <a href="/stock?filter%5Bstock_status%5D=low" class="link-nocturne-purple">Estoque baixo</a>
                                 </li>
                                 <li class="d-flex align-items-center mb-2">
-                                    <span class="dot bg-danger me-2 rounded-5" style="height:10px; width:10px;"></span> Sem estoque
+                                    <span class="dot bg-danger me-2 rounded-5" style="height:10px; width:10px;"></span> <a href="/stock?filter%5Bstock_status%5D=out" class="link-nocturne-purple">Sem estoque</a>
                                 </li>
                                 <li class="d-flex align-items-center mb-2">
-                                    <span class="dot bg-secondary me-2 rounded-5" style="height:10px; width:10px;"></span> Estoque morto
+                                    <span class="dot bg-secondary me-2 rounded-5" style="height:10px; width:10px;"></span> <a href="/stock?filter%5Bstock_status%5D=dead" class="link-nocturne-purple">Estoque morto</a>
                                 </li>
                             </ul>
                         </div>
@@ -64,6 +64,7 @@
                             if (!empty($filter['profit'])) echo '<input type="hidden" name="filter[profit]" value="' . htmlspecialchars($filter['profit']) . '">';
                             if (!empty($filter['stock'])) echo '<input type="hidden" name="filter[stock]" value="' . htmlspecialchars($filter['stock']) . '">';
                             if (!empty($filter['min_stock'])) echo '<input type="hidden" name="filter[min_stock]" value="' . htmlspecialchars($filter['min_stock']) . '">';
+                            if (!empty($filter['stock_status'])) echo '<input type="hidden" name="filter[stock_status]" value="' . htmlspecialchars($filter['stock_status']) . '">';
                         ?>
                     </form>
                 </div>
@@ -86,6 +87,25 @@
                             if (!empty($filter['real_price'])) echo '<span class="badge bg-light text-dark me-1">Preço Atual: R$ ' . htmlspecialchars($filter['real_price']) . '</span>';
                             if (!empty($filter['stock'])) echo '<span class="badge bg-light text-dark me-1">Estoque: ' . htmlspecialchars($filter['stock']) . '</span>';
                             if (!empty($filter['min_stock'])) echo '<span class="badge bg-light text-dark me-1">Estoque Mínimo: ' . htmlspecialchars($filter['min_stock']) . '</span>';
+                            if (!empty($filter['stock_status'])) {
+                                echo '<span class="badge bg-light text-dark me-1">Status de Estoque: ';
+                                switch ($filter['stock_status']) {
+                                    case 'good':
+                                        echo 'Bom';
+                                        break;
+                                    case 'low':
+                                        echo 'Baixo';
+                                        break;
+                                    case 'out':
+                                        echo 'Esgotado';
+                                        break;
+                                    case 'dead':
+                                        echo 'Morto';
+                                        break;
+
+                                }
+                                echo '</span>';
+                            }
                         ?>
                     </div>
                     <div class="d-flex align-items-center">
@@ -102,6 +122,7 @@
                             if (!empty($filter['real_price'])) echo '<input type="hidden" name="filter[real_price]" value="' . htmlspecialchars($filter['real_price']) . '">';
                             if (!empty($filter['stock'])) echo '<input type="hidden" name="filter[stock]" value="' . htmlspecialchars($filter['stock']) . '">';
                             if (!empty($filter['min_stock'])) echo '<input type="hidden" name="filter[min_stock]" value="' . htmlspecialchars($filter['min_stock']) . '">';
+                            if (!empty($filter['stock_status'])) echo '<input type="hidden" name="filter[stock_status]" value="' . htmlspecialchars($filter['stock_status']) . '">';
                             ?>
                             <select class="form-select form-select-sm input-stellar-blue me-2" id="sort-options" name="sort" onchange="this.form.submit()">
                                 <?php foreach ($orderList as $key => $value): ?>
@@ -196,6 +217,7 @@
                                 if (!empty($filter['real_price'])) $url .= '&filter[real_price]=' . urlencode($filter['real_price']);
                                 if (!empty($filter['stock'])) $url .= '&filter[stock]=' . urlencode($filter['stock']);
                                 if (!empty($filter['min_stock'])) $url .= '&filter[min_stock]=' . urlencode($filter['min_stock']);  
+                                if (!empty($filter['stock_status'])) $url .= '&filter[stock_status]=' . urlencode($filter['min_stock']);  
                                                     
                             ?>
                             <?php if ($pages['current'] > 1): ?>
@@ -292,6 +314,9 @@
                         </div>
                     </div>
                     <input type="hidden" name="search" value="<?= $get['search'] ?? '' ?>">
+                    <?php
+                        if (!empty($filter['stock_status'])) echo '<input type="hidden" name="filter[stock_status]" value="' . htmlspecialchars($filter['stock_status']) . '">';
+                    ?>
                 </form>
             </div>
             <div class="modal-footer">
@@ -324,6 +349,9 @@
                             <span id="image-drop-text">Clique ou arraste uma imagem aqui</span>
                         </div>
                     </div>
+                    <small id="new-nameHelp" class="form-text text-muted">
+                        Tamanho máximo: 5MB
+                    </small>
                     <input type="file" id="new-image" name="thumbnail" accept="image/*" style="display:none;">
 
                     

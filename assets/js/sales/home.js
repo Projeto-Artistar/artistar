@@ -34,45 +34,44 @@ $(document).ready(function () {
     $('#search').on('input', atualizarSugestoes);
 
     function atualizarSugestoes() {
-    const termo = $('#search').val().toLowerCase();
-    $('#suggestions').empty();
-
-    if (termo.length === 0) return;
-
-    const resultados = produtos.filter(p =>
-        (
-            p.nome.toLowerCase().includes(termo) || 
-            p.subtitulo.toLowerCase().includes(termo) ||
-            p.palavra_chave.toLowerCase().includes(termo) ||
-            p.descricao.toLowerCase().includes(termo)
-        ) && !selecionados.has(p.id)
-    );
-
-    resultados.forEach(prod => {
-        const item = $(`
-        <div class="row suggestion-item">
-            <div class="col-3">
-                <img src="${prod.imagem}" alt="${prod.nome}">
-            </div>
-            <div class="col-6 card-body py-3">
-                <span class="mb-1">${prod.nome}</span>
-                <p class="card-text mb-1"><small class="text-muted">${prod.subtitulo}</small></p>
-            </div>
-            <div class="col-3 text-end">
-                <span class="card-text fw-bold text-success">R$${prod.total}</span>
-                <p class="card-text mb-1"><small class="text-muted">${prod.estoque} uni</small></p>
-            </div>
-        </div>
-        `);
-
-        item.on('click', function () {
-        adicionarProduto(prod);
-        $('#search').val('');
+        const termo = $('#search').val().toLowerCase();
         $('#suggestions').empty();
-        });
 
-        $('#suggestions').append(item);
-    });
+        if (termo.length === 0) return;
+
+        const resultados = produtos.filter(p =>
+            (
+                p.nome.toLowerCase().includes(termo) || 
+                p.subtitulo.toLowerCase().includes(termo) ||
+                p.palavra_chave.toLowerCase().includes(termo) ||
+                p.descricao.toLowerCase().includes(termo)
+            ) && !selecionados.has(p.id)
+        );
+
+        resultados.forEach(prod => {
+            const item = $(`
+            <div class="row suggestion-item">
+                <div class="col-3">
+                    <img src="${prod.imagem}" alt="${prod.nome}">
+                </div>
+                <div class="col-6 card-body py-3">
+                    <span class="mb-1">${prod.nome}</span>
+                    <p class="card-text mb-1"><small class="text-muted">${prod.subtitulo}</small></p>
+                </div>
+                <div class="col-3 text-end">
+                    <span class="card-text fw-bold text-success">R$${prod.total}</span>
+                    <p class="card-text mb-1"><small class="text-muted">${prod.estoque} uni</small></p>
+                </div>
+            </div>
+            `);
+
+            item.on('click', function () {
+                adicionarProduto(prod);
+                atualizarSugestoes();
+            });
+
+            $('#suggestions').append(item);
+        });
     }
 
     function adicionarProduto(prod) {

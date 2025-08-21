@@ -67,7 +67,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-xl-4 col-12 text-center d-flex align-items-center justify-content-md-start">
+                <div class="col-xl-4 col-12 text-center d-flex align-items-center justify-content-xl-start">
                     <div class="rounded-circle bg-nocturne-purple d-flex align-items-center justify-content-center me-4" style="width: 80px; height: 80px; aspect-ratio: 1;">
                         <i class="fa-solid fa-dollar-sign fa-2x text-white"></i>
                     </div>
@@ -77,7 +77,7 @@
                         <span class="fs-5 color-lavanda"><?= $bestSellers['produto_maior_valor'] ?></span>
                     </div>
                 </div>
-                <div class="col-xl-4 col-12 text-center d-flex align-items-center justify-content-md-center">
+                <div class="col-xl-4 col-12 text-center d-flex align-items-center justify-content-xl-center">
                     <div class="rounded-circle bg-lavanda d-flex align-items-center justify-content-center me-4" style="width: 80px; height: 80px; aspect-ratio: 1;">
                         <i class="fa-solid fa-chart-line fa-2x text-white"></i>
                     </div>
@@ -86,7 +86,7 @@
                         <span class="fs-4 color-nocturne-purple">R$<?= moedaReal($graphData['totals']['vendas']/($graphData['totals']['transacoes'] > 0 ? $graphData['totals']['transacoes'] : 1)) ?></span><br>
                     </div>
                 </div>
-                <div class="col-xl-4 col-12 text-center d-flex align-items-center justify-content-md-end">
+                <div class="col-xl-4 col-12 text-center d-flex align-items-center justify-content-xl-end">
                     <div class="rounded-circle bg-stellar-blue d-flex align-items-center justify-content-center me-4" style="width: 80px; height: 80px; aspect-ratio: 1;">
                         <i class="fa-solid fa-box fa-2x text-white"></i>
                     </div>
@@ -103,17 +103,130 @@
         <div class="col-12">
             <ul class="nav nav-tabs" id="myTab" role="tablist">
                 <li class="nav-item" role="presentation">
-                    <a class="nav-link active" id="produtos-tab" data-bs-toggle="tab" href="#produtos" role="tab" aria-controls="produtos" aria-selected="true">Produtos</a>
-                </li>
-                <!-- <li class="nav-item" role="presentation">
-                    <a class="nav-link" id="profile-tab" data-bs-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Profile</a>
+                    <a class="nav-link active" id="graficos-tab" data-bs-toggle="tab" href="#graficos" role="tab" aria-controls="graficos" aria-selected="true">Dashboard</a>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <a class="nav-link" id="contact-tab" data-bs-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Contact</a>
-                </li> -->
+                    <a class="nav-link" id="produtos-tab" data-bs-toggle="tab" href="#produtos" role="tab" aria-controls="produtos" aria-selected="true">Produtos</a>
+                </li>
             </ul>
             <div class="tab-content" id="myTabContent">
-                <div class="tab-pane fade show active" id="produtos" role="tabpanel" aria-labelledby="produtos-tab">
+                <div class="tab-pane fade show active" id="graficos" role="tabpanel" aria-labelledby="graficos-tab">
+                    <div class="row my-3">
+                        <div class="col-xl-4 col-12">
+                            <div class="border rounded p-3">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span class="color-nocturne-purple w-75" id="graph-label-1"></span>
+                                    <div>
+                                        <a 
+                                            class="btn btn-outline-stellar-blue btn-md rounded-circle border-0" 
+                                            data-bs-toggle="modal" 
+                                            data-bs-target="#editGraphModal" 
+                                            data-modal-label="Gráfico 01"
+                                            data-graph-id="1"
+                                        >
+                                            <i class="fa-solid fa-pen-to-square"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                                <canvas id="grafico-01" class="w-100 chartjs-render-monitor"></canvas>
+                            </div>
+                            <div class="border rounded mt-3 p-3">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span class="color-nocturne-purple w-75" id="graph-label-2"></span>
+                                    <div>
+                                        <a 
+                                            class="btn btn-outline-stellar-blue btn-md rounded-circle border-0" 
+                                            data-bs-toggle="modal" 
+                                            data-bs-target="#editGraphModal" 
+                                            data-modal-label="Gráfico 02"
+                                            data-graph-id="2"
+                                        >
+                                            <i class="fa-solid fa-pen-to-square"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                                <canvas id="grafico-02" class="w-100 chartjs-render-monitor"></canvas>
+                            </div>
+                        </div>
+                        <div class="col-xl-8 col-12">
+                           <div class="border rounded h-100 p-3">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span class="color-nocturne-purple w-75" id="graph-label-3"></span>
+                                    <div>
+                                        <a 
+                                            class="btn btn-outline-stellar-blue btn-md rounded-circle border-0" 
+                                            data-bs-toggle="modal" 
+                                            data-bs-target="#editGraphModal" 
+                                            data-modal-label="Gráfico 03"
+                                            data-graph-id="3"
+                                        >
+                                            <i class="fa-solid fa-pen-to-square"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                                <canvas id="grafico-03" class="w-100 chartjs-render-monitor"></canvas>
+                           </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-8 col-12">
+                            <div class="border rounded h-100 p-3">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span class="color-nocturne-purple w-75" id="graph-label-4"></span>
+                                    <div>
+                                        <a 
+                                            class="btn btn-outline-stellar-blue btn-md rounded-circle border-0" 
+                                            data-bs-toggle="modal" 
+                                            data-bs-target="#editGraphModal" 
+                                            data-modal-label="Gráfico 04"
+                                            data-graph-id="4"
+                                        >
+                                            <i class="fa-solid fa-pen-to-square"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                                <canvas id="grafico-04" class="w-100 chartjs-render-monitor"></canvas>
+                            </div>
+                        </div>
+                        <div class="col-xl-4 col-12">
+                            <div class="border rounded p-3">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span class="color-nocturne-purple w-75" id="graph-label-5"></span>
+                                    <div>
+                                        <a 
+                                            class="btn btn-outline-stellar-blue btn-md rounded-circle border-0"
+                                            data-bs-toggle="modal" 
+                                            data-bs-target="#editGraphModal" 
+                                            data-modal-label="Gráfico 05"
+                                            data-graph-id="5"
+                                        >
+                                            <i class="fa-solid fa-pen-to-square"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                                <canvas id="grafico-05" class="w-100 chartjs-render-monitor"></canvas>
+                            </div>
+                            <div class="border rounded mt-3 p-3">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span class="color-nocturne-purple w-75" id="graph-label-6"></span>
+                                    <div>
+                                        <a 
+                                            class="btn btn-outline-stellar-blue btn-md rounded-circle border-0" 
+                                            data-bs-toggle="modal" 
+                                            data-bs-target="#editGraphModal" 
+                                            data-modal-label="Gráfico 06"
+                                            data-graph-id="6"
+                                        >
+                                            <i class="fa-solid fa-pen-to-square"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                                <canvas id="grafico-06" class="w-100 chartjs-render-monitor"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="produtos" role="tabpanel" aria-labelledby="produtos-tab">
                     <div class="d-flex justify-content-end">
                         <!-- vertical align center -->
                         <div class="d-flex text-center align-items-center color-nocturne-purple me-2">Ordenar por:</div>
@@ -127,22 +240,26 @@
                         <table class="table table-striped" id="productsTable">
                             <thead>
                                 <tr>
-                                    <th class="text-center align-middle" scope="col">Posição</th>
-                                    <th class="text-center align-middle" scope="col">Produto</th>
-                                    <th class="text-center align-middle" scope="col">Quantidade</th>
-                                    <th class="text-center align-middle" scope="col">Faturamento</th>
+                                    <th class="text-center align-middle" scope="col"><span class="color-nocturne-purple">Posição</span></th>
+                                    <th class="text-center align-middle" scope="col"><span class="color-nocturne-purple">Produto</span></th>
+                                    <th class="text-center align-middle" scope="col"><span class="color-nocturne-purple">Quantidade</span></th>
+                                    <th class="text-center align-middle" scope="col"><span class="color-nocturne-purple">Faturamento</span></th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php foreach ($productRanking as $key => $produto): ?>
                                 <tr data-quantity="<?= $produto['total_vendido'] ?>" data-revenue="<?= $produto['total_faturado'] ?>" data-product="<?= $produto['produto_id'] ?>">
-                                    <th class="text-center align-middle" scope="row" id="position-<?= $produto['produto_id']?>">#<?= $key+1 ?></th>
+                                    <th class="text-center align-middle" scope="row" id="position-<?= $produto['produto_id']?>">
+                                        <span class="color-stellar-blue">#<?= $key+1 ?></span>
+                                    </th>
                                     <td class="text-center align-middle">
                                         <?= $produto['produto_nome'] ?><br>
                                         <small class="color-gray"><?= $produto['produto_codigo_interno'] ?></small>
                                     </td>
                                     <td class="text-center align-middle"><?= $produto['total_vendido'] ?></td>
-                                    <td class="text-center align-middle">R$<?= moedaReal($produto['total_faturado']) ?></td>
+                                    <td class="text-center align-middle">
+                                        <span class="color-nocturne-purple">R$<?= moedaReal($produto['total_faturado']) ?></span>
+                                    </td>
                                 </tr>
                                 <?php endforeach; ?>
                                 </tr>
@@ -156,6 +273,86 @@
         </div>
     </div>
 </section>
+<section id="section_modals">
+    <div class="modal fade" id="editGraphModal" tabindex="-1" aria-labelledby="editGraphModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editGraphModalLabel"></h5>
+                    <button type="button" class="btn-close input-stellar-blue" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="form-edit-graph" method="post" action="<?= url("statistics") ?>">
+
+                        <div class="mb-3">
+                            <label for="graph-type" class="form-label">Gráfico de:</label>
+                            <select name="graph-type" id="graph-type" class="form-control">
+                                <option value="pie">Distribuição (Pizza)</option>
+                                <option value="bar">Total (Barras)</option>
+                                <option value="line">Crescimento (Linhas)</option>
+                            </select>
+                            <!-- <small class="form-text text-muted">Tipo de gráfico a ser demonstrado</small> -->
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="graph-counter" class="form-label">De:</label>
+                            <select name="graph-counter" id="graph-counter" class="form-control">
+                                <option value="sold_units">Unidades Vendidas</option>
+                                <option value="revenue">Faturamento</option>
+                                <option value="discount">Desconto Aplicado</option>
+                            </select>
+                            <!-- <small class="form-text text-muted">Alvo do gráfico </small> -->
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="graph-target" class="form-label">Por:</label>
+                            <select name="graph-target" id="graph-target" class="form-control">
+                                <option value="product">Produtos</option>
+                                <option value="category">Categoria</option>
+                                <option value="payment_method">Meio de Pagamento</option>
+                            </select>
+                            <!-- <small class="form-text text-muted">Alvo do gráfico</small> -->
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="graph-filter" class="form-label">Filtrado por:</label>
+                            <select name="graph-filter" id="graph-filter" class="form-control mb-3">
+                                <option value="all" id="all_option">Todos</option>
+                                <option value="top_10" id="top_10_option">Top 10</option>
+                                <option value="custom" id="custom_option">Lista personalizada</option>
+                            </select>
+                        </div> 
+
+                        <div class="mb-3" id="graph-products-container" style="display:none;">
+                            <label for="graph-products" class="form-label">Lista:</label>
+                            <select class="form-select select2" id="graph-products" name="products[]" multiple="multiple">
+                                <?php foreach ($allProducts as $product): ?>
+                                    <option value="<?= $product['id'] ?>"><?= $product['nome'] ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+
+                        <div class="mb-3" id="graph-category-container" style="display:none;">
+                            <label for="graph-category" class="form-label">Lista:</label>
+                            <select class="form-select select2"  id="graph-category" name="category[]" multiple="multiple">
+                                <?php foreach ($allCategories as $category): ?>
+                                    <option value="<?= $category['id'] ?>"><?= $category['nome'] ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+
+                        <input type="hidden" name="graph-id" id="graph-id" value="">
+
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-fog-gray" data-bs-dismiss="modal">Fechar</button>
+                    <button type="submit" class="btn btn-stellar-blue" id="edit-graph-btn" form="edit-graph-form">Salvar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <?= $this->stop() ?>
 
 <?= $this->start("js") ?>
@@ -165,6 +362,7 @@
     const labels = <?= json_encode(array_values($graphData['labels'])) ?>;
     const totalTransacoes = <?= json_encode(array_values($graphData['values']['total_transacoes'])) ?>;
     const totalVendas = <?= json_encode(array_values($graphData['values']['total_vendas'])) ?>;
+    const customGraphs = <?= json_encode($customGraphs) ?>;
 </script>
 <script src="<?= url("assets/js/statistics/home.js") ?>"></script>
 <?= $this->stop() ?>

@@ -51,14 +51,32 @@ class Stock extends Core {
             $realPrice = desconverteMoedaReal($filter['real_price']);
             $where[] = "(produto_valor - produto_valor_desconto) = {$realPrice}";
         }
-        if (!empty($filter['stock'])) {
+        if (!empty($filter['stock']) && $filter['stock'] !== '') {
             $stock = (int)$filter['stock'];
             $where[] = "produto_estoque = {$stock}";
         }
-        if (!empty($filter['min_stock'])) {
+        if (!empty($filter['min_stock']) && $filter['min_stock'] !== '') {
             $minStock = (int)$filter['min_stock'];
             $where[] = "produto_estoque_minimo = {$minStock}";
         }
+
+        if (!empty($filter['stock_status'])) {
+            switch ($filter['stock_status']) {
+                case 'good':
+                    $where[] = "produto_estoque >= produto_estoque_minimo AND produto_estoque > 0 AND produto_ativo = 1";
+                    break;
+                case 'low':
+                    $where[] = "produto_estoque < produto_estoque_minimo AND produto_estoque > 0 AND produto_ativo = 1";
+                    break;
+                case 'out':
+                    $where[] = "produto_estoque <= 0 AND produto_ativo = 1";
+                    break;
+                case 'dead':
+                    $where[] = "COALESCE(produto_ativo, 0) = 0";
+                    break;
+            }
+        }
+
         return !empty($where) ? 'AND ' . implode(' AND ', $where) : '';
     }
 

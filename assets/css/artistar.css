@@ -125,7 +125,7 @@ body {
 .active>.page-link.sunshine-yellow {color: #333333;background-color: var(--sunshine-yellow);border-color: var(--sunshine-yellow);}
 .active>.page-link.gray {color: #FFFFFF;background-color: var(--gray);border-color: var(--gray);}
 .active>.page-link.graphite-gray {color: #FFFFFF;background-color: var(--graphite-gray);border-color: var(--graphite-gray);}
-.active>.page-link.cloud-gray {color: #000000;background-color: var(--cloud-gray);border-color: var(--cloud-gray);}
+.active>.page-link.cloud-gray {color: #FFFFFF;background-color: var(--cloud-gray);border-color: var(--cloud-gray);}
 .active>.page-link.fog-gray {color: #333333;background-color: var(--fog-gray);border-color: var(--fog-gray);}
 .active>.page-link.polar-gray {color: #000000;background-color: var(--polar-gray);border-color: var(--polar-gray);}
 
@@ -161,7 +161,7 @@ body {
 .btn.btn-sunshine-yellow {color: #333333; background-color: var(--sunshine-yellow); border-color: var(--sunshine-yellow);}
 .btn.btn-gray {color: #FFFFFF; background-color: var(--gray); border-color: var(--gray);}
 .btn.btn-graphite-gray {color: #FFFFFF; background-color: var(--graphite-gray); border-color: var(--graphite-gray);}
-.btn.btn-cloud-gray {color: #000000; background-color: var(--cloud-gray); border-color: var(--cloud-gray);}
+.btn.btn-cloud-gray {color: #FFFFFF; background-color: var(--cloud-gray); border-color: var(--cloud-gray);}
 .btn.btn-fog-gray {color: #333333; background-color: var(--fog-gray); border-color: var(--fog-gray);}
 .btn.btn-polar-gray {color: #000000; background-color: var(--polar-gray); border-color: var(--polar-gray);}
 
@@ -209,7 +209,7 @@ body {
 .btn.btn-outline-sunshine-yellow:hover {color:#FFFFFF; background-color: var(--sunshine-yellow); border-color: var(--sunshine-yellow);}
 .btn.btn-outline-gray:hover {color:#FFFFFF; background-color: var(--gray); border-color: var(--gray);}
 .btn.btn-outline-graphite-gray:hover {color:#FFFFFF; background-color: var(--graphite-gray); border-color: var(--graphite-gray);}
-.btn.btn-outline-cloud-gray:hover {color:#000000; background-color: var(--cloud-gray); border-color: var(--cloud-gray);}
+.btn.btn-outline-cloud-gray:hover {color:#FFFFFF; background-color: var(--cloud-gray); border-color: var(--cloud-gray);}
 .btn.btn-outline-fog-gray:hover {color:#111111; background-color: var(--fog-gray); border-color: var(--fog-gray);}
 .btn.btn-outline-polar-gray:hover {color:#000000; background-color: var(--polar-gray); border-color: var(--polar-gray);}
 

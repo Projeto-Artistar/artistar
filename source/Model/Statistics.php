@@ -6,42 +6,49 @@ namespace Source\Model;
 use PDO;
 use Source\Core\Core;
 use DateTime;
+use Source\Model\Helpers\StatisticsGraphs;
 
 class Statistics extends Core {
 
     public function getPeriodos() {
         return [
             'day' => [
+                'id' => 'day',
                 'name' => '24h',
                 'following' => 'week',
                 'where' => 'v.venda_data_criacao BETWEEN :dataInicio AND :dataFim',
                 'group_by' => 'DATE_FORMAT(v.venda_data_criacao, "%H")'
             ],
             'week' => [
+                'id' => 'week',
                 'name' => '7 Dias',
                 'following' => 'fortnight',
                 'where' => 'v.venda_data_criacao BETWEEN :dataInicio AND :dataFim',
                 'group_by' => 'DATE_FORMAT(v.venda_data_criacao, "%d")'
             ],
             'fortnight' => [
+                'id' => 'fortnight',
                 'name' => '15 Dias',
                 'following' => 'month',
                 'where' => 'v.venda_data_criacao BETWEEN :dataInicio AND :dataFim',
                 'group_by' => 'DATE_FORMAT(v.venda_data_criacao, "%d")'
             ],
             'month' => [
+                'id' => 'month',
                 'name' => '1 Mês',
                 'following' => 'semester',
                 'where' => 'v.venda_data_criacao BETWEEN :dataInicio AND :dataFim',
                 'group_by' => 'DATE_FORMAT(v.venda_data_criacao, "%d")'
             ],
             'semester' => [
+                'id' => 'semester',
                 'name' => '6 Meses',
                 'following' => 'year',
                 'where' => 'v.venda_data_criacao BETWEEN :dataInicio AND :dataFim',
                 'group_by' => 'DATE_FORMAT(v.venda_data_criacao, "%m")'
             ],
             'year' => [
+                'id' => 'year',
                 'name' => 'Ano',
                 'following' => null,
                 'where' => 'v.venda_data_criacao BETWEEN :dataInicio AND :dataFim',
@@ -259,9 +266,9 @@ class Statistics extends Core {
                 SUM(i.venda_item_unidades) as total_vendido, 
                 SUM(i.venda_item_valor) as total_faturado
             FROM 
-                produtos p
+                vendas_itens i 
             JOIN 
-                vendas_itens i ON p.produto_id = i.venda_item_produto
+                produtos p ON p.produto_id = i.venda_item_produto
             JOIN 
                 vendas v ON v.venda_id = i.venda_item_venda
             WHERE 
@@ -319,6 +326,198 @@ class Statistics extends Core {
                 $dataFim = $dataReferencia . ' 23:59:59';
         }
         return [$dataInicio, $dataFim];
+    }
+
+    public function getAllProducts($store) {
+        $query = "SELECT produto_id id, produto_nome nome FROM produtos WHERE produto_loja = :store ORDER BY produto_nome ASC";
+        $stmt = $this->SQL->prepare($query);
+        $stmt->bindValue(':store', $store, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getAllCategories($store) {
+        $query = "SELECT categoria_id id, categoria_nome nome FROM categoria_loja WHERE categoria_loja = :store ORDER BY categoria_nome ASC";
+        $stmt = $this->SQL->prepare($query);
+        $stmt->bindValue(':store', $store, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getGraphTypes($store) {
+        $query = "
+            SELECT 
+                *
+            FROM 
+                graficos_loja
+            WHERE
+                grafico_loja = :store
+        ";
+        $stmt = $this->SQL->prepare($query);
+        $stmt->bindValue(':store', $store, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getGraphTypeByPosition($store, $graphId) {
+        $query = "
+            SELECT 
+                *
+            FROM 
+                graficos_loja 
+            WHERE 
+                grafico_loja = :store 
+            AND 
+                grafico_posicao = :graphId
+        ";
+        $stmt = $this->SQL->prepare($query);
+        $stmt->bindValue(':store', $store, PDO::PARAM_INT);
+        $stmt->bindValue(':graphId', $graphId, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function createGraphType($store, $graphId, $info) {
+        $query = "
+            INSERT INTO graficos_loja (
+                grafico_loja, 
+                grafico_tipo, 
+                grafico_contador, 
+                grafico_alvo, 
+                grafico_filtro,  
+                grafico_lista,
+                grafico_posicao
+            ) VALUES (
+                :store, 
+                :type, 
+                :counter, 
+                :target, 
+                :filter, 
+                :list,
+                :position
+            )
+        ";
+        $stmt = $this->SQL->prepare($query);
+        $stmt->bindValue(':store', $store, PDO::PARAM_INT);
+        $stmt->bindValue(':type', $info['type'], PDO::PARAM_STR);
+        $stmt->bindValue(':counter', $info['counter'], PDO::PARAM_STR);
+        $stmt->bindValue(':target', $info['target'], PDO::PARAM_STR);
+        $stmt->bindValue(':filter', $info['filter'], PDO::PARAM_STR);
+        $stmt->bindValue(':list', $info['list'], PDO::PARAM_STR);
+        $stmt->bindValue(':position', $graphId, PDO::PARAM_INT);
+        $stmt->execute();
+    }
+
+    public function updateGraphType($store, $graphId, $info) {
+        $query = "
+            UPDATE graficos_loja SET
+                grafico_tipo = :type,
+                grafico_contador = :counter,
+                grafico_alvo = :target,
+                grafico_filtro = :filter,
+                grafico_lista = :list
+            WHERE
+                grafico_loja = :store
+            AND
+                grafico_posicao = :graphId
+        ";
+        $stmt = $this->SQL->prepare($query);
+        $stmt->bindValue(':type', $info['type'], PDO::PARAM_STR);
+        $stmt->bindValue(':counter', $info['counter'], PDO::PARAM_STR);
+        $stmt->bindValue(':target', $info['target'], PDO::PARAM_STR);
+        $stmt->bindValue(':filter', $info['filter'], PDO::PARAM_STR);
+        $stmt->bindValue(':list', $info['list'], PDO::PARAM_STR);
+        $stmt->bindValue(':store', $store, PDO::PARAM_INT);
+        $stmt->bindValue(':graphId', $graphId, PDO::PARAM_INT);
+        $stmt->execute();
+    }
+
+    public function getGraphData($store, $graphs, $periodo, $dataReferencia) {
+        $statisticsGraphs = new StatisticsGraphs($store, $periodo);
+        foreach($graphs as $graph) $statisticsGraphs->setGraphType($graph['grafico_posicao'], $graph);
+        $info = [];
+        foreach($statisticsGraphs->getGraphData() as $key => $data) {
+            $graphData = $this->queryGraphData($data['data'], $periodo, $dataReferencia);
+            
+            if ($data['type'] == 'line') {
+                $graphData = $this->arrangeCustomGraphData($graphData, $periodo['id'], $dataReferencia);
+                $graphData = array_values($graphData);
+            }
+            $info[$key] = [
+                'id'    => $data['id'],
+                'name'  => $data['name'],
+                'type'  => $data['type'],
+                'real'  => $data['real'],
+                'data'  => $graphData,
+                'base' => $statisticsGraphs->getGraphType($data['id'])
+            ];
+        }
+
+        return $info;
+    }
+
+    public function queryGraphData($query ,$periodo, $dataReferencia) {
+        $stmt = $this->SQL->prepare($query);
+        list($dataInicio, $dataFim) = $this->getDataInicioFim($dataReferencia, $periodo);
+        $stmt->bindValue(':dataInicio', $dataInicio);
+        $stmt->bindValue(':dataFim', $dataFim);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function arrangeCustomGraphData($totais, $periodoSelecionado, $dataReferencia) {
+        $graphData = [];
+        switch ($periodoSelecionado) {
+            case 'day':
+                for ($i=0; $i < 24; $i++) {
+                    $nextHour = date('H', strtotime($dataReferencia." +{$i} hour"));
+                    $graphData[$nextHour] = 0;
+                }
+                break;
+            case 'week':
+                for ($i=6; $i >= 0; $i--) {
+                    $nextDay = date('d', strtotime($dataReferencia." -$i day"));
+                    $graphData[$nextDay] = 0;
+                }
+                break;
+            case 'fortnight':
+                for ($i=14; $i >= 0; $i--) {
+                    $nextDay = date('d', strtotime($dataReferencia." -$i day"));
+                    $graphData[$nextDay] = 0;
+                }
+                break;
+            case 'month':
+                for ($i=(date('t')-1); $i >= 0; $i--) {
+                    $nextDay = date('d', strtotime($dataReferencia." -$i day"));
+                    $graphData[$nextDay] = 0;
+                }
+                break;
+            case 'semester':
+                for ($i=5; $i >= 0; $i--) {
+                    $nextMonth = date('m', strtotime($dataReferencia." -$i month"));
+                    $graphData[$nextMonth] = 0;
+                }
+                break;
+            case 'year':
+                for ($i=11; $i >= 0; $i--) {
+                    $nextMonth = date('m', strtotime($dataReferencia." -$i month"));
+                    $graphData[$nextMonth] = 0;
+                }
+                break;
+        }
+        $base = $graphData;
+        $graphData = [];
+        foreach ($totais as $total) {
+            if (!isset($graphData[$total['id']])) $graphData[$total['id']] = [
+                'label' => $total['nome'],
+                'data' => $base
+            ];
+            $graphData[$total['id']]['data'][$total['periodo']] = $total['total'];
+        }
+        foreach ($graphData as $key => $data) {
+            $graphData[$key]['data'] = array_values($data['data']);
+        }
+        return $graphData;
     }
 
 }

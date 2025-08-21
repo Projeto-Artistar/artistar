@@ -64,6 +64,14 @@ $(function() {
     function showPreview(file) {
         const reader = new FileReader();
         reader.onload = function(e) {
+            const fileSize = file.size / 1024 / 1024; // tamanho em MB
+            if (fileSize > 5) {
+                alert('A imagem deve ter no máximo 5MB');
+                $input.val(''); // Limpa o input
+                $area.find('img').remove();
+                $text.show();
+                return;
+            }
             $area.find('img').remove();
             $area.append('<img src="' + e.target.result + '" alt="Preview">');
             $text.hide();
@@ -97,11 +105,8 @@ $(function() {
 
         let lucro = preco - (custo + desconto);
         let precoAtual = preco - desconto;
-        if (preco > 0) {
-            let descontoPercentual = (desconto * 100) / preco;
-        } else {
-            let descontoPercentual = 0;
-        }
+        let descontoPercentual = 0;
+        if (preco > 0) descontoPercentual = (desconto * 100) / preco;
 
         let lucroFormatado = lucro.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2});
         let precoAtualFormatado = precoAtual.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2});

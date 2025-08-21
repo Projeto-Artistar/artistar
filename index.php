@@ -59,6 +59,7 @@ $router->get("/sale/{saleId}", "salesStatementController:saleDetails", "salesSta
 
 $router->group('statistics');
 $router->get("/", "statisticsController:home", "statisticsController.home");
+$router->post("/edit-graph", "statisticsController:editGraph", "statisticsController.editGraph");
 
 $router->group('results');
 $router->get("/", "searchController:results", "searchController.results");

@@ -37,6 +37,33 @@ document.addEventListener("DOMContentLoaded", function() {
             },
             title: {
                 display: false,
+            },
+            onClick: function(evt, elements) {
+                let url = '/stock?filter%5Bstock_status%5D=';
+                if (elements.length > 0) {
+                    switch (elements[0]._index) {
+                        case 0:
+                            location.href = url + 'good';
+                            break;
+                        case 1:
+                            location.href = url + 'low';
+                            break;
+                        case 2:
+                            location.href = url + 'out';
+                            break;
+                        case 3:
+                            location.href = url + 'dead';
+                            break;
+                    }
+                }
+            },
+            onHover: function(event, elements) {
+                const target = event.native ? event.native.target : event.target;
+                if (elements && elements.length) {
+                    target.style.cursor = 'pointer';
+                } else {
+                    target.style.cursor = 'default';
+                }
             }
         }
     });
@@ -214,6 +241,15 @@ $(function() {
     function showPreview(file) {
         const reader = new FileReader();
         reader.onload = function(e) {
+            //limitar a imagem a 5MB
+            const fileSize = file.size / 1024 / 1024; // tamanho em MB
+            if (fileSize > 5) {
+                alert('A imagem deve ter no máximo 5MB');
+                $input.val(''); // Limpa o input
+                $area.find('img').remove();
+                $text.show();
+                return;
+            }
             $area.find('img').remove();
             $area.append('<img src="' + e.target.result + '" alt="Preview">');
             $text.hide();

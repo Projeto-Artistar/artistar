@@ -51,6 +51,9 @@
                                 <span id="image-drop-text">Clique ou arraste uma imagem aqui</span>
                             <?php endif; ?>
                         </div>
+                        <small id="new-nameHelp" class="form-text text-muted">
+                            Tamanho máximo: 5MB
+                        </small>
                         <input type="file" id="image" name="thumbnail" accept="image/*" style="display:none;">
                     </div>
                 </div>

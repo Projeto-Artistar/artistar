@@ -28,6 +28,7 @@ class stockController extends Core {
         if (!isset($filter['real_price'])) $filter['real_price'] = '';
         if (!isset($filter['stock'])) $filter['stock'] = '';
         if (!isset($filter['min_stock'])) $filter['min_stock'] = '';
+        if (!isset($filter['stock_status'])) $filter['stock_status'] = '';
         $pagination = $_GET['pagination'] ?? [
             'offset' => 0
         ];
