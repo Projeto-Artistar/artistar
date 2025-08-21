@@ -105,7 +105,7 @@ class StatisticsGraphs {
                 'item_counter' => $this->getItemCounter($graphType['grafico_contador']),
                 'item_extraJoins' => $this->getItemJoins($graphType['grafico_alvo']),
                 'item_extraFilters' => $this->getItemFilters($graphType['grafico_filtro'], $graphType['grafico_alvo'], $graphType['grafico_lista']),
-                'item_limit' => $graphType['grafico_filtro'] == 'top_10' ? 'LIMIT 10' : ''
+                'item_filter' => $graphType['grafico_filtro']
 
             ];
             $data[$key] = [
@@ -175,7 +175,7 @@ class StatisticsGraphs {
 
     public function getItemId($item) {
         $options = [
-            'product' => 'produto_id',
+            'product' => 'p.produto_id',
             'category' => 'categoria_id',
             'payment_method' => 'venda_pagamento'
         ];
@@ -185,7 +185,7 @@ class StatisticsGraphs {
 
     public function getItemName($item) {
         $options = [
-            'product' => 'produto_nome',
+            'product' => 'p.produto_nome',
             'category' => 'categoria_nome',
             'payment_method' => 'venda_pagamento'
         ];
@@ -236,32 +236,87 @@ class StatisticsGraphs {
             $groupByPeriod = ", periodo";
             $orderByPeriod = "periodo ASC, ";
         }
-        $query = "
-            SELECT 
-                {$itemPeriod}
-                {$info['item_id']} AS id,
-                {$info['item_name']} AS nome, 
-                SUM(vi.{$info['item_counter']}) AS total
-            FROM 
-                vendas_itens AS vi
-            INNER JOIN
-                vendas AS v ON vi.venda_item_venda = v.venda_id
-            INNER JOIN 
-                produtos AS p ON vi.venda_item_produto = p.produto_id
-            {$info['item_extraJoins']}
-            WHERE 
-                COALESCE(v.venda_cancelada, 0) = 0
-            AND
-                v.venda_loja_id = {$info['item_store']}
-            AND 
-                {$period['where']}
-            {$info['item_extraFilters']}
-            GROUP BY
-                id {$groupByPeriod}
-            ORDER BY
-                {$orderByPeriod} total DESC
-            {$info['item_limit']}
-        ";
+        if ($info['item_filter'] != 'top_10') {
+            $query = "
+                SELECT 
+                    {$itemPeriod}
+                    {$info['item_id']} AS id,
+                    {$info['item_name']} AS nome, 
+                    SUM(vi.{$info['item_counter']}) AS total
+                FROM 
+                    vendas_itens AS vi
+                INNER JOIN
+                    vendas AS v ON vi.venda_item_venda = v.venda_id
+                INNER JOIN 
+                    produtos AS p ON vi.venda_item_produto = p.produto_id
+                {$info['item_extraJoins']}
+                WHERE 
+                    COALESCE(v.venda_cancelada, 0) = 0
+                AND
+                    v.venda_loja_id = {$info['item_store']}
+                AND 
+                    {$period['where']}
+                {$info['item_extraFilters']}
+                GROUP BY
+                    id {$groupByPeriod}
+                ORDER BY
+                    {$orderByPeriod} total DESC
+            ";
+        } else {
+            $query = "
+                SELECT 
+                    {$itemPeriod}
+                    {$info['item_id']} AS id,
+                    {$info['item_name']} AS nome, 
+                    SUM(vi.{$info['item_counter']}) AS total
+                FROM 
+                    vendas_itens AS vi
+                INNER JOIN
+                    vendas AS v ON vi.venda_item_venda = v.venda_id
+                INNER JOIN 
+                    produtos AS p ON vi.venda_item_produto = p.produto_id
+                INNER JOIN
+                (
+                    SELECT 
+                        {$info['item_id']} AS id
+                    FROM 
+                        vendas_itens AS vi
+                    INNER JOIN
+                        vendas AS v ON vi.venda_item_venda = v.venda_id
+                    INNER JOIN 
+                        produtos AS p ON vi.venda_item_produto = p.produto_id
+                    {$info['item_extraJoins']}
+                    WHERE 
+                        COALESCE(v.venda_cancelada, 0) = 0
+                    AND
+                        v.venda_loja_id = {$info['item_store']}
+                    AND 
+                        {$period['where']}
+                    {$info['item_extraFilters']}
+                    GROUP BY
+                        id
+                    ORDER BY
+                        SUM(vi.{$info['item_counter']}) DESC
+                    LIMIT 10
+                ) AS top_itens ON {$info['item_id']} = top_itens.id
+                {$info['item_extraJoins']}
+                WHERE 
+                    COALESCE(v.venda_cancelada, 0) = 0
+                AND
+                    v.venda_loja_id = {$info['item_store']}
+                AND 
+                    {$period['where']}
+                {$info['item_extraFilters']}
+                GROUP BY
+                    id {$groupByPeriod}
+                ORDER BY
+                    {$orderByPeriod} total DESC
+                
+            ";
+            // echo '<pre>';
+            // print_r($query);
+            // exit;
+        }
         return $query;
     }
 
