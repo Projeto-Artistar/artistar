@@ -71,6 +71,12 @@
                         </div>
                     </div>
                     <div class="row mb-3">
+                        <div class="col-12">
+                            <label for="payment-select" class="form-label">Momento da venda</label>
+                            <input type="datetime-local" class="form-control form-control-sm" id="sale-datetime" name="sale_datetime" value="<?= date("Y-m-d\TH:i") ?>">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
                         <div class="col-sm-6 col-12">
                             <div class="mb-3 form-check form-switch form-switch-sm">
                                 <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" name="paid" checked value="1">

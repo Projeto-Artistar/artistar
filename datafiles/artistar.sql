@@ -23,8 +23,8 @@ CREATE TABLE IF NOT EXISTS `categoria_loja` (
   `categoria_cor` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`categoria_id`),
   KEY `categoria_loja` (`categoria_loja`),
-  CONSTRAINT `FK_CATEGORIA_LOJA` FOREIGN KEY (`categoria_loja`) REFERENCES `lojas` (`loja_id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  CONSTRAINT `FK_CATEGORIA_LOJA` FOREIGN KEY (`categoria_loja`) REFERENCES `lojas` (`loja_id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=63 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Exportação de dados foi desmarcado.
 
@@ -37,26 +37,44 @@ CREATE TABLE IF NOT EXISTS `categoria_produtos` (
   PRIMARY KEY (`categoria_produto_id`),
   KEY `categoria_produto_produto` (`categoria_produto_produto`),
   KEY `categoria_produto_categoria` (`categoria_produto_categoria`),
-  CONSTRAINT `FK_CATEGORIA_PRODUTO` FOREIGN KEY (`categoria_produto_produto`) REFERENCES `produtos` (`produto_id`) ON DELETE CASCADE ON UPDATE NO ACTION,
-  CONSTRAINT `FK_PRODUTO_CATEGORIA` FOREIGN KEY (`categoria_produto_categoria`) REFERENCES `categoria_loja` (`categoria_id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=172 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  CONSTRAINT `FK_CATEGORIA_PRODUTO` FOREIGN KEY (`categoria_produto_produto`) REFERENCES `produtos` (`produto_id`) ON DELETE CASCADE,
+  CONSTRAINT `FK_PRODUTO_CATEGORIA` FOREIGN KEY (`categoria_produto_categoria`) REFERENCES `categoria_loja` (`categoria_id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=282 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Exportação de dados foi desmarcado.
+
+-- Copiando estrutura para tabela artistar.graficos_loja
+CREATE TABLE IF NOT EXISTS `graficos_loja` (
+  `grafico_id` int(11) NOT NULL AUTO_INCREMENT,
+  `grafico_loja` int(11) DEFAULT NULL,
+  `grafico_tipo` varchar(50) DEFAULT NULL,
+  `grafico_contador` varchar(50) DEFAULT NULL,
+  `grafico_alvo` varchar(50) DEFAULT NULL,
+  `grafico_filtro` varchar(50) DEFAULT NULL,
+  `grafico_lista` text DEFAULT NULL,
+  `grafico_posicao` int(11) DEFAULT NULL,
+  PRIMARY KEY (`grafico_id`) USING BTREE,
+  KEY `FK_grafico_loja` (`grafico_loja`) USING BTREE,
+  CONSTRAINT `FK_grafico_loja` FOREIGN KEY (`grafico_loja`) REFERENCES `lojas` (`loja_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Exportação de dados foi desmarcado.
 
 -- Copiando estrutura para tabela artistar.lojas
 CREATE TABLE IF NOT EXISTS `lojas` (
   `loja_id` int(11) NOT NULL AUTO_INCREMENT,
-  `loja_dt_criacao` datetime NOT NULL DEFAULT current_timestamp(),
+  `loja_dt_criacao` datetime NOT NULL,
   `loja_ativa` tinyint(4) NOT NULL DEFAULT 0,
-  `loja_nome` varchar(255) DEFAULT NULL,
   `loja_nome_unico` varchar(255) DEFAULT NULL,
+  `loja_nome` varchar(255) DEFAULT NULL,
   `loja_descricao` text DEFAULT NULL,
   `loja_foto` text DEFAULT NULL,
   `loja_proprietario` int(11) DEFAULT NULL,
   PRIMARY KEY (`loja_id`),
+  UNIQUE KEY `loja_nome_unico` (`loja_nome_unico`),
   KEY `FK_LOJA_PROPRIETARIO` (`loja_proprietario`),
-  CONSTRAINT `FK_LOJA_PROPRIETARIO` FOREIGN KEY (`loja_proprietario`) REFERENCES `usuarios` (`usuario_id`) ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  CONSTRAINT `FK_LOJA_PROPRIETARIO` FOREIGN KEY (`loja_proprietario`) REFERENCES `usuarios` (`usuario_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Exportação de dados foi desmarcado.
 
@@ -64,7 +82,7 @@ CREATE TABLE IF NOT EXISTS `lojas` (
 CREATE TABLE IF NOT EXISTS `produtos` (
   `produto_id` int(11) NOT NULL AUTO_INCREMENT,
   `produto_loja` int(11) NOT NULL,
-  `produto_data_cadastro` datetime DEFAULT current_timestamp(),
+  `produto_data_cadastro` datetime DEFAULT NULL,
   `produto_nome` varchar(50) NOT NULL,
   `produto_thumbnail` text DEFAULT NULL,
   `produto_descricao` text DEFAULT NULL,
@@ -81,16 +99,17 @@ CREATE TABLE IF NOT EXISTS `produtos` (
   PRIMARY KEY (`produto_id`) USING BTREE,
   KEY `produto_loja` (`produto_loja`),
   KEY `produto_original` (`produto_original`),
-  CONSTRAINT `FK_LOJA_PRODUTO` FOREIGN KEY (`produto_loja`) REFERENCES `lojas` (`loja_id`) ON UPDATE NO ACTION,
-  CONSTRAINT `FK_PRODUTO_ORIGINAL` FOREIGN KEY (`produto_original`) REFERENCES `produtos` (`produto_id`) ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=190 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  FULLTEXT KEY `ft_produtos` (`produto_nome`,`produto_palavras_chave`,`produto_descricao`,`produto_codigo_interno`),
+  CONSTRAINT `FK_LOJA_PRODUTO` FOREIGN KEY (`produto_loja`) REFERENCES `lojas` (`loja_id`),
+  CONSTRAINT `FK_PRODUTO_ORIGINAL` FOREIGN KEY (`produto_original`) REFERENCES `produtos` (`produto_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=170 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Exportação de dados foi desmarcado.
 
 -- Copiando estrutura para tabela artistar.usuarios
 CREATE TABLE IF NOT EXISTS `usuarios` (
   `usuario_id` int(11) NOT NULL AUTO_INCREMENT,
-  `usuario_cadastro` datetime NOT NULL DEFAULT current_timestamp(),
+  `usuario_cadastro` datetime NOT NULL,
   `usuario_nome` varchar(100) NOT NULL,
   `usuario_nome_completo` varchar(50) NOT NULL,
   `usuario_email` varchar(255) DEFAULT NULL,
@@ -100,7 +119,7 @@ CREATE TABLE IF NOT EXISTS `usuarios` (
   `usuario_codigo_validacao` varchar(10) DEFAULT NULL,
   `usuario_envio_validacao` datetime DEFAULT NULL,
   PRIMARY KEY (`usuario_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Exportação de dados foi desmarcado.
 
@@ -118,11 +137,12 @@ CREATE TABLE IF NOT EXISTS `vendas` (
   `venda_cancelada` tinyint(1) DEFAULT NULL,
   `venda_data_cancelamento` datetime DEFAULT NULL,
   `venda_ultima_atualizacao` datetime DEFAULT NULL,
+  `venda_data_venda` datetime DEFAULT NULL,
   PRIMARY KEY (`venda_id`) USING BTREE,
   KEY `FK_venda_loja` (`venda_loja_id`),
   KEY `venda_numero` (`venda_numero`),
-  CONSTRAINT `FK_venda_loja` FOREIGN KEY (`venda_loja_id`) REFERENCES `lojas` (`loja_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  CONSTRAINT `FK_venda_loja` FOREIGN KEY (`venda_loja_id`) REFERENCES `lojas` (`loja_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=179 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Exportação de dados foi desmarcado.
 
@@ -139,11 +159,55 @@ CREATE TABLE IF NOT EXISTS `vendas_itens` (
   PRIMARY KEY (`venda_item_id`),
   KEY `FK_venda_item_produto` (`venda_item_produto`),
   KEY `FK_venda_item_venda` (`venda_item_venda`),
-  CONSTRAINT `FK_venda_item_produto` FOREIGN KEY (`venda_item_produto`) REFERENCES `produtos` (`produto_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `FK_venda_item_venda` FOREIGN KEY (`venda_item_venda`) REFERENCES `vendas` (`venda_id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  CONSTRAINT `FK_venda_item_produto` FOREIGN KEY (`venda_item_produto`) REFERENCES `produtos` (`produto_id`),
+  CONSTRAINT `FK_venda_item_venda` FOREIGN KEY (`venda_item_venda`) REFERENCES `vendas` (`venda_id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=354 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Exportação de dados foi desmarcado.
+
+-- Copiando estrutura para trigger artistar.trg_lojas_insert
+SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION';
+DELIMITER //
+CREATE TRIGGER trg_lojas_insert
+BEFORE INSERT ON lojas
+FOR EACH ROW
+BEGIN
+    IF NEW.loja_dt_criacao IS NULL THEN
+        SET NEW.loja_dt_criacao = NOW();
+    END IF;
+END//
+DELIMITER ;
+SET SQL_MODE=@OLDTMP_SQL_MODE;
+
+-- Copiando estrutura para trigger artistar.trg_produtos_insert
+SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION';
+DELIMITER //
+CREATE TRIGGER trg_produtos_insert
+BEFORE INSERT ON produtos
+FOR EACH ROW
+BEGIN
+
+   IF NEW.produto_data_cadastro IS NULL THEN
+   	SET NEW.produto_data_cadastro = NOW();
+   END IF;
+	
+END//
+DELIMITER ;
+SET SQL_MODE=@OLDTMP_SQL_MODE;
+
+-- Copiando estrutura para trigger artistar.trg_usuarios_insert
+SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION';
+DELIMITER //
+CREATE TRIGGER trg_usuarios_insert
+BEFORE INSERT ON usuarios
+FOR EACH ROW
+BEGIN
+    IF NEW.usuario_cadastro IS NULL THEN
+        SET NEW.usuario_cadastro = NOW();
+    END IF;
+END//
+DELIMITER ;
+SET SQL_MODE=@OLDTMP_SQL_MODE;
 
 -- Copiando estrutura para trigger artistar.trg_vendas_insert
 SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION';
@@ -153,6 +217,10 @@ CREATE TRIGGER `trg_vendas_insert` BEFORE INSERT ON `vendas` FOR EACH ROW BEGIN
    
    IF NEW.venda_data_criacao IS NULL THEN
    	SET NEW.venda_data_criacao = NOW();
+   END IF;
+   
+   IF NEW.venda_data_venda IS NULL THEN
+   	SET NEW.venda_data_venda = NOW();
    END IF;
    
    IF NEW.venda_numero IS NULL THEN

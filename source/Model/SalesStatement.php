@@ -23,6 +23,14 @@ class SalesStatement extends Core {
                 'label' => 'Venda (Menor para Maior)',
                 'value' => 'numero ASC, data_criacao ASC'
             ],
+            'data_asc' => [
+                'label' => 'Data da Venda (Mais Antiga para Mais Recente)',
+                'value' => 'venda_data_venda ASC, numero ASC'
+            ],
+            'data_desc' => [
+                'label' => 'Data da Venda (Mais Recente para Mais Antiga)',
+                'value' => 'venda_data_venda DESC, numero DESC'
+            ],
             'payment_asc' => [
                 'label' => 'Método de Pagamento (A-Z)',
                 'value' => 'pagamento ASC, data_criacao ASC'
@@ -89,8 +97,8 @@ class SalesStatement extends Core {
                 v.venda_id id,
                 v.venda_numero numero,
                 v.venda_pagamento pagamento,
-                DATE_FORMAT(v.venda_data_criacao, '%d/%m/%Y') data_criacao,
-                DATE_FORMAT(v.venda_data_criacao, '%H:%i') hora_criacao,
+                DATE_FORMAT(v.venda_data_criacao, '%d/%m/%Y %H:%i') data_criacao,
+                DATE_FORMAT(v.venda_data_venda, '%d/%m/%Y %H:%i') data_venda,
                 v.venda_pago pago,
                 v.venda_entregue entregue,
                 v.venda_cancelada cancelada,
@@ -200,11 +208,12 @@ class SalesStatement extends Core {
                 DATE_FORMAT(v.venda_data_criacao, '%d/%m/%Y') data_criacao,
                 DATE_FORMAT(v.venda_data_criacao, '%H:%i') hora_criacao,
                 v.venda_pago pago,
-                DATE_FORMAT(v.venda_data_pagamento, '%d/%m/%Y %H:%i') data_pagamento,
+                v.venda_data_pagamento data_pagamento,
                 v.venda_entregue entregue,
-                DATE_FORMAT(v.venda_data_entrega, '%d/%m/%Y %H:%i') data_entrega,
+                v.venda_data_entrega data_entrega,
+                v.venda_data_venda data_venda,
                 v.venda_cancelada cancelada,
-                DATE_FORMAT(v.venda_data_cancelamento, '%d/%m/%Y %H:%i') data_cancelamento
+                v.venda_data_cancelamento data_cancelamento
             FROM
                 vendas AS v
             WHERE

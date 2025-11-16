@@ -222,7 +222,8 @@ for (const [key, graph] of Object.entries(customGraphs)) {
                 options: {
                     responsive: true,
                     legend: {
-                        position: 'bottom'
+                        position: 'bottom',
+                        display: true
                     },
                     tooltips: {
                        callbacks: {
@@ -268,8 +269,13 @@ for (const [key, graph] of Object.entries(customGraphs)) {
             new Chart(document.getElementById(`grafico-0${graph.id}`).getContext('2d'), {
                 type: 'bar',
                 data: {
-                    labels: ['Itens'],
-                    datasets: datasets
+                    labels: graph.data.map(item => item.nome),
+                    datasets: [{
+                        label: 'Total',
+                        data: graph.data.map(item => item.total),
+                        borderColor: graph.data.map((item, index) => colors[index % colors.length].color),
+                        backgroundColor: graph.data.map((item, index) => colors[index % colors.length].backgroundColor)
+                    }]
                 },
                 options: {
                     responsive: true,
@@ -277,7 +283,8 @@ for (const [key, graph] of Object.entries(customGraphs)) {
                         display: false
                     },
                     legend: {
-                        position: 'bottom' 
+                        position: 'bottom',
+                        display: false
                     },
                     tooltips: {
                        callbacks: {
@@ -301,7 +308,8 @@ for (const [key, graph] of Object.entries(customGraphs)) {
                                     }
                                 },
                                 precision: (!graph.real) ? 0 : undefined,
-                            }
+                                beginAtZero: true
+                            },
                         }]
                     }
                 }
@@ -329,7 +337,8 @@ for (const [key, graph] of Object.entries(customGraphs)) {
                         display: false
                     },
                     legend: {
-                        position: 'bottom' 
+                        position: 'bottom',
+                        display: true
                     },
                     tooltips: {
                        callbacks: {
@@ -352,7 +361,8 @@ for (const [key, graph] of Object.entries(customGraphs)) {
                                         return value;
                                     }
                                 },
-                                precision: (!graph.real) ? 0 : undefined
+                                precision: (!graph.real) ? 0 : undefined,
+                                beginAtZero: true
                             }
                         }]
                     }

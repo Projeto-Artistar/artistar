@@ -11,7 +11,7 @@
         <div class="col-sm-6 col-12 mb-3 mb-sm-0 px-sm-0">
             <div class="d-flex align-items-baseline gap-3">
                 <h1 class="text-center text-sm-start color-nocturne-purple">Venda #<?= $saleInfo['numero']?></h1>
-                <h5 class="text-center text-sm-start color-gray"><?= $saleInfo['data_criacao'] ?> às <?= $saleInfo['hora_criacao'] ?></h5>
+                <h5 class="text-center text-sm-start color-gray">Criada em <?= $saleInfo['data_criacao'] ?> às <?= $saleInfo['hora_criacao'] ?></h5>
             </div>
         </div>
         <div class="col-sm-6 col-12 px-sm-0">
@@ -42,19 +42,52 @@
                     </select>
                 </div>
                 <div class="col-12 mb-3">
-                    <div class="form-check form-switch form-switch-sm">
-                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckPaid" name="paid" value="1" <?= $saleInfo['pago'] ? 'checked' : '' ?>>
-                        <label class="form-check-label" for="flexSwitchCheckPaid">
-                            Pago <small class="color-gray"><?php if ($saleInfo['pago']) echo '('.$saleInfo['data_pagamento'].')'; ?></small>
-                        </label>
+                    <label for="sale-datetime" class="form-label">Data e Hora da Venda</label>
+                    <input class="form-control form-control-sm" type="datetime-local" id="sale-datetime" name="sale_datetime" value="<?= date('Y-m-d H:i', strtotime($saleInfo['data_venda'])) ?>" >
+                </div>
+                <div class="col-12 mb-3">
+                    <div class="row">
+                        <div class="col-md-6 col-12">
+                            <div class="form-check form-switch form-switch-sm">
+                                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckPaid" name="paid" value="1" <?= $saleInfo['pago'] ? 'checked' : '' ?>>
+                                <label class="form-check-label" for="flexSwitchCheckPaid">
+                                    Pago
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-12 d-flex justify-content-end">
+                            <input class="form-control form-control-sm" type="datetime-local" id="sale-datetime" name="payment_date" value="<?= date('Y-m-d H:i', strtotime($saleInfo['data_pagamento'])) ?>" >
+                        </div>
                     </div>
                 </div>
                 <div class="col-12 mb-3">
-                    <div class="form-check form-switch form-switch-sm">
-                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDelivered" name="delivered" value="1" <?= $saleInfo['entregue'] ? 'checked' : '' ?>>
-                        <label class="form-check-label" for="flexSwitchCheckDelivered">
-                            Entregue <small class="color-gray"><?php if ($saleInfo['entregue']) echo '('.$saleInfo['data_entrega'].')'; ?></small>
-                        </label>
+                    <div class="row">
+                        <div class="col-md-6 col-12">
+                            <div class="form-check form-switch form-switch-sm">
+                                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDelivered" name="delivered" value="1" <?= $saleInfo['entregue'] ? 'checked' : '' ?>>
+                                <label class="form-check-label" for="flexSwitchCheckDelivered">
+                                    Entregue
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-12 d-flex justify-content-end">
+                            <input class="form-control form-control-sm" type="datetime-local" id="delivery-datetime" name="delivery_date" value="<?= date('Y-m-d H:i', strtotime($saleInfo['data_entrega'])) ?>" >
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 mb-3">
+                    <div class="row">
+                        <div class="col-md-6 col-12">
+                            <div class="form-check form-switch form-switch-sm">
+                                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckCanceled" name="canceled" value="1" <?= $saleInfo['cancelada'] ? 'checked' : '' ?>>
+                                <label class="form-check-label" for="flexSwitchCheckCanceled">
+                                    Cancelada
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-12 d-flex justify-content-end">
+                            <input class="form-control form-control-sm <?= empty($saleInfo['data_cancelamento']) ? 'd-none' : '' ?>" type="datetime-local" id="delivery-datetime" name="delivery_date" value="<?= date('Y-m-d H:i', strtotime($saleInfo['data_cancelamento'])) ?>" >
+                        </div>
                     </div>
                 </div>
             </div>

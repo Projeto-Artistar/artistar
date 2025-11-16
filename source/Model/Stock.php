@@ -8,19 +8,20 @@ use Source\Core\Core;
 
 class Stock extends Core {
 
-    public function buildWhereStock($search = [], $filter = []) {
+    public function buildWhereStock($search = '', $filter = []) {
         $where = [];
-        if (!empty($search)) {
-            $where[] = "(
-                produto_nome LIKE '%{$search}%' 
-            OR 
-                produto_palavras_chave LIKE '%{$search}%'
-            OR
-                produto_descricao LIKE '%{$search}%'
-            OR
-                produto_codigo_interno LIKE '%{$search}%'
-            )";
+        $search = trim($search);
+        $search = str_replace("'", "\'", $search);
+        //Separar cada palavra da busca por espaço e adicionar o operador booleano
+        $searchTerms = explode(' ', $search);
+        $search = '';
+        foreach ($searchTerms as $term) {
+            $term = trim($term);
+            if (!empty($term)) {
+                $search .= "+{$term}* ";
+            }
         }
+        if (!empty($search)) $where[] = "(MATCH (produto_nome, produto_palavras_chave, produto_descricao, produto_codigo_interno) AGAINST ('{$search}' IN BOOLEAN MODE))";
         if (!empty($filter['status'])) {
             if ($filter['status'] == 'active') {
                 $where[] = "produto_ativo = '1'";
@@ -80,32 +81,43 @@ class Stock extends Core {
         return !empty($where) ? 'AND ' . implode(' AND ', $where) : '';
     }
 
-    public function getStocks($store, $where = '') {
-        $stmt = $this->SQL->prepare("
-            SELECT 
-                COUNT(IF(produto_estoque >= produto_estoque_minimo AND produto_estoque > 0 AND produto_ativo = 1, 1, NULL)) AS goodStock,
-                COUNT(IF(produto_estoque < produto_estoque_minimo AND produto_estoque > 0 AND produto_ativo = 1, 1, NULL)) AS lowStock,
-                COUNT(IF(produto_estoque = 0 AND produto_ativo = 1, 1, NULL)) AS outOfStock,
-                COUNT(IF(produto_ativo = 0, 1, NULL)) AS deadStock,
-                COUNT(produto_id) AS totalProducts
-            FROM
-                produtos
-            WHERE
-                produto_loja = :store
-            {$where}
-        ");
-        $stmt->bindValue(":store", $store);
-        $stmt->execute();
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        if (!$result) {
+    public function getStocks($store, $where = '', $match = '') {
+        try {
+            $stmt = $this->SQL->prepare("
+                SELECT 
+                    COUNT(IF(produto_estoque >= produto_estoque_minimo AND produto_estoque > 0 AND produto_ativo = 1, 1, NULL)) AS goodStock,
+                    COUNT(IF(produto_estoque < produto_estoque_minimo AND produto_estoque > 0 AND produto_ativo = 1, 1, NULL)) AS lowStock,
+                    COUNT(IF(produto_estoque = 0 AND produto_ativo = 1, 1, NULL)) AS outOfStock,
+                    COUNT(IF(produto_ativo = 0, 1, NULL)) AS deadStock,
+                    COUNT(produto_id) AS totalProducts
+                FROM
+                    produtos
+                WHERE
+                    produto_loja = :store
+                {$where}
+            ");
+            $stmt->bindValue(":store", $store);
+            // exit($stmt->queryString);
+            $stmt->execute();
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            if (!$result) {
+                return [
+                    'goodStock' => 0,
+                    'lowStock' => 0,
+                    'outOfStock' => 0,
+                    'deadStock' => 0
+                ];
+            }
+            return $result;
+        } catch (\PDOException $e) {
             return [
                 'goodStock' => 0,
                 'lowStock' => 0,
                 'outOfStock' => 0,
-                'deadStock' => 0
+                'deadStock' => 0,
+                'totalProducts' => 0
             ];
         }
-        return $result;
     }
 
     public function getCategories($store) {
@@ -208,31 +220,35 @@ class Stock extends Core {
     }
 
     public function getProducts($store, $pagination = [], $where = '', $order = '') {
-        $stmt = $this->SQL->prepare("
-            SELECT 
-                produto_id id,
-                produto_nome nome,
-                produto_thumbnail thumbnail,
-                produto_valor valor,
-                produto_valor_desconto valor_desconto,
-                produto_estoque estoque,
-                produto_estoque_minimo estoque_minimo,
-                produto_palavras_chave palavras_chave,
-                produto_ativo ativo
-            FROM 
-                produtos 
-            WHERE 
-                produto_loja = :store
-            {$where}
-            ORDER BY
-                {$order}
-            LIMIT :offset, :limit
-        ");
-        $stmt->bindValue(":store", $store);
-        $stmt->bindValue(":offset", (int) $pagination['offset'], PDO::PARAM_INT);
-        $stmt->bindValue(":limit", (int) $pagination['limit'], PDO::PARAM_INT);
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        try {
+            $stmt = $this->SQL->prepare("
+                SELECT 
+                    produto_id id,
+                    produto_nome nome,
+                    produto_thumbnail thumbnail,
+                    produto_valor valor,
+                    produto_valor_desconto valor_desconto,
+                    produto_estoque estoque,
+                    produto_estoque_minimo estoque_minimo,
+                    produto_palavras_chave palavras_chave,
+                    produto_ativo ativo
+                FROM 
+                    produtos 
+                WHERE 
+                    produto_loja = :store
+                {$where}
+                ORDER BY
+                    {$order}
+                LIMIT :offset, :limit
+            ");
+            $stmt->bindValue(":store", $store);
+            $stmt->bindValue(":offset", (int) $pagination['offset'], PDO::PARAM_INT);
+            $stmt->bindValue(":limit", (int) $pagination['limit'], PDO::PARAM_INT);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (\PDOException $e) {
+            return [];
+        }
     }
 
     public function insertProduct($data) {

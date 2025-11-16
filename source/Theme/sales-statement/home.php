@@ -58,7 +58,7 @@
                             <span class="color-nocturne-purple">Venda</span>
                         </th>
                         <th scope="col" class="text-center">
-                            <span class="color-nocturne-purple">Data</span>
+                            <span class="color-nocturne-purple">Data (Venda)<br>Data (Criação)</span>
                         </th>
                         <th scope="col" class="text-center">
                             <span class="color-nocturne-purple">Status do<br>Pagamento</span>
@@ -77,7 +77,7 @@
                             <span class="color-nocturne-purple">Valor</span><br>
                             <span class="color-nocturne-purple">Desconto</span>
                         </th>
-                        <!-- <th scope="col">&nbsp;</th> -->
+                        <th scope="col">&nbsp;</th>
                     </tr>
                 </thead>
                 <tbody class="accordion accordion-flush">
@@ -98,8 +98,8 @@
                             <small class="text-danger"><?php if ($sale['cancelada'] == 1) echo 'Cancelada'; ?></small>
                         </th>
                         <td class="text-center align-middle" data-bs-toggle="collapse" data-bs-target="#collapse-<?= $sale['id'] ?>">
-                            <?= $sale['data_criacao'] ?><br>
-                            <small class="color-gray"><?= $sale['hora_criacao'] ?></small>
+                            <?= $sale['data_venda'] ?><br>
+                            <small class="color-gray"><?= $sale['data_criacao'] ?></small>
                         </td>
                         <td class="text-center align-middle" data-bs-toggle="collapse" data-bs-target="#collapse-<?= $sale['id'] ?>">
                             <?= $sale['pago'] ? '<span class="badge text-bg-success rounded-pill p-2">Pago</span>' : '<span class="badge bg-sunshine-yellow color-graphite-gray rounded-pill p-2">Pendente</span>' ?>
@@ -118,9 +118,9 @@
                             <span class="color-nocturne-purple">R$<?= moedaReal($sale['total_valor']) ?></span><br>
                             <small class="color-gray">R$<?= moedaReal($sale['total_desconto']) ?></small>
                         </td>
-                        <!-- <td class="text-center align-middle">
+                        <td class="text-center align-right">
                             <div class="d-flex justify-content-sm-end justify-content-between">
-                                <button type="button" class="btn btn-stellar-blue text-white mx-sm-3 text-decoration-none" data-bs-toggle="dropdown" aria-expanded="false">
+                                <!-- <button type="button" class="btn btn-stellar-blue text-white mx-sm-3 text-decoration-none" data-bs-toggle="dropdown" aria-expanded="false">
                                     <i class="fa fa-ellipsis-h"></i>
                                 </button>
                                 <ul class="dropdown-menu dropdown-menu-end">
@@ -134,12 +134,15 @@
                                             <i class="fa fa-trash me-1" aria-hidden="true"></i> Cancelar
                                         </a>
                                     </li>
-                                </ul>
+                                </ul> -->
+                                <a class="btn btn-stellar-blue text-white text-decoration-none" href="<?= url("sales-statement/sale/{$sale['id']}") ?>">
+                                    <i class="fa fa-pen-to-square"></i>
+                                </a>
                             </div>
-                        </td> -->
+                        </td>
                     </tr>
                     <tr class="tr-accordion">
-                        <td colspan="8" class="p-0 px-2">
+                        <td colspan="9" class="p-0 px-2">
                             <div            
                                 id="collapse-<?= $sale['id'] ?>" 
                                 class="accordion-collapse collapse" 

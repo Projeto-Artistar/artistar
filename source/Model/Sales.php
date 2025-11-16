@@ -45,13 +45,15 @@ class Sales extends Core {
                     venda_pagamento,
                     venda_data_criacao, 
                     venda_pago,
-                    venda_entregue
+                    venda_entregue,
+                    venda_data_venda
                 ) VALUES (
                     :loja_id, 
                     :pagamento, 
                     NOW(), 
                     :pago, 
-                    :entregue
+                    :entregue,
+                    :data_venda
                 )
             ");
             $stmt->bindValue(":loja_id", $storeId, PDO::PARAM_INT);
@@ -82,6 +84,7 @@ class Sales extends Core {
             $stmt->bindValue(":pagamento", $saleData['payment_method'], PDO::PARAM_STR);
             $stmt->bindValue(":pago", (isset($saleData['paid']) && $saleData['paid'] == '1' ? 1 : 0), PDO::PARAM_BOOL);
             $stmt->bindValue(":entregue", (isset($saleData['delivered']) && $saleData['delivered'] == '1' ? 1 : 0), PDO::PARAM_BOOL);
+            $stmt->bindValue(":data_venda", date('Y-m-d H:i:s', strtotime($saleData['sale_datetime'])), PDO::PARAM_STR);
             $stmt->execute();
             $saleId = $this->SQL->lastInsertId();
             foreach ($saleData['items'] as $item) {

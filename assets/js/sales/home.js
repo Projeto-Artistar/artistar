@@ -264,7 +264,15 @@ $(document).on('click', '#finalizar-venda', function () {
         alert('Adicione pelo menos um produto ao carrinho antes de finalizar a venda.');
         return;
     }
-
+    // #sale-datetime -> atualiza-se a data e hora da venda (pegar do dispositivo do usuário)
+    var horaAtual = new Date();
+    var ano = horaAtual.getFullYear();
+    var mes = String(horaAtual.getMonth() + 1).padStart(2, '0');
+    var dia = String(horaAtual.getDate()).padStart(2, '0');
+    var horas = String(horaAtual.getHours()).padStart(2, '0');
+    var minutos = String(horaAtual.getMinutes()).padStart(2, '0');
+    var dataHoraFormatada = `${ano}-${mes}-${dia}T${horas}:${minutos}`;
+    $('#sale-datetime').val(dataHoraFormatada); 
     $('#insertModal').modal('show');
 });
 

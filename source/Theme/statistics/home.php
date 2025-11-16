@@ -112,7 +112,7 @@
             <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade show active" id="graficos" role="tabpanel" aria-labelledby="graficos-tab">
                     <div class="row my-3">
-                        <div class="col-xl-4 col-12">
+                        <div class="col-12">
                             <div class="border rounded p-3">
                                 <div class="d-flex justify-content-between mb-2">
                                     <span class="color-nocturne-purple w-75" id="graph-label-1"></span>
@@ -148,7 +148,7 @@
                                 <canvas id="grafico-02" class="w-100 chartjs-render-monitor"></canvas>
                             </div>
                         </div>
-                        <div class="col-xl-8 col-12">
+                        <div class="col-12">
                            <div class="border rounded h-100 p-3">
                                 <div class="d-flex justify-content-between mb-2">
                                     <span class="color-nocturne-purple w-75" id="graph-label-3"></span>
@@ -169,7 +169,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-xl-8 col-12">
+                        <div class="col-12">
                             <div class="border rounded h-100 p-3">
                                 <div class="d-flex justify-content-between mb-2">
                                     <span class="color-nocturne-purple w-75" id="graph-label-4"></span>
@@ -188,7 +188,7 @@
                                 <canvas id="grafico-04" class="w-100 chartjs-render-monitor"></canvas>
                             </div>
                         </div>
-                        <div class="col-xl-4 col-12">
+                        <div class="col-12">
                             <div class="border rounded p-3">
                                 <div class="d-flex justify-content-between mb-2">
                                     <span class="color-nocturne-purple w-75" id="graph-label-5"></span>
@@ -282,7 +282,7 @@
                     <button type="button" class="btn-close input-stellar-blue" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="form-edit-graph" method="post" action="<?= url("statistics") ?>">
+                    <form id="form-edit-graph" method="post" action="<?= $_SERVER['REQUEST_URI'] ?>">
 
                         <div class="mb-3">
                             <label for="graph-type" class="form-label">Gráfico de:</label>

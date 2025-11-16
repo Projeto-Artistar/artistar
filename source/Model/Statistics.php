@@ -16,43 +16,43 @@ class Statistics extends Core {
                 'id' => 'day',
                 'name' => '24h',
                 'following' => 'week',
-                'where' => 'v.venda_data_criacao BETWEEN :dataInicio AND :dataFim',
-                'group_by' => 'DATE_FORMAT(v.venda_data_criacao, "%H")'
+                'where' => 'v.venda_data_venda BETWEEN :dataInicio AND :dataFim',
+                'group_by' => 'DATE_FORMAT(v.venda_data_venda, "%H")'
             ],
             'week' => [
                 'id' => 'week',
                 'name' => '7 Dias',
                 'following' => 'fortnight',
-                'where' => 'v.venda_data_criacao BETWEEN :dataInicio AND :dataFim',
-                'group_by' => 'DATE_FORMAT(v.venda_data_criacao, "%d")'
+                'where' => 'v.venda_data_venda BETWEEN :dataInicio AND :dataFim',
+                'group_by' => 'DATE_FORMAT(v.venda_data_venda, "%d")'
             ],
             'fortnight' => [
                 'id' => 'fortnight',
                 'name' => '15 Dias',
                 'following' => 'month',
-                'where' => 'v.venda_data_criacao BETWEEN :dataInicio AND :dataFim',
-                'group_by' => 'DATE_FORMAT(v.venda_data_criacao, "%d")'
+                'where' => 'v.venda_data_venda BETWEEN :dataInicio AND :dataFim',
+                'group_by' => 'DATE_FORMAT(v.venda_data_venda, "%d")'
             ],
             'month' => [
                 'id' => 'month',
                 'name' => '1 Mês',
                 'following' => 'semester',
-                'where' => 'v.venda_data_criacao BETWEEN :dataInicio AND :dataFim',
-                'group_by' => 'DATE_FORMAT(v.venda_data_criacao, "%d")'
+                'where' => 'v.venda_data_venda BETWEEN :dataInicio AND :dataFim',
+                'group_by' => 'DATE_FORMAT(v.venda_data_venda, "%d")'
             ],
             'semester' => [
                 'id' => 'semester',
                 'name' => '6 Meses',
                 'following' => 'year',
-                'where' => 'v.venda_data_criacao BETWEEN :dataInicio AND :dataFim',
-                'group_by' => 'DATE_FORMAT(v.venda_data_criacao, "%m")'
+                'where' => 'v.venda_data_venda BETWEEN :dataInicio AND :dataFim',
+                'group_by' => 'DATE_FORMAT(v.venda_data_venda, "%m")'
             ],
             'year' => [
                 'id' => 'year',
                 'name' => 'Ano',
                 'following' => null,
-                'where' => 'v.venda_data_criacao BETWEEN :dataInicio AND :dataFim',
-                'group_by' => 'DATE_FORMAT(v.venda_data_criacao, "%m")'
+                'where' => 'v.venda_data_venda BETWEEN :dataInicio AND :dataFim',
+                'group_by' => 'DATE_FORMAT(v.venda_data_venda, "%m")'
             ]
         ];
     }

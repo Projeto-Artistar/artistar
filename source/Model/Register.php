@@ -53,9 +53,9 @@ class Register extends Core {
           
         $storeStatement = $this->SQL->prepare('
             INSERT INTO usuarios
-                (usuario_nome, usuario_nome_completo, usuario_senha, usuario_email)
+                (usuario_cadastro, usuario_nome, usuario_nome_completo, usuario_senha, usuario_email)
             VALUES 
-                (:user, :complete_user, :password, :email)
+                (NOW(), :user, :complete_user, :password, :email)
         ');
 
         $storeStatement->bindParam(':user', $user, PDO::PARAM_STR);
@@ -84,9 +84,9 @@ class Register extends Core {
           
         $storeStatement = $this->SQL->prepare('
             INSERT INTO lojas 
-                (loja_nome_unico, loja_nome, loja_proprietario)
+                (loja_dt_criacao, loja_nome_unico, loja_nome, loja_proprietario)
             VALUES 
-                (:user, :complete_user, :id_user)
+                (NOW(), :user, :complete_user, :id_user)
         ');
 
         $storeStatement->bindParam(':user', $user, PDO::PARAM_STR);
