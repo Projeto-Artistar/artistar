@@ -354,3 +354,24 @@ body {
     top: 70px;
     right: 0;
 }
+
+.cor-tooltip .tooltip-inner {
+    background-color: var(--gray);
+    color: white; /* Text color */
+}
+
+.cor-tooltip.bs-tooltip-auto[data-popper-placement^=right] .tooltip-arrow::before {
+    border-right-color: var(--gray); /* Arrow color */
+}
+
+.cor-tooltip.bs-tooltip-auto[data-popper-placement^=top] .tooltip-arrow::before {
+    border-top-color: var(--gray); /* Arrow color */
+}
+
+.cor-tooltip.bs-tooltip-auto[data-popper-placement^=left] .tooltip-arrow::before {
+    border-left-color: var(--gray); /* Arrow color */
+}
+
+.cor-tooltip.bs-tooltip-auto[data-popper-placement^=bottom] .tooltip-arrow::before {
+    border-bottom-color: var(--gray); /* Arrow color */
+}

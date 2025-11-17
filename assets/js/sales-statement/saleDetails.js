@@ -71,7 +71,7 @@ function adicionarProduto(prod) {
                                 <i class="fa fa-minus"></i>
                             </button>
                             <input id="stock-${prod.id}" type="hidden" value="${prod.estoque}">
-                            <input id="qtd-items-${prod.id}" name="items[${prod.id}][qtd]" type="text" class="form-control mx-2" value="${prod.quantidade}" min="1" readonly>
+                            <input id="qtd-items-${prod.id}" name="items[${prod.id}][qtd]" type="text" class="form-control input-stellar-blue mx-2" value="${prod.quantidade}" min="1" readonly>
                             <button type="button" class="btn btn-sm btn-success qtd" data-id="${prod.id}" data-action="increment">
                                 <i class="fa fa-plus"></i>
                             </button>
@@ -80,14 +80,14 @@ function adicionarProduto(prod) {
                     <div class="col-md-4 col-12 my-md-0 my-3 align-items-center px-3">
                         <label for="discount-${prod.id}" class="">Desconto (R$)</label>
                         <div class="text-end">
-                            <input id="discount-${prod.id}" name="items[${prod.id}][discount]" type="text" class="form-control moedaReal" value="${prod.desconto}">
+                            <input id="discount-${prod.id}" name="items[${prod.id}][discount]" type="text" class="form-control input-stellar-blue moedaReal" value="${prod.desconto}">
                         </div>
                     </div>
                     <div class="col-md-4 col-12 align-items-center px-3">
                         <label for="total-price-${prod.id}" class="">Valor (R$)</label>
                         <div class="text-end">
                             <input id="base-price-${prod.id}" type="hidden" value="${prod.preco}">
-                            <input id="total-price-${prod.id}" name="items[${prod.id}][total_price]" type="text" class="form-control moedaReal" value="${prod.total}">
+                            <input id="total-price-${prod.id}" name="items[${prod.id}][total_price]" type="text" class="form-control input-stellar-blue moedaReal" value="${prod.total}">
                         </div>
                     </div>
                 </div>
@@ -154,7 +154,6 @@ function adicionarProduto(prod) {
         $(`#total-price-${id}`).val(total);
     }
 
-    // Keep adding continuously on mousedown
     card.find('.qtd').on('mousedown', function () {
         const id = $(this).data('id');
         const input = $(`#qtd-items-${id}`);
@@ -217,6 +216,22 @@ function adicionarProduto(prod) {
     atualizarValorTotal();
 }
 
+function adicionarProdutosEmLote(existingProducts) {
+    existingProducts.forEach(prod => {
+        adicionarProduto({
+            "id": prod.id,
+            "nome": prod.nome,
+            "subtitulo": prod.subtitulo,
+            "preco": prod.total,
+            "desconto": prod.desconto_venda,
+            "quantidade": prod.qtd_vendida,
+            "estoque": prod.estoque,
+            "imagem": prod.imagem,
+            "total": prod.valor_venda,
+        });
+    });
+}
+
 function atualizarSugestoes() {
     const termo = $('#search').val().toLowerCase();
     $('#suggestions').empty();
@@ -268,12 +283,15 @@ $(document).on('click', '#finalizar-venda', function () {
     $('#insertModal').modal('show');
 });
 
-$(document).on('click', '#accept-insert', function () {
+$(document).on('click', '#save-sale, #save-sale-2', function () {
+    
+    // Update toast content for success
+
 
     const formData = new FormData($('#new-sale-form')[0]);
 
     $.ajax({
-        url: '/sales/insert',
+        url: '/sales-statement/sale/edit',
         type: 'POST',
         data: formData,
         processData: false,
@@ -281,45 +299,44 @@ $(document).on('click', '#accept-insert', function () {
     }).done(function (response) {
         response = JSON.parse(response);
         if (response.code == 200) {
-            $('#insertModal').modal('hide');
-            $('#saleInsertedModal').modal('show');
+           atualizarToast('myToast', 'Venda Atualizada', 'A venda foi atualizada com sucesso.', true);
         } else {
-            console.error('Erro ao criar produto:', response.message);
+            atualizarToast('myToast', 'Erro ao atualizar venda', 'Ocorreu um erro ao tentar atualizar a venda. Por favor, tente novamente.', true);
         }
     }).fail(function (error) {
-        atualizarToast('myToast', 'Erro ao registrar venda', 'Ocorreu um erro ao tentar registrar a venda. Por favor, tente novamente.', false);
+        atualizarToast('myToast', 'Erro ao atualizar venda', 'Ocorreu um erro ao tentar atualizar a venda. Por favor, tente novamente.', false);
         // Update toast content for error
-
     });
 });
-
-function adicionarProdutosEmLote(existingProducts) {
-    existingProducts.forEach(prod => {
-        let productInfo = {
-            "id": prod.id_produto,
-            "nome": prod.nome,
-            "subtitulo": prod.codigo_interno,
-            "preco": prod.preco,
-            "desconto": prod.desconto,
-            "quantidade": prod.qtd,
-            "estoque": prod.estoque,
-            "imagem": prod.thumbnail,
-            "total": prod.valor,
-            "item": prod.id,
-        };
-        adicionarProduto(productInfo);
-        //update the item in produtos with the same id
-        const index = produtos.findIndex(p => p.id === prod.id_produto);
-        if (index !== -1) {
-            produtos[index].estoque = prod.estoque;
-            produtos[index].item = prod.id;
-        }
-    });
-}
 
 $(document).ready(function () {
     $('#search').on('input', atualizarSugestoes);
 });
 
+$('#flexSwitchCheckPaid').on('change', function () {
+    if ($(this).is(':checked')) {
+        $('#payment_date').show();
+    } else {
+        $('#payment_date').hide();
+    }
+});
 
-        
+$('#flexSwitchCheckDelivered').on('change', function () {
+    if ($(this).is(':checked')) {
+        $('#delivery_date').show();
+    } else {
+        $('#delivery_date').hide();
+    }
+});
+
+$('#flexSwitchCheckCanceled').on('change', function () {
+    if ($(this).is(':checked')) {
+        $('#cancellation_date').show();
+    } else {
+        $('#cancellation_date').hide();
+    }
+});
+
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})

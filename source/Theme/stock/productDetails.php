@@ -77,6 +77,7 @@
                     <div class="mb-3 form-check form-switch form-switch-sm">
                         <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" name="active" value="1" <?= $product['ativo'] ? 'checked' : '' ?>>
                         <label class="form-check-label" for="flexSwitchCheckDefault">Produto Ativo</label>
+                        <i class="fa-solid fa-circle-info color-gray ms-2" data-toggle="tooltip" data-placement="top" data-bs-custom-class="cor-tooltip" title="Produtos inativos não aparecerão na hora da venda"></i>
                     </div>
                 </div>
             </div>

@@ -3,6 +3,7 @@
 namespace Source\Controllers;
 use Source\Core\Core;
 use Source\Model\Sales;
+use Source\Model\Helpers\PaymentMethods;
 
 class salesController extends Core {
 
@@ -26,6 +27,7 @@ class salesController extends Core {
             $product['desconto'] = moedaReal($product['desconto']);
             $product['imagem'] = empty($product['imagem']) ? url('assets/image/200x300.png') : storageURL($product['imagem']);
         }
+        $paymentMethods = new PaymentMethods();
         echo $this->view->render("sales/home", [
             'layout' => [
                 'title' =>  'Nova Venda - Artistar', 
@@ -34,6 +36,7 @@ class salesController extends Core {
                 'footer' => true
             ],
             'products' => $products,
+            'paymentMethods' => $paymentMethods->getMethods(),
         ]);
         return;
     }

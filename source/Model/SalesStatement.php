@@ -173,32 +173,6 @@ class SalesStatement extends Core {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function getProducts($storeId) {
-        $stmt = $this->SQL->prepare("
-            SELECT 
-                produto_id id,
-                produto_nome nome,
-                produto_palavras_chave palavra_chave,
-                produto_descricao descricao,
-                produto_codigo_interno subtitulo,
-                produto_valor preco,
-                produto_valor_desconto desconto,
-                produto_estoque estoque,
-                produto_thumbnail imagem
-            FROM 
-                produtos
-            WHERE 
-                produto_loja = :loja_id
-            AND
-                produto_ativo = 1
-            ORDER BY 
-                nome ASC
-        ");
-        $stmt->bindValue(":loja_id", $storeId, PDO::PARAM_INT);
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
-
     public function getSaleById($saleId, $storeId) {
         $stmt = $this->SQL->prepare("
             SELECT 
@@ -229,27 +203,39 @@ class SalesStatement extends Core {
         return $sale ? $sale : null;
     }
 
-    public function getSaleItems($saleId) {
+    public function getProductsWithSales($saleId) {
         $stmt = $this->SQL->prepare("
-            SELECT
-                vi.venda_item_id id,
-                vi.venda_item_venda id_venda,
-                p.produto_id id_produto,
+            SELECT 
+                p.produto_id id,
                 p.produto_nome nome,
-                p.produto_codigo_interno codigo_interno,
-                p.produto_thumbnail thumbnail,
-                vi.venda_item_unidades qtd,
-                p.produto_valor preco,
-                (p.produto_estoque + vi.venda_item_unidades) estoque,
-                vi.venda_item_desconto desconto,
-                vi.venda_item_valor valor
-            FROM
-                vendas_itens AS vi
+                p.produto_palavras_chave palavra_chave,
+                p.produto_descricao descricao,
+                p.produto_codigo_interno subtitulo,
+                p.produto_valor preco_produto,
+                p.produto_valor_desconto desconto_produto,
+                p.produto_estoque estoque_produto,
+                p.produto_thumbnail imagem,
+                vi.venda_item_id id_venda_item,
+                vi.venda_item_unidades qtd_vendida,
+                vi.venda_item_desconto desconto_venda,
+                vi.venda_item_valor valor_venda
+            FROM 
+                produtos AS p
+            INNER JOIN
+                vendas AS v ON v.venda_id = :sale_id
             LEFT JOIN
-                produtos AS p ON p.produto_id = vi.venda_item_produto
+                vendas_itens AS vi ON vi.venda_item_produto = p.produto_id AND vi.venda_item_venda = v.venda_id
             WHERE
-                vi.venda_item_venda = :sale_id
-            ORDER BY
+                v.venda_loja_id = p.produto_loja
+            AND
+                (
+                        p.produto_ativo = 1
+                    OR
+                        vi.venda_item_id IS NOT NULL
+                )
+            GROUP BY
+                p.produto_id
+            ORDER BY 
                 p.produto_nome ASC
         ");
 
@@ -276,6 +262,138 @@ class SalesStatement extends Core {
         $stmt->bindValue(":store_id", $store, PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function getSalesProducts($saleId) {
+        $stmt = $this->SQL->prepare("
+            SELECT 
+                vi.venda_item_id id,
+                vi.venda_item_produto id_produto,
+                vi.venda_item_venda id_venda,
+                vi.venda_item_unidades qtd,
+                vi.venda_item_desconto desconto,
+                vi.venda_item_valor valor
+            FROM
+                vendas_itens AS vi
+            WHERE
+                vi.venda_item_venda = :sale_id
+            GROUP BY
+                vi.venda_item_id
+        ");
+        $stmt->bindValue(":sale_id", $saleId, PDO::PARAM_INT);
+        $stmt->execute();
+        //Trazer todos os itens, com o id_produto como chave do array
+        $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $itemsByProductId = [];
+        foreach ($items as $item) $itemsByProductId[$item['id_produto']] = $item;
+        return $itemsByProductId;
+    }
+
+    public function updateSaleInfo($saleId, $data) {
+        $stmt = $this->SQL->prepare("
+            UPDATE 
+                vendas
+            SET
+                venda_pagamento = :payment_method,
+                venda_data_venda = :sale_datetime,
+                venda_pago = :paid,
+                venda_data_pagamento = :payment_date,
+                venda_entregue = :delivered,
+                venda_data_entrega = :delivery_date,
+                venda_cancelada = :canceled,
+                venda_data_cancelamento = :cancellation_date
+            WHERE
+                venda_id = :sale_id
+        ");
+        $stmt->bindValue(":payment_method", $data['payment_method'], PDO::PARAM_STR);
+        if (empty($data['sale_datetime'])) {
+            $stmt->bindValue(":sale_datetime", null, PDO::PARAM_NULL);
+        } else {
+            $stmt->bindValue(":sale_datetime", $data['sale_datetime'], PDO::PARAM_STR);
+        }
+        $stmt->bindValue(":paid", $data['paid'], PDO::PARAM_INT);
+        if (empty($data['payment_date'])) {
+            $stmt->bindValue(":payment_date", null, PDO::PARAM_NULL);
+        } else {
+            $stmt->bindValue(":payment_date", $data['payment_date'], PDO::PARAM_STR);
+        }
+        $stmt->bindValue(":delivered", $data['delivered'], PDO::PARAM_INT);
+        if (empty($data['delivery_date'])) {
+            $stmt->bindValue(":delivery_date", null, PDO::PARAM_NULL);
+        } else {
+            $stmt->bindValue(":delivery_date", $data['delivery_date'], PDO::PARAM_STR);
+        }
+        $stmt->bindValue(":canceled", $data['canceled'], PDO::PARAM_INT);
+        if (empty($data['cancellation_date'])) {
+            $stmt->bindValue(":cancellation_date", null, PDO::PARAM_NULL);
+        } else {
+            $stmt->bindValue(":cancellation_date", $data['cancellation_date'], PDO::PARAM_STR);
+        }
+        $stmt->bindValue(":sale_id", $saleId, PDO::PARAM_INT);
+        $stmt->execute();
+    }
+
+    public function updateItem($id, $data) {
+        $stmt = $this->SQL->prepare("
+            UPDATE 
+                vendas_itens
+            SET
+                venda_item_unidades = :qtd,
+                venda_item_desconto = :desconto,
+                venda_item_valor = :valor,
+                venda_item_data_ultima_atualizacao = NOW()
+            WHERE
+                venda_item_id = :id
+        ");
+        $stmt->bindValue(":qtd", $data['qtd'], PDO::PARAM_INT);
+        $data['total_price'] = str_replace(',', '.', str_replace('.', '', $data['total_price']));
+        $data['discount'] = str_replace(',', '.', str_replace('.', '', $data['discount']));
+        $stmt->bindValue(":desconto", $data['discount'], PDO::PARAM_STR);
+        $stmt->bindValue(":valor", $data['total_price'], PDO::PARAM_STR);
+        $stmt->bindValue(":id", $id, PDO::PARAM_INT);
+        $stmt->execute();
+    }
+
+    public function insertItem($saleId, $data) {
+        $stmt = $this->SQL->prepare("
+            INSERT INTO 
+                vendas_itens (
+                    venda_item_produto,
+                    venda_item_venda,
+                    venda_item_unidades,
+                    venda_item_desconto,
+                    venda_item_valor,
+                    venda_item_data_criacao,
+                    venda_item_data_ultima_atualizacao
+                ) VALUES (
+                    :produto_id,
+                    :venda_id,
+                    :qtd,
+                    :desconto,
+                    :valor,
+                    NOW(),
+                    NOW()
+                )
+        ");
+        $stmt->bindValue(":produto_id", $data['id'], PDO::PARAM_INT);
+        $stmt->bindValue(":venda_id", $saleId, PDO::PARAM_INT);
+        $stmt->bindValue(":qtd", $data['qtd'], PDO::PARAM_INT);
+        $data['total_price'] = str_replace(',', '.', str_replace('.', '', $data['total_price']));
+        $data['discount'] = str_replace(',', '.', str_replace('.', '', $data['discount']));
+        $stmt->bindValue(":desconto", $data['discount'], PDO::PARAM_STR);
+        $stmt->bindValue(":valor", $data['total_price'], PDO::PARAM_STR);
+        $stmt->execute();
+    }
+
+    public function deleteItem($id) {
+        $stmt = $this->SQL->prepare("
+            DELETE FROM 
+                vendas_itens
+            WHERE
+                venda_item_id = :id
+        ");
+        $stmt->bindValue(":id", $id, PDO::PARAM_INT);
+        $stmt->execute();
     }
 
 }

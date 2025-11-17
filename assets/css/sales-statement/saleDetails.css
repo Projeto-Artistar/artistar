@@ -97,3 +97,10 @@
 .selected-products:has(.card-product) .no-products {
     display: none;
 }
+
+.toast-sucesso {
+    position: fixed;
+    z-index: 1030;
+    top: 70px;
+    right: 0;
+}

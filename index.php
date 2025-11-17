@@ -53,8 +53,6 @@ $router->get("/product/{productId}", "stockController:productDetails", "stockCon
 $router->group('sales-statement');
 $router->get("/", "salesStatementController:home", "salesStatementController.home");
 $router->post("/sale/edit", "salesStatementController:editSale", "salesStatementController.editSale");
-$router->post("/sale/cancel", "salesStatementController:cancelSale", "salesStatementController.cancelSale");
-$router->post("/sale/reactive", "salesStatementController:reactiveSale", "salesStatementController.reactiveSale");
 $router->get("/sale/{saleId}", "salesStatementController:saleDetails", "salesStatementController.saleDetails");
 
 $router->group('statistics');

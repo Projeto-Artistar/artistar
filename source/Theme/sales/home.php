@@ -60,13 +60,9 @@
                         <div class="col-12">
                             <label for="payment-select" class="form-label">Método de Pagamento</label>
                             <select class="form-select form-select-sm" id="payment-select" name="payment_method" aria-label="Método de pagamento">
-                                <option value="dinheiro" selected>Dinheiro</option>
-                                <option value="pix">Pix</option>
-                                <option value="cartao-debito">Cartão de Débito</option>
-                                <option value="cartao-credito">Cartão de Crédito</option>
-                                <option value="boleto">Boleto</option>
-                                <option value="transferencia">Transferência</option>
-                                <option value="outro">Outro</option>
+                                <?php foreach ($paymentMethods as $alias => $name): ?>
+                                    <option value="<?= $alias ?>"><?= $name ?></option>
+                                <?php endforeach; ?>
                             </select>
                         </div>
                     </div>

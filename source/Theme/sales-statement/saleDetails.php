@@ -16,7 +16,7 @@
         </div>
         <div class="col-sm-6 col-12 px-sm-0">
             <div class="d-flex justify-content-sm-end justify-content-between">
-                <a class="btn btn-gray mx-sm-3" id="discard-changes-btn" href="<?=url('stock/product/'.$product['id'])?>">Cancelar Venda</a>
+                <a class="btn btn-gray mx-sm-3" href="<?=url('sales-statement')?>">Voltar</a>
                 <button type="submit" class="btn btn-stellar-blue" id="save-sale" form="sale-form">Salvar Alterações</button>
             </div>
         </div>
@@ -25,25 +25,21 @@
         <div class="col-lg-4 border rounded col-12 mb-3">
             <div class="row p-3">
                 <div class="col-12 mb-3">
-                    <input type="text" id="search" class="form-control" placeholder="Digite o nome do produto...">
+                    <input type="text" id="search" class="form-control input-stellar-blue" placeholder="Digite o nome do produto...">
                     <div id="suggestions" class="list-group rounded mt-1 shadow-sm" style="max-height: 200px; overflow-y: auto;">
                     </div>
                 </div>
                 <div class="col-12 mb-3">
                     <label for="payment-select" class="form-label">Método de Pagamento</label>
-                    <select class="form-select form-select-sm" id="payment-select" name="payment_method" aria-label="Método de pagamento">
-                        <option value="dinheiro" selected>Dinheiro</option>
-                        <option value="pix">Pix</option>
-                        <option value="cartao-debito">Cartão de Débito</option>
-                        <option value="cartao-credito">Cartão de Crédito</option>
-                        <option value="boleto">Boleto</option>
-                        <option value="transferencia">Transferência</option>
-                        <option value="outro">Outro</option>
+                    <select class="form-select form-select-sm input-stellar-blue" id="payment-select" name="payment_method" aria-label="Método de pagamento">
+                        <?php foreach ($paymentMethods as $alias => $name): ?>
+                            <option value="<?= $alias ?>" <?= $saleInfo['pagamento'] === $name ? 'selected' : '' ?>><?= $name ?></option>
+                        <?php endforeach; ?>
                     </select>
                 </div>
                 <div class="col-12 mb-3">
                     <label for="sale-datetime" class="form-label">Data e Hora da Venda</label>
-                    <input class="form-control form-control-sm" type="datetime-local" id="sale-datetime" name="sale_datetime" value="<?= date('Y-m-d H:i', strtotime($saleInfo['data_venda'])) ?>" >
+                    <input class="form-control form-control-sm input-stellar-blue" type="datetime-local" id="sale-datetime" name="sale_datetime" value="<?= date('Y-m-d H:i', strtotime($saleInfo['data_venda'])) ?>" >
                 </div>
                 <div class="col-12 mb-3">
                     <div class="row">
@@ -56,7 +52,7 @@
                             </div>
                         </div>
                         <div class="col-md-6 col-12 d-flex justify-content-end">
-                            <input class="form-control form-control-sm" type="datetime-local" id="sale-datetime" name="payment_date" value="<?= date('Y-m-d H:i', strtotime($saleInfo['data_pagamento'])) ?>" >
+                            <input class="form-control form-control-sm input-stellar-blue" style="<?= empty($saleInfo['data_pagamento']) ? 'display:none;' : '' ?>" type="datetime-local" id="payment_date" name="payment_date" value="<?= empty($saleInfo['data_pagamento']) ? date('Y-m-d H:i') : date('Y-m-d H:i', strtotime($saleInfo['data_pagamento'])) ?>" >
                         </div>
                     </div>
                 </div>
@@ -71,7 +67,7 @@
                             </div>
                         </div>
                         <div class="col-md-6 col-12 d-flex justify-content-end">
-                            <input class="form-control form-control-sm" type="datetime-local" id="delivery-datetime" name="delivery_date" value="<?= date('Y-m-d H:i', strtotime($saleInfo['data_entrega'])) ?>" >
+                            <input class="form-control form-control-sm input-stellar-blue" style="<?= empty($saleInfo['data_entrega']) ? 'display:none;' : '' ?>" type="datetime-local" id="delivery_date" name="delivery_date" value="<?= empty($saleInfo['data_entrega']) ? date('Y-m-d H:i') : date('Y-m-d H:i', strtotime($saleInfo['data_entrega'])) ?>" >
                         </div>
                     </div>
                 </div>
@@ -83,10 +79,11 @@
                                 <label class="form-check-label" for="flexSwitchCheckCanceled">
                                     Cancelada
                                 </label>
+                                                        <i class="fa-solid fa-circle-info color-gray ms-2" data-toggle="tooltip" data-placement="top" data-bs-custom-class="cor-tooltip" title="Vendas canceladas não aparecem em relatórios e produtos vendidos terão estoque reposto!"></i>
                             </div>
                         </div>
                         <div class="col-md-6 col-12 d-flex justify-content-end">
-                            <input class="form-control form-control-sm <?= empty($saleInfo['data_cancelamento']) ? 'd-none' : '' ?>" type="datetime-local" id="delivery-datetime" name="delivery_date" value="<?= date('Y-m-d H:i', strtotime($saleInfo['data_cancelamento'])) ?>" >
+                            <input class="form-control form-control-sm input-stellar-blue" style="<?= empty($saleInfo['data_cancelamento']) ? 'display:none;' : '' ?>" type="datetime-local" id="cancellation_date" name="cancellation_date" value="<?= empty($saleInfo['data_cancelamento']) ? date('Y-m-d H:i') : date('Y-m-d H:i', strtotime($saleInfo['data_cancelamento'])) ?>" >
                         </div>
                     </div>
                 </div>
@@ -109,89 +106,23 @@
             </div>
             <div class="row">
                 <div class="col-12 text-end pe-0">
-                    <a class="btn btn-cotton-candy mx-sm-3" id="discard-changes-btn" href="<?=url('stock/product/'.$product['id'])?>">Descartar Alterações</a>
-                    <button type="submit" class="btn btn-stellar-blue" id="save-sale-2" form="sale-form">Salvar Alterações</button>
-                </div>
+                    <div class="d-flex justify-content-sm-end justify-content-between">
+                        <a class="btn btn-gray mx-sm-3" id="discard-changes-btn" href="<?=url('sales-statement/sale/'.$saleInfo['id'])?>">Descartar Alterações</a>
+                        <button type="submit" class="btn btn-stellar-blue" id="save-sale-2" form="sale-form">Salvar Alterações</button>
+                    </div>
+                </div>                
             </div>
         </div>
     </div>
-    <div class="modal fade" id="insertModal" tabindex="-1" aria-labelledby="insertModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="insertModalLabel">Finalizar Venda</h5>
-                    <button type="button" class="btn-close input-stellar-blue" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    Você está prestes a finalizar a venda. Por favor, confirme os detalhes abaixo:
-                    <div class="my-3">
-                        Total da Venda: <span class="color-nocturne-purple">R$<span id="total-price-modal">0,00</span></span>
-                    </div>
-                    <div class="row mb-3">
-                        <div class="col-12">
-                            <label for="payment-select" class="form-label">Método de Pagamento</label>
-                            <select class="form-select form-select-sm" id="payment-select" name="payment_method" aria-label="Método de pagamento">
-                                <option value="dinheiro" selected>Dinheiro</option>
-                                <option value="pix">Pix</option>
-                                <option value="cartao-debito">Cartão de Débito</option>
-                                <option value="cartao-credito">Cartão de Crédito</option>
-                                <option value="boleto">Boleto</option>
-                                <option value="transferencia">Transferência</option>
-                                <option value="outro">Outro</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <div class="col-sm-6 col-12">
-                            <div class="mb-3 form-check form-switch form-switch-sm">
-                                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" name="paid" checked value="1">
-                                <label class="form-check-label" for="flexSwitchCheckDefault">Pedido pago</label>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-12">
-                            <div class="mb-3 form-check form-switch form-switch-sm">
-                                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" name="delivered" checked value="1">
-                                <label class="form-check-label" for="flexSwitchCheckDefault">Pedido entregue</label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-fog-gray" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-nocturne-purple" id="accept-insert">Finalizar!</button>
-                </div>
-            </div>
-        </div>
-    </div>
+    <input type="hidden" name="sale_id" value="<?= $saleInfo['id'] ?>">
 </form>
-<section id="modal-section">
-    <!-- Modal for "Sale Inserted!" -->
-    <div class="modal fade" id="saleInsertedModal" tabindex="-1" aria-labelledby="saleInsertedModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="saleInsertedModalLabel">Venda Registrada!</h5>
-                </div>
-                <div class="modal-body">
-                    A venda foi registrada com sucesso! Você pode visualizar os detalhes da venda na seção de vendas.
-                </div>
-                <div class="modal-footer">
-                    <a href="<?= url("sales-statement") ?>" class="btn btn-nocturne-purple">Ver Extrato</a>
-                    <a href="<?= url("sales") ?>" class="btn btn-stellar-blue">Nova Venda</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
 <section id="toasts-section">
-    <div class="toast align-items-center text-light bg-success border-0 toast-sucesso m-3" id="myToast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="3000">
+    <div class="toast align-items-center text-light bg-success border-0 toast-sucesso m-3 fade hide" id="myToast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="3000">
         <div class="toast-header">
-            <strong class="me-auto" id="toastTitle">Título</strong>
+            <strong class="me-auto" id="toastTitle">Alteração Salva!</strong>
             <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
         </div>
-        <div class="toast-body" id="toastBody">
-            Mensagem do toast.
-        </div>
+        <div class="toast-body" id="toastBody">Produto atualizado com sucesso.</div>
     </div>
 </section>
 <?= $this->stop() ?>
@@ -205,6 +136,10 @@
 </script>
 <script src="<?= url("assets/js/sales-statement/saleDetails.js") ?>"></script>
 <script>
-    adicionarProdutosEmLote(<?php array_walk_recursive($saleItems,function(&$item){$item=strval($item);}); echo json_encode($saleItems); ?>)
+    adicionarProdutosEmLote(<?php 
+        $saleItems = array_values(array_filter($products, function($item) {return !empty($item['id_venda_item']);}));
+        array_walk_recursive($saleItems,function(&$item){$item=strval($item);}); 
+        echo json_encode($saleItems); 
+    ?>)
 </script>
 <?= $this->stop() ?>

@@ -281,3 +281,7 @@ $(document).on('click', '#accept-delete', function() {
         myToast.show();
     });
 });
+
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
