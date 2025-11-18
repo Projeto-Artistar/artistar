@@ -94,7 +94,7 @@ class salesStatementController extends Core {
             $item['estoque'] = (int)$item['estoque_produto']+ ($saleInfo['cancelada'] == '1' ? 0 : (int)$item['qtd_vendida']);
             $item['desconto_venda'] = moedaReal($item['desconto_venda']);
             $item['valor_venda'] = moedaReal($item['valor_venda']);
-            $item['imagem'] = empty($item['thumbnail']) ? url('assets/image/200x300.png') : storageURL($item['thumbnail']);
+            $item['imagem'] = empty($item['imagem']) ? url('assets/image/200x300.png') : storageURL($item['imagem']);
         }
 
         $paymentMethods = new PaymentMethods();
