@@ -123,7 +123,7 @@ $('#productsByRevenue').on('click', function() {
 
     rows.forEach((row, index) => {
         let id = row.getAttribute('data-product');
-        $('#position-' + id).text('#' + (index + 1));
+        $('#position-' + id).html('<span class="color-stellar-blue">#' + (index + 1) + '</span>');
         document.querySelector('#productsTable tbody').appendChild(row);
     });
 });
@@ -138,7 +138,7 @@ $('#productsByQuantity').on('click', function() {
     });
     rows.forEach((row, index) => {
         let id = row.getAttribute('data-product');
-        $('#position-' + id).text('#' + (index + 1));
+        $('#position-' + id).html('<span class="color-stellar-blue">#' + (index + 1) + '</span>');
         document.querySelector('#productsTable tbody').appendChild(row);
     });
 });
@@ -221,6 +221,7 @@ for (const [key, graph] of Object.entries(customGraphs)) {
                 },
                 options: {
                     responsive: true,
+                    maintainAspectRatio: false,
                     legend: {
                         position: 'bottom',
                         display: true
@@ -279,6 +280,7 @@ for (const [key, graph] of Object.entries(customGraphs)) {
                 },
                 options: {
                     responsive: true,
+                    maintainAspectRatio: false,
                     title: {
                         display: false
                     },
@@ -333,6 +335,7 @@ for (const [key, graph] of Object.entries(customGraphs)) {
                 },
                 options: {
                     responsive: true,
+                    maintainAspectRatio: false,
                     title: {
                         display: false
                     },

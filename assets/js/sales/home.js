@@ -19,19 +19,96 @@ $(document).ready(function () {
 
     function atualizarValorTotal() {
         let total = 0;
+        let descontoTotal = 0;
         $('#selected .card-product').each(function () {
             let id = $(this).data('id');
             let valor = parseFloat($(this).find('#total-price-' + id).val().replace(/\./g, '').replace(',', '.'));
+            let desconto = parseFloat($(this).find('#discount-' + id).val().replace(/\./g, '').replace(',', '.'));
             if (!isNaN(valor)) {
                 total += valor;
+            }
+            if (!isNaN(desconto)) {
+                descontoTotal += desconto;
             }
         });
         $('#total-price').text(total.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2}));
         $('#total-input').val(total.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2}));
+        $('#total-discount-input').val(descontoTotal.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2}));
         $('#total-price-modal').text(total.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2}));
     }
 
-    $('#search').on('input', atualizarSugestoes);
+    //O que está errado aqui?
+    
+    function somarPrecos() {
+        let somaPrecos = 0;
+        $('#selected .card-product').each(function () {
+            let id = $(this).data('id');
+            let precoUnitario = parseFloat($(this).find('#base-price-' + id).val().replace(/\./g, '').replace(',', '.'));
+            let quantidade = parseInt($(this).find('#qtd-items-' + id).val());
+            somaPrecos += precoUnitario * quantidade;
+        });
+        return somaPrecos;
+    }
+
+    function repartirTotalEntreProdutos(total) {
+        let somaPrecos = somarPrecos();
+        let totalCalculado = 0;
+        let ultimoId = null;
+        let descontoTotal = 0;
+
+        $('#selected .card-product').each(function () {
+            let id = $(this).data('id');
+            ultimoId = id;
+            let precoUnitario = parseFloat($(this).find('#base-price-' + id).val().replace(/\./g, '').replace(',', '.'));
+            let quantidade = parseInt($(this).find('#qtd-items-' + id).val());
+            let proporcao = (precoUnitario * quantidade) / somaPrecos;
+            let novoTotal = Math.round((total * proporcao) * 100) / 100;
+            totalCalculado += novoTotal;
+            let desconto = ((precoUnitario * quantidade) - novoTotal);
+            descontoTotal += desconto;
+            desconto = desconto.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+            $(this).find('#discount-' + id).val(desconto);
+            $(this).find('#total-price-' + id).val(novoTotal.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2}));
+        });
+
+        if (ultimoId !== null) {
+            let diferenca = total - totalCalculado;
+            let valorAtual = parseFloat($(`#total-price-${ultimoId}`).val().replace(/\./g, '').replace(',', '.'));
+            let novoValor = valorAtual + diferenca;
+            let precoUnitario = parseFloat($(`#base-price-${ultimoId}`).val().replace(/\./g, '').replace(',', '.'));
+            let quantidade = parseInt($(`#qtd-items-${ultimoId}`).val());
+            let desconto = ((precoUnitario * quantidade) - novoValor);
+            let descontoAtual = parseFloat($(`#discount-${ultimoId}`).val().replace(/\./g, '').replace(',', '.'));
+            descontoTotal -= descontoAtual;
+            descontoTotal += desconto;
+            desconto = desconto.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+            $(`#discount-${ultimoId}`).val(desconto);
+            $(`#total-price-${ultimoId}`).val(novoValor.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2}));
+        }
+        return descontoTotal;
+    }
+
+    $('#total-input').on('input keyup', function () {
+        let total = $(this).val();
+        $('#total-price-modal').text(total);
+        total = total ? parseFloat(total.replace(/\./g, '').replace(',', '.')) : 0;
+        desconto = repartirTotalEntreProdutos(total);
+        desconto = desconto.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2}); 
+       $('#total-discount-input').val(desconto);
+    });
+
+    $('#total-discount-input').on('input keyup', function () {
+        let descontoTotal = $(this).val();
+        descontoTotal = descontoTotal ? parseFloat(descontoTotal.replace(/\./g, '').replace(',', '.')) : 0;
+        let somaPrecos = somarPrecos();
+        let novoTotal = somaPrecos - descontoTotal;
+        repartirTotalEntreProdutos(novoTotal);
+        novoTotal = novoTotal.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2}); 
+        $('#total-price-modal').text(novoTotal);
+        $('#total-input').val(novoTotal);  
+    });
+
+    $('#search').on('input keyup', atualizarSugestoes);
 
     function atualizarSugestoes() {
         const termo = $('#search').val().toLowerCase();
@@ -120,14 +197,14 @@ $(document).ready(function () {
                         <div class="col-md-4 col-12 my-md-0 my-3 align-items-center px-3">
                             <label for="discount-${prod.id}" class="">Desconto (R$)</label>
                             <div class="text-end">
-                                <input id="discount-${prod.id}" name="items[${prod.id}][discount]" type="text" class="form-control moedaReal" value="${prod.desconto}">
+                                <input id="discount-${prod.id}" name="items[${prod.id}][discount]" type="text" class="form-control moedaReal input-stellar-blue" value="${prod.desconto}">
                             </div>
                         </div>
                         <div class="col-md-4 col-12 align-items-center px-3">
                             <label for="total-price-${prod.id}" class="">Valor (R$)</label>
                             <div class="text-end">
                                 <input id="base-price-${prod.id}" type="hidden" value="${prod.preco}">
-                                <input id="total-price-${prod.id}" name="items[${prod.id}][total_price]" type="text" class="form-control moedaReal" value="${prod.total}">
+                                <input id="total-price-${prod.id}" name="items[${prod.id}][total_price]" type="text" class="form-control moedaReal input-stellar-blue" value="${prod.total}">
                             </div>
                         </div>
                     </div>
@@ -221,7 +298,7 @@ $(document).ready(function () {
             });
         });
 
-        card.find('#discount-' + prod.id).on('input', function () {
+        card.find('#discount-' + prod.id).on('input keyup', function () {
             const id = prod.id;
             let desconto = $(this).val();
             desconto = desconto ? parseFloat(desconto.replace(/\./g, '').replace(',', '.')) : 0; 
@@ -229,7 +306,7 @@ $(document).ready(function () {
             atualizarValorTotal();
         });
 
-        card.find('#total-price-' + prod.id).on('input', function () {
+        card.find('#total-price-' + prod.id).on('input keyup', function () {
             const id = prod.id;
             let total = $(this).val();
             total = total ? parseFloat(total.replace(/\./g, '').replace(',', '.')) : 0;
@@ -297,11 +374,23 @@ $(document).on('click', '#accept-insert', function () {
             $('#insertModal').modal('hide');
             $('#saleInsertedModal').modal('show');
         } else {
-            console.error('Erro ao criar produto:', response.message);
+            console.error('Erro ao registrar venda:', response.message);
         }
     }).fail(function (error) {
         atualizarToast('myToast', 'Erro ao registrar venda', 'Ocorreu um erro ao tentar registrar a venda. Por favor, tente novamente.', false);
         // Update toast content for error
 
     });
+});
+
+$('.moedaReal').inputmask({
+    alias: 'numeric',
+    groupSeparator: '.',
+    radixPoint: ',',
+    autoGroup: true,
+    digits: 2,
+    digitsOptional: false,
+    placeholder: '0',
+    rightAlign: false,
+    removeMaskOnSubmit: true // remove a máscara ao submeter o form
 });

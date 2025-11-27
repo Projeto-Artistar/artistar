@@ -79,7 +79,7 @@
                                 <label class="form-check-label" for="flexSwitchCheckCanceled">
                                     Cancelada
                                 </label>
-                                                        <i class="fa-solid fa-circle-info color-gray ms-2" data-toggle="tooltip" data-placement="top" data-bs-custom-class="cor-tooltip" title="Vendas canceladas não aparecem em relatórios e produtos vendidos terão estoque reposto!"></i>
+                                <i class="fa-solid fa-circle-info color-gray ms-2" data-toggle="tooltip" data-placement="top" data-bs-custom-class="cor-tooltip" title="Vendas canceladas não aparecem em relatórios e produtos vendidos terão estoque reposto!"></i>
                             </div>
                         </div>
                         <div class="col-md-6 col-12 d-flex justify-content-end">

@@ -287,3 +287,6 @@ $(document).on('click', '#create-product-btn', function() {
     });
 });
     
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})

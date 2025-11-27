@@ -4,9 +4,9 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <title><?= isset($title) ? $title : 'Artistar' ?></title>
-        <meta name="description" content="Descrição da página para melhorar SEO">
+        <meta name="description" content="Gerencie seu estoque de forma eficiente e prática durante eventos com o Artistar. Nossa plataforma facilita o controle de vendas, produtos e relatórios, proporcionando uma experiência otimizada para artistas e vendedores. Simplifique sua gestão e maximize seus lucros com nossas ferramentas intuitivas.">
         <meta property="og:title" content="<?= isset($title) ? $title : 'Artistar' ?>">
-        <meta property="og:description" content="Descrição da página para melhorar SEO">
+        <meta property="og:description" content="Gerencie seu estoque de forma eficiente e prática durante eventos com o Artistar. Nossa plataforma facilita o controle de vendas, produtos e relatórios, proporcionando uma experiência otimizada para artistas e vendedores. Simplifique sua gestão e maximize seus lucros com nossas ferramentas intuitivas.">
         <meta property="og:image" content="<?= url("assets/image/favicon.png") ?>">
         <?php
             $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
@@ -15,7 +15,7 @@
         <meta property="og:url" content="<?= $currentUrl ?>">
         <meta name="twitter:card" content="summary_large_image">
         <meta name="twitter:title" content="<?= isset($title) ? $title : 'Artistar' ?>">
-        <meta name="twitter:description" content="Descrição da página para melhorar SEO">
+        <meta name="twitter:description" content="Gerencie seu estoque de forma eficiente e prática durante eventos com o Artistar. Nossa plataforma facilita o controle de vendas, produtos e relatórios, proporcionando uma experiência otimizada para artistas e vendedores. Simplifique sua gestão e maximize seus lucros com nossas ferramentas intuitivas.">
         <meta name="twitter:image" content="<?= url("assets/image/favicon.png") ?>">
         <link rel="shortcut icon" href="<?= url("assets/image/favicon.png") ?>" />
         <!-- <link rel="stylesheet" href="<?= url("assets/vendors/mdi/css/materialdesignicons.min.css") ?>"> -->

@@ -104,7 +104,7 @@ class StatisticsGraphs {
                 'item_name' => $this->getItemName($graphType['grafico_alvo']),
                 'item_counter' => $this->getItemCounter($graphType['grafico_contador']),
                 'item_extraJoins' => $this->getItemJoins($graphType['grafico_alvo']),
-                'item_extraFilters' => $this->getItemFilters($graphType['grafico_filtro'], $graphType['grafico_alvo'], $graphType['grafico_lista']),
+                'item_extraFilters' => $this->getItemFilters($graphType['grafico_filtro'], $graphType['grafico_alvo'], $graphType['grafico_lista'], $graphType['grafico_contador']),
                 'item_filter' => $graphType['grafico_filtro']
 
             ];
@@ -112,7 +112,7 @@ class StatisticsGraphs {
                 'id' => $key,
                 'name' => $this->buildName($graphType),
                 'type' => $graphType['grafico_tipo'],
-                'real' => in_array($graphType['grafico_contador'], ['revenue', 'discount']),
+                'real' => in_array($graphType['grafico_contador'], ['revenue', 'discount', 'average_value', 'contribution_margin']),
                 'data' => $this->buildQuery($info)
             ];
         }
@@ -141,6 +141,18 @@ class StatisticsGraphs {
                 break;
             case 'discount':
                 $nome .= ' do Desconto';
+                break;
+            case 'refunds':
+                $nome .= ' dos Reembolsos';
+                break;
+            case 'average_value':
+                $nome .= ' do Valor Médio';
+                break;
+            case 'transactions':
+                $nome .= ' das Transações';
+                break;
+            case 'contribution_margin':
+                $nome .= ' da Margem de Contribuição';
                 break;
         }
         switch($graphType['grafico_alvo']) {
@@ -195,9 +207,13 @@ class StatisticsGraphs {
 
     public function getItemCounter($item) {
         $options = [
-            'sold_units' => 'venda_item_unidades',
-            'revenue' => 'venda_item_valor',
-            'discount' => 'venda_item_desconto'
+            'sold_units' => 'SUM(vi.venda_item_unidades)',
+            'revenue' => 'SUM(vi.venda_item_valor)',
+            'discount' => 'SUM(vi.venda_item_desconto)',
+            'refunds' => 'COUNT(DISTINCT(vi.venda_item_venda))',
+            'average_value' => 'AVG(vi.venda_item_valor)',
+            'transactions' => 'COUNT(DISTINCT(vi.venda_item_venda))',
+            'contribution_margin' => 'SUM((vi.venda_item_valor - (p.produto_custo * vi.venda_item_unidades)))'
         ];
         if (!isset($options[$item])) return 'venda_item_unidades';
         return $options[$item];
@@ -216,16 +232,26 @@ class StatisticsGraphs {
         return $options[$item];
     }
 
-    public function getItemFilters($filter, $target, $list) {
+    public function getItemFilters($filter, $target, $list, $counter) {
+        $and = [];
         if ($filter == 'custom') {
             $options = [
-                'product' => "AND p.produto_id IN ($list)",
-                'category' => "AND catprod.categoria_produto_categoria IN ($list)"
+                'product' => "p.produto_id IN ($list)",
+                'category' => "catprod.categoria_produto_categoria IN ($list)"
             ];
-            if (!isset($options[$target])) return '';
-            return $options[$target];
+            if (isset($options[$target])) $and[] = $options[$target];
         }
-        return '';
+        if ($counter == 'refunds') {
+            $and[] = "v.venda_cancelada = 1";
+        } else {
+            $and[] = "COALESCE(v.venda_cancelada, 0) = 0";
+        }
+        // echo $target;
+        // echo '<pre>';
+        // print_r($and);
+        // exit;
+        if (empty($and)) return '';
+        return 'AND ' . implode(' AND ', $and);
     }
 
     public function buildQuery($info) {
@@ -242,7 +268,7 @@ class StatisticsGraphs {
                     {$itemPeriod}
                     {$info['item_id']} AS id,
                     {$info['item_name']} AS nome, 
-                    SUM(vi.{$info['item_counter']}) AS total
+                    {$info['item_counter']} AS total
                 FROM 
                     vendas_itens AS vi
                 INNER JOIN
@@ -251,8 +277,6 @@ class StatisticsGraphs {
                     produtos AS p ON vi.venda_item_produto = p.produto_id
                 {$info['item_extraJoins']}
                 WHERE 
-                    COALESCE(v.venda_cancelada, 0) = 0
-                AND
                     v.venda_loja_id = {$info['item_store']}
                 AND 
                     {$period['where']}
@@ -268,7 +292,7 @@ class StatisticsGraphs {
                     {$itemPeriod}
                     {$info['item_id']} AS id,
                     {$info['item_name']} AS nome, 
-                    SUM(vi.{$info['item_counter']}) AS total
+                    {$info['item_counter']} AS total
                 FROM 
                     vendas_itens AS vi
                 INNER JOIN
@@ -287,8 +311,6 @@ class StatisticsGraphs {
                         produtos AS p ON vi.venda_item_produto = p.produto_id
                     {$info['item_extraJoins']}
                     WHERE 
-                        COALESCE(v.venda_cancelada, 0) = 0
-                    AND
                         v.venda_loja_id = {$info['item_store']}
                     AND 
                         {$period['where']}
@@ -296,13 +318,11 @@ class StatisticsGraphs {
                     GROUP BY
                         id
                     ORDER BY
-                        SUM(vi.{$info['item_counter']}) DESC
+                        {$info['item_counter']} DESC
                     LIMIT 10
                 ) AS top_itens ON {$info['item_id']} = top_itens.id
                 {$info['item_extraJoins']}
                 WHERE 
-                    COALESCE(v.venda_cancelada, 0) = 0
-                AND
                     v.venda_loja_id = {$info['item_store']}
                 AND 
                     {$period['where']}

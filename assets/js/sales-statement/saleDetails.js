@@ -266,8 +266,9 @@ function atualizarSugestoes() {
 
         item.on('click', function () {
             adicionarProduto(prod);
-            $('#search').val('');
-            $('#suggestions').empty();
+            atualizarSugestoes();
+            // $('#search').val('');
+            // $('#suggestions').empty();
         });
 
         $('#suggestions').append(item);
@@ -284,9 +285,6 @@ $(document).on('click', '#finalizar-venda', function () {
 });
 
 $(document).on('click', '#save-sale, #save-sale-2', function () {
-    
-    // Update toast content for success
-
 
     const formData = new FormData($('#new-sale-form')[0]);
 

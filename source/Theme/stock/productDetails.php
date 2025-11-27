@@ -77,7 +77,7 @@
                     <div class="mb-3 form-check form-switch form-switch-sm">
                         <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" name="active" value="1" <?= $product['ativo'] ? 'checked' : '' ?>>
                         <label class="form-check-label" for="flexSwitchCheckDefault">Produto Ativo</label>
-                        <i class="fa-solid fa-circle-info color-gray ms-2" data-toggle="tooltip" data-placement="top" data-bs-custom-class="cor-tooltip" title="Produtos inativos não aparecerão na hora da venda"></i>
+                        <i class="fa-solid fa-circle-info color-gray ms-2" data-toggle="tooltip" data-placement="top" data-bs-custom-class="cor-tooltip" title="Produtos inativos não aparecerão na hora da venda."></i>
                     </div>
                 </div>
             </div>
@@ -107,7 +107,7 @@
                             <input type="text" disabled class="form-control" id="discount_percentage" name="discount_percentage" value="<?= moedaReal($product['valor'] > 0 ? (($product['valor_desconto'] * 100) / $product['valor']) : 0.00) ?>">
                         </div>
                         <div class="mb-3 col-md-4 col-sm-6 col-12">
-                            <label for="margin" class="form-label">Margem</label>
+                            <label for="margin" class="form-label">Margem <i class="fa-solid fa-circle-info color-gray ms-1" data-toggle="tooltip" data-placement="top" data-bs-custom-class="cor-tooltip" title="A margem de contribuição é calculada subtraindo o custo e o desconto do preço de venda, ajuda a identificar a lucratividade do produto."></i></label>
                             <input type="text" disabled class="form-control moedaReal" id="margin" name="margin" value="<?= moedaReal(($product['valor'] - $product['valor_desconto']) - $product['custo']) ?>">
                         </div>
                     </div>
@@ -126,7 +126,7 @@
                 </div>
                 <div class="col-12 border rounded p-3 mb-3">
                     <div class="mb-3">
-                        <label for="keywords" class="form-label">Palavras-Chave</label>
+                        <label for="keywords" class="form-label">Palavras-Chave <i class="fa-solid fa-circle-info color-gray ms-1" data-toggle="tooltip" data-placement="top" data-bs-custom-class="cor-tooltip" title="Palavras-Chave ajudam na busca de produtos, sem serem parte do nome oficial."></i></label>
                         <select class="form-select select2" id="keywords" name="keywords[]" multiple="multiple">
                             <?php 
                             $keywords = explode('|', $product['palavras_chave'] ?? '');
@@ -144,7 +144,7 @@
                             <input type="number" class="form-control" id="stock" name="stock" value="<?= $product['estoque'] ?>">
                         </div>
                         <div class="mb-3 col-sm-6 col-12">
-                            <label for="min_stock" class="form-label">Estoque Mínimo</label>
+                            <label for="min_stock" class="form-label">Estoque Mínimo <i class="fa-solid fa-circle-info color-gray ms-1" data-toggle="tooltip" data-placement="top" data-bs-custom-class="cor-tooltip" title="Estoque mínimo é a quantidade mínima que você deseja manter em estoque para evitar falta de produtos."></i></label>
                             <input type="number" min="0" class="form-control" id="min_stock" name="min_stock" value="<?= $product['estoque_minimo'] ?>">
                         </div>
                     </div>

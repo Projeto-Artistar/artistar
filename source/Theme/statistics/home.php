@@ -130,6 +130,8 @@
                                 </div>
                                 <canvas id="grafico-01" class="w-100 chartjs-render-monitor"></canvas>
                             </div>
+                        </div>
+                        <div class="col-12">
                             <div class="border rounded mt-3 p-3">
                                 <div class="d-flex justify-content-between mb-2">
                                     <span class="color-nocturne-purple w-75" id="graph-label-2"></span>
@@ -149,7 +151,7 @@
                             </div>
                         </div>
                         <div class="col-12">
-                           <div class="border rounded h-100 p-3">
+                           <div class="border rounded mt-3 p-3">
                                 <div class="d-flex justify-content-between mb-2">
                                     <span class="color-nocturne-purple w-75" id="graph-label-3"></span>
                                     <div>
@@ -167,10 +169,8 @@
                                 <canvas id="grafico-03" class="w-100 chartjs-render-monitor"></canvas>
                            </div>
                         </div>
-                    </div>
-                    <div class="row">
                         <div class="col-12">
-                            <div class="border rounded h-100 p-3">
+                            <div class="border rounded mt-3 p-3">
                                 <div class="d-flex justify-content-between mb-2">
                                     <span class="color-nocturne-purple w-75" id="graph-label-4"></span>
                                     <div>
@@ -189,7 +189,7 @@
                             </div>
                         </div>
                         <div class="col-12">
-                            <div class="border rounded p-3">
+                            <div class="border rounded mt-3 p-3">
                                 <div class="d-flex justify-content-between mb-2">
                                     <span class="color-nocturne-purple w-75" id="graph-label-5"></span>
                                     <div>
@@ -206,6 +206,8 @@
                                 </div>
                                 <canvas id="grafico-05" class="w-100 chartjs-render-monitor"></canvas>
                             </div>
+                        </div>
+                        <div class="col-12">
                             <div class="border rounded mt-3 p-3">
                                 <div class="d-flex justify-content-between mb-2">
                                     <span class="color-nocturne-purple w-75" id="graph-label-6"></span>
@@ -221,7 +223,9 @@
                                         </a>
                                     </div>
                                 </div>
-                                <canvas id="grafico-06" class="w-100 chartjs-render-monitor"></canvas>
+                                <div class="responsive-chart">
+                                    <canvas id="grafico-06" class="w-100 chartjs-render-monitor"></canvas>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -300,6 +304,10 @@
                                 <option value="sold_units">Unidades Vendidas</option>
                                 <option value="revenue">Faturamento</option>
                                 <option value="discount">Desconto Aplicado</option>
+                                <option value="refunds">Reembolsos (Vendas Canceladas)</option>
+                                <option value="average_value">Valor Médio</option>
+                                <option value="transactions">Transações</option>
+                                <option value="contribution_margin">Margem de Contribuição</option>
                             </select>
                             <!-- <small class="form-text text-muted">Alvo do gráfico </small> -->
                         </div>

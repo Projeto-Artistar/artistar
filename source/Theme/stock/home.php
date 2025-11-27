@@ -13,7 +13,7 @@
                 <div class="py-5 avoid-navbar">
                     <div class="row align-items-center">
                         <div class="col-xl-6 col-12">
-                            <h2 class="h1 mb-3 color-nocturne-purple">Inventário</h2>
+                            <a class="h1 mb-3 link-nocturne-purple" href="<?= url('stock')?>">Inventário</a>
                             <p class="fs-4">Últimas informações de estoque</p>
                             <ul class="list-unstyled">
                                 <li class="d-flex align-items-center mb-2">
@@ -217,7 +217,7 @@
                                 if (!empty($filter['real_price'])) $url .= '&filter[real_price]=' . urlencode($filter['real_price']);
                                 if (!empty($filter['stock'])) $url .= '&filter[stock]=' . urlencode($filter['stock']);
                                 if (!empty($filter['min_stock'])) $url .= '&filter[min_stock]=' . urlencode($filter['min_stock']);  
-                                if (!empty($filter['stock_status'])) $url .= '&filter[stock_status]=' . urlencode($filter['min_stock']);  
+                                if (!empty($filter['stock_status'])) $url .= '&filter[stock_status]=' . urlencode($filter['stock_status']);  
                                                     
                             ?>
                             <?php if ($pages['current'] > 1): ?>
@@ -383,7 +383,9 @@
                     </div>
 
                     <div class="mb-3">
-                        <label for="new-keywords" class="form-label">Palavras-Chave</label>
+                        <label for="new-keywords" class="form-label">
+                            Palavras-Chave <i class="fa-solid fa-circle-info color-gray ms-1" data-toggle="tooltip" data-placement="top" data-bs-custom-class="cor-tooltip" title="Palavras-Chave ajudam na busca de produtos, sem serem parte do nome oficial."></i>
+                        </label>
                         <select class="form-select select2" id="new-keywords" name="keywords[]" multiple="multiple">
                         </select>
                     </div>
@@ -408,7 +410,9 @@
                             <input type="text" class="form-control moedaReal" id="new-discount" name="discount" value="0,00">
                         </div>
                         <div class="mb-3 col-6">
-                            <label for="new-profit" class="form-label">Margem</label>
+                            <label for="new-profit" class="form-label">
+                                Margem <i class="fa-solid fa-circle-info color-gray ms-1" data-toggle="tooltip" data-placement="top" data-bs-custom-class="cor-tooltip" title="A margem de contribuição é calculada subtraindo o custo e o desconto do preço de venda, ajuda a identificar a lucratividade do produto."></i>
+                            </label>
                             <input type="text" disabled class="form-control" id="new-profit" name="profit" value="0,00">
                         </div>
                     </div>
@@ -418,7 +422,9 @@
                             <input type="number" class="form-control" id="new-stock" name="stock" value="0" min="0">
                         </div>
                         <div class="mb-3 col-6">
-                            <label for="new-min-stock" class="form-label">Estoque mín.</label>
+                            <label for="new-min-stock" class="form-label">
+                                Estoque mín. <i class="fa-solid fa-circle-info color-gray ms-1" data-toggle="tooltip" data-placement="top" data-bs-custom-class="cor-tooltip" title="Estoque mínimo é a quantidade mínima que você deseja manter em estoque para evitar falta de produtos."></i>
+                            </label>
                             <input type="number" class="form-control" id="new-min-stock" name="min_stock" value="0" min="0">
                         </div>
                     </div>

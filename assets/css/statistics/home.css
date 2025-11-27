@@ -53,3 +53,11 @@
     color: var(--nocturne-purple);     
 }
 
+.responsive-chart {
+  width: 100%;
+  overflow-y: auto;
+  max-height: 75vh;
+  padding: 8px;
+  -webkit-overflow-scrolling: touch; /* iOS only (ignore warnings) */
+}
+

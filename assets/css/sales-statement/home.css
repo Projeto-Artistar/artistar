@@ -13,3 +13,42 @@
 .hoverable-text:hover {
     text-decoration: underline;
 }
+
+@media (max-width: 767.98px) {
+
+    
+    .table-card thead {
+    display: none; /* some o header da tabela no mobile */
+    }
+
+    .table-card,
+    .table-card tbody,
+    .table-card tr,
+    .table-card td {
+    display: block;
+    width: 100%;
+    }
+
+    .table-card tr {
+    margin-bottom: 1rem;
+    border: 1px solid #dee2e6;
+    border-radius: 0.75rem;
+    padding: 0.75rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.06);
+    background-color: #fff;
+    }
+
+    .table-card td {
+    border: 0;
+    padding: 0.25rem 0;
+    display: flex;
+    justify-content: space-between;
+    gap: 0.5rem;
+    }
+
+    .table-card td::before {
+    content: attr(data-label); /* pega o texto do data-label */
+    font-weight: 600;
+    font-size: 0.9rem;
+    }
+}
