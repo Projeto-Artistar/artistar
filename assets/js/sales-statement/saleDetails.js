@@ -15,16 +15,134 @@ function atualizarToast(toast, title, body, isSuccess = true) {
 
 function atualizarValorTotal() {
     let total = 0;
+    let descontoTotal = 0;
     $('#selected .card-product').each(function () {
         let id = $(this).data('id');
         let valor = parseFloat($(this).find('#total-price-' + id).val().replace(/\./g, '').replace(',', '.'));
+        let desconto = parseFloat($(this).find('#discount-' + id).val().replace(/\./g, '').replace(',', '.'));
         if (!isNaN(valor)) {
             total += valor;
+        }
+        if (!isNaN(desconto)) {
+            descontoTotal += desconto;
         }
     });
     $('#total-price').text(total.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2}));
     $('#total-input').val(total.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2}));
+    $('#total-discount-input').val(descontoTotal.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2}));
     $('#total-price-modal').text(total.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2}));
+}
+
+function somarPrecos() {
+    let somaPrecos = 0;
+    $('#selected .card-product').each(function () {
+        let id = $(this).data('id');
+        let precoUnitario = parseFloat($(this).find('#base-price-' + id).val().replace(/\./g, '').replace(',', '.'));
+        let quantidade = parseInt($(this).find('#qtd-items-' + id).val());
+        somaPrecos += precoUnitario * quantidade;
+    });
+    return somaPrecos;
+}
+
+function repartirTotalEntreProdutos(total) {
+    let somaPrecos = somarPrecos();
+    let totalCalculado = 0;
+    let ultimoId = null;
+    let descontoTotal = 0;
+
+    $('#selected .card-product').each(function () {
+        let id = $(this).data('id');
+        ultimoId = id;
+        let precoUnitario = parseFloat($(this).find('#base-price-' + id).val().replace(/\./g, '').replace(',', '.'));
+        let quantidade = parseInt($(this).find('#qtd-items-' + id).val());
+        let proporcao = (precoUnitario * quantidade) / somaPrecos;
+        let novoTotal = Math.round((total * proporcao) * 100) / 100;
+        totalCalculado += novoTotal;
+        let desconto = ((precoUnitario * quantidade) - novoTotal);
+        descontoTotal += desconto;
+        desconto = desconto.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+        $(this).find('#discount-' + id).val(desconto);
+        $(this).find('#total-price-' + id).val(novoTotal.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2}));
+    });
+
+    if (ultimoId !== null) {
+        let diferenca = total - totalCalculado;
+        let valorAtual = parseFloat($(`#total-price-${ultimoId}`).val().replace(/\./g, '').replace(',', '.'));
+        let novoValor = valorAtual + diferenca;
+        let precoUnitario = parseFloat($(`#base-price-${ultimoId}`).val().replace(/\./g, '').replace(',', '.'));
+        let quantidade = parseInt($(`#qtd-items-${ultimoId}`).val());
+        let desconto = ((precoUnitario * quantidade) - novoValor);
+        let descontoAtual = parseFloat($(`#discount-${ultimoId}`).val().replace(/\./g, '').replace(',', '.'));
+        descontoTotal -= descontoAtual;
+        descontoTotal += desconto;
+        desconto = desconto.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+        $(`#discount-${ultimoId}`).val(desconto);
+        $(`#total-price-${ultimoId}`).val(novoValor.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2}));
+    }
+    return descontoTotal;
+}
+
+$('#total-input').on('input keyup', function () {
+    let total = $(this).val();
+    $('#total-price-modal').text(total);
+    total = total ? parseFloat(total.replace(/\./g, '').replace(',', '.')) : 0;
+    desconto = repartirTotalEntreProdutos(total);
+    desconto = desconto.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2}); 
+    $('#total-discount-input').val(desconto);
+});
+
+$('#total-discount-input').on('input keyup', function () {
+    let descontoTotal = $(this).val();
+    descontoTotal = descontoTotal ? parseFloat(descontoTotal.replace(/\./g, '').replace(',', '.')) : 0;
+    let somaPrecos = somarPrecos();
+    let novoTotal = somaPrecos - descontoTotal;
+    repartirTotalEntreProdutos(novoTotal);
+    novoTotal = novoTotal.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2}); 
+    $('#total-price-modal').text(novoTotal);
+    $('#total-input').val(novoTotal);  
+});
+
+$('#search').on('input keyup', atualizarSugestoes);
+
+function atualizarSugestoes() {
+    const termo = $('#search').val().toLowerCase();
+    $('#suggestions').empty();
+
+    if (termo.length === 0) return;
+
+    const resultados = produtos.filter(p =>
+        (
+            p.nome.toLowerCase().includes(termo) || 
+            p.subtitulo.toLowerCase().includes(termo) ||
+            p.palavra_chave.toLowerCase().includes(termo) ||
+            p.descricao.toLowerCase().includes(termo)
+        ) && !selecionados.has(p.id)
+    );
+
+    resultados.forEach(prod => {
+        const item = $(`
+        <div class="row suggestion-item">
+            <div class="col-3">
+                <img src="${prod.imagem}" alt="${prod.nome}">
+            </div>
+            <div class="col-6 card-body py-3">
+                <span class="mb-1">${prod.nome}</span>
+                <p class="card-text mb-1"><small class="text-muted">${prod.subtitulo}</small></p>
+            </div>
+            <div class="col-3 text-end">
+                <span class="card-text fw-bold text-success">R$${prod.total}</span>
+                <p class="card-text mb-1"><small class="text-muted">${prod.estoque} uni</small></p>
+            </div>
+        </div>
+        `);
+
+        item.on('click', function () {
+            adicionarProduto(prod);
+            atualizarSugestoes();
+        });
+
+        $('#suggestions').append(item);
+    });
 }
 
 function adicionarProduto(prod) {
@@ -180,7 +298,7 @@ function adicionarProduto(prod) {
         });
     });
 
-    card.find('#discount-' + prod.id).on('input', function () {
+    card.find('#discount-' + prod.id).on('input keyup', function () {
         const id = prod.id;
         let desconto = $(this).val();
         desconto = desconto ? parseFloat(desconto.replace(/\./g, '').replace(',', '.')) : 0; 
@@ -188,7 +306,7 @@ function adicionarProduto(prod) {
         atualizarValorTotal();
     });
 
-    card.find('#total-price-' + prod.id).on('input', function () {
+    card.find('#total-price-' + prod.id).on('input keyup', function () {
         const id = prod.id;
         let total = $(this).val();
         total = total ? parseFloat(total.replace(/\./g, '').replace(',', '.')) : 0;
@@ -229,49 +347,6 @@ function adicionarProdutosEmLote(existingProducts) {
             "imagem": prod.imagem,
             "total": prod.valor_venda,
         });
-    });
-}
-
-function atualizarSugestoes() {
-    const termo = $('#search').val().toLowerCase();
-    $('#suggestions').empty();
-
-    if (termo.length === 0) return;
-
-    const resultados = produtos.filter(p =>
-        (
-            p.nome.toLowerCase().includes(termo) || 
-            p.subtitulo.toLowerCase().includes(termo) ||
-            p.palavra_chave.toLowerCase().includes(termo) ||
-            p.descricao.toLowerCase().includes(termo)
-        ) && !selecionados.has(p.id)
-    );
-
-    resultados.forEach(prod => {
-        const item = $(`
-        <div class="row suggestion-item">
-            <div class="col-3">
-                <img src="${prod.imagem}" alt="${prod.nome}">
-            </div>
-            <div class="col-6 card-body py-3">
-                <span class="mb-1">${prod.nome}</span>
-                <p class="card-text mb-1"><small class="text-muted">${prod.subtitulo}</small></p>
-            </div>
-            <div class="col-3 text-end">
-                <span class="card-text fw-bold text-success">R$${prod.total}</span>
-                <p class="card-text mb-1"><small class="text-muted">${prod.estoque} uni</small></p>
-            </div>
-        </div>
-        `);
-
-        item.on('click', function () {
-            adicionarProduto(prod);
-            atualizarSugestoes();
-            // $('#search').val('');
-            // $('#suggestions').empty();
-        });
-
-        $('#suggestions').append(item);
     });
 }
 
@@ -338,3 +413,15 @@ $('#flexSwitchCheckCanceled').on('change', function () {
 $(function () {
   $('[data-toggle="tooltip"]').tooltip()
 })
+
+$('.moedaReal').inputmask({
+    alias: 'numeric',
+    groupSeparator: '.',
+    radixPoint: ',',
+    autoGroup: true,
+    digits: 2,
+    digitsOptional: false,
+    placeholder: '0',
+    rightAlign: false,
+    removeMaskOnSubmit: true // remove a máscara ao submeter o form
+});

@@ -93,13 +93,33 @@
             <div class="row ps-lg-3">
                 <div class="col-12 border rounded p-3 mb-3">
                     <h5 class="mb-3">Carrinho</h5>
-                        <div class="row selected-products" id="selected">
-                            <div class="no-products">Adicione produtos ao carrinho para iniciar a venda.</div>
+                    <div class="row selected-products" id="selected">
+                        <div class="no-products">Adicione produtos ao carrinho para iniciar a venda.</div>
+                    </div>
+                    <div class="row mt-3">
+                        <!-- <div class="col-xl-2 col-12 mt-xl-0 mt-2 row mx-0"> -->
+                            <!-- <div class="col-xl-6 col-4 d-flex align-items-center p-0">
+                                Itens:
+                            </div>
+                            <div class="col-xl-6 col-8 d-flex align-items-center text-start p-0">
+                                <span class="color-nocturne-purple" id="total-items">0</span>
+                            </div> -->
+                        <!-- </div> -->
+                        <div class="col-xl-6 col-12 mt-xl-0 mt-2 row mx-0">
+                            <div class="col-6 d-flex align-items-center  p-0">
+                                Desconto (R$):
+                            </div>
+                            <div class="col-6 d-flex align-items-center  p-0">
+                                <input id="total-discount-input" name="total_discount" type="text" class="form-control moedaReal input-stellar-blue" value="0,00" inputmode="decimal">
+                            </div>
                         </div>
-                    <div class="row">
-                        <div class="col-12 text-end">
-                            <input type="hidden" id="total-input" name="total_price" value="0">
-                            Total: <span class="color-nocturne-purple">R$<span id="total-price" >0,00</span></span>
+                        <div class="col-xl-6 col-12 mt-xl-0 mt-2 row mx-0">
+                            <div class="col-6 d-flex align-items-center p-0">
+                                Total (R$):
+                            </div>
+                            <div class="col-6 d-flex align-items-center p-0">
+                                <input id="total-input" name="total_price" type="text" class="form-control moedaReal input-stellar-blue" value="0,00" inputmode="decimal">
+                            </div>
                         </div>
                     </div>
                 </div>

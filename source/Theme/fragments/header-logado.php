@@ -135,59 +135,92 @@
                     </div>
                 </a>
             </li>
-            <!-- <li>
-                <a href="#" class="nav-link link-dark d-block link-hover">
-                    <div class="d-flex align-items-center">
-                        <i class="fa-solid fa-plus bi me-4" style="width:24px; text-align: center;"></i>
-                        <span>Inscrições</span>
-                    </div>
-                </a>
-            </li>
-
             <li class="border-top my-3"></li>
             <li>
-                <a href="#" class="nav-link link-dark link-hover">
+               <a href="<?= url('statistics') ?>" class="nav-link link-dark link-hover">
                     <div class="d-flex align-items-center">
-                        <i class="fa-solid fa-ranking-star bi me-4" style="width:24px; text-align: center;"></i>
-                        <span>Minha Loja</span>
+                        <i class="fa-solid fa-calendar bi me-4" style="width:24px; text-align: center;"></i>
+                        <span>Meus Eventos</span>
                     </div>
                 </a>
             </li>
             <li>
-                <a href="#" class="nav-link link-dark link-hover">
+               <a href="<?= url('statistics') ?>" class="nav-link link-dark link-hover">
                     <div class="d-flex align-items-center">
-                        <i class="fa-solid fa-ranking-star bi me-4" style="width:24px; text-align: center;"></i>
-                        <span>Meus Ajudantes</span>
+                        <i class="fa-solid fa-plus bi me-4" style="width:24px; text-align: center;"></i>
+                        <span>Minhas Inscrições</span>
                     </div>
                 </a>
             </li>
             <li>
-                <a href="#" class="nav-link link-dark link-hover">
+               <a href="<?= url('statistics') ?>" class="nav-link link-dark link-hover">
                     <div class="d-flex align-items-center">
-                        <i class="fa-solid fa-ranking-star bi me-4" style="width:24px; text-align: center;"></i>
-                        <span>Lojas que eu Ajudo</span>
+                        <i class="fa-solid fa-calendar-plus bi me-4" style="width:24px; text-align: center;"></i>
+                        <span>Procurar Eventos</span>
                     </div>
                 </a>
-            </li> -->
-            
+            </li>
+            <li class="border-top my-3"></li>
 
-            <!-- <li class="border-top my-3"></li> -->
-            <!-- <li>
+            <li>
+                <a href="#" class="nav-link link-dark link-hover">
+                    <div class="d-flex align-items-center">
+                        <i class="fa-solid fa-store bi me-4" style="width:24px; text-align: center;"></i>
+                        <span>Loja</span>
+                    </div>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="nav-link link-dark link-hover">
+                    <div class="d-flex align-items-center">
+                        <i class="fa-solid fa-people-group bi me-4" style="width:24px; text-align: center;"></i>
+                        <span>Equipe</span>
+                    </div>
+                </a>
+            </li>
+            <!-- <li> -->
+                <!-- <a href="#" class="nav-link link-dark link-hover">
+                    <div class="d-flex align-items-center">
+                        <i class="fa-solid fa-handshake-angle bi me-4" style="width:24px; text-align: center;"></i>
+                        <span>Parcerias</span>
+                    </div>
+                </a> -->
+                <!-- Make it a accorddion dropdown -->
+                 
+                 
+            <!-- </li> -->
+            <li class="mb-1">
+                <a href="#" class="nav-link link-dark link-hover item-parcerias" data-bs-toggle="collapse" data-bs-target="#orders-collapse" aria-expanded="false">
+                    <div class="d-flex align-items-center">    
+                        <i class="fa-solid fa-handshake-angle bi me-4" style="width:24px; text-align: center;"></i>
+                        <span>Parcerias <i class="fa-solid fa-chevron-down ms-2"></i></span>
+                        
+                    </div>
+                </a>
+                <div class="collapse ms-4" id="orders-collapse">
+                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                        <li>
+                            <a href="#" class="link-dark link-hover text-decoration-none">
+                                Loja 1
+                            </a>
+                        </li>
+                        <li><a href="#" class="link-dark link-hover text-decoration-none">Loja 2</a></li>
+                        <li><a href="#" class="link-dark link-hover text-decoration-none">Loja 3</a></li>
+                        <li class="border-top my-3"></li> 
+                        <li><a href="#" class="link-dark link-hover text-decoration-none">Gerenciar Parcerias</a></li>
+                    </ul>
+                </div>
+            </li>
+            <li class="border-top my-3"></li>  
+            <li>
                 <a href="#" class="nav-link link-dark link-hover">
                     <div class="d-flex align-items-center">
                         <i class="fa-solid fa-gear bi me-4" style="width:24px; text-align: center;"></i>
                         <span>Configurações</span>
                     </div>
                 </a>
-            </li> -->
-            <!-- <li>
-                <a href="<?= url("auth/new-password")?>" class="nav-link link-dark link-hover">
-                    <div class="d-flex align-items-center">
-                        <i class="fa-solid fa-lock bi me-4" style="width:24px; text-align: center;"></i>
-                        <span>Trocar Senha</span>
-                    </div>
-                </a>
-            </li> -->
+            </li>
+
         </ul>
         <div class="border-top my-3"></div>
         <div class="d-flex justify-content-between align-items-center">

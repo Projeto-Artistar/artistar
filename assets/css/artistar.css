@@ -375,3 +375,14 @@ body {
 .cor-tooltip.bs-tooltip-auto[data-popper-placement^=bottom] .tooltip-arrow::before {
     border-bottom-color: var(--gray); /* Arrow color */
 }
+
+/* Animate the chevron icon inside the trigger when collapsed/expanded */
+.item-parcerias .fa-chevron-down {
+    display: inline-block; /* allow transform to apply */
+    transition: transform 0.3s ease;
+}
+
+/* When the trigger has aria-expanded="true", rotate the chevron */
+.item-parcerias[aria-expanded="true"] .fa-chevron-down {
+    transform: rotate(180deg);
+}
