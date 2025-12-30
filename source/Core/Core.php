@@ -28,6 +28,8 @@ class Core
     
     protected $SQL = NULL;
 
+    protected $permissions = [];
+
     public function __construct($router = ROOT){
         global $db;
         $this->router=$router;
@@ -79,6 +81,10 @@ class Core
             if($result) {
                 $this->setLogado(true);
                 $this->setUser($result);
+                $this->setPermissions([
+                    'prototype' => false,
+                    'admin' => ($result['id'] == 3)
+                ]);
             } else {
                 $this->unsetUserLogonStatus();
             }
@@ -100,6 +106,15 @@ class Core
 
     public function getUser () {
         return $this->user;
+    }
+
+    public function setPermissions($permissions = []) {
+        $this->permissions = $permissions; 
+        $_SESSION['artistar']['permissions'] = $permissions;
+    }
+
+    public function getPermissions() {
+        return $this->permissions;
     }
 
     public function validaAcesso($redirectToValidation = true) {

@@ -135,6 +135,7 @@
                     </div>
                 </a>
             </li>
+            <?php if($_SESSION['artistar']['permissions']['prototype']): ?>
             <li class="border-top my-3"></li>
             <li>
                <a href="<?= url('statistics') ?>" class="nav-link link-dark link-hover">
@@ -178,17 +179,6 @@
                     </div>
                 </a>
             </li>
-            <!-- <li> -->
-                <!-- <a href="#" class="nav-link link-dark link-hover">
-                    <div class="d-flex align-items-center">
-                        <i class="fa-solid fa-handshake-angle bi me-4" style="width:24px; text-align: center;"></i>
-                        <span>Parcerias</span>
-                    </div>
-                </a> -->
-                <!-- Make it a accorddion dropdown -->
-                 
-                 
-            <!-- </li> -->
             <li class="mb-1">
                 <a href="#" class="nav-link link-dark link-hover item-parcerias" data-bs-toggle="collapse" data-bs-target="#orders-collapse" aria-expanded="false">
                     <div class="d-flex align-items-center">    
@@ -220,7 +210,18 @@
                     </div>
                 </a>
             </li>
-
+            <?php endif; ?>
+            <?php if($_SESSION['artistar']['permissions']['admin']): ?>
+            <li class="border-top my-3"></li>
+            <li>
+               <a href="<?= url('admin') ?>" class="nav-link link-dark link-hover">
+                    <div class="d-flex align-items-center">
+                        <i class="fa-solid fa-user-tie bi me-4" style="width:24px; text-align: center;"></i>
+                        <span>Painel de Administrador</span>
+                    </div>
+                </a>
+            </li>
+            <?php endif; ?>
         </ul>
         <div class="border-top my-3"></div>
         <div class="d-flex justify-content-between align-items-center">
