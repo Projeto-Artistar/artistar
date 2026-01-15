@@ -27,7 +27,6 @@ class eventsController extends Core {
         echo $this->view->render("events/home", [
             'title'         =>  'Eventos - Artistar', 
             'logado'        => $this->getLogado(),
-            'banner'        => $this->view->render("fragments/home/".($this->getLogado() ? "banner" : "slide")),
             'events'        => $dados->getEvents(),
             'estados'       => $this->getEstados(),
             'get'           => $get,
@@ -42,13 +41,13 @@ class eventsController extends Core {
         $dados = new Events();
         $event = $dados->getEventBasicInfo(filter_var($data['eventId'], FILTER_SANITIZE_NUMBER_INT));
         
-        if (empty($event)) {
-            header("Location: /error/404");
-            return;
-        } else if (!isset($data['friendlyUrl']) || $event['url'] != $data['friendlyUrl']) {
-            header("Location: /events/{$event['id']}/{$event['url']}");
-            return;
-        }
+        // if (empty($event)) {
+        //     header("Location: /error/404");
+        //     return;
+        // } else if (!isset($data['friendlyUrl']) || $event['url'] != $data['friendlyUrl']) {
+        //     header("Location: /events/{$event['id']}/{$event['url']}");
+        //     return;
+        // }
 
         $days = $dados->getEventDays(filter_var($data['eventId'], FILTER_SANITIZE_NUMBER_INT));
         $prices = $dados->getEventPrices(filter_var($data['eventId'], FILTER_SANITIZE_NUMBER_INT));
@@ -61,6 +60,56 @@ class eventsController extends Core {
             'prices' => $prices,
             'photos' => $photos
         ]);
+        return;
+    }
+
+
+    public function mySubscriptions() {
+        return;
+    }
+
+    public function subscribe() {
+        return;
+    }
+
+    public function unsubscribe() {
+        return;
+    }
+
+    public function myEvents() {
+        $this->validaAcesso(true);
+        $salesModel = new Events();
+        echo $this->view->render("events/myEvents", [
+            'layout' => [
+                'title' =>  'Meus Eventos - Artistar', 
+                'logado' => $this->getLogado(),
+                'header' => true,
+                'footer' => true
+            ],
+            'events' => $salesModel->getUserEvents($this->getUser()['id']),
+            'totals' => $salesModel->getUserEventsTotals($this->getUser()['id']),
+            'todayEvents' => $salesModel->getUserEventsToday($this->getUser()['id'])
+        ]);
+        return;
+    }
+
+    public function create() {
+        return;
+    }
+
+    public function insert() {
+        return;
+    }
+
+    public function edit($data) {
+        return;
+    }
+
+    public function update() {
+        return;
+    }
+
+    public function delete() {
         return;
     }
 

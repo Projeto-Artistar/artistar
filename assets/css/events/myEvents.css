@@ -1,0 +1,86 @@
+.fc-button {
+    transition: all .15s ease-in-out;
+}
+
+.fc-col-header-cell-cushion, .fc-daygrid-day-number {
+    text-decoration: none;
+    color: var(--stellar-blue);
+}
+/* fc-novoEvento-button fc-button fc-button-primary */
+
+.fc-button.fc-button-primary,
+.fc-button.fc-button-primary.fc-button-active {
+    background-color: var(--lavanda);
+    border-color: var(--lavanda);
+}
+
+.fc-button.fc-button-primary:disabled,
+.fc-button.fc-button-primary:hover {
+    background-color: var(--lavanda-light);
+    border-color: var(--lavanda-light);
+}
+
+.fc-button.fc-button-primary:active,
+.fc-button.fc-button-primary:not(:disabled):active {
+    background-color: var(--nocturne-purple);
+    border-color: var(--nocturne-purple);
+}
+
+.calendario-evento {
+    transition: all .15s ease-in-out;
+}
+
+.evento-finalizado {
+    background-color: var(--gray) !important;
+    border-color: var(--gray) !important;
+}
+
+.evento-finalizado:hover {
+    background-color: var(--gray-dark) !important;
+    border-color: var(--gray-dark) !important;
+}
+
+.evento-pendente {
+    background-color: var(--cotton-candy) !important;
+    border-color: var(--cotton-candy) !important;
+}
+
+.evento-pendente:hover {
+    background-color: var(--cotton-candy-light) !important;
+    border-color: var(--cotton-candy-light) !important;
+}
+
+.evento-realizada {
+    background-color: var(--stellar-blue) !important;
+    border-color: var(--stellar-blue) !important;
+}
+
+.evento-realizada:hover {
+    background-color: var(--stellar-blue-light) !important;
+    border-color: var(--stellar-blue-light) !important;
+}
+
+.evento-aprovada {
+    background-color: var(--nocturne-purple) !important;
+    border-color: var(--nocturne-purple) !important;
+}
+
+.evento-aprovada:hover {
+    background-color: var(--nocturne-purple-dark) !important;
+    border-color: var(--nocturne-purple-dark) !important;
+}
+
+.fc-toolbar-title {
+    color: var(--gray);
+}
+
+.lembrete-evento {
+    border-left: 5px solid var(--lavanda);
+}
+
+.obs-lembrete {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

@@ -15,10 +15,10 @@ class homeController extends Core {
 
     public function home() {
         if (!$this->getLogado()) {
-            header("location: /login");
-            return;
+            // header("location: /login");
+            // return;
         } else {
-            header("location: /stock");
+            // header("location: /stock");
         }
         echo $this->view->render("home", [
             'title' =>  'Artistar', 

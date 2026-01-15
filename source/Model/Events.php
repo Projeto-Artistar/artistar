@@ -9,9 +9,6 @@ use Source\Core\Core;
 class Events extends Core
 {
 
-    public function __construct() {
-    }
-
     public function getEvents() {
         $eventos = [
             [
@@ -387,11 +384,11 @@ class Events extends Core
         // pelo menos 3 fotos diferentes para cada
         $data = [
             1 => [
-                [
-                    'order' => 0,
-                    'url'   => 'https://www.turismosantos.com.br/static/files_turismosantos/styles/wpp/public/img4-scaled.jpg',
-                    'label' => 'Foto 1',
-                ],
+                // [
+                //     'order' => 0,
+                //     'url'   => 'https://www.turismosantos.com.br/static/files_turismosantos/styles/wpp/public/img4-scaled.jpg',
+                //     'label' => 'Foto 1',
+                // ],
                 [
                     'order' => 1,
                     'url'   => 'https://images.sympla.com.br/662904e02c698-lg.png',
@@ -479,6 +476,110 @@ class Events extends Core
 
         return $paginas;
 
+    }
+
+    public function getUserEvents($user) {
+        $qtdStatement = $this->SQL->prepare('
+            SELECT
+                eve.*,
+                insc.*,
+                CASE 
+                    WHEN eve.evento_data_final < CURDATE() THEN "finalizado"
+                    WHEN eve.evento_data_final >= CURDATE() AND COALESCE(insc.inscricao_realizada, 0) = 0 AND COALESCE(insc.inscricao_aprovada, 0) = 0  THEN "pendente"
+                    WHEN eve.evento_data_final >= CURDATE() AND insc.inscricao_realizada = 1 AND COALESCE(insc.inscricao_aprovada, 0) = 0 THEN "realizada"
+                    WHEN eve.evento_data_final >= CURDATE() AND insc.inscricao_aprovada = 1 THEN "aprovada"
+                    ELSE "desconhecido"
+                END AS status,
+                midia.evento_midia_url AS thumbnail,
+                DATE_FORMAT(eve.evento_data_inicial, "%d/%m/%Y") AS data_inicial,
+                DATE_FORMAT(eve.evento_data_final, "%d/%m/%Y") AS data_final
+            FROM
+                eventos AS eve
+            LEFT JOIN
+                eventos_midias AS midia ON midia.evento_midia_id = eve.evento_midia_thumbnail
+            LEFT JOIN
+                inscricoes AS insc ON insc.inscricao_evento = eve.evento_id
+            WHERE
+                eve.evento_proprietario = :user
+            OR
+                insc.inscricao_loja IN(SELECT loja_id FROM lojas WHERE loja_proprietario = :user)
+            GROUP BY
+                eve.evento_id
+            ORDER BY
+                eve.evento_id DESC 
+        ');
+
+        $qtdStatement->bindParam(':user', $user, PDO::PARAM_INT);
+        $qtdStatement->execute();
+        return $qtdStatement->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getUserEventsTotals($user) {
+        $qtdStatement = $this->SQL->prepare('
+            SELECT
+                COUNT(DISTINCT eve.evento_id) AS total,
+                COUNT(DISTINCT(IF(eve.evento_data_final < CURDATE(), eve.evento_id, NULL))) AS total_finalizados,
+                COUNT(DISTINCT(IF(eve.evento_data_final >= CURDATE() AND COALESCE(insc.inscricao_realizada, 0) = 0 AND COALESCE(insc.inscricao_aprovada, 0) = 0, eve.evento_id, NULL))) AS total_pendente,
+                COUNT(DISTINCT(IF(eve.evento_data_final >= CURDATE() AND insc.inscricao_realizada = 1 AND COALESCE(insc.inscricao_aprovada, 0) = 0, eve.evento_id, NULL))) AS total_realizada,
+                COUNT(DISTINCT(IF(eve.evento_data_final >= CURDATE() AND insc.inscricao_aprovada = 1, eve.evento_id, NULL))) AS total_aprovada
+            FROM
+                eventos AS eve
+            LEFT JOIN
+                eventos_midias AS midia ON midia.evento_midia_id = eve.evento_midia_thumbnail
+            LEFT JOIN
+                inscricoes AS insc ON insc.inscricao_evento = eve.evento_id
+            WHERE
+                eve.evento_proprietario = :user
+            OR
+                insc.inscricao_loja IN(SELECT loja_id FROM lojas WHERE loja_proprietario = :user)
+        ');
+
+        $qtdStatement->bindParam(':user', $user, PDO::PARAM_INT);
+        $qtdStatement->execute();
+        return $qtdStatement->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function getUserEventsToday($user) {
+        $qtdStatement = $this->SQL->prepare('
+            SELECT
+                eve.*,
+                insc.*,
+                edat.*,
+                IF(eve.evento_proprietario = :user, 1, 0) AS usuario_proprietario,
+                midia.evento_midia_url AS thumbnail,
+                DATE_FORMAT(eve.evento_data_inicial, "%d/%m/%Y") AS data_inicial,
+                DATE_FORMAT(eve.evento_data_final, "%d/%m/%Y") AS data_final,
+                DATE_FORMAT(edat.evento_data_hora_inicial, "%H:%i") AS hora_inicial,
+                DATE_FORMAT(edat.evento_data_hora_final, "%H:%i") AS hora_final
+            FROM
+                eventos AS eve
+            LEFT JOIN
+                eventos_midias AS midia ON midia.evento_midia_id = eve.evento_midia_thumbnail
+            LEFT JOIN
+                inscricoes AS insc ON insc.inscricao_evento = eve.evento_id
+            LEFT JOIN
+                eventos_datas AS edat ON edat.evento_data_evento = eve.evento_id
+            WHERE
+                (
+                        eve.evento_proprietario = :user
+                    OR
+                        insc.inscricao_loja IN(SELECT loja_id FROM lojas WHERE loja_proprietario = :user)
+                )
+            AND
+                (
+                        CURDATE() BETWEEN eve.evento_data_inicial AND eve.evento_data_final
+                    OR
+                        edat.evento_data_dia = CURDATE()
+                )   
+            GROUP BY
+                eve.evento_id
+            ORDER BY
+                eve.evento_id DESC 
+        ');
+
+        $qtdStatement->bindParam(':user', $user, PDO::PARAM_INT);
+        $qtdStatement->execute();
+        return $qtdStatement->fetchAll(PDO::FETCH_ASSOC);
     }
 
 }

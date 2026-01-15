@@ -206,7 +206,7 @@
         </div>
     </div>
 </section>
-<section class="section-lastcta bg-klikit-4 text-white d-flex align-items-center justify-content-center">
+<section class="section-lastcta bg-nocturne-purple-stellar-blue-gradient text-white d-flex align-items-center justify-content-center">
     <div class="container text-center">
         <h2 class="h1">Descubra como nossa plataforma pode ajudar você a gerenciar suas vendas, organizar seus produtos e alcançar mais clientes de forma eficiente.</h2>
         <a href="<?= url('register') ?>" class="btn btn-outline-kiklit-5 btn-lg mt-4">Comece Agora</a>
