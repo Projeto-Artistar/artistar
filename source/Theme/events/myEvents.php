@@ -13,16 +13,16 @@
                 <div class="col-xl-6 col-12">
                     <div class="row">
                         <a class="h1 mb-3 link-nocturne-purple" href="<?= url('events/my-events') ?>">Meus Eventos</a>
-                        <p class="fs-5">Veja eventos que você criou ou eventos em que você está inscrito!</p>
+                        <p class="fs-5">Veja em que situação estão suas inscrições em eventos!</p>
                         <ul class="list-unstyled">
                             <li class="d-flex align-items-center mb-2">
                                 <span class="dot bg-cotton-candy me-2 rounded-5" style="height:10px; width:10px;"></span>Pendentes (<?= $totals['total_pendente'] ?>)
                             </li>
                             <li class="d-flex align-items-center mb-2">
-                                <span class="dot bg-stellar-blue me-2 rounded-5" style="height:10px; width:10px;"></span>Realizados (<?= $totals['total_realizada'] ?>)
+                                <span class="dot bg-stellar-blue me-2 rounded-5" style="height:10px; width:10px;"></span>Realizadas (<?= $totals['total_realizada'] ?>)
                             </li>
                             <li class="d-flex align-items-center mb-2">
-                                <span class="dot bg-nocturne-purple me-2 rounded-5" style="height:10px; width:10px;"></span>Aprovados (<?= $totals['total_aprovada'] ?>)
+                                <span class="dot bg-nocturne-purple me-2 rounded-5" style="height:10px; width:10px;"></span>Aprovadas (<?= $totals['total_aprovada'] ?>)
                             </li>
                             <li class="d-flex align-items-center mb-2">
                                 <span class="dot bg-gray me-2 rounded-5" style="height:10px; width:10px;"></span>Finalizados (<?= $totals['total_finalizados'] ?>)
@@ -93,11 +93,11 @@
                                             break;
                                         case 'realizada':
                                             $badgeClass = 'bg-stellar-blue';
-                                            $badgeText = 'Inscrição Realizada';
+                                            $badgeText = 'Realizada';
                                             break;
                                         case 'aprovada':
                                             $badgeClass = 'bg-nocturne-purple';
-                                            $badgeText = 'Inscrição Aprovada';
+                                            $badgeText = 'Aprovada';
                                             break;
                                         default:
                                             $badgeClass = 'bg-gray';

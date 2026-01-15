@@ -36,8 +36,8 @@
 }
 
 .evento-finalizado:hover {
-    background-color: var(--gray-dark) !important;
-    border-color: var(--gray-dark) !important;
+    background-color: var(--gray-light) !important;
+    border-color: var(--gray-light) !important;
 }
 
 .evento-pendente {
@@ -66,8 +66,8 @@
 }
 
 .evento-aprovada:hover {
-    background-color: var(--nocturne-purple-dark) !important;
-    border-color: var(--nocturne-purple-dark) !important;
+    background-color: var(--nocturne-purple-light) !important;
+    border-color: var(--nocturne-purple-light) !important;
 }
 
 .fc-toolbar-title {
