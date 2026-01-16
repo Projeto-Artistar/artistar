@@ -94,6 +94,15 @@ class eventsController extends Core {
     }
 
     public function create() {
+        $this->validaAcesso(true);
+        echo $this->view->render("events/create", [
+            'layout' => [
+                'title' =>  'Criar Evento - Artistar', 
+                'logado' => $this->getLogado(),
+                'header' => true,
+                'footer' => true
+            ],
+        ]);
         return;
     }
 
