@@ -68,7 +68,7 @@
     <section class="section-eventos">
         <div class="container">
             <div class="pb-5">
-                <span class="h2">Listagem</span>
+                <span class="h2">Todos os Eventos</span>
             </div>
             <div class="row lista-eventos" id="eventos">
                 <?php foreach ($events as $event): ?>
