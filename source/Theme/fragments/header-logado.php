@@ -145,14 +145,7 @@
                     </div>
                 </a>
             </li>
-            <li>
-               <a href="<?= url('events/my-subscriptions') ?>" class="nav-link link-dark link-hover">
-                    <div class="d-flex align-items-center">
-                        <i class="fa-solid fa-plus bi me-4" style="width:24px; text-align: center;"></i>
-                        <span>Minhas Inscrições</span>
-                    </div>
-                </a>
-            </li>
+            <?php if($_SESSION['artistar']['permissions']['prototype']): ?>
             <li>
                <a href="<?= url('events') ?>" class="nav-link link-dark link-hover">
                     <div class="d-flex align-items-center">
@@ -161,7 +154,6 @@
                     </div>
                 </a>
             </li>
-            <?php if($_SESSION['artistar']['permissions']['prototype']): ?>
             <li class="border-top my-3"></li>
 
             <li>

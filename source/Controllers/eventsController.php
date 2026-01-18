@@ -9,58 +9,58 @@ use Source\Model\Events;
 class eventsController extends Core {
 
     public function home() {
-        $get = [
-            's'     => (isset($_GET['s']) ? filter_var($_GET['s'], FILTER_SANITIZE_STRING) : ''),
-            'r'     => (isset($_GET['r']) ? filter_var($_GET['r'], FILTER_SANITIZE_STRING) : ''),
-            'c'     => (isset($_GET['c']) ? filter_var($_GET['c'], FILTER_SANITIZE_STRING) : ''),
-            'sd'    => (isset($_GET['sd']) ? filter_var($_GET['sd'], FILTER_SANITIZE_STRING) : ''),
-            'fd'    => (isset($_GET['fd']) ? filter_var($_GET['fd'], FILTER_SANITIZE_STRING) : '')
-        ];
+        // $get = [
+        //     's'     => (isset($_GET['s']) ? filter_var($_GET['s'], FILTER_SANITIZE_STRING) : ''),
+        //     'r'     => (isset($_GET['r']) ? filter_var($_GET['r'], FILTER_SANITIZE_STRING) : ''),
+        //     'c'     => (isset($_GET['c']) ? filter_var($_GET['c'], FILTER_SANITIZE_STRING) : ''),
+        //     'sd'    => (isset($_GET['sd']) ? filter_var($_GET['sd'], FILTER_SANITIZE_STRING) : ''),
+        //     'fd'    => (isset($_GET['fd']) ? filter_var($_GET['fd'], FILTER_SANITIZE_STRING) : '')
+        // ];
 
-        $paginaAtual = isset($_GET['page']) ? filter_var($_GET['page'], FILTER_SANITIZE_NUMBER_INT) : 1;
+        // $paginaAtual = isset($_GET['page']) ? filter_var($_GET['page'], FILTER_SANITIZE_NUMBER_INT) : 1;
 
-        $dados = new Events();
+        // $dados = new Events(); 
 
-        $queryString = http_build_query($get);
-        $paginacao = $dados->getEventosPaginacao($paginaAtual, $queryString);
+        // $queryString = http_build_query($get);
+        // $paginacao = $dados->getEventosPaginacao($paginaAtual, $queryString);
 
-        echo $this->view->render("events/home", [
-            'title'         =>  'Eventos - Artistar', 
-            'logado'        => $this->getLogado(),
-            'events'        => $dados->getEvents(),
-            'estados'       => $this->getEstados(),
-            'get'           => $get,
-            'queryString'   => $queryString,
-            'currentPage'   => $paginaAtual,
-            'pages'         => $paginacao
-        ]);
-        return;
+        // echo $this->view->render("events/home", [
+        //     'title'         =>  'Eventos - Artistar', 
+        //     'logado'        => $this->getLogado(),
+        //     'events'        => $dados->getEvents(),
+        //     'estados'       => $this->getEstados(),
+        //     'get'           => $get,
+        //     'queryString'   => $queryString,
+        //     'currentPage'   => $paginaAtual,
+        //     'pages'         => $paginacao
+        // ]);
+        // return;
     }
 
     public function details($data) {
-        $dados = new Events();
-        $event = $dados->getEventBasicInfo(filter_var($data['eventId'], FILTER_SANITIZE_NUMBER_INT));
+        // $dados = new Events();
+        // $event = $dados->getEventBasicInfo(filter_var($data['eventId'], FILTER_SANITIZE_NUMBER_INT));
         
-        // if (empty($event)) {
-        //     header("Location: /error/404");
-        //     return;
-        // } else if (!isset($data['friendlyUrl']) || $event['url'] != $data['friendlyUrl']) {
-        //     header("Location: /events/{$event['id']}/{$event['url']}");
-        //     return;
-        // }
+        // // if (empty($event)) {
+        // //     header("Location: /error/404");
+        // //     return;
+        // // } else if (!isset($data['friendlyUrl']) || $event['url'] != $data['friendlyUrl']) {
+        // //     header("Location: /events/{$event['id']}/{$event['url']}");
+        // //     return;
+        // // }
 
-        $days = $dados->getEventDays(filter_var($data['eventId'], FILTER_SANITIZE_NUMBER_INT));
-        $prices = $dados->getEventPrices(filter_var($data['eventId'], FILTER_SANITIZE_NUMBER_INT));
-        $photos = $dados->getEventPhotos(filter_var($data['eventId'], FILTER_SANITIZE_NUMBER_INT));
-        echo $this->view->render("events/details", [
-            'title' =>  $event['title'].' - Artistar',
-            'logado'        => $this->getLogado(),
-            'event' => $event,
-            'days' => $days,
-            'prices' => $prices,
-            'photos' => $photos
-        ]);
-        return;
+        // $days = $dados->getEventDays(filter_var($data['eventId'], FILTER_SANITIZE_NUMBER_INT));
+        // $prices = $dados->getEventPrices(filter_var($data['eventId'], FILTER_SANITIZE_NUMBER_INT));
+        // $photos = $dados->getEventPhotos(filter_var($data['eventId'], FILTER_SANITIZE_NUMBER_INT));
+        // echo $this->view->render("events/details", [
+        //     'title' =>  $event['title'].' - Artistar',
+        //     'logado'        => $this->getLogado(),
+        //     'event' => $event,
+        //     'days' => $days,
+        //     'prices' => $prices,
+        //     'photos' => $photos
+        // ]);
+        // return;
     }
 
 
@@ -103,11 +103,62 @@ class eventsController extends Core {
                 'header' => true,
                 'footer' => true
             ],
+            'advantages' => $eventsModel->getAdvantages()
         ]);
         return;
     }
 
-    public function insert() {
+    public function insert($post) {
+        $this->validaAcesso(true);
+        $eventsModel = new Events();
+        $mensagens = [];
+        try {
+            $event = $eventsModel->createEvent($post, $this->getUser()['id']);
+        } catch (\Exception $e) {
+            exit($this->renderApiResponse(500, "Erro ao atualizar produto: " . $e->getMessage()));
+        }
+        foreach($post['eventAdvantages'] as $advantageId) {
+            try {
+                $eventsModel->addEventAdvantage($event, $advantageId);
+            } catch (\Exception $e) {
+                $mensagens[] = "Erro ao adicionar vantagem ID {$advantageId}: " . $e->getMessage();
+            }
+        }
+        foreach($post['dates'] as $date) {
+            try {
+                $eventsModel->addEventDate($event, $date);
+            } catch (\Exception $e) {
+                $mensagens[] = "Erro ao adicionar data {$date['day']}: " . $e->getMessage();
+            }
+        }
+        foreach($post['prices'] as $price) {
+            try {
+                $eventsModel->addEventPrice($event, $price);
+            } catch (\Exception $e) {
+                $mensagens[] = "Erro ao adicionar preço {$price['type']}: " . $e->getMessage();
+            }
+        }
+        try {
+            $eventsModel->updateEventComplementaryInfo($event);
+        } catch (\Exception $e) {
+            $mensagens[] = "Erro ao atualizar informações complementares do evento: " . $e->getMessage();
+        }
+
+        try {
+            $eventsModel->subscribeToEvent($event, $this->getUser()['loja_id']);
+        } catch (\Exception $e) {
+            exit($this->renderApiResponse(500, "Erro ao inscrever no evento: " . $e->getMessage()));
+        }
+
+        if (!empty($mensagens)) {
+            exit($this->renderApiResponse(207, "Evento criado com algumas mensagens: " . implode("; ", $mensagens), [
+                'eventId' => $event
+            ]));
+            return;
+        }
+        exit($this->renderApiResponse(200, "Evento criado com sucesso!", [
+            'eventId' => $event
+        ]));
         return;
     }
 

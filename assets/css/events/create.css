@@ -1,0 +1,12 @@
+#pricesRow .col-xxl-4,
+#pricesRow .col-lg-3:not(.unsortable) {
+  cursor: grab;
+}
+
+.grabbing * {
+    cursor: grabbing !important;
+}
+
+.grid-square:active {
+    cursor: grabbing!important;/* fighting on all fronts */
+}

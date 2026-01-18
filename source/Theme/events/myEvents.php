@@ -13,18 +13,24 @@
                 <div class="col-xl-6 col-12">
                     <div class="row">
                         <a class="h1 mb-3 link-nocturne-purple" href="<?= url('events/my-events') ?>">Meus Eventos</a>
-                        <p class="fs-5">Veja em que situação estão suas inscrições em eventos!</p>
-                        <ul class="list-unstyled">
-                            <li class="d-flex align-items-center mb-2">
+                        <p class="fs-5">
+                            Veja em que situação estão suas inscrições em eventos!<br>
+                        </p>
+                        <span class="text-muted mb-3">
+                            Clique em "Novo evento" ou selecione uma data no calendário para criar um novo evento.<br>
+                            Arraste entre os dias para selecionar mais de um dia.
+                        </span>
+                        <ul class="list-unstyled row">
+                            <li class="col-md-6 col-12 d-flex align-items-center mb-2">
                                 <span class="dot bg-cotton-candy me-2 rounded-5" style="height:10px; width:10px;"></span>Pendentes (<?= $totals['total_pendente'] ?>)
                             </li>
-                            <li class="d-flex align-items-center mb-2">
+                            <li class="col-md-6 col-12 d-flex align-items-center mb-2">
                                 <span class="dot bg-stellar-blue me-2 rounded-5" style="height:10px; width:10px;"></span>Realizadas (<?= $totals['total_realizada'] ?>)
                             </li>
-                            <li class="d-flex align-items-center mb-2">
+                            <li class="col-md-6 col-12 d-flex align-items-center mb-2">
                                 <span class="dot bg-nocturne-purple me-2 rounded-5" style="height:10px; width:10px;"></span>Aprovadas (<?= $totals['total_aprovada'] ?>)
                             </li>
-                            <li class="d-flex align-items-center mb-2">
+                            <li class="col-md-6 col-12 d-flex align-items-center mb-2">
                                 <span class="dot bg-gray me-2 rounded-5" style="height:10px; width:10px;"></span>Finalizados (<?= $totals['total_finalizados'] ?>)
                             </li>
                         </ul>
@@ -65,14 +71,6 @@
                 <span class="h2">Listagem</span>
             </div>
             <div class="row lista-eventos" id="eventos">
-                <a class="col-lg-3 col-md-4 col-sm-6 mb-4 text-decoration-none" href="<?= url('events/create') ?>">
-                    <div class="card text-center h-100 card-hover bg-stellar-blue color-snow-white border-0">
-                        <div class="card-body d-flex flex-column align-items-center justify-content-center">
-                            <i class="fas fa-plus fa-2x mb-3"></i>
-                            <h6 class="card-title">Novo Evento</h6>
-                        </div>
-                    </div>
-                </a>
                 <?php foreach ($events as $event): ?>
                 <a class="col-lg-3 col-md-4 col-sm-6 mb-4 evento" href="<?= url('events/id/'.$event['evento_id']) ?>">
                     <div class="card">
@@ -107,7 +105,7 @@
                                 ?>
                             </h5>
                             <p class="card-text descricao-evento">
-                                <?= $event['evento_subtitulo'] ?>
+                                <?= $event['evento_descricao'] ?>
                             </p>
                         </div>
                     </div>

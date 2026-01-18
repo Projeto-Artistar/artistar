@@ -10,11 +10,71 @@ $('.moedaReal').inputmask('decimal', {
     removeMaskOnSubmit: true // remove a máscara ao submeter o form
 });
 
+$('#eventAdvantagesSelect').select2({
+    placeholder: "Selecione as vantagens do evento",
+    allowClear: true,
+    // dropdownParent: $('#newModal .modal-body'),
+    width: '100%',
+});
+
 // DATAS
 
 $('#addDateCard').on('click', function() {
+    $('#newDateForm')[0].reset();
     $('#newDateModal').modal('show');
 });
+
+function criarCardData(day, time, endTime, observation) {
+
+    if (!day) return;
+
+    //Pegar a data e formatar para dd/mm/yyyy
+    //Pegar também qual o dia da semana é essa data
+    //E formatar as horas para hh:mm
+    var dateObj = new Date(day);
+    dateObj.setDate(dateObj.getDate() + 1);
+    var options = { weekday: 'long', year: 'numeric', month: '2-digit', day: '2-digit' };
+    var formattedDay = dateObj.toLocaleDateString('pt-BR', options);
+    var weekday = formattedDay.charAt(0).toUpperCase() + formattedDay.slice(1).split(',')[0];
+    formattedDay = formattedDay.split(',')[1].trim();
+    var formattedTime = time.slice(0, 5);
+    var formattedEndTime = endTime.slice(0, 5);
+
+    var existingCard = $(`#daysRow .date-card[data-date="${day}"]`);
+    if (existingCard.length > 0) existingCard.remove();
+
+    $('#daysRow').append(`
+        <div class="col-xxl-4 col-xl-6 col-12 mb-3 date-card" data-date="${day}">
+            <div class="card h-100 flex-column position-relative">
+                <div class="p-3 pb-2">
+                    <h6 class="mb-0">${weekday}</h6>
+                    <button type="button" class="btn-close btn-close-card p-3" style="position: absolute; top: 0.1rem; right: 0;" aria-label="Close"></button>
+                </div>
+                <div class="card-body pt-0">
+                    <h6 class="card-title">${formattedDay}</h6 >
+                    <span class="card-subtitle mb-2 text-muted">${formattedTime} - ${formattedEndTime}</span>
+                    <span class="btn btn-stellar-blue d-flex align-items-center mt-3 edit-date" data-date="${day}" >
+                        <i class="fa-solid fa-pen-to-square ms-2 me-3" style="text-align: center;"></i> Editar
+                    </span>
+                </div>
+            </div>
+            <input type="hidden" name="dates[${day}][day]" value="${day}">
+            <input type="hidden" name="dates[${day}][time]" value="${time}">
+            <input type="hidden" name="dates[${day}][endTime]" value="${endTime}">
+            <input type="hidden" name="dates[${day}][observation]" value="${observation}">
+        </div>
+    `);
+
+    var dates = $('#daysRow .date-card').get();
+    dates.sort(function(a, b) {
+        var dateA = new Date($(a).data('date'));
+        var dateB = new Date($(b).data('date'));
+        return dateA - dateB;
+    });
+    $.each(dates, function(idx, itm) { $('#daysRow').append(itm); });
+
+}
+
 
 $('#newDateForm').on('submit', function(e) {
     e.preventDefault();
@@ -23,38 +83,43 @@ $('#newDateForm').on('submit', function(e) {
     var endTime = $('#dateEndTime').val();
     var observation = $('#dateObservation').val();
 
-    //Pegar a data e formatar para dd/mm/yyyy
-    //Pegar também qual o dia da semana é essa data
-    //E formatar as horas para hh:mm
-    var dateObj = new Date(day);
-    var options = { weekday: 'long', year: 'numeric', month: '2-digit', day: '2-digit' };
-    var formattedDay = dateObj.toLocaleDateString('pt-BR', options);
-    var weekday = formattedDay.charAt(0).toUpperCase() + formattedDay.slice(1).split(',')[0];
-    formattedDay = formattedDay.split(',')[1].trim();
-    var formattedTime = time.slice(0, 5);
-    var formattedEndTime = endTime.slice(0, 5);
-
-
-    $('#daysRow').append(`
-    <div class="col-xxl-4 col-md-6 col-12 mb-3" data-date="${day}">
-        <div class="card h-100 flex-column position-relative">
-            <div class="p-3 pb-2">
-                <h5 class="mb-0">${weekday}</h5>
-                <button type="button" class="btn-close btn-close-card p-3" style="position: absolute; top: 0.1rem; right: 0;" aria-label="Close"></button>
-            </div>
-            <div class="card-body pt-0">
-                <h5 class="card-title">${formattedDay}</h5>
-                <span class="card-subtitle mb-2 text-muted">${formattedTime} - ${formattedEndTime}</span>
-            </div>
-        </div>
-        <input type="hidden" name="dates[${day}][day]" value="${day}">
-        <input type="hidden" name="dates[${day}][time]" value="${time}">
-        <input type="hidden" name="dates[${day}][endTime]" value="${endTime}">
-        <input type="hidden" name="dates[${day}][observation]" value="${observation}">
-    </div>
-    `);
+    criarCardData(day, time, endTime, observation);
+    
     $('#newDateModal').modal('hide');
     $('#newDateForm')[0].reset();
+});
+
+function createDateCardsFromExisting() {
+    // Get GET parameters
+    var urlParams = new URLSearchParams(window.location.search);
+    var start = urlParams.get('start');
+    //Adicionar um dia em start
+    var end = urlParams.get('end');
+
+    if (start) {
+        var startDate = new Date(start);
+        var endDate = end ? new Date(end) : startDate;
+        for (var d = startDate; d <= endDate; d.setDate(d.getDate() + 1)) {
+            var day = d.toISOString().split('T')[0];
+            criarCardData(day, '00:00', '23:59', '');
+        }
+    }
+}
+
+createDateCardsFromExisting();
+
+$(document).on('click', '.edit-date', function(e) {
+    e.preventDefault();
+    var dateId = $(this).data('date');
+    var day = $('input[name="dates[' + dateId + '][day]"]').val();
+    var time = $('input[name="dates[' + dateId + '][time]"]').val();
+    var endTime = $('input[name="dates[' + dateId + '][endTime]"]').val();
+    var observation = $('input[name="dates[' + dateId + '][observation]"]').val();
+    $('#dateDay').val(day);
+    $('#dateTime').val(time);
+    $('#dateEndTime').val(endTime);
+    $('#dateObservation').val(observation);
+    $('#newDateModal').modal('show');
 });
 
 // TAXAS E CUSTOS
@@ -83,7 +148,7 @@ $('#newPriceForm').on('submit', function(e) {
         var order = $('#pricesRow .card-price-item').length + 1;
         while ($('div.card-price-item[data-price="' + order + '"]').length) order++;
         var newPriceCard = `
-            <div class="col-xxl-4 col-md-6 col-12 mb-3 card-price-item" data-price="${order}">
+            <div class="col-xxl-4 col-xl-6 col-12 mb-3 card-price-item" data-price="${order}">
                 <div class="card h-100 flex-column position-relative">
                     <div class="d-flex justify-content-between align-items-center p-3 pb-2">
                         <i class="fa-solid fa-arrows-up-down-left-right color-cloud-gray"></i>
@@ -115,7 +180,8 @@ $('#newPriceForm').on('submit', function(e) {
 
 $(document).on('click', '.btn-close-card', function(e) {
     e.preventDefault();
-    $(this).closest('.card-price-item').fadeOut(300, function() {
+    //.card-price-item OU .date-card
+    $(this).closest('.card-price-item, .date-card').fadeOut(300, function() {
         $(this).remove();
     });
 });
@@ -126,7 +192,6 @@ $(document).on('click', '.edit-price', function(e) {
     var name = $('input[name="prices[' + priceId + '][name]"]').val();
     var amount = $('input[name="prices[' + priceId + '][amount]"]').val();
     var observation = $('input[name="prices[' + priceId + '][observation]"]').val();
-    console.log(priceId, name, amount, observation);
     $('#priceOrder').val(priceId);
     $('#priceName').val(name);
     $('#priceAmount').val(amount);
@@ -246,4 +311,33 @@ async function searchCities(uf, defaultCity = '') {
 document.getElementById('eventState').addEventListener('change', async function() {
     var uf = this.value;
     searchCities(uf); 
+});
+
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+});
+
+
+$('#eventForm').on('submit', function(e) {
+    e.preventDefault();
+    if (!$('#eventTitle').val()) {
+        alert('O título do evento é obrigatório.');
+        return;
+    };
+    var form = $('#eventForm')[0];
+    var formData = new FormData(form);
+    //Pegar os dados do form
+        $.ajax({
+        url: '/events/create',
+        type: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false
+    }).done(function (response) {
+        response = JSON.parse(response);
+        console.log(response);
+    }).fail(function (error) {
+        // atualizarToast('myToast', 'Erro ao registrar venda', 'Ocorreu um erro ao tentar registrar a venda. Por favor, tente novamente.', false);
+        // Update toast content for error
+    });
 });

@@ -33,6 +33,13 @@ document.addEventListener("DOMContentLoaded", function () {
         day: "Dia"
     },
     events: events,
+    selectable: true,
+    selectMirror: true,
+    select: function (arg) {
+        let endDate = new Date(arg.endStr);
+        endDate.setDate(endDate.getDate() - 1);
+        window.location.href = `/events/create?start=${arg.startStr}&end=${endDate.toISOString().split('T')[0]}`;
+    }
   });
 
   calendar.render();
