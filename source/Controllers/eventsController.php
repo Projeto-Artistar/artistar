@@ -95,6 +95,7 @@ class eventsController extends Core {
 
     public function create() {
         $this->validaAcesso(true);
+        $eventsModel = new Events();
         echo $this->view->render("events/create", [
             'layout' => [
                 'title' =>  'Criar Evento - Artistar', 

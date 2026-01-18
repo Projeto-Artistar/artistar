@@ -93,6 +93,7 @@ $router->group('apis');
 $router->post("/events", "apiController:events", "apiController.events");
 $router->post("/events/details", "apiController:eventDetails", "apiController.eventDetails");
 $router->post("/events/favorite", "apiController:eventFavorite", "apiController.eventFavorite");
+$router->post("/states", "apiController:states", "apiController.states");
 $router->post("/cities", "apiController:cities", "apiController.cities");
 
 

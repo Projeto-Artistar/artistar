@@ -22,50 +22,82 @@
 <?= $this->start("conteudo") ?>
 <section class="content avoid-navbar pt-4">
     <form id="eventForm">
-        <section class="container mt-3">
-            <div class="row align-items-center">
-                <div class="col-md-6" id="eventTitle"><input class="form-control input-stellar-blue" name="eventTitle" type="text"></div>
-                <div class="col-md-6 d-md-flex d-block justify-content-end" id="column-buttons">
+        <section class="container">
+            <div class="row mb-3">
+                <div>
+                    <h1 class="text-center text-sm-start color-nocturne-purple">Novo Evento</h1>
                 </div>
             </div>
-            <div class="row my-2">
-                <div class="col-md-6" id="eventAddress">
-                    <input class="form-control input-stellar-blue" name="eventAddress" type="text">
+            <div class="row">
+                <div class="col-md-8 col-12 mb-3">
+                    <label for="filter-name" class="form-label">*Nome</label>
+                    <input class="form-control input-stellar-blue" name="eventTitle" type="text" id="eventTitle" placeholder="Nome do Evento" required> 
                 </div>
-                <div class="col-md-6 d-md-flex d-block justify-content-end" id="column-productor">
-                    <span>Produtor: <a class="link-kitlit-1" href="#" id="eventProductor">AAA</a></span>
+                <div class="col-md-4 col-12 mb-3">
+                    <label for="filter-name" class="form-label">Produtor</label>
+                    <input class="form-control input-stellar-blue" name="eventProductor" type="text" id="eventProductor" placeholder="Nome do Produtor" required> 
                 </div>
             </div>
-            <div class="row mt-3" id="row-dpi" >
-                <div class="col-md-6" id="column-description">
-                    <h4>Descrição</h4>
-                    <section id="eventDescription"><textarea class="form-control input-stellar-blue" name="eventDescription" rows="6" resizable></textarea></section>
+            <h4 class="mb-3">Endereço</h4>
+            <div class="row">
+                <div class="col-md-2 col-12 mb-3">
+                    <label for="filter-name" class="form-label">CEP</label>
+                    <input class="form-control input-stellar-blue" name="eventCep" type="text" id="eventCep" placeholder="CEP" required> 
+                </div>
+                <div class="col-md-3 col-12 mb-3">
+                    <label for="filter-name" class="form-label">UF</label>
+                    <select class="form-select input-stellar-blue" name="eventState" id="eventState" required>
+                        <option value="" selected disabled>Selecione a UF</option>
+                    </select>
+                </div>
+                <div class="col-md-4 col-12 mb-3">
+                    <label for="filter-name" class="form-label">Cidade</label>
+                    <select class="form-select input-stellar-blue" name="eventCity" id="eventCity" required>
+                        <option value="" selected disabled>Selecione a Cidade</option>
+                    </select>
+                </div>
+                 <div class="col-md-3 col-12 mb-3">
+                    <label for="filter-name" class="form-label">Bairro</label>
+                    <input class="form-control input-stellar-blue" name="eventNeighborhood" type="text" id="eventNeighborhood" placeholder="Bairro" required> 
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 col-12 mb-3">
+                    <label for="filter-name" class="form-label">Endereço</label>
+                    <input class="form-control input-stellar-blue" name="eventAddress" type="text" id="eventAddress" placeholder="Endereço" required> 
+                </div>
+                <div class="col-md-3 col-12 mb-3">
+                    <label for="filter-name" class="form-label">Número</label>
+                    <input class="form-control input-stellar-blue" name="eventNumber" type="text" id="eventNumber" placeholder="Número" required> 
+                </div>
+                <div class="col-md-3 col-12 mb-3">
+                    <label for="filter-name" class="form-label">Complemento</label>
+                    <input class="form-control input-stellar-blue" name="eventComplement" type="text" id="eventComplement" placeholder="Complemento" required> 
+                </div>
+            </div>
+            <div class="row" id="row-dpi" >
+                <div class="col-md-6 mb-3" id="column-description">
+                    <h4 class="mb-3">Descrição</h4>
+                    <section id="eventDescription"><textarea class="form-control input-stellar-blue" name="eventDescription" rows="13" resizable></textarea></section>
                 </div>
                 <div class="col-md-6" id="column-pi">
-                    <h4 class="mb-3">Dias</h4>
-                    <div class="row" id="daysRow">
-                        <div class="col-xxl-4 col-md-6 col-sm-4 col-6 mb-3 unsortable">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h5 class="card-title">Adicionar dia</h5>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xxl-4 col-md-6 col-sm-4 col-6 mb-3">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h5 class="card-title">dia</h5>
-                                    <h6 class="card-subtitle mb-2 text-muted color-klikit-2">hora</h6>
+                    <h4 class="mb-3">Datas</h4>
+                    <div class="row align-items-stretch" id="daysRow">
+                        <div role="button" class="col-xxl-4 col-md-6 col-12 mb-3 text-decoration-none" id="addDateCard">
+                            <div class="card text-center h-100 card-hover bg-stellar-blue color-snow-white border-0 flex-column">
+                                <div class="card-body d-flex flex-column align-items-center justify-content-center">
+                                    <i class="fas fa-plus fa-2x m-3"></i>
+                                    <h6 class="card-title">Nova Data</h6>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <h4 class="my-3">Taxas e Custos</h4>
                     <div class="row align-items-stretch" id="pricesRow">
-                        <div role="button" class="col-xxl-4 col-md-6 col-sm-4 col-6 mb-3 text-decoration-none unsortable" id="addPriceCard">
+                        <div role="button" class="col-xxl-4 col-md-6 col-12 mb-3 text-decoration-none unsortable" id="addPriceCard">
                             <div class="card text-center h-100 card-hover bg-stellar-blue color-snow-white border-0 flex-column">
                                 <div class="card-body d-flex flex-column align-items-center justify-content-center">
-                                    <i class="fas fa-plus fa-2x mb-3"></i>
+                                    <i class="fas fa-plus fa-2x m-3"></i>
                                     <h6 class="card-title">Novo Evento</h6>
                                 </div>
                             </div>
@@ -114,6 +146,41 @@
         <?php } ?>
     </section>
 </form>
+<section id="datesModal">
+    <div class="modal fade" id="newDateModal" tabindex="-1" role="dialog" aria-labelledby="newDateModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="newDateModalLabel">Nova Data</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="newDateForm">
+                        <div class="mb-3">
+                            <label for="dateDay" class="form-label">Dia</label>
+                            <input type="date" class="form-control input-stellar-blue" id="dateDay" required>
+                        </div>
+                        <div class="row">
+                            <div class="col-xl-6 mb-3">
+                                <label for="dateTime" class="form-label">Hora Inicial</label>
+                                <input type="time" class="form-control input-stellar-blue" id="dateTime" required>
+                            </div>
+                            <div class="col-xl-6 mb-3">
+                                <label for="dateDeadline" class="form-label">Hora Final</label>
+                                <input type="time" class="form-control input-stellar-blue" id="dateEndTime">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="dateObservation" class="form-label">Observação</label>
+                            <textarea class="form-control input-stellar-blue" id="dateObservation" rows="3" resizable></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-stellar-blue float-end">Adicionar Data</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 <section id="pricesModal">
     <div class="modal fade" id="newPriceModal" tabindex="-1" role="dialog" aria-labelledby="newPriceModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -133,9 +200,10 @@
                             <input type="text" class="form-control moedaReal input-stellar-blue" id="priceAmount" required value="0,00">
                         </div>
                         <div class="mb-3">
-                            <label for="priceDeadline" class="form-label">Observação</label>
+                            <label for="priceObservation" class="form-label">Observação</label>
                             <textarea class="form-control input-stellar-blue" id="priceObservation" rows="3" resizable></textarea>
                         </div>
+                        <input type="hidden" id="priceOrder" value="">
                         <button type="submit" class="btn btn-stellar-blue float-end">Adicionar Taxa</button>
                     </form>
                 </div>

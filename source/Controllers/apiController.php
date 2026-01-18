@@ -58,6 +58,23 @@ class apiController extends Core {
         return;
     }
 
+    public function states() {
+
+        $dados = new API();
+        $states = $dados->listStates();
+
+        echo $this->view->render("apiResponse", [
+            'result' => [
+                'code' => 200,
+                'data' => [
+                    'states' => $states
+                ]
+            ]
+        ]);
+    
+        return;
+    }
+
     public function cities($data) {
 
         $dados = new API();

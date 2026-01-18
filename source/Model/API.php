@@ -140,8 +140,15 @@ class API extends Core
         }
     }
 
+    public function listStates() {
+        $ch = curl_init('https://servicodados.ibge.gov.br/api/v1/localidades/estados?orderBy=nome');
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $response = curl_exec($ch);
+        return json_decode($response, true);
+    }
+
     public function listCities($uf) {
-        $url = "https://servicodados.ibge.gov.br/api/v1/localidades/estados/{$uf}/municipios";
+        $url = "https://servicodados.ibge.gov.br/api/v1/localidades/estados/{$uf}/municipios?orderBy=nome";
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $response = curl_exec($ch);
