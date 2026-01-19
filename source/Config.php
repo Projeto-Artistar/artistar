@@ -52,6 +52,4 @@ function url($path)
     return "/";
 }
 
-include 'Functions/money.php';
-include 'Functions/storage.php';
-include 'Functions/date.php';
+include 'Functions/function.php';

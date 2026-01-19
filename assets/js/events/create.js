@@ -145,7 +145,7 @@ $('#newPriceForm').on('submit', function(e) {
         $('.card-subtitle[data-price="' + order + '"]').text('R$ ' + amount);
         $('input[name="prices[' + order + '][observation]"]').val(observation);
     } else {
-        var order = $('#pricesRow .card-price-item').length + 1;
+        var order = $('#pricesRow .card-price-item').length;
         while ($('div.card-price-item[data-price="' + order + '"]').length) order++;
         var newPriceCard = `
             <div class="col-xxl-4 col-xl-6 col-12 mb-3 card-price-item" data-price="${order}">
@@ -206,7 +206,7 @@ new Sortable(document.getElementById('pricesRow'), {
     filter: '.unsortable',
     onMove: (evt) => {
         evt.target.classList.add('grabbing');
-        return !((evt.related && evt.related.classList.contains('unsortable') && !evt.willInsertAfter));
+        return !(evt.related && evt.related.classList.contains('unsortable') && !evt.willInsertAfter);
     },
     onChoose: function(e) {
         e.target.classList.add('grabbing');
@@ -219,6 +219,12 @@ new Sortable(document.getElementById('pricesRow'), {
     },
     onEnd: function(e) {
         e.target.classList.remove('grabbing');
+        var items = document.querySelectorAll('#pricesRow .card-price-item');
+        items.forEach((item, index) => {
+            var priceId = item.getAttribute('data-price');
+            var orderInput = item.querySelector('input[name="prices[' + priceId + '][order]"]');
+            orderInput.value = index;
+        });
     }
 });
 
@@ -335,7 +341,9 @@ $('#eventForm').on('submit', function(e) {
         contentType: false
     }).done(function (response) {
         response = JSON.parse(response);
-        console.log(response);
+        if (response.code == 200) {
+            window.location.href = `/events/id/${response.data.eventId}`;
+        }
     }).fail(function (error) {
         // atualizarToast('myToast', 'Erro ao registrar venda', 'Ocorreu um erro ao tentar registrar a venda. Por favor, tente novamente.', false);
         // Update toast content for error

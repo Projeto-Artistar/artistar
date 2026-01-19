@@ -2,6 +2,7 @@
 ini_set('display_errors', 1);
 ini_set('date.timezone', 'America/Sao_Paulo');
 ini_set('default_charset', 'UTF-8');
+setlocale(LC_TIME, 'pt_BR.UTF-8');
 
 require __DIR__ . "/vendor/autoload.php";
 

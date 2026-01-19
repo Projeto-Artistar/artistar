@@ -38,29 +38,38 @@ class eventsController extends Core {
     }
 
     public function details($data) {
-        // $dados = new Events();
-        // $event = $dados->getEventBasicInfo(filter_var($data['eventId'], FILTER_SANITIZE_NUMBER_INT));
+        $dados = new Events();
+        $event = $dados->getEventBasicInfo(filter_var($data['eventId'], FILTER_SANITIZE_NUMBER_INT));
+        // Pça. ALM. Gago Coutinho, 29 - Ponta da Praia, Santos - SP, 11030-200
+        $event['endereco_completo'] = $event['evento_endereco_logradouro'];
+        if (!empty($event['evento_endereco_numero'])) $event['endereco_completo'] .= ', '.$event['evento_endereco_numero'];
+        if (!empty($event['evento_endereco_bairro'])) $event['endereco_completo'] .= ' - '.$event['evento_endereco_bairro'];
+        if (!empty($event['evento_endereco_cidade'])) $event['endereco_completo'] .= ', '.$event['evento_endereco_cidade'];
+        if (!empty($event['evento_endereco_estado'])) $event['endereco_completo'] .= ' - '.$event['evento_endereco_estado'];
+        if (!empty($event['evento_endereco_cep'])) $event['endereco_completo'] .= ', '.$event['evento_endereco_cep'];
         
-        // // if (empty($event)) {
-        // //     header("Location: /error/404");
-        // //     return;
-        // // } else if (!isset($data['friendlyUrl']) || $event['url'] != $data['friendlyUrl']) {
-        // //     header("Location: /events/{$event['id']}/{$event['url']}");
-        // //     return;
-        // // }
+        // if (empty($event)) {
+        //     header("Location: /error/404");
+        //     return;
+        // } else if (!isset($data['friendlyUrl']) || $event['url'] != $data['friendlyUrl']) {
+        //     header("Location: /events/{$event['id']}/{$event['url']}");
+        //     return;
+        // }
 
-        // $days = $dados->getEventDays(filter_var($data['eventId'], FILTER_SANITIZE_NUMBER_INT));
-        // $prices = $dados->getEventPrices(filter_var($data['eventId'], FILTER_SANITIZE_NUMBER_INT));
-        // $photos = $dados->getEventPhotos(filter_var($data['eventId'], FILTER_SANITIZE_NUMBER_INT));
-        // echo $this->view->render("events/details", [
-        //     'title' =>  $event['title'].' - Artistar',
-        //     'logado'        => $this->getLogado(),
-        //     'event' => $event,
-        //     'days' => $days,
-        //     'prices' => $prices,
-        //     'photos' => $photos
-        // ]);
-        // return;
+        $days = $dados->getEventDays(filter_var($data['eventId'], FILTER_SANITIZE_NUMBER_INT));
+        $advantages = $dados->getEventAdvantages(filter_var($data['eventId'], FILTER_SANITIZE_NUMBER_INT));
+        $prices = $dados->getEventPrices(filter_var($data['eventId'], FILTER_SANITIZE_NUMBER_INT));
+        $photos = $dados->getEventPhotos(filter_var($data['eventId'], FILTER_SANITIZE_NUMBER_INT));
+        echo $this->view->render("events/details", [
+            'title' =>  $event['evento_nome'].' - Artistar',
+            'logado'        => $this->getLogado(),
+            'event' => $event,
+            'days' => $days,
+            'advantages' => $advantages,
+            'prices' => $prices,
+            'photos' => $photos
+        ]);
+        return;
     }
 
 

@@ -104,7 +104,7 @@
                             <div class="card text-center h-100 card-hover bg-stellar-blue color-snow-white border-0 flex-column">
                                 <div class="card-body d-flex flex-column align-items-center justify-content-center">
                                     <i class="fas fa-plus fa-2x m-3"></i>
-                                    <h6 class="card-title">Novo Evento</h6>
+                                    <h6 class="card-title">Nova Taxa</h6>
                                 </div>
                             </div>
                         </div>

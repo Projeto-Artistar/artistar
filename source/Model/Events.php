@@ -9,6 +9,95 @@ use Source\Core\Core;
 class Events extends Core
 {
 
+    public function getEventBasicInfo($eventId) {
+        $qtdStatement = $this->SQL->prepare('
+            SELECT
+                eve.*,
+                IF(insc.inscricao_id IS NOT NULL, 1, 0) AS inscrito
+            FROM
+                eventos eve
+            LEFT JOIN
+                inscricoes AS insc ON insc.inscricao_evento = eve.evento_id
+            WHERE
+                eve.evento_id = :eventId
+        ');
+
+        $qtdStatement->bindParam(':eventId', $eventId, PDO::PARAM_INT);
+        $qtdStatement->execute();
+        return $qtdStatement->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function getEventDays($eventId) {
+        $qtdStatement = $this->SQL->prepare('
+            SELECT
+                *
+            FROM
+                eventos_datas
+            WHERE
+                evento_data_evento = :eventId
+            ORDER BY
+                evento_data_dia ASC, evento_data_hora_inicial ASC
+        ');
+
+        $qtdStatement->bindParam(':eventId', $eventId, PDO::PARAM_INT);
+        $qtdStatement->execute();
+        return $qtdStatement->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getEventAdvantages($eventId) {
+        $qtdStatement = $this->SQL->prepare('
+            SELECT
+                vant.vantagem_id AS id,
+                vant.vantagem_nome AS nome
+            FROM
+                eventos_vantagens AS eve_vant
+            INNER JOIN
+                vantagens AS vant ON vant.vantagem_id = eve_vant.evento_vantagem_vantagem
+            WHERE
+                eve_vant.evento_vantagem_evento = :eventId
+            ORDER BY
+                vant.vantagem_nome ASC
+        ');
+
+        $qtdStatement->bindParam(':eventId', $eventId, PDO::PARAM_INT);
+        $qtdStatement->execute();
+        return $qtdStatement->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getEventPrices($eventId) {
+        $qtdStatement = $this->SQL->prepare('
+            SELECT
+                *
+            FROM
+                eventos_taxas
+            WHERE
+                evento_taxa_evento = :eventId
+            ORDER BY
+                evento_taxa_ordem ASC
+        ');
+
+        $qtdStatement->bindParam(':eventId', $eventId, PDO::PARAM_INT);
+        $qtdStatement->execute();
+        return $qtdStatement->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getEventPhotos($eventId) {
+        $qtdStatement = $this->SQL->prepare('
+            SELECT
+                *
+            FROM
+                eventos_midias
+            WHERE
+                evento_midia_evento = :eventId
+            ORDER BY
+                evento_midia_id ASC
+        ');
+
+        $qtdStatement->bindParam(':eventId', $eventId, PDO::PARAM_INT);
+        $qtdStatement->execute();
+        return $qtdStatement->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     public function getUserEvents($user) {
         $qtdStatement = $this->SQL->prepare('
             SELECT

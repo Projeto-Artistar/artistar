@@ -169,5 +169,17 @@ document.querySelectorAll('.modal').forEach(async function(modal) {
     });
 });
 
+const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
+const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl))
+document.addEventListener('click', function(event) {
+    popoverTriggerList.forEach(function(popoverTriggerEl) {
+        const popover = bootstrap.Popover.getInstance(popoverTriggerEl);
+        if (popover) {
+            if (!popoverTriggerEl.contains(event.target) && !event.target.closest('.popover')) {
+                popover.hide();
+            }
+        }
+    });
+});
 
 

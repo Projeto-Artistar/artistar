@@ -13,8 +13,8 @@
 
 <?= $this->start("conteudo") ?>
 <section class="content avoid-navbar">
+    <?php if (!empty($photos)) {?>
     <section class="section-slide">
-        <?php if (!empty($photos)) {?>
         <div id="photosCarousel" class="col-12 carousel slide" data-bs-ride="carousel">
             <div class="carousel-indicators" id="photo-carousel-indicators">
                 <?php 
@@ -50,106 +50,103 @@
                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
             </button>
         </div>
-        <?php } ?>
     </section>
-    <section class="container mt-3">
+    <?php } ?>
+    <section class="container pt-4 mb-3">
         <div class="row align-items-center">
-            <div class="col-md-6" id="eventTitle"><h1><?= $event['title']?></h1></div>
+            <div class="col-md-6" id="eventTitle"><h1><?= $event['evento_nome']?></h1></div>
             <div class="col-md-6 d-md-flex d-block justify-content-end" id="column-buttons">
                 <div class="event-buttons">
-                    <button class="btn btn-favorite shadow-none btn-event-action"><span class="iconify btn-icon" data-icon="<?= $event['favorite'] == 1 ? 'mdi:heart' : 'mdi:heart-outline' ?>" data-inline="false"></span></button>
+                    <button class="btn btn-favorite shadow-none btn-event-action"><span class="iconify btn-icon" data-icon="<?= $event['inscrito'] == 1 ? 'mdi:heart' : 'mdi:heart-outline' ?>" data-inline="false"></span></button>
                     <button class="btn btn-share shadow-none btn-event-action" id="btn-share"><span class="iconify btn-icon" data-icon="mdi:share-variant" data-inline="false"></span></button>
                 </div>
             </div>
         </div>
         <div class="row my-2">
             <div class="col-md-6" id="eventAddress">
-                <b class="color-klikit-2"><span class="iconify" data-icon="mdi:map-marker" data-inline="false"></span> <?= !empty($event['address']) ? $event['address'] : 'Local não definido'?></b>
+                <b class="color-stellar-blue"><span class="iconify" data-icon="mdi:map-marker" data-inline="false"></span> <?= !empty($event['endereco_completo']) ? $event['endereco_completo'] : 'Local não definido'?></b>
             </div>
-            <?php if (!empty($event['production'])) {?>
+            <?php if (!empty($event['evento_produtor'])) {?>
                 <div class="col-md-6 d-md-flex d-block justify-content-end" id="column-productor">
-                    <span>Produtor: <a class="link-kitlit-1" href="#" id="eventProductor"><?= $event['production'] ?></a></span>
+                    <p>Produtor: <span class="color-stellar-blue" id="eventProductor"><?= $event['evento_produtor'] ?></span></p>
                 </div>
             <?php } ?>
         </div>
-        <div class="row mt-3" id="row-dpi" >
-            <?php $column = (empty($event['description']) || (empty($days) && empty($prices))) ? 12 : 6 ;?>
-            <?php if (!empty($event['description'])) {?>
-                <div class="col-md-<?=$column?>" id="column-description">
-                    <h4>Descrição</h4>
-                    <section id="eventDescription"><?= $event['description']?></section>
+        <div class="row mt-3">
+            <?php if (!empty($event['evento_descricao'])) {?>
+                <div class="col-md-6 col-12" id="column-description">
+                    <h4 class="mb-3">Descrição</h4>
+                    <section><?= nl2br($event['evento_descricao']) ?></section>
                 </div>
             <?php } ?>
-            <?php if (!empty($days) || !empty($prices)) { ?>
-                <div class="col-md-<?=$column?>" id="column-pi">
-                    <?php if (!empty($days)) {?>
-                        <div class="row" id="daysRow">
-                            <h4 class="mb-3">Dias</h4>
-                            <?php foreach($days as $day) {?>
-                                <div class="col-xxl-4 col-md-6 col-sm-4 col-6 mb-3">
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <h5 class="card-title"><?= $day['date']?></h5>
-                                            <h6 class="card-subtitle mb-2 text-muted color-klikit-2"><?= $day['start_time'].'-'.$day['end_time'] ?></h6>
-                                        </div>
+            <?php if (!empty($days)): ?>
+                <div class="col-md-6 col-12">
+                    <div class="row" id="daysRow">
+                        <h4 class="mb-3">Datas</h4>
+                        <?php foreach($days as $day) {?>
+                            <div class="col-xxl-4 col-xl-6 col-12 mb-3 date-card">
+                                <div class="card h-100 flex-column position-relative">
+                                    <div class="p-3 pb-2">
+                                        <h5 class="mb-0"><?= formatWeekDateToPortuguese($day['evento_data_dia']) ?></h5>
+                                    </div>
+                                    <div class="card-body pt-0">
+                                        <h5 class="card-title"><?= date('d/m/Y', strtotime($day['evento_data_dia']))?></h5>
+                                        <span class="card-subtitle mb-2 text-muted"><?= date('H:i', strtotime($day['evento_data_hora_inicial'])).(!empty($day['evento_data_hora_final']) ? ' - '.date('H:i', strtotime($day['evento_data_hora_final'])) : '') ?></span>
+                                        <?php if (!empty($day['evento_data_observacao'])) { ?>
+                                            <span class="btn btn-stellar-blue d-flex align-items-center mt-3 edit-date">
+                                                <i class="fa-solid fa-eye ms-1 me-2" style="text-align: center;"></i> Observações
+                                            </span>
+                                        <?php } ?>
                                     </div>
                                 </div>
-                            <?php } ?>
-                        </div>
-                    <?php } ?>
-                    <?php if (!empty($prices)) {?>
-                        <div class="row" id="pricesRow">
-                            <h4 class="my-3">Inscrições</h4>
-                            <?php foreach ($prices as $price) { ?>
-                                <div class="col-xxl-4 col-md-6 col-sm-4 col-6 mb-3">
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <h5 class="card-title"><?= $price['name'] ?></h5>
-                                            <h6 class="card-subtitle mb-2 text-muted color-klikit-2"><?= $price['price']?> </h6>
-                                            <span class="card-subtitle mb-2 text-muted">Até <?= $price['end_date'] ?></span>
+                            </div>
+                        <?php } ?>
+                    </div>
+                </div>
+            <?php endif; ?>
+            <?php if (!empty($advantages)): ?>
+                <div class="col-md-6 col-12">
+                    <h4 class="my-3">Vantagens</h4>
+                    <div class="d-flex flex-wrap gap-2">
+                        <?php foreach ($advantages as $advantage) { ?>
+                            <span class="badge bg-nocturne-purple"><?= $advantage['nome'] ?></span>
+                        <?php } ?>
+                    </div>
+                </div>
+            <?php endif; ?>
+            <?php if (!empty($prices)): ?>
+                <div class="col-md-6 col-12">
+                    <div class="row" id="pricesRow">
+                        <h4 class="my-3">Taxas e Custos</h4>
+                        <?php foreach ($prices as $price) { ?>
+                            <div class="col-xxl-4 col-xl-6 col-12 mb-3">
+                                <div class="card h-100 flex-column position-relative">
+                                    <div class="card-body d-flex flex-column">
+                                        <div class="flex-grow-1">
+                                            <h5 class="card-title"><?= $price['evento_taxa_titulo'] ?></h5>
                                         </div>
+                                        <h6 class="card-subtitle mb-2 text-muted">R$ <?= moedaReal($price['evento_taxa_valor']) ?></h6>
+                                        <?php if (!empty($price['evento_taxa_observacao'])) { ?>
+                                            <span class="btn btn-stellar-blue d-flex align-items-center mt-3 edit-date" data-bs-toggle="popover" data-bs-content="<?= nl2br(str_replace("\n", "<br>", $price['evento_taxa_observacao'])) ?>">
+                                                <i class="fa-solid fa-eye ms-1 me-2" style="text-align: center;"></i> Observações
+                                            </span>
+                                        <?php } ?>
                                     </div>
                                 </div>
-                            <?php } ?>
-                        </div>
-                    <?php } ?>
-                </div>
-            <?php } ?>
-        </div>
-        <div class="row">
-            <?php if (!empty($event['contacts'])) {?>
-                <div class="col-md-6" id="contactsColumn">
-                    <h4 class="my-3">Contatos</h4>
-                    <ul class="list-unstyled" id="contactsList">
-                        <?php foreach($event['contacts'] as $contact) {?>
-                            <li>
-                                <i class="<?= $contact['icon'] ?>"></i> <span class="color-klikit-2 mx-2"><?= $contact['value']?></span>
-                            </li>
+                            </div>
                         <?php } ?>
-                    </ul>
+                    </div>
                 </div>
-            <?php } ?>
-            <?php if (!empty($event['socialMedia'])) {?>
-                <div class="col-md-6" id="socialMediaColumn">
-                    <h4 class="my-3">Redes Sociais</h4>
-                    <ul class="list-unstyled" id="socialMediaList">
-                        <?php foreach($event['socialMedia'] as $socialMedia) {?>
-                            <li class="d-flex align-items-center mb-2">
-                                <i class="<?= $socialMedia['icon']?>"></i> <a class="link-kitlit-1 mx-2" href="<?= $socialMedia['url']?>" target="_blank"><?= $socialMedia['name']?></a>
-                            </li>
-                        <?php } ?>
-                    </ul>
-                </div>
-            <?php } ?>
+            <?php endif; ?>
         </div>
     </section>
-    <?php if (!empty($event['address'])) {?>
-    <section id="section-map" class="bg-klikit-5 py-3">
+    <?php if (!empty($event['endereco_completo'])) {?>
+    <section id="section-map" class="bg-nocturne-purple py-3">
         <div class="container">
             <div class="row mb-3" id="row-map">
-                <h4 class="mb-3">Local</h4>
+                <h4 class="mb-3 color-snow-white">Local</h4>
                 <div id="mapa">
-                    <iframe frameborder='0' title="Google Maps do local do evento" style='border:0; width: 100%; min-height: 500px;' src='https://www.google.com/maps?q=<?= urlencode($event['address'])?>&output=embed' allowfullscreen></iframe>
+                    <iframe frameborder='0' title="Google Maps do local do evento" style='border:0; width: 100%; min-height: 500px;' src='https://www.google.com/maps?q=<?= urlencode($event['endereco_completo'])?>&output=embed' allowfullscreen></iframe>
                 </div>
             </div>
         </div>
@@ -233,7 +230,7 @@
 <?= $this->start("js") ?>
 <!-- Outros scripts -->
 <script src="<?= url("assets/vendors/slick-1.8.1/slick/slick.min.js") ?>" defer></script>
-<script defer>const eventId = <?= $event['id'] ?>;</script>
+<script defer>const eventId = <?= $event['evento_id'] ?>;</script>
 <script src="<?= url("assets/js/events/details.js") ?>" defer></script>
 <script>
     $('.slide-item').on('click', async function() {
