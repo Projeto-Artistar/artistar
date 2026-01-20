@@ -82,12 +82,7 @@ async function favoriteEvent() {
 }
 
 async function shareButtons() {
-    $('#btn-share').on('click', function() {
-        $('#shareModal').modal('show');
-    });
-
     $('#copyUrl').on('click', function() {
-        const url = window.location.href;
         navigator.clipboard.writeText(url).then(async function() {
             const toast = new bootstrap.Toast(document.getElementById('copyToast'));
             toast.show();
@@ -97,35 +92,38 @@ async function shareButtons() {
     }); 
 
     $('#shareFacebook').on('click', function() {
-        const url = window.location.href;
         window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank');
     });
 
+    $('#shareTwitter').on('click', function() {
+        window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`, '_blank');
+    });
+
     $('#shareWhatsApp').on('click', function() {
-        const url = window.location.href;
         window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(url)}`, '_blank');
     });
 
     $('#sharePinterest').on('click', function() {
-        const url = window.location.href;
-        const description = document.title; // Você pode ajustar isso para usar uma descrição personalizada
         window.open(`https://pinterest.com/pin/create/button/?url=${encodeURIComponent(url)}&description=${encodeURIComponent(description)}`, '_blank');
     });
 
     $('#shareLinkedIn').on('click', function() {
-        const url = window.location.href;
-        const title = document.title; // Você pode ajustar isso para usar um título personalizado
         window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}&title=${encodeURIComponent(title)}`, '_blank');
     });
 
     $('#shareTelegram').on('click', function() {
-        const url = window.location.href;
         window.open(`https://t.me/share/url?url=${encodeURIComponent(url)}`, '_blank');
     });
 }
 
 async function loadShareSlide() {
-    $('.your-class').slick({
+    // Aguarda o slick estar disponível
+    if (typeof $ === 'undefined' || typeof $.fn.slick === 'undefined') {
+        setTimeout(loadShareSlide, 100);
+        return;
+    }
+    
+    $('.share-carousel').slick({
         slidesToShow: 4,
         slidesToScroll: 4,
         infinite: false,
@@ -154,9 +152,20 @@ async function loadShareSlide() {
 document.addEventListener('DOMContentLoaded', async function() {
     lazyLoadImages();
     favoriteEvent();
-    shareButtons();
-    loadShareSlide();
+    new QRCode(document.getElementById("qrcode"), {
+        text: url,
+        width: 200,
+        height: 200
+    });
+    $('#btn-share').on('click', function() {
+        $('#shareModal').modal('show');
+    });
+    $('#shareModal').on('shown.bs.modal', function () {
+        loadShareSlide();
+        shareButtons();
+    });
 });
+
 
 document.querySelectorAll('.modal').forEach(async function(modal) {
     modal.addEventListener('shown.bs.modal', function() {
@@ -180,6 +189,31 @@ document.addEventListener('click', function(event) {
             }
         }
     });
+});
+
+$('[data-dateId]').on('click', function() {
+    var dateId = $(this).data('dateid');
+    var date = datesWithObservations[dateId];
+    $('#dateObservationModalLabel').text(date['evento_data_dia']);
+    $('#dateObservationContent').html(date['evento_data_observacao'].replace(/\n/g, '<br>'));
+    $('#dateStartHour').text(date['evento_data_hora_inicial']);
+    if (date['evento_data_hora_final'])
+        $('#dateEndHour').text(' - ' + date['evento_data_hora_final']);
+    $('#dateObservationModal').modal('show');
+});
+
+$('[data-priceId]').on('click', function() {
+    var priceId = $(this).data('priceid');
+    var price = pricesWithObservations[priceId];
+    $('#priceObservationModalLabel').text(price['evento_taxa_titulo']);
+    $('#priceObservationContent').html(price['evento_taxa_observacao'].replace(/\n/g, '<br>'));
+    $('#priceValue').text('R$ '+price['evento_taxa_valor']);
+    $('#priceObservationModal').modal('show');
+});
+
+$('.slide-item').on('click', async function() {
+    $('#imageModal').find('img').attr('src', $(this).attr('src'));
+    $('#imageModal').modal('show');
 });
 
 

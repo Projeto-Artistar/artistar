@@ -6,9 +6,11 @@
 ]); ?>
 
 <?= $this->start("css") ?>
-<link type="text/css" href="<?= url("assets/vendors/slick-1.8.1/slick/slick.css") ?>"/>
-<link type="text/css" href="<?= url("assets/vendors/slick-1.8.1/slick/slick-theme.css") ?>"/>
-<link rel="stylesheet" rel="preload" href="<?= url("assets/css/events/details.css") ?>">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.css" integrity="sha512-6lLUdeQ5uheMFbWm3CP271l14RsX1xtx+J5x2yeIDkkiBpeVTNhTqijME7GgRKKi6hCqovwCoBTlRBEC20M8Mg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.min.css" integrity="sha512-17EgCFERpgZKcm0j0fEq1YCJuyAWdz9KUtv1EjVuaOz8pDnh/0nZxmU6BBXwaaxqoi9PQXnRWqlcDB027hgv9A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.css" integrity="sha512-wR4oNhLBHf7smjy0K4oqzdWumd+r5/+6QO/vDda76MW5iug4PT7v86FoEkySIJft3XA0Ae6axhIvHrqwm793Nw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css" integrity="sha512-yHknP1/AwR+yx26cB1y0cjvQUMvEa2PFzt1c9LlS4pRQ5NOTZFWbhBig+X9G9eYW/8m0/4OXNx8pxJ6z57x0dw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="<?= url("assets/css/events/details.css") ?>">
 <?= $this->stop() ?>
 
 <?= $this->start("conteudo") ?>
@@ -93,7 +95,7 @@
                                         <h5 class="card-title"><?= date('d/m/Y', strtotime($day['evento_data_dia']))?></h5>
                                         <span class="card-subtitle mb-2 text-muted"><?= date('H:i', strtotime($day['evento_data_hora_inicial'])).(!empty($day['evento_data_hora_final']) ? ' - '.date('H:i', strtotime($day['evento_data_hora_final'])) : '') ?></span>
                                         <?php if (!empty($day['evento_data_observacao'])) { ?>
-                                            <span class="btn btn-stellar-blue d-flex align-items-center mt-3 edit-date">
+                                            <span class="btn btn-stellar-blue d-flex align-items-center mt-3 edit-date" data-dateId="<?= $day['evento_data_id'] ?>">
                                                 <i class="fa-solid fa-eye ms-1 me-2" style="text-align: center;"></i> Observações
                                             </span>
                                         <?php } ?>
@@ -127,7 +129,7 @@
                                         </div>
                                         <h6 class="card-subtitle mb-2 text-muted">R$ <?= moedaReal($price['evento_taxa_valor']) ?></h6>
                                         <?php if (!empty($price['evento_taxa_observacao'])) { ?>
-                                            <span class="btn btn-stellar-blue d-flex align-items-center mt-3 edit-date" data-bs-toggle="popover" data-bs-content="<?= nl2br(str_replace("\n", "<br>", $price['evento_taxa_observacao'])) ?>">
+                                            <span class="btn btn-stellar-blue d-flex align-items-center mt-3 edit-date" data-priceId="<?= $price['evento_taxa_id'] ?>">
                                                 <i class="fa-solid fa-eye ms-1 me-2" style="text-align: center;"></i> Observações
                                             </span>
                                         <?php } ?>
@@ -170,45 +172,67 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <div class="d-flex justify-content-between align-items-center mb-4">
+                        <div class="d-flex justify-content-between align-items-center mb-5 mt-2">
                             <div class="flex-grow-1 text-start p-2 border rounded overflow-hidden text-nowrap" id="linkToCopy">
                                 <?= $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] ?>
                             </div>
-                            <button class="btn btn-kiklit-2 ms-2" id="copyUrl">
+                            <button class="btn btn-stellar-blue ms-2" id="copyUrl">
                                 <i class="fas fa-link"></i> Copiar
                             </button>
                         </div>
-                        <div class="wrap-modal-slider">
-                            <div class="your-class">
-                                <div class="share-button d-flex flex-column align-items-center">
-                                    <button class="btn btn-primary mb-2" id="shareFacebook">
-                                        <i class="fab fa-facebook-f fa-2x"></i>
-                                    </button>
-                                    <div>Facebook</div>
-                                </div>
+                        <div class="d-flex justify-content-center mb-5">
+                            <!-- <span>Ou escaneie o QR Code abaixo:</span> -->
+                            <div id="qrcode"></div>
+                        </div>
+                        <div class="wrap-modal-slider mb-3">
+                            <div class="share-carousel">
                                 <div class="share-button d-flex flex-column align-items-center">
                                     <button class="btn btn-success mb-2" id="shareWhatsApp">
                                         <i class="fab fa-whatsapp fa-2x"></i>
                                     </button>
-                                    <div>WhatsApp</div>
+                                    <!-- <div>WhatsApp</div> -->
                                 </div>
                                 <div class="share-button d-flex flex-column align-items-center">
-                                    <button class="btn btn-danger mb-2" id="sharePinterest">
-                                        <i class="fab fa-pinterest fa-2x"></i>
+                                    <button class="btn btn-instagram mb-2" id="shareInstagram">
+                                        <i class="fab fa-instagram fa-2x"></i>
                                     </button>
-                                    <div>Pinterest</div>
+                                    <!-- <div>Instagram</div> -->
                                 </div>
                                 <div class="share-button d-flex flex-column align-items-center">
-                                    <button class="btn btn-info mb-2" id="shareLinkedIn">
-                                        <i class="fab fa-linkedin-in fa-2x"></i>
+                                    <button class="btn btn-dark mb-2" id="shareTwitter">
+                                        <i class="fab fa-x-twitter fa-2x"></i>
                                     </button>
-                                    <div>LinkedIn</div>
+                                    <!-- <div>X</div> -->
                                 </div>
                                 <div class="share-button d-flex flex-column align-items-center">
                                     <button class="btn btn-primary mb-2" id="shareTelegram">
                                         <i class="fab fa-telegram-plane fa-2x"></i>
                                     </button>
-                                    <div>Telegram</div>
+                                    <!-- <div>Telegram</div> -->
+                                </div>
+                                <div class="share-button d-flex flex-column align-items-center">
+                                    <button class="btn btn-danger mb-2" id="sharePinterest">
+                                        <i class="fab fa-pinterest fa-2x"></i>
+                                    </button>
+                                    <!-- <div>Pinterest</div> -->
+                                </div>
+                                <div class="share-button d-flex flex-column align-items-center">
+                                    <button class="btn btn-primary mb-2" id="shareFacebook">
+                                        <i class="fab fa-facebook-f fa-2x"></i>
+                                    </button>
+                                    <!-- <div>Facebook</div> -->
+                                </div>
+                                <div class="share-button d-flex flex-column align-items-center">
+                                    <button class="btn btn-info mb-2" id="shareLinkedIn">
+                                        <i class="fab fa-linkedin-in fa-2x"></i>
+                                    </button>
+                                    <!-- <div>LinkedIn</div> -->
+                                </div>
+                                <div class="share-button d-flex flex-column align-items-center">
+                                    <button class="btn btn-secondary mb-2" id="shareEmail">
+                                        <i class="fas fa-envelope fa-2x"></i>
+                                    </button>
+                                    <!-- <div>Email</div> -->
                                 </div>
                             </div>
                         </div>
@@ -218,9 +242,43 @@
         </div>
     </section>
     <div class="toast-container position-fixed bottom-0 end-0 p-3">
-        <div id="copyToast" class="toast bg-klikit-1" role="alert" aria-live="assertive" aria-atomic="true">
+        <div id="copyToast" class="toast bg-stellar-blue" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="toast-body text-light">
                 URL copiada para a área de transferência!
+            </div>
+        </div>
+    </div>
+</section>
+<section id="modal-date-observation">
+    <div class="modal fade" id="dateObservationModal" tabindex="-1" aria-labelledby="dateObservationModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="dateObservationModalLabel">Observações da Data</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <span id="dateStartHour"></span><span id="dateEndHour"></span>
+                    <hr>
+                    <div id="dateObservationContent"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section id="modal-price-observation">
+    <div class="modal fade" id="priceObservationModal" tabindex="-1" aria-labelledby="priceObservationModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="priceObservationModalLabel">Observações da Taxa</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <span id="priceValue"></span>
+                    <hr>
+                    <div id="priceObservationContent"></div>
+                </div>
             </div>
         </div>
     </div>
@@ -229,13 +287,38 @@
 
 <?= $this->start("js") ?>
 <!-- Outros scripts -->
-<script src="<?= url("assets/vendors/slick-1.8.1/slick/slick.min.js") ?>" defer></script>
-<script defer>const eventId = <?= $event['evento_id'] ?>;</script>
-<script src="<?= url("assets/js/events/details.js") ?>" defer></script>
-<script>
-    $('.slide-item').on('click', async function() {
-        $('#imageModal').find('img').attr('src', $(this).attr('src'));
-        $('#imageModal').modal('show');
-    });
+<script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js" integrity="sha512-HGOnQO9+SP1V92SrtZfjqxxtLmVzqZpjFFekvzZVWoiASSQgSr4cw9Kqd2+l8Llp4Gm0G8GIFJ4ddwZilcdb8A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script defer>
+    const eventId = <?= $event['evento_id'] ?>;
+    const url = window.location.href;
+    const text = document.title;
+    const datesWithObservations = <?php
+        $jsonDays = [];
+        foreach ($days as $day) {
+            if (empty($day['evento_data_observacao'])) continue;
+            $jsonDays[$day['evento_data_id']] = $day;
+            $jsonDays[$day['evento_data_id']]['evento_data_observacao'] = htmlspecialchars($day['evento_data_observacao'], ENT_QUOTES, 'UTF-8');
+            $jsonDays[$day['evento_data_id']]['evento_data_dia'] = date('d/m/Y', strtotime($day['evento_data_dia']));
+            $jsonDays[$day['evento_data_id']]['evento_data_hora_inicial'] = date('H:i', strtotime($day['evento_data_hora_inicial']));
+            if (!empty($day['evento_data_hora_final'])) 
+                $jsonDays[$day['evento_data_id']]['evento_data_hora_final'] = date('H:i', strtotime($day['evento_data_hora_final']));
+        }
+        echo json_encode($jsonDays);
+        unset($jsonDays);
+        
+    ?>;
+    const pricesWithObservations = <?php
+        foreach ($prices as $price) {
+            if (empty($price['evento_taxa_observacao'])) continue;
+            $jsonPrices[$price['evento_taxa_id']] = $price;
+            $jsonPrices[$price['evento_taxa_id']]['evento_taxa_observacao'] = htmlspecialchars($price['evento_taxa_observacao'], ENT_QUOTES, 'UTF-8');
+            $jsonPrices[$price['evento_taxa_id']]['evento_taxa_titulo'] = htmlspecialchars($price['evento_taxa_titulo'], ENT_QUOTES, 'UTF-8');
+            $jsonPrices[$price['evento_taxa_id']]['evento_taxa_valor'] = moedaReal($price['evento_taxa_valor']);
+        }
+        echo json_encode($jsonPrices);
+        unset($jsonPrices);
+    ?>;
 </script>
+<script src="<?= url("assets/js/events/details.js") ?>" defer></script>
 <?= $this->stop() ?>
