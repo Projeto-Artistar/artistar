@@ -72,22 +72,39 @@ class eventsController extends Core {
         return;
     }
 
-
-    public function mySubscriptions() {
-        return;
-    }
-
-    public function subscribe() {
-        return;
-    }
-
-    public function unsubscribe() {
+    public function subscribe($post) {
+        if (!$this->getLogado()) exit($this->renderApiResponse(401, "Usuário não autenticado."));
+        $eventsModel = new Events();
+        $eventId = filter_var($post['eventId'], FILTER_SANITIZE_NUMBER_INT);
+        $subscribed = $eventsModel->checkIfUserIsSubscribed($eventId, $this->getUser()['loja_id']);
+        if (($post['status'] == 'true' || $post['status'] === true)) { 
+            $status = false;
+            if ($subscribed) {
+                try {
+                    $eventsModel->unsubscribeFromEvent($eventId, $this->getUser()['loja_id']);
+                } catch (\Exception $e) {
+                    exit($this->renderApiResponse(500, "Erro ao cancelar inscrição no evento: " . $e->getMessage()));
+                }
+            }
+        } else {
+            $status = true;
+            if (!$subscribed) {
+                try {
+                    $eventsModel->subscribeToEvent($eventId, $this->getUser()['loja_id']);
+                } catch (\Exception $e) {
+                    exit($this->renderApiResponse(500, "Erro ao inscrever no evento: " . $e->getMessage()));
+                }
+            }
+        }
+        exit($this->renderApiResponse(200, "Inscrição realizada com sucesso!", [
+            'subscribed' => $status
+        ]));
         return;
     }
 
     public function myEvents() {
         $this->validaAcesso(true);
-        $salesModel = new Events();
+        $eventsModel = new Events();
         echo $this->view->render("events/myEvents", [
             'layout' => [
                 'title' =>  'Meus Eventos - Artistar', 
@@ -95,9 +112,9 @@ class eventsController extends Core {
                 'header' => true,
                 'footer' => true
             ],
-            'events' => $salesModel->getUserEvents($this->getUser()['id']),
-            'totals' => $salesModel->getUserEventsTotals($this->getUser()['id']),
-            'todayEvents' => $salesModel->getUserEventsToday($this->getUser()['id'])
+            'events' => $eventsModel->getUserEvents($this->getUser()['id']),
+            'totals' => $eventsModel->getUserEventsTotals($this->getUser()['id']),
+            'todayEvents' => $eventsModel->getUserEventsToday($this->getUser()['id'])
         ]);
         return;
     }

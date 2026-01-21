@@ -41,28 +41,30 @@ async function lazyLoadImages() {
 }
 
 async function favoriteEvent() {
-    $('.btn-favorite').on('click', function() {
+    $('#btn-favorite').on('click', function() {
         let icon = $(this);
+        let child = $('#btn-favorite-icon');
         $.ajax({
-            url: '/apis/events/favorite',
+            url: '/events/subscribe',
             type: 'POST',
             data: {
-                eventId: eventId
+                eventId: eventId,
+                status: child.attr('data-icon') == 'mdi:heart' ? true : false
             },
             success: async function(response) {
                 response = JSON.parse(response);
                 if (response.code == 200) {
                     icon.addClass('animate-grow-shrink');
-                    let child = icon.children();
-                    if (response.data.favorite) {
-
-                        //if child has attribute data-icon="mdi:heart-outline"
-
-                        if (child.attr('data-icon') == 'mdi:heart-outline') 
+                    if (response.data.subscribed) { 
+                        if (child.attr('data-icon') == 'mdi:heart-outline') {
                             child.attr('data-icon', 'mdi:heart');
+                            $('#eventTabs').show();
+                        }
                     } else {
-                        if (child.attr('data-icon') == 'mdi:heart') 
+                        if (child.attr('data-icon') == 'mdi:heart') {
                             child.attr('data-icon', 'mdi:heart-outline');
+                            $('#eventTabs').hide();
+                        }
                     }
                     icon.on('animationend', function() {
                         icon.removeClass('animate-grow-shrink');
@@ -81,7 +83,7 @@ async function favoriteEvent() {
     });
 }
 
-async function shareButtons() {
+function shareButtons() {
     $('#copyUrl').on('click', function() {
         navigator.clipboard.writeText(url).then(async function() {
             const toast = new bootstrap.Toast(document.getElementById('copyToast'));
@@ -116,7 +118,7 @@ async function shareButtons() {
     });
 }
 
-async function loadShareSlide() {
+function loadShareSlide() {
     // Aguarda o slick estar disponível
     if (typeof $ === 'undefined' || typeof $.fn.slick === 'undefined') {
         setTimeout(loadShareSlide, 100);

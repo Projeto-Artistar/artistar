@@ -77,10 +77,11 @@ $router->get("/", "eventsController:home", "eventsController.home"); // Tela de 
 $router->get("/{friendlyUrl}", "eventsController:details", "eventsController.details"); // Tela de detalhes do evento com URL amigável
 $router->get("/id/{eventId}", "eventsController:details", "eventsController.details"); // Tela de detalhes do evento por ID (Para eventos privados ou sem URL amigável)
 $router->post("/subscribe", "eventsController:subscribe", "eventsController.subscribe");
-$router->post("/unsubscribe", "eventsController:unsubscribe", "eventsController.unsubscribe");
 $router->get("/my-events", "eventsController:myEvents", "eventsController.myEvents"); // Meus Eventos
 $router->get("/create", "eventsController:create", "eventsController.create"); // Criação de novo evento
 $router->post("/create", "eventsController:insert", "eventsController.insert"); // Armazenamento de novo evento
+
+
 $router->get("/edit/{eventId}", "eventsController:edit", "eventsController.edit");
 $router->post("/edit", "eventsController:update", "eventsController.update"); // Edição do evento
 $router->post("/delete", "eventsController:delete", "eventsController.delete");
@@ -90,9 +91,6 @@ $router->get("/terms", "legalController:terms", "legalController.terms");
 $router->get("/privacy", "legalController:privacy");
 
 $router->group('apis');
-$router->post("/events", "apiController:events", "apiController.events");
-$router->post("/events/details", "apiController:eventDetails", "apiController.eventDetails");
-$router->post("/events/favorite", "apiController:eventFavorite", "apiController.eventFavorite");
 $router->post("/states", "apiController:states", "apiController.states");
 $router->post("/cities", "apiController:cities", "apiController.cities");
 

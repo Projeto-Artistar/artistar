@@ -202,6 +202,25 @@ class Events extends Core
         return $qtdStatement->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function checkIfUserIsSubscribed($eventId, $storeId) {
+        $qtdStatement = $this->SQL->prepare('
+            SELECT
+                COUNT(inscricao_id) AS total
+            FROM
+                inscricoes
+            WHERE
+                inscricao_evento = :eventId
+            AND
+                inscricao_loja = :storeId
+        ');
+
+        $qtdStatement->bindParam(':eventId', $eventId, PDO::PARAM_INT);
+        $qtdStatement->bindParam(':storeId', $storeId, PDO::PARAM_INT);
+        $qtdStatement->execute();
+        $result = $qtdStatement->fetch(PDO::FETCH_ASSOC);
+        return $result['total'] > 0;
+    }
+
     public function getAdvantages($active = true) {
         $active = $active ? 1 : 0;
         $qtdStatement = $this->SQL->prepare('
@@ -354,7 +373,7 @@ class Events extends Core
     }
 
     public function subscribeToEvent($eventId, $storeId) {
-             $storeStatement = $this->SQL->prepare('
+        $storeStatement = $this->SQL->prepare('
             INSERT INTO inscricoes
                 (
                     inscricao_evento,
@@ -372,6 +391,19 @@ class Events extends Core
         $storeStatement->bindParam(':store', $storeId, PDO::PARAM_INT);
         $storeStatement->execute();
         return $this->SQL->lastInsertId();
+    }
+
+    public function unsubscribeFromEvent($eventId, $storeId) {
+        $storeStatement = $this->SQL->prepare('
+            DELETE FROM inscricoes
+            WHERE
+                inscricao_evento = :event
+            AND
+                inscricao_loja = :store
+        ');
+        $storeStatement->bindParam(':event', $eventId, PDO::PARAM_INT);
+        $storeStatement->bindParam(':store', $storeId, PDO::PARAM_INT);
+        return $storeStatement->execute();
     }
 
 }

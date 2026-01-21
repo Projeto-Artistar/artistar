@@ -49,11 +49,6 @@
                                 <span class="text-muted">
                                     <?= $event['hora_inicial'].' - '.$event['hora_final'] ?>
                                 </span>
-                                <br>
-                                <!-- colocar tooltip -->
-                                <span class="obs-lembrete" data-toggle="tooltip" data-placement="top" title="<?= nl2br($event['evento_data_observacao']) ?>">
-                                    <?= nl2br($event['evento_data_observacao']) ?>
-                                </span>
                             </div>
                         </div>
                     <?php endforeach; ?>     

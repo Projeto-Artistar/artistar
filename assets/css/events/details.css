@@ -139,3 +139,7 @@
 .btn-instagram:hover {
     color: gray;
 }
+
+#eventTabs {
+    transition: all 0.3s;
+}
