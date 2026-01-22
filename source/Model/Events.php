@@ -13,6 +13,14 @@ class Events extends Core
         $qtdStatement = $this->SQL->prepare('
             SELECT
                 eve.*,
+                insc.*,
+                CASE 
+                    WHEN COALESCE(insc.inscricao_realizada, 0) = 0 AND COALESCE(insc.inscricao_aprovada, 0) = 0  THEN "pendente"
+                    WHEN insc.inscricao_realizada = 1 AND COALESCE(insc.inscricao_aprovada, 0) = 0 THEN "realizada"
+                    WHEN insc.inscricao_aprovada = 1 THEN "aprovada"
+                    WHEN insc.inscricao_aprovada = -1 THEN "reprovada"
+                    ELSE "desconhecido"
+                END AS status,
                 IF(insc.inscricao_id IS NOT NULL, 1, 0) AS inscrito
             FROM
                 eventos eve
@@ -108,6 +116,7 @@ class Events extends Core
                     WHEN eve.evento_data_final >= CURDATE() AND COALESCE(insc.inscricao_realizada, 0) = 0 AND COALESCE(insc.inscricao_aprovada, 0) = 0  THEN "pendente"
                     WHEN eve.evento_data_final >= CURDATE() AND insc.inscricao_realizada = 1 AND COALESCE(insc.inscricao_aprovada, 0) = 0 THEN "realizada"
                     WHEN eve.evento_data_final >= CURDATE() AND insc.inscricao_aprovada = 1 THEN "aprovada"
+                    WHEN eve.evento_data_final >= CURDATE() AND insc.inscricao_aprovada = -1 THEN "reprovada"
                     ELSE "desconhecido"
                 END AS status,
                 midia.evento_midia_url AS thumbnail,
@@ -141,7 +150,8 @@ class Events extends Core
                 COUNT(DISTINCT(IF(eve.evento_data_final < CURDATE(), eve.evento_id, NULL))) AS total_finalizados,
                 COUNT(DISTINCT(IF(eve.evento_data_final >= CURDATE() AND COALESCE(insc.inscricao_realizada, 0) = 0 AND COALESCE(insc.inscricao_aprovada, 0) = 0, eve.evento_id, NULL))) AS total_pendente,
                 COUNT(DISTINCT(IF(eve.evento_data_final >= CURDATE() AND insc.inscricao_realizada = 1 AND COALESCE(insc.inscricao_aprovada, 0) = 0, eve.evento_id, NULL))) AS total_realizada,
-                COUNT(DISTINCT(IF(eve.evento_data_final >= CURDATE() AND insc.inscricao_aprovada = 1, eve.evento_id, NULL))) AS total_aprovada
+                COUNT(DISTINCT(IF(eve.evento_data_final >= CURDATE() AND insc.inscricao_aprovada = 1, eve.evento_id, NULL))) AS total_aprovada,
+                COUNT(DISTINCT(IF(eve.evento_data_final >= CURDATE() AND insc.inscricao_aprovada = -1, eve.evento_id, NULL))) AS total_reprovada
             FROM
                 eventos AS eve
             LEFT JOIN

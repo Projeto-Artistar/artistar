@@ -31,6 +31,9 @@
                                 <span class="dot bg-nocturne-purple me-2 rounded-5" style="height:10px; width:10px;"></span>Aprovadas (<?= $totals['total_aprovada'] ?>)
                             </li>
                             <li class="col-md-6 col-12 d-flex align-items-center mb-2">
+                                <span class="dot bg-danger me-2 rounded-5" style="height:10px; width:10px;"></span>Reprovadas (<?= $totals['total_reprovada'] ?>)
+                            </li>
+                            <li class="col-md-6 col-12 d-flex align-items-center mb-2">
                                 <span class="dot bg-gray me-2 rounded-5" style="height:10px; width:10px;"></span>Finalizados (<?= $totals['total_finalizados'] ?>)
                             </li>
                         </ul>
@@ -91,6 +94,10 @@
                                         case 'aprovada':
                                             $badgeClass = 'bg-nocturne-purple';
                                             $badgeText = 'Aprovada';
+                                            break;
+                                        case 'reprovada':
+                                            $badgeClass = 'bg-danger';
+                                            $badgeText = 'Reprovada';
                                             break;
                                         default:
                                             $badgeClass = 'bg-gray';

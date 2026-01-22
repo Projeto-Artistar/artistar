@@ -58,12 +58,22 @@ async function favoriteEvent() {
                     if (response.data.subscribed) { 
                         if (child.attr('data-icon') == 'mdi:heart-outline') {
                             child.attr('data-icon', 'mdi:heart');
-                            $('#eventTabs').show();
+                            const eventTabs = $('#eventTabs');
+                            eventTabs.css('display', 'flex');
+                            // Trigger animation
+                            setTimeout(() => {
+                                eventTabs.removeClass('hide-with-animation').addClass('show-with-animation');
+                            }, 10);
                         }
                     } else {
                         if (child.attr('data-icon') == 'mdi:heart') {
                             child.attr('data-icon', 'mdi:heart-outline');
-                            $('#eventTabs').hide();
+                            const eventTabs = $('#eventTabs');
+                            eventTabs.removeClass('show-with-animation').addClass('hide-with-animation');
+                            // Hide after animation completes
+                            setTimeout(() => {
+                                eventTabs.css('display', 'none');
+                            }, 400);
                         }
                     }
                     icon.on('animationend', function() {
@@ -217,5 +227,19 @@ $('.slide-item').on('click', async function() {
     $('#imageModal').find('img').attr('src', $(this).attr('src'));
     $('#imageModal').modal('show');
 });
+
+$('#inputUserTags').select2({
+    placeholder: "Selecione as vantagens do evento",
+    allowClear: true,
+    tags: true,
+    // dropdownParent: $('#newModal .modal-body'),
+    width: '100%',
+    language: {
+        noResults: function() {
+            return "Adicione tags personalizadas";
+        }
+    }
+});
+
 
 

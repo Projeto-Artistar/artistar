@@ -61,8 +61,12 @@ class eventsController extends Core {
         $prices = $dados->getEventPrices(filter_var($data['eventId'], FILTER_SANITIZE_NUMBER_INT));
         $photos = $dados->getEventPhotos(filter_var($data['eventId'], FILTER_SANITIZE_NUMBER_INT));
         echo $this->view->render("events/details", [
-            'title' =>  $event['evento_nome'].' - Artistar',
-            'logado'        => $this->getLogado(),
+            'layout' => [
+                'title' =>  $event['evento_nome'].' - Artistar', 
+                'logado' => $this->getLogado(),
+                'header' => true,
+                'footer' => true
+            ],
             'event' => $event,
             'days' => $days,
             'advantages' => $advantages,

@@ -1,15 +1,11 @@
-<?= $this->layout("base", [
-    'title' => $title, 
-    'logado' => $logado,
-    'header' => true,
-    'footer' => true
-]); ?>
+<?= $this->layout("base", $layout); ?>
 
 <?= $this->start("css") ?>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.css" integrity="sha512-6lLUdeQ5uheMFbWm3CP271l14RsX1xtx+J5x2yeIDkkiBpeVTNhTqijME7GgRKKi6hCqovwCoBTlRBEC20M8Mg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.min.css" integrity="sha512-17EgCFERpgZKcm0j0fEq1YCJuyAWdz9KUtv1EjVuaOz8pDnh/0nZxmU6BBXwaaxqoi9PQXnRWqlcDB027hgv9A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.css" integrity="sha512-wR4oNhLBHf7smjy0K4oqzdWumd+r5/+6QO/vDda76MW5iug4PT7v86FoEkySIJft3XA0Ae6axhIvHrqwm793Nw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css" integrity="sha512-yHknP1/AwR+yx26cB1y0cjvQUMvEa2PFzt1c9LlS4pRQ5NOTZFWbhBig+X9G9eYW/8m0/4OXNx8pxJ6z57x0dw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 <link rel="stylesheet" href="<?= url("assets/css/events/details.css") ?>">
 <?= $this->stop() ?>
 
@@ -56,7 +52,7 @@
     <?php } ?>
     <section class="container pt-4 mb-3">
         <div class="row align-items-center">
-            <div class="col-md-6" id="eventTitle"><h1><?= $event['evento_nome']?></h1></div>
+            <div class="col-md-6 color-nocturne-purple" id="eventTitle"><h1><?= $event['evento_nome']?></h1></div>
             <div class="col-md-6 d-md-flex d-block justify-content-end" id="column-buttons">
                 <div class="event-buttons">
                     <button class="btn btn-favorite shadow-none btn-event-action" id="btn-favorite"><span class="iconify btn-icon" id="btn-favorite-icon" data-icon="<?= $event['inscrito'] == 1 ? 'mdi:heart' : 'mdi:heart-outline' ?>" data-inline="false"></span></button>
@@ -64,19 +60,19 @@
                 </div>
             </div>
         </div>
-        <div class="row" id="eventTabs">
+        <div class="row p-2 show-with-animation" id="eventTabs" style="<?= $event['inscrito'] == 1 ? '' : 'display:none;' ?>">
             <ul class="nav nav-tabs" role="tablist">
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Informações</button>
+                    <button class="nav-link link-stellar-blue text-decoration-none active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Informações</button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="meus-dados-tab" data-bs-toggle="tab" data-bs-target="#meus-dados" type="button" role="tab" aria-controls="meus-dados" aria-selected="false">Meus Dados</button>
+                    <button class="nav-link link-stellar-blue text-decoration-none" id="meus-dados-tab" data-bs-toggle="tab" data-bs-target="#meus-dados" type="button" role="tab" aria-controls="meus-dados" aria-selected="false">Meus Dados</button>
                 </li>
             </ul>
         </div>
     </section>
     <div class="tab-content">
-        <div id="home" class="tab-pane fade show active" role="tabpanel" aria-labelledby="home-tab">
+        <div id="home" class="tab-pane fade" role="tabpanel" aria-labelledby="home-tab">
             <section class="container mb-5">
                 <div class="row my-2">
                     <div class="col-md-6" id="eventAddress">
@@ -169,15 +165,50 @@
             </section>
             <?php } ?>
         </div>
-        <div id="meus-dados" class="tab-pane fade" role="tabpanel" aria-labelledby="meus-dados-tab">
-            <section class="container mb-5">
+        <div id="meus-dados" class="tab-pane fade show active" role="tabpanel" aria-labelledby="meus-dados-tab">
+            <form class="container mb-5" id="form-userSubscription">
                 <div class="row my-2">
-                    <div class="col-12">
-                        <h3>Meus Dados</h3>
-                        <p>Conteúdo da aba Meus Dados.</p>
+                    <div class="col-12"><h3>Meus Dados</h3></div>
+                </div>
+                <div class="row my-2"> 
+                    <div class="col-md-6 col-12 mb-3">
+                        <div class="">
+                            <label for="inputName" class="form-label px-0">Status da Inscrição</label>
+                            <select class="form-select input-stellar-blue" id="inputSubscriptionStatus">
+                                <option value="pendente" <?= $event['status'] == 'pendente' ? 'selected' : '' ?>>Pendente</option>
+                                <option value="realizada" <?= $event['status'] == 'realizada' ? 'selected' : '' ?>>Realizada</option>
+                                <option value="aprovada" <?= $event['status'] == 'aprovada' ? 'selected' : '' ?>>Aprovada</option>
+                                <option value="rejeitada" <?= $event['status'] == 'rejeitada' ? 'selected' : '' ?>>Rejeitada</option>
+                            </select>
+                        </div>
+                        <div class="mt-3">
+                            <label for="inputUserTags" class="form-label px-0">Tags</label>
+                            <select class="form-select input-stellar-blue" id="inputUserTags" multiple="multiple">
+                                <?php if (!empty($event['inscricao_tags_evento'])): ?>
+                                    <?php foreach (explode('|', $event['inscricao_tags_evento']) as $tag): ?>
+                                        <option value="<?= trim($tag) ?>" selected><?= trim($tag) ?></option>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-12 mb-3">
+                        <label for="inputUserObservation" class="form-label">Observações</label>
+                        <textarea class="form-control input-stellar-blue" id="inputUserObservation" rows="4" placeholder="Observações do usuário..."><?= !empty($event['inscricao_observacao_loja']) ? $event['inscricao_observacao_loja'] : '' ?></textarea>
                     </div>
                 </div>
-            </section>
+                <div class="row my-2">
+                    <div class="col-12">
+                        <label class="form-label px-0">Feedback (preencher após o evento)</label>
+                        <textarea class="form-control input-stellar-blue" id="inputUserFeedback" rows="4" placeholder="Feedback do usuário..." <?= ($event['evento_data_final'] < date('Y-m-d')) ? '' : 'disabled' ?>><?= !empty($event['inscricao_feedback_loja']) ? $event['inscricao_feedback_loja'] : '' ?></textarea>
+                    </div>
+                </div>
+                <div class="row my-2">
+                    <div class="col-12 d-flex justify-content-end">
+                        <button type="submit" class="btn btn-stellar-blue" id="btn-save-userSubscription">Salvar</button>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
     <section id="slide-item-modal">
@@ -315,6 +346,7 @@
 <!-- Outros scripts -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js" integrity="sha512-HGOnQO9+SP1V92SrtZfjqxxtLmVzqZpjFFekvzZVWoiASSQgSr4cw9Kqd2+l8Llp4Gm0G8GIFJ4ddwZilcdb8A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script defer>
     const eventId = <?= $event['evento_id'] ?>;
     const url = window.location.href;
@@ -330,7 +362,7 @@
             if (!empty($day['evento_data_hora_final'])) 
                 $jsonDays[$day['evento_data_id']]['evento_data_hora_final'] = date('H:i', strtotime($day['evento_data_hora_final']));
         }
-        echo json_encode($jsonDays);
+        echo empty($jsonDays) ? '{}' : json_encode($jsonDays);
         unset($jsonDays);
         
     ?>;
@@ -342,7 +374,7 @@
             $jsonPrices[$price['evento_taxa_id']]['evento_taxa_titulo'] = htmlspecialchars($price['evento_taxa_titulo'], ENT_QUOTES, 'UTF-8');
             $jsonPrices[$price['evento_taxa_id']]['evento_taxa_valor'] = moedaReal($price['evento_taxa_valor']);
         }
-        echo json_encode($jsonPrices);
+        echo empty($jsonPrices) ? '{}' : json_encode($jsonPrices);
         unset($jsonPrices);
     ?>;
 </script>

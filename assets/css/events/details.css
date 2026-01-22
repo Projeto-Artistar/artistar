@@ -49,6 +49,28 @@
     100% { transform: translateX(0); }
 }
 
+@keyframes slideDownFade {
+    0% { 
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    100% { 
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideUpFade {
+    0% { 
+        opacity: 1;
+        transform: translateY(0);
+    }
+    100% { 
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+}
+
 @keyframes grow-shrink {
     0% { transform: scale(1); }
     50% { transform: scale(1.2); } /* Aumenta o tamanho para 120% */
@@ -72,13 +94,13 @@
 
 .btn-share > .btn-icon,
 .btn-favorite > .btn-icon {
-    color: #9C5EF2;
+    color: var(--stellar-blue);
     transition: color .15s ease-in-out;
 }
 
 .btn-share:hover > .btn-icon,
 .btn-favorite:hover > .btn-icon {
-    color: #6D0FF2;
+    color: var(--stellar-blue-shadow);
 }
 
 .animate-grow-shrink {
@@ -123,7 +145,7 @@
 }
 
 .slick-prev:before, .slick-next:before {
-    color: #6D0FF2;
+    color: var(--nocturne-purple)
 }
 
 .content {
@@ -141,5 +163,29 @@
 }
 
 #eventTabs {
-    transition: all 0.3s;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 0.4s ease-out, opacity 0.4s ease-out;
+}
+
+#eventTabs.show-with-animation {
+    max-height: 500px;
+    opacity: 1;
+    animation: slideDownFade 0.4s ease-out forwards;
+}
+
+#eventTabs.hide-with-animation {
+    max-height: 0;
+    opacity: 0;
+    animation: slideUpFade 0.4s ease-out forwards;
+}
+
+.nav-tabs .nav-link.active.link-stellar-blue {
+    color: var(--nocturne-purple)
+}
+
+.select2-container {
+    padding-right: 0;
+    padding-left: 0;
 }
