@@ -107,7 +107,9 @@
                                 ?>
                             </h5>
                             <p class="card-text descricao-evento">
-                                <?= $event['evento_descricao'] ?>
+                                <?php foreach (explode('|', $event['inscricao_tags_evento']) as $tag): ?>
+                                    <span class="badge bg-light text-dark me-1"><?= trim($tag) ?></span>
+                                <?php endforeach; ?>                    
                             </p>
                         </div>
                     </div>

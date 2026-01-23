@@ -77,6 +77,7 @@ $router->get("/", "eventsController:home", "eventsController.home"); // Tela de 
 $router->get("/{friendlyUrl}", "eventsController:details", "eventsController.details"); // Tela de detalhes do evento com URL amigável
 $router->get("/id/{eventId}", "eventsController:details", "eventsController.details"); // Tela de detalhes do evento por ID (Para eventos privados ou sem URL amigável)
 $router->post("/subscribe", "eventsController:subscribe", "eventsController.subscribe");
+$router->post("/update-subscription", "eventsController:updateSubscription", "eventsController.updateSubscription");
 $router->get("/my-events", "eventsController:myEvents", "eventsController.myEvents"); // Meus Eventos
 $router->get("/create", "eventsController:create", "eventsController.create"); // Criação de novo evento
 $router->post("/create", "eventsController:insert", "eventsController.insert"); // Armazenamento de novo evento

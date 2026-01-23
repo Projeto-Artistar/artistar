@@ -416,4 +416,54 @@ class Events extends Core
         return $storeStatement->execute();
     }
 
+    public function updateUserSubscription($eventId, $storeId, $status = null, $tags = null, $observation = null, $feedback = null) {
+        $status = filter_var($status, FILTER_SANITIZE_STRING);
+        $observation = filter_var($observation, FILTER_SANITIZE_STRING);
+        $feedback = filter_var($feedback, FILTER_SANITIZE_STRING);
+        $storeStatement = $this->SQL->prepare('
+            UPDATE 
+                inscricoes 
+            SET
+                inscricao_realizada = :realizada,
+                inscricao_aprovada = :aprovada,
+                inscricao_tags_evento = :tags,
+                inscricao_observacao_loja = :observation,
+                inscricao_feedback_loja = :feedback
+            WHERE
+                inscricao_evento = :event
+            AND
+                inscricao_loja = :store
+        ');
+        $tagsString = $tags;
+        if (is_array($tags))$tagsString = implode('|', $tags);
+        $tagsString = filter_var($tagsString, FILTER_SANITIZE_STRING);
+        switch ($status) {
+            case 'pendente':
+            default:
+                $realizada = 0;
+                $aprovada = 0;
+                break;
+            case 'realizada':
+                $realizada = 1;
+                $aprovada = 0;
+                break;
+            case 'aprovada':
+                $realizada = 1;
+                $aprovada = 1;
+                break;
+            case 'reprovada':
+                $realizada = 1;
+                $aprovada = -1;
+                break;
+        }
+        $storeStatement->bindParam(':realizada', $realizada, PDO::PARAM_INT);
+        $storeStatement->bindParam(':aprovada', $aprovada, PDO::PARAM_INT);
+        $storeStatement->bindParam(':tags', $tagsString, PDO::PARAM_STR);
+        $storeStatement->bindParam(':observation', $observation, PDO::PARAM_STR);
+        $storeStatement->bindParam(':feedback', $feedback, PDO::PARAM_STR);
+        $storeStatement->bindParam(':event', $eventId, PDO::PARAM_INT);
+        $storeStatement->bindParam(':store', $storeId, PDO::PARAM_INT);
+        return $storeStatement->execute();
+    }
+
 }

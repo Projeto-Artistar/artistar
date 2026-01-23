@@ -10,6 +10,7 @@
 <?= $this->stop() ?>
 
 <?= $this->start("conteudo") ?>
+
 <section class="content avoid-navbar">
     <?php if (!empty($photos)) {?>
     <section class="section-slide">
@@ -72,7 +73,7 @@
         </div>
     </section>
     <div class="tab-content">
-        <div id="home" class="tab-pane fade" role="tabpanel" aria-labelledby="home-tab">
+        <div id="home" class="tab-pane fade show active" role="tabpanel" aria-labelledby="home-tab">
             <section class="container mb-5">
                 <div class="row my-2">
                     <div class="col-md-6" id="eventAddress">
@@ -165,7 +166,7 @@
             </section>
             <?php } ?>
         </div>
-        <div id="meus-dados" class="tab-pane fade show active" role="tabpanel" aria-labelledby="meus-dados-tab">
+        <div id="meus-dados" class="tab-pane fade" role="tabpanel" aria-labelledby="meus-dados-tab">
             <form class="container mb-5" id="form-userSubscription">
                 <div class="row my-2">
                     <div class="col-12"><h3>Meus Dados</h3></div>
@@ -174,16 +175,16 @@
                     <div class="col-md-6 col-12 mb-3">
                         <div class="">
                             <label for="inputName" class="form-label px-0">Status da Inscrição</label>
-                            <select class="form-select input-stellar-blue" id="inputSubscriptionStatus">
+                            <select class="form-select input-stellar-blue" name="inputSubscriptionStatus" id="inputSubscriptionStatus">
                                 <option value="pendente" <?= $event['status'] == 'pendente' ? 'selected' : '' ?>>Pendente</option>
                                 <option value="realizada" <?= $event['status'] == 'realizada' ? 'selected' : '' ?>>Realizada</option>
                                 <option value="aprovada" <?= $event['status'] == 'aprovada' ? 'selected' : '' ?>>Aprovada</option>
-                                <option value="rejeitada" <?= $event['status'] == 'rejeitada' ? 'selected' : '' ?>>Rejeitada</option>
+                                <option value="reprovada" <?= $event['status'] == 'reprovada' ? 'selected' : '' ?>>Reprovada</option>
                             </select>
                         </div>
                         <div class="mt-3">
                             <label for="inputUserTags" class="form-label px-0">Tags</label>
-                            <select class="form-select input-stellar-blue" id="inputUserTags" multiple="multiple">
+                            <select class="form-select input-stellar-blue" name="inputUserTags[]" id="inputUserTags" multiple="multiple">
                                 <?php if (!empty($event['inscricao_tags_evento'])): ?>
                                     <?php foreach (explode('|', $event['inscricao_tags_evento']) as $tag): ?>
                                         <option value="<?= trim($tag) ?>" selected><?= trim($tag) ?></option>
@@ -194,13 +195,13 @@
                     </div>
                     <div class="col-md-6 col-12 mb-3">
                         <label for="inputUserObservation" class="form-label">Observações</label>
-                        <textarea class="form-control input-stellar-blue" id="inputUserObservation" rows="4" placeholder="Observações do usuário..."><?= !empty($event['inscricao_observacao_loja']) ? $event['inscricao_observacao_loja'] : '' ?></textarea>
+                        <textarea class="form-control input-stellar-blue" name="inputUserObservation" id="inputUserObservation" rows="4" placeholder="Observações do usuário..."><?= !empty($event['inscricao_observacao_loja']) ? $event['inscricao_observacao_loja'] : '' ?></textarea>
                     </div>
                 </div>
                 <div class="row my-2">
                     <div class="col-12">
                         <label class="form-label px-0">Feedback (preencher após o evento)</label>
-                        <textarea class="form-control input-stellar-blue" id="inputUserFeedback" rows="4" placeholder="Feedback do usuário..." <?= ($event['evento_data_final'] < date('Y-m-d')) ? '' : 'disabled' ?>><?= !empty($event['inscricao_feedback_loja']) ? $event['inscricao_feedback_loja'] : '' ?></textarea>
+                        <textarea class="form-control input-stellar-blue" name="inputUserFeedback" id="inputUserFeedback" rows="4" placeholder="Feedback do usuário..." <?= ($event['evento_data_final'] < date('Y-m-d')) ? '' : 'disabled' ?>><?= !empty($event['inscricao_feedback_loja']) ? $event['inscricao_feedback_loja'] : '' ?></textarea>
                     </div>
                 </div>
                 <div class="row my-2">
@@ -337,6 +338,17 @@
                     <div id="priceObservationContent"></div>
                 </div>
             </div>
+        </div>
+    </div>
+</section>
+<section id="toasts-section">
+    <div class="toast align-items-center text-light bg-success border-0 toast-sucesso m-3" id="myToast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="3000">
+        <div class="toast-header">
+            <strong class="me-auto" id="toastTitle">Título</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body" id="toastBody">
+            Mensagem do toast.
         </div>
     </div>
 </section>

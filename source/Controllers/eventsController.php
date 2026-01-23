@@ -106,6 +106,26 @@ class eventsController extends Core {
         return;
     }
 
+    public function updateSubscription($post) {
+        if (!$this->getLogado()) exit($this->renderApiResponse(401, "Usuário não autenticado."));
+        $eventsModel = new Events();
+        $eventId = filter_var($post['eventId'], FILTER_SANITIZE_NUMBER_INT);
+        try {
+            $eventsModel->updateUserSubscription(
+                $eventId,
+                $this->getUser()['loja_id'],
+                $post['inputSubscriptionStatus'],
+                $post['inputUserTags'],
+                $post['inputUserObservation'],
+                isset($post['inputUserFeedback']) ? $post['inputUserFeedback'] : null
+            );
+        } catch (\Exception $e) {
+            exit($this->renderApiResponse(500, "Erro ao atualizar inscrição no evento: " . $e->getMessage()));
+        }
+        exit($this->renderApiResponse(200, "Inscrição atualizada com sucesso!"));
+        return;
+    }
+
     public function myEvents() {
         $this->validaAcesso(true);
         $eventsModel = new Events();

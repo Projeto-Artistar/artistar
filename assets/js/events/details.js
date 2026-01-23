@@ -70,6 +70,8 @@ async function favoriteEvent() {
                             child.attr('data-icon', 'mdi:heart-outline');
                             const eventTabs = $('#eventTabs');
                             eventTabs.removeClass('show-with-animation').addClass('hide-with-animation');
+                            // Voltar para a primeira aba
+                            $('#home-tab').click();
                             // Hide after animation completes
                             setTimeout(() => {
                                 eventTabs.css('display', 'none');
@@ -239,6 +241,38 @@ $('#inputUserTags').select2({
             return "Adicione tags personalizadas";
         }
     }
+});
+
+$('#form-userSubscription').on('submit', function(e) {
+    e.preventDefault();
+    const formData = $(this).serializeArray();
+    formData.push({ name: 'eventId', value: eventId });
+    $.ajax({
+        url: '/events/update-subscription',
+        type: 'POST',
+        data: formData,
+        success: async function(response) {
+            response = JSON.parse(response);
+            if (response.code == 200) {
+                $('#toastTitle').text('Alteração Salva!');
+                $('#toastBody').text(response.message);
+                $('#myToast').removeClass('bg-danger')
+                $('#myToast').addClass('bg-success');
+            } else if (response.code == 401) {
+                window.location.href = '/login';
+            } else {
+                $('#toastTitle').text('Erro!');
+                $('#toastBody').text(response.message);
+                $('#myToast').removeClass('bg-success')
+                $('#myToast').addClass('bg-danger');
+            }
+            var myToast = new bootstrap.Toast(document.getElementById('myToast'));
+            myToast.show();
+        },
+        error: function(error) {
+            console.log('An error occurred');
+        }
+    });
 });
 
 

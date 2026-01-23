@@ -70,6 +70,17 @@
     border-color: var(--nocturne-purple-light) !important;
 }
 
+.evento-reprovada {
+    background-color: red;
+    border-color: red;
+}
+
+.evento-reprovada:hover {
+    background-color: #ff4d4d;
+    border-color: #ff4d4d;
+}
+
+
 .fc-toolbar-title {
     color: var(--gray);
 }
