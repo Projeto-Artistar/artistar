@@ -167,25 +167,31 @@ class eventsController extends Core {
         } catch (\Exception $e) {
             exit($this->renderApiResponse(500, "Erro ao atualizar produto: " . $e->getMessage()));
         }
-        foreach($post['eventAdvantages'] as $advantageId) {
-            try {
-                $eventsModel->addEventAdvantage($event, $advantageId);
-            } catch (\Exception $e) {
-                $mensagens[] = "Erro ao adicionar vantagem ID {$advantageId}: " . $e->getMessage();
+        if (isset($post['eventAdvantages']) && is_array($post['eventAdvantages'])) {
+            foreach($post['eventAdvantages'] as $advantageId) {
+                try {
+                    $eventsModel->addEventAdvantage($event, $advantageId);
+                } catch (\Exception $e) {
+                    $mensagens[] = "Erro ao adicionar vantagem ID {$advantageId}: " . $e->getMessage();
+                }
             }
         }
-        foreach($post['dates'] as $date) {
-            try {
-                $eventsModel->addEventDate($event, $date);
-            } catch (\Exception $e) {
-                $mensagens[] = "Erro ao adicionar data {$date['day']}: " . $e->getMessage();
+        if (isset($post['dates']) && is_array($post['dates'])) {
+            foreach($post['dates'] as $date) {
+                try {
+                    $eventsModel->addEventDate($event, $date);
+                } catch (\Exception $e) {
+                    $mensagens[] = "Erro ao adicionar data {$date['day']}: " . $e->getMessage();
+                }
             }
         }
-        foreach($post['prices'] as $price) {
-            try {
-                $eventsModel->addEventPrice($event, $price);
-            } catch (\Exception $e) {
-                $mensagens[] = "Erro ao adicionar preço {$price['type']}: " . $e->getMessage();
+        if (isset($post['prices']) && is_array($post['prices'])) {
+            foreach($post['prices'] as $price) {
+                try {
+                    $eventsModel->addEventPrice($event, $price);
+                } catch (\Exception $e) {
+                    $mensagens[] = "Erro ao adicionar preço {$price['type']}: " . $e->getMessage();
+                }
             }
         }
         try {

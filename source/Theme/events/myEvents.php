@@ -73,7 +73,15 @@
                 <a class="col-lg-3 col-md-4 col-sm-6 mb-4 evento" href="<?= url('events/id/'.$event['evento_id']) ?>">
                     <div class="card">
                         <img class="card-img-top" src="<?= !empty($event['thumbnail']) ? $event['thumbnail'] : '/assets/image/logo.png' ?>" alt="Card image cap">
-                        <span class="image-overlay"><?= $event['data_inicial'].($event['evento_data_inicial'] != $event['evento_data_final'] ? ' - '.$event['data_final'] : '') ?></span>
+                        <?php if (!empty($event['evento_data_inicial']) && !empty($event['evento_data_final'])): ?>
+                            <span class="image-overlay">
+                                <?php if (date('Y-m-d', strtotime($event['evento_data_inicial'])) != date('Y-m-d', strtotime($event['evento_data_final']))) : ?>
+                                    <?= date('d/m/Y', strtotime($event['evento_data_inicial'])) . ' - ' . date('d/m/Y', strtotime($event['evento_data_final'])) ?>
+                                <?php else: ?>
+                                    <?= date('d/m/Y', strtotime($event['evento_data_inicial'])).' '.(date('H:i', strtotime($event['evento_data_inicial'])).' - '.date('H:i', strtotime($event['evento_data_final']))) ?>
+                                <?php endif; ?>
+                            </span>
+                        <?php endif; ?>
                         <div class="card-body">
                             <h5 class="card-title d-flex justify-content-between align-items-center">
                                 <span class="color-stellar-blue nome-produto"><?= $event['evento_nome'] ?></span>
@@ -127,14 +135,17 @@
 <script>
     <?php 
         $jsonEvents = [];
-        foreach ($events as $event) {
-            $jsonEvents[] = [
+        foreach ($events as $key =>$event) {
+            // if (empty($event['evento_data_inicial'])) continue;
+            $jsonEvents[$key] = [
                 'title' => $event['evento_nome'],
                 'start' => $event['evento_data_inicial'],
-                'end' => $event['evento_data_inicial'] != $event['evento_data_final'] ? date('Y-m-d', strtotime($event['evento_data_final'].' +1 day')) : null,
                 'url' => url('events/id/'.$event['evento_id']),
                 'classNames' => ['calendario-evento', 'evento-'.$event['status']]
             ];
+            if (date('Y-m-d', strtotime($event['evento_data_inicial'])) != date('Y-m-d', strtotime($event['evento_data_final']))) {
+                $jsonEvents[$key]['end'] = date('Y-m-d H:i:s', strtotime($event['evento_data_final'].' +1 day'));
+            }
         }
         echo "const events = ".json_encode($jsonEvents).";";
     ?>

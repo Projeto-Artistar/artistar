@@ -119,9 +119,7 @@ class Events extends Core
                     WHEN eve.evento_data_final >= CURDATE() AND insc.inscricao_aprovada = -1 THEN "reprovada"
                     ELSE "desconhecido"
                 END AS status,
-                midia.evento_midia_url AS thumbnail,
-                DATE_FORMAT(eve.evento_data_inicial, "%d/%m/%Y") AS data_inicial,
-                DATE_FORMAT(eve.evento_data_final, "%d/%m/%Y") AS data_final
+                midia.evento_midia_url AS thumbnail
             FROM
                 eventos AS eve
             LEFT JOIN
@@ -371,6 +369,10 @@ class Events extends Core
     }
 
     public function updateEventComplementaryInfo($eventId) {
+        //Data_inicial = A menor data e a hora inicial desta data
+        //Data_final = A maior data e a hora final desta data
+        // Iniciar transação
+        $this->SQL->beginTransaction();
         $storeStatement = $this->SQL->prepare('
             UPDATE eventos SET
                 evento_data_inicial = (SELECT MIN(evento_data_dia) FROM eventos_datas WHERE evento_data_evento = :event),
@@ -379,7 +381,18 @@ class Events extends Core
                 evento_id = :event
         ');
         $storeStatement->bindParam(':event', $eventId, PDO::PARAM_INT);
-        return $storeStatement->execute();
+        $storeStatement->execute();
+        //Agora atualizar as datas com base na data inicial e final
+        $storeStatement = $this->SQL->prepare('
+            UPDATE eventos e1 SET
+                evento_data_inicial = (SELECT CONCAT(evento_data_dia, " ", evento_data_hora_inicial) FROM eventos_datas WHERE evento_data_evento = :event AND evento_data_dia = e1.evento_data_inicial LIMIT 1),
+                evento_data_final = (SELECT CONCAT(evento_data_dia, " ", evento_data_hora_final) FROM eventos_datas WHERE evento_data_evento = :event AND evento_data_dia = e1.evento_data_final LIMIT 1)
+            WHERE
+                evento_id = :event
+        ');
+        $storeStatement->bindParam(':event', $eventId, PDO::PARAM_INT);
+        $storeStatement->execute();
+        $this->SQL->commit();
     }
 
     public function subscribeToEvent($eventId, $storeId) {

@@ -30,52 +30,91 @@
     transition: all .15s ease-in-out;
 }
 
-.evento-finalizado {
+.fc-daygrid-dot-event.evento-finalizado {
+    color: var(--gray) !important;
+}
+.evento-finalizado > .fc-daygrid-event-dot {
+    border: calc(var(--fc-daygrid-event-dot-width) / 2) solid var(--gray);
+}
+
+.fc-daygrid-block-event.evento-finalizado {
     background-color: var(--gray) !important;
     border-color: var(--gray) !important;
 }
 
-.evento-finalizado:hover {
+.fc-daygrid-block-event.evento-finalizado:hover {
     background-color: var(--gray-light) !important;
     border-color: var(--gray-light) !important;
 }
 
-.evento-pendente {
+.fc-daygrid-dot-event.evento-pendente {
+    color: var(--cotton-candy) !important;
+}
+
+.evento-pendente > .fc-daygrid-event-dot {
+    border: calc(var(--fc-daygrid-event-dot-width) / 2) solid var(--cotton-candy);
+}
+
+.fc-daygrid-block-event.evento-pendente {
     background-color: var(--cotton-candy) !important;
     border-color: var(--cotton-candy) !important;
 }
 
-.evento-pendente:hover {
+.fc-daygrid-block-event.evento-pendente:hover {
     background-color: var(--cotton-candy-light) !important;
     border-color: var(--cotton-candy-light) !important;
 }
 
-.evento-realizada {
+.fc-daygrid-dot-event.evento-realizada {
+    color: var(--stellar-blue) !important;
+}
+
+.evento-realizada > .fc-daygrid-event-dot {
+    border: calc(var(--fc-daygrid-event-dot-width) / 2) solid var(--stellar-blue);
+}
+
+.fc-daygrid-block-event.evento-realizada {
     background-color: var(--stellar-blue) !important;
     border-color: var(--stellar-blue) !important;
 }
 
-.evento-realizada:hover {
+.fc-daygrid-block-event.evento-realizada:hover {
     background-color: var(--stellar-blue-light) !important;
     border-color: var(--stellar-blue-light) !important;
 }
 
-.evento-aprovada {
+.fc-daygrid-dot-event.evento-aprovada {
+    color: var(--nocturne-purple) !important;
+}
+
+.evento-aprovada > .fc-daygrid-event-dot {
+    border: calc(var(--fc-daygrid-event-dot-width) / 2) solid var(--nocturne-purple);
+}
+
+.fc-daygrid-block-event.evento-aprovada {
     background-color: var(--nocturne-purple) !important;
     border-color: var(--nocturne-purple) !important;
 }
 
-.evento-aprovada:hover {
+.fc-daygrid-block-event.evento-aprovada:hover {
     background-color: var(--nocturne-purple-light) !important;
     border-color: var(--nocturne-purple-light) !important;
 }
 
-.evento-reprovada {
+.evento-reprovada > .fc-daygrid-event-dot {
+    border: calc(var(--fc-daygrid-event-dot-width) / 2) solid red;
+}
+
+.fc-daygrid-dot-event.evento-reprovada {
+    color: red;
+}
+
+.fc-daygrid-block-event.evento-reprovada {
     background-color: red;
     border-color: red;
 }
 
-.evento-reprovada:hover {
+.fc-daygrid-block-event.evento-reprovada:hover {
     background-color: #ff4d4d;
     border-color: #ff4d4d;
 }
