@@ -20,7 +20,8 @@ class Events extends Core
                     WHEN insc.inscricao_aprovada = 1 THEN "aprovada"
                     WHEN insc.inscricao_aprovada = -1 THEN "reprovada"
                     ELSE "desconhecido"
-                END AS status
+                END AS status,
+                (SELECT COUNT(inscricao_id) FROM inscricoes WHERE inscricao_evento = eve.evento_id AND COALESCE(inscricao_cancelada, 0) = 0) AS total_inscritos
             FROM
                 eventos eve
             LEFT JOIN

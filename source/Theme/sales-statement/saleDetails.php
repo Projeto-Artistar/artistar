@@ -30,6 +30,15 @@
                     </div>
                 </div>
                 <div class="col-12 mb-3">
+                    <label for="event-select" class="form-label">Evento</label>
+                    <select class="form-select form-select-sm input-stellar-blue" id="event-select" name="event" aria-label="Evento">
+                        <?php foreach ($events as $event): ?>
+                            <option value="<?= $event['evento_id'] ?>" <?= $saleInfo['evento_id'] === $event['evento_id'] ? 'selected' : '' ?>><?= $event['evento_nome'] ?></option>
+                        <?php endforeach; ?>
+                        <option value="" <?= empty($saleInfo['evento_id']) ? 'selected' : '' ?>>-- Venda Avulsa --</option>
+                    </select>
+                </div>
+                <div class="col-12 mb-3">
                     <label for="payment-select" class="form-label">Método de Pagamento</label>
                     <select class="form-select form-select-sm input-stellar-blue" id="payment-select" name="payment_method" aria-label="Método de pagamento">
                         <?php foreach ($paymentMethods as $alias => $name): ?>

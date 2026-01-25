@@ -38,7 +38,14 @@
             <div class="d-flex align-items-center">
             </div>
             <div class="d-flex align-items-end">
-                <form id="id-sort-form" class="d-flex align-items-center" method="GET" action="/sales-statement">
+                <form id="id-sort-form" class="d-md-flex d-block align-items-center" method="GET" action="/sales-statement">
+                    <select class="form-select form-select-sm input-stellar-blue me-2 mb-md-0 mb-2" id="events" name="event" onchange="this.form.submit()">
+                        <option value="all">-- Todos --</option>
+                        <?php foreach ($events as $event): ?>
+                            <option value="<?= $event['evento_id'] ?>" <?= ($_GET['event'] ?? '') == $event['evento_id'] ? 'selected' : '' ?>><?= $event['evento_nome'] ?></option>
+                        <?php endforeach; ?>
+                        <option value="none" <?= ($_GET['event'] ?? '') == 'none' ? 'selected' : '' ?>>-- Vendas Avulsas --</option>
+                    </select>
                     <select class="form-select form-select-sm input-stellar-blue" id="sort-options" name="sort" onchange="this.form.submit()">
                         <?php foreach ($orderList as $key => $value): ?>
                             <option value="<?= $key ?>" <?= $value['selected'] ? 'selected' : '' ?>><?= $value['label'] ?></option>
@@ -67,7 +74,7 @@
                             <span class="color-nocturne-purple">Status da<br>Entrega</span>
                         </th>
                         <th scope="col" class="text-center">
-                            <span class="color-nocturne-purple">Método de Pagamento</span>
+                            <span class="color-nocturne-purple">Método de Pagamento<br>Evento</span>
                         </th>
                         <th scope="col" class="text-center">
                             <span class="color-nocturne-purple">Produtos</span><br>
@@ -108,7 +115,8 @@
                             <?= $sale['entregue'] ? '<span class="badge text-bg-success rounded-pill p-2">Entregue</span>' : '<span class="badge bg-sunshine-yellow color-graphite-gray rounded-pill p-2">Pendente</span>' ?>
                         </td>
                         <td class="text-center align-middle" data-bs-toggle="collapse" data-bs-target="#collapse-<?= $sale['id'] ?>">
-                            <?= $sale['pagamento'] ?>
+                            <?= $sale['pagamento'] ?><br>
+                            <small class="color-gray"><?= $sale['evento_nome'] ?? '(Venda Avulsa)' ?></small>
                         </td>
                         <td class="text-center align-middle" data-bs-toggle="collapse" data-bs-target="#collapse-<?= $sale['id'] ?>">
                             <?= $sale['total_itens'] ?><br>

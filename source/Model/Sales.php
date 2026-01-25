@@ -34,6 +34,26 @@ class Sales extends Core {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function getStoresCurrentEvents($storeId) {
+        $stmt = $this->SQL->prepare("
+            SELECT 
+                eve.evento_id id,
+                eve.evento_nome nome,
+                insc.inscricao_id inscricao_id
+            FROM 
+                eventos eve
+            INNER JOIN 
+                inscricoes insc ON insc.inscricao_evento = eve.evento_id AND insc.inscricao_loja = :loja_id
+            WHERE 
+                NOW() BETWEEN eve.evento_data_inicial AND eve.evento_data_final
+            ORDER BY 
+                eve.evento_nome ASC
+        ");
+        $stmt->bindValue(":loja_id", $storeId, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     public function insertSale($saleData, $storeId) {
         //Start transaction
         $this->SQL->beginTransaction();
@@ -46,14 +66,16 @@ class Sales extends Core {
                     venda_data_criacao, 
                     venda_pago,
                     venda_entregue,
-                    venda_data_venda
+                    venda_data_venda,
+                    venda_evento_id
                 ) VALUES (
                     :loja_id, 
                     :pagamento, 
                     NOW(), 
                     :pago, 
                     :entregue,
-                    :data_venda
+                    :data_venda,
+                    :evento_id
                 )
             ");
             $stmt->bindValue(":loja_id", $storeId, PDO::PARAM_INT);
@@ -85,6 +107,7 @@ class Sales extends Core {
             $stmt->bindValue(":pago", (isset($saleData['paid']) && $saleData['paid'] == '1' ? 1 : 0), PDO::PARAM_BOOL);
             $stmt->bindValue(":entregue", (isset($saleData['delivered']) && $saleData['delivered'] == '1' ? 1 : 0), PDO::PARAM_BOOL);
             $stmt->bindValue(":data_venda", date('Y-m-d H:i:s', strtotime($saleData['sale_datetime'])), PDO::PARAM_STR);
+            $stmt->bindValue(":evento_id", empty($saleData['event_id']) ? NULL : $saleData['event_id'], PDO::PARAM_INT);
             $stmt->execute();
             $saleId = $this->SQL->lastInsertId();
             foreach ($saleData['items'] as $item) {

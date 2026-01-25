@@ -12,8 +12,8 @@
                 <input name="search" type="search" class="form-control pesquisa-superior input-kiklit-2" placeholder="Pesquisar..." aria-label="Search" value="<?= $search ?>">
             </form> -->
             <ul class="nav col-12 me-md-auto mb-2 justify-content-center mb-md-0 d-none d-md-flex">
-                <li><a href="<?= url('login')?>" class="nav-link px-2 link-kitlit-1">Log-in</a></li>
-                <li><a href="<?= url('register')?>" class="nav-link px-2 link-kitlit-1">Cadastre-se</a></li>
+                <li><a href="<?= url('login')?>" class="nav-link px-2 link-stellar-blue">Log-in</a></li>
+                <li><a href="<?= url('register')?>" class="nav-link px-2 link-stellar-blue">Cadastre-se</a></li>
             </ul>
             <button data-bs-toggle="offcanvas" style="border:none; background:none;" type="button" href="#offcanvasExample" role="button" aria-controls="offcanvasExample" class="link-hover d-md-none">
                 <i class="fa-solid fa-bars" style="width:24px; text-align: center;"></i>
@@ -33,14 +33,14 @@
         <div class="offcanvas-body d-flex flex-column justify-content-between">
         <ul class="nav nav-pills flex-column mb-auto">
             <li class="d-md-none">
-                <a href="<?= url('login') ?>" class="nav-link link-secondary">
+                <a href="<?= url('login') ?>" class="nav-link link-stellar-blue">
                     <div class="d-flex align-items-center">
                         <span>Log-in</span>
                     </div>
                 </a>
             </li>
             <li class="d-md-none">
-                <a href="<?= url('register') ?>" class="nav-link link-dark">
+                <a href="<?= url('register') ?>" class="nav-link link-stellar-blue">
                     <div class="d-flex align-items-center">
                         <span>Cadastre-se</span>
                     </div>

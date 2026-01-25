@@ -9,8 +9,9 @@ use Source\Core\Core;
 class SalesStatement extends Core {
 
     public function buildWhereSales($filter = []) {
-        $where = "";
-        return $where;
+        $where = [];
+        if (isset($filter['event'])) $where[] = "COALESCE(v.venda_evento_id, 0) = " . (int)$filter['event'] . " ";
+        return !empty($where) ? " AND " . implode("\nAND\n", $where) : "";
     }
 
     public function getOrderList($sort) {
@@ -102,12 +103,15 @@ class SalesStatement extends Core {
                 v.venda_pago pago,
                 v.venda_entregue entregue,
                 v.venda_cancelada cancelada,
+                e.evento_nome evento_nome,
                 COUNT(vi.venda_item_id) AS total_itens,
                 SUM(vi.venda_item_unidades) AS total_unidades,
                 SUM(vi.venda_item_desconto) AS total_desconto,
                 SUM(vi.venda_item_valor) AS total_valor
             FROM
                 vendas AS v
+            LEFT JOIN
+                eventos AS e ON e.evento_id = v.venda_evento_id
             LEFT JOIN
                 vendas_itens AS vi ON vi.venda_item_venda = v.venda_id
             WHERE 
@@ -187,9 +191,12 @@ class SalesStatement extends Core {
                 v.venda_data_entrega data_entrega,
                 v.venda_data_venda data_venda,
                 v.venda_cancelada cancelada,
-                v.venda_data_cancelamento data_cancelamento
+                v.venda_data_cancelamento data_cancelamento,
+                e.evento_id evento_id
             FROM
                 vendas AS v
+            LEFT JOIN
+                eventos AS e ON e.evento_id = v.venda_evento_id
             WHERE
                 v.venda_id = :sale_id
             AND
@@ -258,6 +265,7 @@ class SalesStatement extends Core {
                 v.venda_loja_id = :store_id
             AND
                 COALESCE(v.venda_cancelada, 0) = 0
+            {$where}
         ");
         $stmt->bindValue(":store_id", $store, PDO::PARAM_INT);
         $stmt->execute();
@@ -301,7 +309,8 @@ class SalesStatement extends Core {
                 venda_entregue = :delivered,
                 venda_data_entrega = :delivery_date,
                 venda_cancelada = :canceled,
-                venda_data_cancelamento = :cancellation_date
+                venda_data_cancelamento = :cancellation_date,
+                venda_evento_id = :event_id
             WHERE
                 venda_id = :sale_id
         ");
@@ -329,6 +338,7 @@ class SalesStatement extends Core {
         } else {
             $stmt->bindValue(":cancellation_date", $data['cancellation_date'], PDO::PARAM_STR);
         }
+        $stmt->bindValue(":event_id", $data['event'] ?? null, PDO::PARAM_INT);
         $stmt->bindValue(":sale_id", $saleId, PDO::PARAM_INT);
         $stmt->execute();
     }
@@ -396,4 +406,22 @@ class SalesStatement extends Core {
         $stmt->execute();
     }
 
+    public function getStoreSubscriptions($storeId) {
+        $stmt = $this->SQL->prepare("
+            SELECT
+                e.evento_id,
+                e.evento_nome
+            FROM
+                inscricoes i
+            INNER JOIN
+                eventos AS e ON e.evento_id = i.inscricao_evento
+            WHERE
+                i.inscricao_loja = :store_id
+            ORDER BY
+                e.evento_data_final DESC
+        ");
+        $stmt->bindValue(":store_id", $storeId, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }

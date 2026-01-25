@@ -60,6 +60,12 @@
                         <i class="fa fa-pen-to-square"></i> Editar
                     </a>
                 <?php endif;?>
+                <?php if ($event['total_inscritos'] > 0): ?>
+                <span class="badge bg-lavanda ms-3" id="totalSubscribersBadge">
+                    <span class="iconify" data-icon="mdi:account-multiple" data-inline="false"></span>
+                    <?= $event['total_inscritos'] ?> <?= $event['total_inscritos'] == 1 ? 'Seguidor' : 'Seguidores' ?>
+                </span>
+                <?php endif; ?>
             </div>
             <div class="col-md-6 d-md-flex d-block justify-content-end" id="column-buttons">
                 <div class="event-buttons">
@@ -246,7 +252,6 @@
                             </button>
                         </div>
                         <div class="d-flex justify-content-center mb-5">
-                            <!-- <span>Ou escaneie o QR Code abaixo:</span> -->
                             <div id="qrcode"></div>
                         </div>
                         <div class="wrap-modal-slider mb-3">
@@ -255,49 +260,41 @@
                                     <a class="btn btn-success mb-2" id="shareWhatsApp" href="https://www.whatsapp.com/send?text=<?= $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] ?>" target="_blank" rel="noopener noreferrer">
                                         <i class="fab fa-whatsapp fa-2x"></i>
                                     </a>
-                                    <!-- <div>WhatsApp</div> -->
                                 </div>
                                 <div class="share-button d-flex flex-column align-items-center">
                                     <a class="btn btn-instagram mb-2" id="shareInstagram" href="https://www.instagram.com/share?text=<?= $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] ?>" target="_blank" rel="noopener noreferrer">
                                         <i class="fab fa-instagram fa-2x"></i>
                                     </a>
-                                    <!-- <div>Instagram</div> -->
                                 </div>
                                 <div class="share-button d-flex flex-column align-items-center">
                                     <a class="btn btn-dark mb-2" id="shareTwitter" href="https://twitter.com/intent/tweet?text=<?= $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] ?>" target="_blank" rel="noopener noreferrer">
                                         <i class="fab fa-x-twitter fa-2x"></i>
                                     </a>
-                                    <!-- <div>X</div> -->
                                 </div>
                                 <div class="share-button d-flex flex-column align-items-center">
                                     <a class="btn btn-primary mb-2" id="shareTelegram" href="https://telegram.me/share/url?url=<?= $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] ?>" target="_blank" rel="noopener noreferrer">
                                         <i class="fab fa-telegram-plane fa-2x"></i>
                                     </a>
-                                    <!-- <div>Telegram</div> -->
                                 </div>
                                 <div class="share-button d-flex flex-column align-items-center">
                                     <a class="btn btn-danger mb-2" id="sharePinterest" href="https://www.pinterest.com/pin/create/button/?url=<?= $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] ?>" target="_blank" rel="noopener noreferrer">
                                         <i class="fab fa-pinterest fa-2x"></i>
                                     </a>
-                                    <!-- <div>Pinterest</div> -->
                                 </div>
                                 <div class="share-button d-flex flex-column align-items-center">
                                     <a class="btn btn-primary mb-2" id="shareFacebook" href="https://www.facebook.com/sharer/sharer.php?u=<?= $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] ?>" target="_blank" rel="noopener noreferrer">
                                         <i class="fab fa-facebook-f fa-2x"></i>
                                     </a>
-                                    <!-- <div>Facebook</div> -->
                                 </div>
                                 <div class="share-button d-flex flex-column align-items-center">
                                     <a class="btn btn-info mb-2" id="shareLinkedIn" href="https://www.linkedin.com/shareArticle?mini=true&url=<?= $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] ?>" target="_blank" rel="noopener noreferrer">
                                         <i class="fab fa-linkedin-in fa-2x"></i>
                                     </a>
-                                    <!-- <div>LinkedIn</div> -->
                                 </div>
                                 <div class="share-button d-flex flex-column align-items-center">
                                     <a class="btn btn-secondary mb-2" id="shareEmail" href="mailto:?subject=Check%20out%20this%20event&body=<?= $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] ?>" target="_blank" rel="noopener noreferrer">
                                         <i class="fas fa-envelope fa-2x"></i>
                                     </a>
-                                    <!-- <div>Email</div> -->
                                 </div>
                             </div>
                         </div>

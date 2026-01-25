@@ -23,7 +23,11 @@ class salesStatementController extends Core {
         ];
         $pagination['limit'] = 25;
 
-        $whereSales = $salesStatementModel->buildWhereSales([]);
+        $filter = [];
+        if (isset($_GET['event']) && $_GET['event'] !== 'all') {
+            $filter['event'] = $_GET['event'] === 'none' ? 0 : $_GET['event'];
+        }
+        $whereSales = $salesStatementModel->buildWhereSales($filter);
 
         $sort = $_GET['sort'] ?? 'name_asc';
 
@@ -71,6 +75,7 @@ class salesStatementController extends Core {
             'pages' => $pages,
             'sort' => $sort,
             'orderList' => $orderList,
+            'events' => $salesStatementModel->getStoreSubscriptions($store),
         ]);
         return;
     }
@@ -109,6 +114,7 @@ class salesStatementController extends Core {
             'products' => $products,
             'saleInfo' => $saleInfo,
             'paymentMethods' => $paymentMethods->getMethods(),
+            'events' => $salesStatementModel->getStoreSubscriptions($store),
         ]);
         return;
     }
@@ -127,6 +133,7 @@ class salesStatementController extends Core {
                 'canceled' => isset($post['canceled']) ? 1 : null,
                 'cancellation_date' => isset($post['canceled']) ?$post['cancellation_date'] : null,
                 'sale_id' => $post['sale_id'],
+                'event' => $post['event'] ?? null,
             ]);
             $existingItems = $salesStatementModel->getSalesProducts($post['sale_id']);
             $items = $post['items'] ?? [];

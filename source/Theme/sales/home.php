@@ -78,8 +78,19 @@
                     </div>
                     <div class="row mb-3">
                         <div class="col-12">
+                            <label for="event-select" class="form-label">Evento</label>
+                            <select class="form-select form-select-sm input-stellar-blue" id="event-select" name="event_id" aria-label="Evento">
+                                <?php foreach ($storeEvents as $event): ?>
+                                    <option value="<?= $event['id'] ?>"><?= $event['nome'] ?></option>
+                                <?php endforeach; ?>
+                                <option value="0">-- Venda Avulsa --</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-12">
                             <label for="payment-select" class="form-label">Método de Pagamento</label>
-                            <select class="form-select form-select-sm" id="payment-select" name="payment_method" aria-label="Método de pagamento">
+                            <select class="form-select form-select-sm input-stellar-blue" id="payment-select" name="payment_method" aria-label="Método de pagamento">
                                 <?php foreach ($paymentMethods as $alias => $name): ?>
                                     <option value="<?= $alias ?>"><?= $name ?></option>
                                 <?php endforeach; ?>
@@ -89,7 +100,7 @@
                     <div class="row mb-3">
                         <div class="col-12">
                             <label for="payment-select" class="form-label">Momento da venda</label>
-                            <input type="datetime-local" class="form-control form-control-sm" id="sale-datetime" name="sale_datetime" value="<?= date("Y-m-d\TH:i") ?>">
+                            <input type="datetime-local" class="form-control form-control-sm input-stellar-blue" id="sale-datetime" name="sale_datetime" value="<?= date("Y-m-d\TH:i") ?>">
                         </div>
                     </div>
                     <div class="row mb-3">

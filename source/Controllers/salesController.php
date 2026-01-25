@@ -36,6 +36,7 @@ class salesController extends Core {
                 'footer' => true
             ],
             'products' => $products,
+            'storeEvents' => $salesModel->getStoresCurrentEvents($store),
             'paymentMethods' => $paymentMethods->getMethods(),
         ]);
         return;
