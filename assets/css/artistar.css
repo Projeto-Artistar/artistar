@@ -428,7 +428,7 @@ body {
     transition: width 0.3s ease-in-out;
     overflow: hidden;
     white-space: nowrap;
-    width: 90px;
+    width: 93px;
     word-spacing: 5px;
 }
 
@@ -503,4 +503,11 @@ body {
 .card-hover:hover {
     box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
     /* transform: translateY(-2px); */
+}
+
+.toast-sucesso {
+    position: fixed;
+    z-index: 1030;
+    top: 70px;
+    right: 0;
 }

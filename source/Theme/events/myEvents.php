@@ -22,6 +22,9 @@
                         </span>
                         <ul class="list-unstyled row">
                             <li class="col-md-6 col-12 d-flex align-items-center mb-2">
+                                <span class="dot bg-lavanda me-2 rounded-5" style="height:10px; width:10px;"></span>Criados por mim (<?= $totals['total_criados'] ?>)
+                            </li>
+                            <li class="col-md-6 col-12 d-flex align-items-center mb-2">
                                 <span class="dot bg-cotton-candy me-2 rounded-5" style="height:10px; width:10px;"></span>Pendentes (<?= $totals['total_pendente'] ?>)
                             </li>
                             <li class="col-md-6 col-12 d-flex align-items-center mb-2">
@@ -87,6 +90,10 @@
                                 <span class="color-stellar-blue nome-produto"><?= $event['evento_nome'] ?></span>
                                 <?php 
                                     switch ($event['status']) {
+                                        case 'criado':
+                                            $badgeClass = 'bg-lavanda';
+                                            $badgeText = 'Criado';
+                                            break;
                                         case 'finalizado':
                                             $badgeClass = 'bg-secondary';
                                             $badgeText = 'Finalizado';
@@ -143,9 +150,8 @@
                 'url' => url('events/id/'.$event['evento_id']),
                 'classNames' => ['calendario-evento', 'evento-'.$event['status']]
             ];
-            if (date('Y-m-d', strtotime($event['evento_data_inicial'])) != date('Y-m-d', strtotime($event['evento_data_final']))) {
-                $jsonEvents[$key]['end'] = date('Y-m-d H:i:s', strtotime($event['evento_data_final'].' +1 day'));
-            }
+            if (date('Y-m-d', strtotime($event['evento_data_inicial'])) != date('Y-m-d', strtotime($event['evento_data_final'])))
+                $jsonEvents[$key]['end'] = $event['evento_data_final'];
         }
         echo "const events = ".json_encode($jsonEvents).";";
     ?>

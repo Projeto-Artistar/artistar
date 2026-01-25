@@ -53,15 +53,22 @@
     <?php } ?>
     <section class="container pt-4 mb-3">
         <div class="row align-items-center">
-            <div class="col-md-6 color-nocturne-purple" id="eventTitle"><h1><?= $event['evento_nome']?></h1></div>
+            <div class="col-md-6 color-nocturne-purple d-flex align-items-center" id="eventTitle">
+                <h1><?= $event['evento_nome']?></h1>
+                <?php if ($user == $event['evento_proprietario']): ?>
+                    <a class="btn btn-stellar-blue text-white text-decoration-none ms-3" href="<?= url('events/edit/'.$event['evento_id']) ?>">
+                        <i class="fa fa-pen-to-square"></i> Editar
+                    </a>
+                <?php endif;?>
+            </div>
             <div class="col-md-6 d-md-flex d-block justify-content-end" id="column-buttons">
                 <div class="event-buttons">
-                    <button class="btn btn-favorite shadow-none btn-event-action" id="btn-favorite"><span class="iconify btn-icon" id="btn-favorite-icon" data-icon="<?= $event['inscrito'] == 1 ? 'mdi:heart' : 'mdi:heart-outline' ?>" data-inline="false"></span></button>
+                    <button class="btn btn-favorite shadow-none btn-event-action" id="btn-favorite"><span class="iconify btn-icon" id="btn-favorite-icon" data-icon="<?= !empty($event['inscricao_id']) && $event['inscricao_cancelada'] != 1 ? 'mdi:heart' : 'mdi:heart-outline' ?>" data-inline="false"></span></button>
                     <button class="btn btn-share shadow-none btn-event-action" id="btn-share"><span class="iconify btn-icon" data-icon="mdi:share-variant" data-inline="false"></span></button>
                 </div>
             </div>
         </div>
-        <div class="row p-2 show-with-animation" id="eventTabs" style="<?= $event['inscrito'] == 1 ? '' : 'display:none;' ?>">
+        <div class="row p-2 show-with-animation" id="eventTabs" style="<?= !empty($event['inscricao_id']) && $event['inscricao_cancelada'] != 1 ? '' : 'display:none;' ?>">
             <ul class="nav nav-tabs" role="tablist">
                 <li class="nav-item" role="presentation">
                     <button class="nav-link link-stellar-blue text-decoration-none active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Informações</button>
@@ -77,7 +84,7 @@
             <section class="container mb-5">
                 <div class="row my-2">
                     <div class="col-md-6" id="eventAddress">
-                        <b class="color-stellar-blue"><span class="iconify" data-icon="mdi:map-marker" data-inline="false"></span> <?= !empty($event['endereco_completo']) ? $event['endereco_completo'] : 'Local não definido'?></b>
+                        <b class="color-stellar-blue"><span class="iconify" data-icon="mdi:map-marker" data-inline="false"></span> <?= !empty($event['endereco_com_complemento']) ? $event['endereco_com_complemento'] : 'Local não definido'?></b>
                     </div>
                     <?php if (!empty($event['evento_produtor'])) {?>
                         <div class="col-md-6 d-md-flex d-block justify-content-end" id="column-productor">
@@ -135,10 +142,10 @@
                                     <div class="col-xxl-4 col-xl-6 col-12 mb-3">
                                         <div class="card h-100 flex-column position-relative">
                                             <div class="card-body d-flex flex-column">
-                                                <div class="flex-grow-1">
+                                                <div class="">
                                                     <h5 class="card-title"><?= $price['evento_taxa_titulo'] ?></h5>
                                                 </div>
-                                                <h6 class="card-subtitle mb-2 text-muted">R$ <?= moedaReal($price['evento_taxa_valor']) ?></h6>
+                                                <h6 class="card-subtitle mb-2 text-muted flex-grow-1">R$ <?= moedaReal($price['evento_taxa_valor']) ?></h6>
                                                 <?php if (!empty($price['evento_taxa_observacao'])) { ?>
                                                     <span class="btn btn-stellar-blue d-flex align-items-center mt-3 edit-date" data-priceId="<?= $price['evento_taxa_id'] ?>">
                                                         <i class="fa-solid fa-eye ms-1 me-2" style="text-align: center;"></i> Observações
@@ -245,51 +252,51 @@
                         <div class="wrap-modal-slider mb-3">
                             <div class="share-carousel">
                                 <div class="share-button d-flex flex-column align-items-center">
-                                    <button class="btn btn-success mb-2" id="shareWhatsApp">
+                                    <a class="btn btn-success mb-2" id="shareWhatsApp" href="https://www.whatsapp.com/send?text=<?= $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] ?>" target="_blank" rel="noopener noreferrer">
                                         <i class="fab fa-whatsapp fa-2x"></i>
-                                    </button>
+                                    </a>
                                     <!-- <div>WhatsApp</div> -->
                                 </div>
                                 <div class="share-button d-flex flex-column align-items-center">
-                                    <button class="btn btn-instagram mb-2" id="shareInstagram">
+                                    <a class="btn btn-instagram mb-2" id="shareInstagram" href="https://www.instagram.com/share?text=<?= $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] ?>" target="_blank" rel="noopener noreferrer">
                                         <i class="fab fa-instagram fa-2x"></i>
-                                    </button>
+                                    </a>
                                     <!-- <div>Instagram</div> -->
                                 </div>
                                 <div class="share-button d-flex flex-column align-items-center">
-                                    <button class="btn btn-dark mb-2" id="shareTwitter">
+                                    <a class="btn btn-dark mb-2" id="shareTwitter" href="https://twitter.com/intent/tweet?text=<?= $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] ?>" target="_blank" rel="noopener noreferrer">
                                         <i class="fab fa-x-twitter fa-2x"></i>
-                                    </button>
+                                    </a>
                                     <!-- <div>X</div> -->
                                 </div>
                                 <div class="share-button d-flex flex-column align-items-center">
-                                    <button class="btn btn-primary mb-2" id="shareTelegram">
+                                    <a class="btn btn-primary mb-2" id="shareTelegram" href="https://telegram.me/share/url?url=<?= $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] ?>" target="_blank" rel="noopener noreferrer">
                                         <i class="fab fa-telegram-plane fa-2x"></i>
-                                    </button>
+                                    </a>
                                     <!-- <div>Telegram</div> -->
                                 </div>
                                 <div class="share-button d-flex flex-column align-items-center">
-                                    <button class="btn btn-danger mb-2" id="sharePinterest">
+                                    <a class="btn btn-danger mb-2" id="sharePinterest" href="https://www.pinterest.com/pin/create/button/?url=<?= $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] ?>" target="_blank" rel="noopener noreferrer">
                                         <i class="fab fa-pinterest fa-2x"></i>
-                                    </button>
+                                    </a>
                                     <!-- <div>Pinterest</div> -->
                                 </div>
                                 <div class="share-button d-flex flex-column align-items-center">
-                                    <button class="btn btn-primary mb-2" id="shareFacebook">
+                                    <a class="btn btn-primary mb-2" id="shareFacebook" href="https://www.facebook.com/sharer/sharer.php?u=<?= $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] ?>" target="_blank" rel="noopener noreferrer">
                                         <i class="fab fa-facebook-f fa-2x"></i>
-                                    </button>
+                                    </a>
                                     <!-- <div>Facebook</div> -->
                                 </div>
                                 <div class="share-button d-flex flex-column align-items-center">
-                                    <button class="btn btn-info mb-2" id="shareLinkedIn">
+                                    <a class="btn btn-info mb-2" id="shareLinkedIn" href="https://www.linkedin.com/shareArticle?mini=true&url=<?= $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] ?>" target="_blank" rel="noopener noreferrer">
                                         <i class="fab fa-linkedin-in fa-2x"></i>
-                                    </button>
+                                    </a>
                                     <!-- <div>LinkedIn</div> -->
                                 </div>
                                 <div class="share-button d-flex flex-column align-items-center">
-                                    <button class="btn btn-secondary mb-2" id="shareEmail">
+                                    <a class="btn btn-secondary mb-2" id="shareEmail" href="mailto:?subject=Check%20out%20this%20event&body=<?= $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] ?>" target="_blank" rel="noopener noreferrer">
                                         <i class="fas fa-envelope fa-2x"></i>
-                                    </button>
+                                    </a>
                                     <!-- <div>Email</div> -->
                                 </div>
                             </div>

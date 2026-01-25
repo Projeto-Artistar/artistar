@@ -9,7 +9,7 @@ use Source\Core\Core;
 class Events extends Core
 {
 
-    public function getEventBasicInfo($eventId) {
+    public function getEventBasicInfo($eventId, $storeId) {
         $qtdStatement = $this->SQL->prepare('
             SELECT
                 eve.*,
@@ -20,17 +20,17 @@ class Events extends Core
                     WHEN insc.inscricao_aprovada = 1 THEN "aprovada"
                     WHEN insc.inscricao_aprovada = -1 THEN "reprovada"
                     ELSE "desconhecido"
-                END AS status,
-                IF(insc.inscricao_id IS NOT NULL, 1, 0) AS inscrito
+                END AS status
             FROM
                 eventos eve
             LEFT JOIN
-                inscricoes AS insc ON insc.inscricao_evento = eve.evento_id
+                inscricoes AS insc ON insc.inscricao_evento = eve.evento_id AND insc.inscricao_loja = :storeId
             WHERE
                 eve.evento_id = :eventId
         ');
 
         $qtdStatement->bindParam(':eventId', $eventId, PDO::PARAM_INT);
+        $qtdStatement->bindParam(':storeId', $storeId, PDO::PARAM_INT);
         $qtdStatement->execute();
         return $qtdStatement->fetch(PDO::FETCH_ASSOC);
     }
@@ -52,17 +52,17 @@ class Events extends Core
         return $qtdStatement->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function getEventAdvantages($eventId) {
+    public function getEventAdvantages($eventId, $eventOnly = true, $activeOnly = true) {
         $qtdStatement = $this->SQL->prepare('
             SELECT
                 vant.vantagem_id AS id,
-                vant.vantagem_nome AS nome
+                vant.vantagem_nome AS nome,
+                eve_vant.evento_vantagem_id AS eve_vant_id
             FROM
-                eventos_vantagens AS eve_vant
-            INNER JOIN
-                vantagens AS vant ON vant.vantagem_id = eve_vant.evento_vantagem_vantagem
-            WHERE
-                eve_vant.evento_vantagem_evento = :eventId
+                vantagens AS vant
+            ' . ($eventOnly ? 'INNER' : 'LEFT') . ' JOIN
+                eventos_vantagens AS eve_vant ON vant.vantagem_id = eve_vant.evento_vantagem_vantagem AND eve_vant.evento_vantagem_evento = :eventId
+            ' . ($activeOnly ? 'WHERE vant.vantagem_ativa = 1' : '') . '
             ORDER BY
                 vant.vantagem_nome ASC
         ');
@@ -117,6 +117,7 @@ class Events extends Core
                     WHEN eve.evento_data_final >= CURDATE() AND insc.inscricao_realizada = 1 AND COALESCE(insc.inscricao_aprovada, 0) = 0 THEN "realizada"
                     WHEN eve.evento_data_final >= CURDATE() AND insc.inscricao_aprovada = 1 THEN "aprovada"
                     WHEN eve.evento_data_final >= CURDATE() AND insc.inscricao_aprovada = -1 THEN "reprovada"
+                    WHEN eve.evento_proprietario = :user THEN "criado"
                     ELSE "desconhecido"
                 END AS status,
                 midia.evento_midia_url AS thumbnail
@@ -127,9 +128,13 @@ class Events extends Core
             LEFT JOIN
                 inscricoes AS insc ON insc.inscricao_evento = eve.evento_id
             WHERE
-                eve.evento_proprietario = :user
-            OR
-                insc.inscricao_loja IN(SELECT loja_id FROM lojas WHERE loja_proprietario = :user)
+                (
+                        eve.evento_proprietario = :user
+                    OR
+                        insc.inscricao_loja IN(SELECT loja_id FROM lojas WHERE loja_proprietario = :user)
+                )
+            AND
+                COALESCE(insc.inscricao_cancelada, 0) = 0
             GROUP BY
                 eve.evento_id
             ORDER BY
@@ -145,6 +150,7 @@ class Events extends Core
         $qtdStatement = $this->SQL->prepare('
             SELECT
                 COUNT(DISTINCT eve.evento_id) AS total,
+                COUNT(DISTINCT(IF(eve.evento_proprietario = :user, eve.evento_id, NULL))) AS total_criados,
                 COUNT(DISTINCT(IF(eve.evento_data_final < CURDATE(), eve.evento_id, NULL))) AS total_finalizados,
                 COUNT(DISTINCT(IF(eve.evento_data_final >= CURDATE() AND COALESCE(insc.inscricao_realizada, 0) = 0 AND COALESCE(insc.inscricao_aprovada, 0) = 0, eve.evento_id, NULL))) AS total_pendente,
                 COUNT(DISTINCT(IF(eve.evento_data_final >= CURDATE() AND insc.inscricao_realizada = 1 AND COALESCE(insc.inscricao_aprovada, 0) = 0, eve.evento_id, NULL))) AS total_realizada,
@@ -157,9 +163,13 @@ class Events extends Core
             LEFT JOIN
                 inscricoes AS insc ON insc.inscricao_evento = eve.evento_id
             WHERE
-                eve.evento_proprietario = :user
-            OR
-                insc.inscricao_loja IN(SELECT loja_id FROM lojas WHERE loja_proprietario = :user)
+                (
+                    eve.evento_proprietario = :user
+                OR
+                    insc.inscricao_loja IN(SELECT loja_id FROM lojas WHERE loja_proprietario = :user)
+                )
+            AND
+                COALESCE(insc.inscricao_cancelada, 0) = 0
         ');
 
         $qtdStatement->bindParam(':user', $user, PDO::PARAM_INT);
@@ -199,6 +209,8 @@ class Events extends Core
                     OR
                         edat.evento_data_dia = CURDATE()
                 )   
+            AND
+                COALESCE(insc.inscricao_cancelada, 0) = 0
             GROUP BY
                 eve.evento_id
             ORDER BY
@@ -213,7 +225,7 @@ class Events extends Core
     public function checkIfUserIsSubscribed($eventId, $storeId) {
         $qtdStatement = $this->SQL->prepare('
             SELECT
-                COUNT(inscricao_id) AS total
+                *
             FROM
                 inscricoes
             WHERE
@@ -225,8 +237,7 @@ class Events extends Core
         $qtdStatement->bindParam(':eventId', $eventId, PDO::PARAM_INT);
         $qtdStatement->bindParam(':storeId', $storeId, PDO::PARAM_INT);
         $qtdStatement->execute();
-        $result = $qtdStatement->fetch(PDO::FETCH_ASSOC);
-        return $result['total'] > 0;
+        return $qtdStatement->fetch(PDO::FETCH_ASSOC);
     }
 
     public function getAdvantages($active = true) {
@@ -262,7 +273,8 @@ class Events extends Core
                     evento_endereco_cidade,
                     evento_endereco_estado,
                     evento_endereco_cep,
-                    evento_produtor
+                    evento_produtor,
+                    evento_privado
                 )
             VALUES 
                 (
@@ -277,7 +289,8 @@ class Events extends Core
                     :city,
                     :state,
                     :zip,
-                    :producer
+                    :producer,
+                    :private
                 )
         ');
         $storeStatement->bindParam(':user', $userId, PDO::PARAM_INT);
@@ -291,8 +304,45 @@ class Events extends Core
         $storeStatement->bindParam(':state', $postData['eventState'], PDO::PARAM_STR);
         $storeStatement->bindParam(':zip', $postData['eventCep'], PDO::PARAM_STR);
         $storeStatement->bindParam(':producer', $postData['eventProducer'], PDO::PARAM_STR);
+        $private = !empty($postData['private']) ? 1 : 0;
+        $storeStatement->bindParam(':private', $private, PDO::PARAM_INT);
         $storeStatement->execute();
         return $this->SQL->lastInsertId();
+    }
+
+    public function updateEvent($eventId, $postData) {
+        $storeStatement = $this->SQL->prepare('
+            UPDATE 
+                eventos 
+            SET
+                evento_nome = :name,
+                evento_descricao = :description,
+                evento_endereco_logradouro = :address,
+                evento_endereco_numero = :number,
+                evento_endereco_complemento = :complement,
+                evento_endereco_bairro = :neighborhood,
+                evento_endereco_cidade = :city,
+                evento_endereco_estado = :state,
+                evento_endereco_cep = :zip,
+                evento_produtor = :producer,
+                evento_privado = :private
+            WHERE
+                evento_id = :event
+        ');
+        $storeStatement->bindParam(':name', $postData['eventTitle'], PDO::PARAM_STR);
+        $storeStatement->bindParam(':description', $postData['eventDescription'], PDO::PARAM_STR);
+        $storeStatement->bindParam(':address', $postData['eventAddress'], PDO::PARAM_STR);
+        $storeStatement->bindParam(':number', $postData['eventNumber'], PDO::PARAM_STR);
+        $storeStatement->bindParam(':complement', $postData['eventComplement'], PDO::PARAM_STR);
+        $storeStatement->bindParam(':neighborhood', $postData['eventNeighborhood'], PDO::PARAM_STR);
+        $storeStatement->bindParam(':city', $postData['eventCity'], PDO::PARAM_STR);
+        $storeStatement->bindParam(':state', $postData['eventState'], PDO::PARAM_STR);
+        $storeStatement->bindParam(':zip', $postData['eventCep'], PDO::PARAM_STR);
+        $storeStatement->bindParam(':producer', $postData['eventProducer'], PDO::PARAM_STR);
+        $storeStatement->bindParam(':event', $eventId, PDO::PARAM_INT);
+        $private = !empty($postData['private']) ? 1 : 0;
+        $storeStatement->bindParam(':private', $private, PDO::PARAM_INT);
+        return $storeStatement->execute();
     }
 
     public function addEventAdvantage($eventId, $advantageId) {
@@ -310,6 +360,17 @@ class Events extends Core
         ');
         $storeStatement->bindParam(':event', $eventId, PDO::PARAM_INT);
         $storeStatement->bindParam(':advantage', $advantageId, PDO::PARAM_INT);
+        return $storeStatement->execute();
+    }
+
+    public function removeEventAdvantage($id) {
+        $storeStatement = $this->SQL->prepare('
+            DELETE FROM 
+                eventos_vantagens
+            WHERE
+                evento_vantagem_id = :id
+        ');
+        $storeStatement->bindParam(':id', $id, PDO::PARAM_INT);
         return $storeStatement->execute();
     }
 
@@ -340,6 +401,37 @@ class Events extends Core
         return $storeStatement->execute();
     }
 
+    public function updateEventDate($dateId, $dateData) {
+        $storeStatement = $this->SQL->prepare('
+            UPDATE 
+                eventos_datas 
+            SET
+                evento_data_dia = :day,
+                evento_data_hora_inicial = :start_time,
+                evento_data_hora_final = :end_time,
+                evento_data_observacao = :observation
+            WHERE
+                evento_data_id = :id
+        ');
+        $storeStatement->bindParam(':day', $dateData['day'], PDO::PARAM_STR);
+        $storeStatement->bindParam(':start_time', $dateData['time'], PDO::PARAM_STR);
+        $storeStatement->bindParam(':end_time', $dateData['endTime'], PDO::PARAM_STR);
+        $storeStatement->bindParam(':observation', $dateData['observation'], PDO::PARAM_STR);
+        $storeStatement->bindParam(':id', $dateId, PDO::PARAM_INT);
+        return $storeStatement->execute();
+    }
+
+    public function removeEventDate($id) {
+        $storeStatement = $this->SQL->prepare('
+            DELETE FROM 
+                eventos_datas
+            WHERE
+                evento_data_id = :id
+        ');
+        $storeStatement->bindParam(':id', $id, PDO::PARAM_INT);
+        return $storeStatement->execute();
+    }
+
     public function addEventPrice($eventId, $priceData) {
         $storeStatement = $this->SQL->prepare('
             INSERT INTO eventos_taxas
@@ -365,6 +457,38 @@ class Events extends Core
         $storeStatement->bindParam(':title', $priceData['name'], PDO::PARAM_STR);
         $storeStatement->bindParam(':value', $price, PDO::PARAM_STR);
         $storeStatement->bindParam(':observation', $priceData['observation'], PDO::PARAM_STR);
+        return $storeStatement->execute();
+    }
+
+    public function updateEventPrice($priceId, $priceData) {
+        $storeStatement = $this->SQL->prepare('
+            UPDATE 
+                eventos_taxas 
+            SET
+                evento_taxa_ordem = :order,
+                evento_taxa_titulo = :title,
+                evento_taxa_valor = :value,
+                evento_taxa_observacao = :observation
+            WHERE
+                evento_taxa_id = :id
+        ');
+        $price = str_replace(',', '.', str_replace('.', '', $priceData['amount']));
+        $storeStatement->bindParam(':order', $priceData['order'], PDO::PARAM_INT);
+        $storeStatement->bindParam(':title', $priceData['name'], PDO::PARAM_STR);
+        $storeStatement->bindParam(':value', $price, PDO::PARAM_STR);
+        $storeStatement->bindParam(':observation', $priceData['observation'], PDO::PARAM_STR);
+        $storeStatement->bindParam(':id', $priceId, PDO::PARAM_INT);
+        return $storeStatement->execute();
+    }
+
+    public function removeEventPrice($id) {
+        $storeStatement = $this->SQL->prepare('
+            DELETE FROM 
+                eventos_taxas
+            WHERE
+                evento_taxa_id = :id
+        ');
+        $storeStatement->bindParam(':id', $id, PDO::PARAM_INT);
         return $storeStatement->execute();
     }
 
@@ -416,16 +540,29 @@ class Events extends Core
         return $this->SQL->lastInsertId();
     }
 
-    public function unsubscribeFromEvent($eventId, $storeId) {
+    public function unsubscribeFromEvent($inscricaoId) {
         $storeStatement = $this->SQL->prepare('
-            DELETE FROM inscricoes
+            UPDATE 
+                inscricoes 
+            SET
+                inscricao_cancelada = 1
             WHERE
-                inscricao_evento = :event
-            AND
-                inscricao_loja = :store
+                inscricao_id = :inscricao
         ');
-        $storeStatement->bindParam(':event', $eventId, PDO::PARAM_INT);
-        $storeStatement->bindParam(':store', $storeId, PDO::PARAM_INT);
+        $storeStatement->bindParam(':inscricao', $inscricaoId, PDO::PARAM_INT);
+        return $storeStatement->execute();
+    }
+
+    public function reactivateSubscription($inscricaoId) {
+        $storeStatement = $this->SQL->prepare('
+            UPDATE 
+                inscricoes 
+            SET
+                inscricao_cancelada = 0
+            WHERE
+                inscricao_id = :inscricao
+        ');
+        $storeStatement->bindParam(':inscricao', $inscricaoId, PDO::PARAM_INT);
         return $storeStatement->execute();
     }
 

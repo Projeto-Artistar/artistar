@@ -104,30 +104,6 @@ function shareButtons() {
             console.error('Erro ao copiar a URL: ', err);
         });
     }); 
-
-    $('#shareFacebook').on('click', function() {
-        window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank');
-    });
-
-    $('#shareTwitter').on('click', function() {
-        window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`, '_blank');
-    });
-
-    $('#shareWhatsApp').on('click', function() {
-        window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(url)}`, '_blank');
-    });
-
-    $('#sharePinterest').on('click', function() {
-        window.open(`https://pinterest.com/pin/create/button/?url=${encodeURIComponent(url)}&description=${encodeURIComponent(description)}`, '_blank');
-    });
-
-    $('#shareLinkedIn').on('click', function() {
-        window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}&title=${encodeURIComponent(title)}`, '_blank');
-    });
-
-    $('#shareTelegram').on('click', function() {
-        window.open(`https://t.me/share/url?url=${encodeURIComponent(url)}`, '_blank');
-    });
 }
 
 function loadShareSlide() {

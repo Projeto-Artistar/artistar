@@ -76,6 +76,8 @@ $router->group('events');
 $router->get("/", "eventsController:home", "eventsController.home"); // Tela de pesquisa/listagem
 $router->get("/{friendlyUrl}", "eventsController:details", "eventsController.details"); // Tela de detalhes do evento com URL amigável
 $router->get("/id/{eventId}", "eventsController:details", "eventsController.details"); // Tela de detalhes do evento por ID (Para eventos privados ou sem URL amigável)
+$router->get("/id/{eventId}/edit", "eventsController:edit", "eventsController.edit");
+$router->post("/update", "eventsController:update", "eventsController.update");
 $router->post("/subscribe", "eventsController:subscribe", "eventsController.subscribe");
 $router->post("/update-subscription", "eventsController:updateSubscription", "eventsController.updateSubscription");
 $router->get("/my-events", "eventsController:myEvents", "eventsController.myEvents"); // Meus Eventos

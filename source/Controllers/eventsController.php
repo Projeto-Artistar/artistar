@@ -39,27 +39,37 @@ class eventsController extends Core {
 
     public function details($data) {
         $dados = new Events();
-        $event = $dados->getEventBasicInfo(filter_var($data['eventId'], FILTER_SANITIZE_NUMBER_INT));
-        // Pça. ALM. Gago Coutinho, 29 - Ponta da Praia, Santos - SP, 11030-200
-        $event['endereco_completo'] = $event['evento_endereco_logradouro'];
-        if (!empty($event['evento_endereco_numero'])) $event['endereco_completo'] .= ', '.$event['evento_endereco_numero'];
-        if (!empty($event['evento_endereco_bairro'])) $event['endereco_completo'] .= ' - '.$event['evento_endereco_bairro'];
-        if (!empty($event['evento_endereco_cidade'])) $event['endereco_completo'] .= ', '.$event['evento_endereco_cidade'];
-        if (!empty($event['evento_endereco_estado'])) $event['endereco_completo'] .= ' - '.$event['evento_endereco_estado'];
-        if (!empty($event['evento_endereco_cep'])) $event['endereco_completo'] .= ', '.$event['evento_endereco_cep'];
-        
-        // if (empty($event)) {
-        //     header("Location: /error/404");
-        //     return;
-        // } else if (!isset($data['friendlyUrl']) || $event['url'] != $data['friendlyUrl']) {
-        //     header("Location: /events/{$event['id']}/{$event['url']}");
-        //     return;
-        // }
+        $store = !empty($this->getUser()) ? $this->getUser()['loja_id'] : null;
+        $event = $dados->getEventBasicInfo(filter_var($data['eventId'], FILTER_SANITIZE_NUMBER_INT), $store);
 
-        $days = $dados->getEventDays(filter_var($data['eventId'], FILTER_SANITIZE_NUMBER_INT));
-        $advantages = $dados->getEventAdvantages(filter_var($data['eventId'], FILTER_SANITIZE_NUMBER_INT));
-        $prices = $dados->getEventPrices(filter_var($data['eventId'], FILTER_SANITIZE_NUMBER_INT));
-        $photos = $dados->getEventPhotos(filter_var($data['eventId'], FILTER_SANITIZE_NUMBER_INT));
+        if (empty($event) || ($event['evento_privado'] == 1 && ($this->getUser()['id'] != $event['evento_proprietario'] && empty($event['inscricao_id'])))) {
+            header("Location: /error/404");
+            return;
+        }
+
+        $event['endereco_completo'] = $event['endereco_com_complemento'] = $event['evento_endereco_logradouro'];
+        if (!empty($event['evento_endereco_numero'])) {
+            $event['endereco_completo'] .= ', '.$event['evento_endereco_numero'];
+            $event['endereco_com_complemento'] .= ', '.$event['evento_endereco_numero'];
+        }
+        if (!empty($event['evento_endereco_complemento'])) $event['endereco_com_complemento'] .= ' - '.$event['evento_endereco_complemento'];
+        if (!empty($event['evento_endereco_bairro'])) {
+            $event['endereco_completo'] .= ' - '.$event['evento_endereco_bairro'];
+            $event['endereco_com_complemento'] .= ' - '.$event['evento_endereco_bairro'];
+        }
+        if (!empty($event['evento_endereco_cidade'])) {
+            $event['endereco_completo'] .= ', '.$event['evento_endereco_cidade'];
+            $event['endereco_com_complemento'] .= ', '.$event['evento_endereco_cidade'];
+        }
+        if (!empty($event['evento_endereco_estado'])) {
+            $event['endereco_completo'] .= ' - '.$event['evento_endereco_estado'];
+            $event['endereco_com_complemento'] .= ' - '.$event['evento_endereco_estado'];
+        }
+        if (!empty($event['evento_endereco_cep'])) {
+            $event['endereco_completo'] .= ', '.$event['evento_endereco_cep'];
+            $event['endereco_com_complemento'] .= ', '.$event['evento_endereco_cep'];
+        }
+
         echo $this->view->render("events/details", [
             'layout' => [
                 'title' =>  $event['evento_nome'].' - Artistar', 
@@ -67,11 +77,12 @@ class eventsController extends Core {
                 'header' => true,
                 'footer' => true
             ],
-            'event' => $event,
-            'days' => $days,
-            'advantages' => $advantages,
-            'prices' => $prices,
-            'photos' => $photos
+            'event'         => $event,
+            'user'          => empty($this->getUser()) ? null : $this->getUser()['id'],
+            'days'          => $dados->getEventDays(filter_var($data['eventId'], FILTER_SANITIZE_NUMBER_INT)),
+            'advantages'    => $dados->getEventAdvantages(filter_var($data['eventId'], FILTER_SANITIZE_NUMBER_INT)),
+            'prices'        => $dados->getEventPrices(filter_var($data['eventId'], FILTER_SANITIZE_NUMBER_INT)),
+            'photos'        => $dados->getEventPhotos(filter_var($data['eventId'], FILTER_SANITIZE_NUMBER_INT))
         ]);
         return;
     }
@@ -81,32 +92,43 @@ class eventsController extends Core {
         $eventsModel = new Events();
         $eventId = filter_var($post['eventId'], FILTER_SANITIZE_NUMBER_INT);
         $subscribed = $eventsModel->checkIfUserIsSubscribed($eventId, $this->getUser()['loja_id']);
+        $mensagem = '';
         if (($post['status'] == 'true' || $post['status'] === true)) { 
             $status = false;
-            if ($subscribed) {
+            if (!empty($subscribed)) {
                 try {
-                    $eventsModel->unsubscribeFromEvent($eventId, $this->getUser()['loja_id']);
+                    $eventsModel->unsubscribeFromEvent($subscribed['inscricao_id']);
+                    $mensagem = "Inscrição cancelada com sucesso!";
                 } catch (\Exception $e) {
                     exit($this->renderApiResponse(500, "Erro ao cancelar inscrição no evento: " . $e->getMessage()));
                 }
             }
         } else {
             $status = true;
-            if (!$subscribed) {
+            if (empty($subscribed)) {
                 try {
                     $eventsModel->subscribeToEvent($eventId, $this->getUser()['loja_id']);
+                    $mensagem = "Inscrição realizada com sucesso!";
                 } catch (\Exception $e) {
                     exit($this->renderApiResponse(500, "Erro ao inscrever no evento: " . $e->getMessage()));
                 }
+            } else {
+                try {
+                    $eventsModel->reactivateSubscription($subscribed['inscricao_id']);
+                    $mensagem = "Inscrição reativada com sucesso!";
+                } catch (\Exception $e) {
+                    exit($this->renderApiResponse(500, "Erro ao reativar inscrição no evento: " . $e->getMessage()));
+                }
             }
         }
-        exit($this->renderApiResponse(200, "Inscrição realizada com sucesso!", [
+        exit($this->renderApiResponse(200, $mensagem, [
             'subscribed' => $status
         ]));
         return;
     }
 
     public function updateSubscription($post) {
+        $this->validaAcesso(true);
         if (!$this->getLogado()) exit($this->renderApiResponse(401, "Usuário não autenticado."));
         $eventsModel = new Events();
         $eventId = filter_var($post['eventId'], FILTER_SANITIZE_NUMBER_INT);
@@ -115,7 +137,7 @@ class eventsController extends Core {
                 $eventId,
                 $this->getUser()['loja_id'],
                 $post['inputSubscriptionStatus'],
-                $post['inputUserTags'],
+                !empty($post['inputUserTags']) ? $post['inputUserTags'] : [],
                 $post['inputUserObservation'],
                 isset($post['inputUserFeedback']) ? $post['inputUserFeedback'] : null
             );
@@ -219,10 +241,104 @@ class eventsController extends Core {
     }
 
     public function edit($data) {
+        $this->validaAcesso(true);
+        $dados = new Events();
+        $event = $dados->getEventBasicInfo(filter_var($data['eventId'], FILTER_SANITIZE_NUMBER_INT), $this->getUser()['loja_id']);
+        
+        if (empty($event) || !$this->getLogado() || $this->getUser()['id'] != $event['evento_proprietario']) {
+            header("Location: /error/404");
+            return;
+        }
+
+        echo $this->view->render("events/edit", [
+            'layout' => [
+                'title' =>  $event['evento_nome'].' - Artistar', 
+                'logado' => $this->getLogado(),
+                'header' => true,
+                'footer' => true
+            ],
+            'event'         => $event,
+            'user'          => $this->getUser(),
+            'days'          => $dados->getEventDays(filter_var($data['eventId'], FILTER_SANITIZE_NUMBER_INT)),
+            'advantages'    => $dados->getEventAdvantages(filter_var($data['eventId'], FILTER_SANITIZE_NUMBER_INT), false),
+            'prices'        => $dados->getEventPrices(filter_var($data['eventId'], FILTER_SANITIZE_NUMBER_INT)),
+            'photos'        => $dados->getEventPhotos(filter_var($data['eventId'], FILTER_SANITIZE_NUMBER_INT))
+        ]);
         return;
     }
 
-    public function update() {
+    public function update($data) {
+        $this->validaAcesso(true);
+        $dados = new Events();
+        $event = $dados->getEventBasicInfo(filter_var($data['eventId'], FILTER_SANITIZE_NUMBER_INT), $this->getUser()['loja_id']);
+        if (empty($event) || !$this->getLogado() || $this->getUser()['id'] != $event['evento_proprietario']) {
+            exit($this->renderApiResponse(404, "Evento não encontrado."));
+            return;
+        }
+        $days = $dados->getEventDays(filter_var($data['eventId'], FILTER_SANITIZE_NUMBER_INT));
+        $advantages = $dados->getEventAdvantages(filter_var($data['eventId'], FILTER_SANITIZE_NUMBER_INT));
+        $prices = $dados->getEventPrices(filter_var($data['eventId'], FILTER_SANITIZE_NUMBER_INT));
+        $photos = $dados->getEventPhotos(filter_var($data['eventId'], FILTER_SANITIZE_NUMBER_INT));
+
+        try {
+            $dados->updateEvent($data['eventId'], $data);
+        } catch (\Exception $e) {
+            exit($this->renderApiResponse(500, "Erro ao atualizar evento: " . $e->getMessage()));
+        }
+
+        $newDays = empty($data['dates']) || !is_array($data['dates']) ? [] : $data['dates'];
+        try {
+            foreach($days as $day) {
+                if (!in_array($day['evento_data_dia'], array_column($newDays, 'day'))) {
+                    $dados->removeEventDate($day['evento_data_id']);
+                } else {
+                    $dados->updateEventDate($day['evento_data_id'], $newDays[$day['evento_data_dia']]);
+                }
+                unset($newDays[$day['evento_data_dia']]);
+            }
+            foreach ($newDays as $date) $dados->addEventDate($data['eventId'], $date);
+        } catch (\Exception $e) {
+            exit($this->renderApiResponse(500, "Erro ao atualizar datas do evento: " . $e->getMessage()));
+        }
+
+        $newAdvantages = empty($data['eventAdvantages']) || !is_array($data['eventAdvantages']) ? [] : $data['eventAdvantages'];
+        try {
+            foreach($advantages as $advantage) {
+                if (!in_array($advantage['eve_vant_id'], $newAdvantages)) {
+                    $dados->removeEventAdvantage($advantage['eve_vant_id']);
+                    $index = array_search($advantage['eve_vant_id'], $newAdvantages);
+                    if ($index !== false) unset($newAdvantages[$index]);
+                }
+            }
+            foreach ($newAdvantages as $advantageId) $dados->addEventAdvantage($data['eventId'], $advantageId);
+        } catch (\Exception $e) {
+            exit($this->renderApiResponse(500, "Erro ao atualizar informações complementares do evento: " . $e->getMessage()));
+        }
+
+        $newPrices = empty($data['prices']) || !is_array($data['prices']) ? [] : $data['prices'];
+        try {
+            $pricesOrder = [];
+            foreach($prices as $key => $price) $pricesOrder[$price['evento_taxa_ordem']] = $key;
+            foreach ($newPrices as $price) {
+                if (isset($pricesOrder[$price['order']])) {
+                    $dados->updateEventPrice($prices[$pricesOrder[$price['order']]]['evento_taxa_id'], $price);
+                    unset($pricesOrder[$price['order']]);
+                } else {
+                    $dados->addEventPrice($data['eventId'], $price);
+                }
+            }
+            foreach ($pricesOrder as $remainingPriceKey) $dados->removeEventPrice($prices[$remainingPriceKey]['evento_taxa_id']);
+        } catch (\Exception $e) {
+            exit($this->renderApiResponse(500, "Erro ao atualizar preços do evento: " . $e->getMessage()));
+        }
+
+        try {
+            $dados->updateEventComplementaryInfo($data['eventId']);
+        } catch (\Exception $e) {
+            $mensagens[] = "Erro ao atualizar informações complementares do evento: " . $e->getMessage();
+        }
+
+        exit($this->renderApiResponse(200, "Alterações salvas!"));
         return;
     }
 
