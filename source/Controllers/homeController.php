@@ -15,8 +15,8 @@ class homeController extends Core {
 
     public function home() {
         if (!$this->getLogado()) {
-            // header("location: /login");
-            // return;
+            header("location: /login");
+            return;
         } else {
             if ($this->isRedirect()) {
                 header("location: " . $this->extractRedirect());
