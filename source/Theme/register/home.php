@@ -15,8 +15,8 @@
             <div class="col-md-6 d-flex align-items-center justify-content-center">
                 <div class="login-form border">
                     <h2 class="text-center">Cadastro</h2>
-                    <p class="text-center">Já possui conta? <a href="<?= url("login") ?>" class="link-stellar-blue">Entrar</a></p>
-                    <form id="form-register" class="needs-validation" method="get" action="<?= url("register/validate-email") ?>" novalidate>
+                    <p class="text-center">Já possui conta? <a href="<?= url("login?r=".$redirect) ?>" class="link-stellar-blue">Entrar</a></p>
+                    <form id="form-register" class="needs-validation" method="get" action="<?= url("register/validate-email?r=".$redirect) ?>" novalidate>
                         <div class="mb-3">
                             <label for="user" class="form-label">Nome de Usuário</label>
                             <input type="text" class="form-control input-stellar-blue" id="user" name="user" required minlength="3">
@@ -55,7 +55,6 @@
                             <label class="form-check label" for="aceito-termos">Li e aceito as <a href="<?= url('legal/privacy')?>" target="_blank" class="link-kitlit-2">Políticas de Privacidade</a> e os <a href="<?= url('legal/terms')?>" target="_blank" class="link-kitlit-2">Termos de Uso</a></label>
                         </div> -->
                         <div class="d-flex justify-content-end align-items-center">
-                            
                             <button type="submit" class="btn btn-nocturne-purple" id="btn-confirm-register">
                                 <span id="spinner-confirm" class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display:none;"></span>
                                 <span id="text-confirm">Confirmar</span>

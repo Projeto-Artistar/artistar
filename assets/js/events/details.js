@@ -83,7 +83,7 @@ async function favoriteEvent() {
                     });
                 } else {
                     if (response.code == 401) {
-                        window.location.href = '/login';
+                        window.location.href = response.data.redirect;
                     }
                 }
             },
@@ -235,7 +235,7 @@ $('#form-userSubscription').on('submit', function(e) {
                 $('#myToast').removeClass('bg-danger')
                 $('#myToast').addClass('bg-success');
             } else if (response.code == 401) {
-                window.location.href = '/login';
+                window.location.href = response.data.redirect;
             } else {
                 $('#toastTitle').text('Erro!');
                 $('#toastBody').text(response.message);

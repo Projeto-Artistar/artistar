@@ -18,8 +18,8 @@
             <div class="col-md-6 d-flex align-items-center justify-content-center order-1 order-md-2">
                 <div class="login-form border">
                     <h2 class="text-center">Login</h2>
-                    <p class="text-center">Não possui conta? <a href="<?= url("register") ?>" class="link-stellar-blue">Cadastre-se</a></p>
-                    <form id="form-login" method="post" action="<?= url("") ?>">
+                    <p class="text-center">Não possui conta? <a href="<?= url("register?r=" . $redirect) ?>" class="link-stellar-blue">Cadastre-se</a></p>
+                    <form id="form-login" method="post" action="<?= url("?r=" . $redirect) ?>">
                         <div class="mb-3">
                             <label for="email" class="form-label">E-mail</label>
                             <input type="email" class="form-control input-stellar-blue" id="email" name="email" required>
@@ -29,7 +29,7 @@
                             <input type="password" class="form-control input-stellar-blue" id="senha" name="senha" required>
                         </div>
                         <div class="d-flex justify-content-between align-items-center">
-                            <a href="<?= url("password-reset") ?>" class="link-stellar-blue">Esqueci minha senha</a>
+                            <a href="<?= url("password-reset?r=" . $redirect) ?>" class="link-stellar-blue">Esqueci minha senha</a>
                             <button type="submit" class="btn btn-nocturne-purple w-25">Entrar</button>
                         </div>
                     </form>

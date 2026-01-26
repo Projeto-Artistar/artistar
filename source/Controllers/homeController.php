@@ -18,11 +18,16 @@ class homeController extends Core {
             // header("location: /login");
             // return;
         } else {
-            // header("location: /stock");
+            if ($this->isRedirect()) {
+                header("location: " . $this->extractRedirect());
+                return;
+            }
+            header("location: /stock");
         }
         echo $this->view->render("home", [
             'title' =>  'Artistar', 
             'logado' => $this->getLogado(),
+            'redirect' => $this->getRedirect()
         ]);
         return;
     }
@@ -34,6 +39,7 @@ class homeController extends Core {
         }
         echo $this->view->render("login", [
             'title' =>  'Login - Artistar', 
+            'redirect' => $this->getRedirect()
         ]);
         return;
     }

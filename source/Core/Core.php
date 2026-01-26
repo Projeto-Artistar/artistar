@@ -30,6 +30,10 @@ class Core
 
     protected $permissions = [];
 
+    protected $isRedirect = false;
+
+    protected $redirect = null;
+
     public function __construct($router = ROOT){
         global $db;
         $this->router=$router;
@@ -40,6 +44,7 @@ class Core
         $this->verificaLogado();
         $this->view->addData(["router"=> $this->router]);
 
+        $this->defineRedirect();
     }
 
     public function setUserLogonStatus($user) {
@@ -117,9 +122,31 @@ class Core
         return $this->permissions;
     }
 
+    public function defineRedirect() {
+        if (isset($_GET['r']) && !empty($_GET['r'])) {
+            $this->isRedirect = true;
+            $redirect = $_GET['r'];
+        } else {
+            $redirect = base64_encode(urlencode($_SERVER['REQUEST_URI']));
+        }
+        $this->redirect = $redirect;
+    }
+
+    public function isRedirect() {
+        return $this->isRedirect;
+    }
+
+    public function getRedirect() {
+        return $this->redirect;
+    }
+
+    public function extractRedirect() {
+        return urldecode(base64_decode($this->redirect));
+    }
+
     public function validaAcesso($redirectToValidation = true) {
         if(!$this->getLogado()){
-            header("location: /login");
+            header("location: /login?r=" . $this->getRedirect());
             exit;
         } 
         if($redirectToValidation) $this->checkIfEmailIsValidated();
@@ -127,7 +154,7 @@ class Core
 
     public function checkIfEmailIsValidated() {
         if (!$this->getUser()['email_validado']) {
-            header("location: /register/validate-email");
+            header("location: /register/validate-email?r=" . $this->getRedirect());
             exit;
         } 
     }

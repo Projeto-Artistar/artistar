@@ -257,7 +257,7 @@
                         <div class="wrap-modal-slider mb-3">
                             <div class="share-carousel">
                                 <div class="share-button d-flex flex-column align-items-center">
-                                    <a class="btn btn-success mb-2" id="shareWhatsApp" href="https://www.whatsapp.com/send?text=<?= $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] ?>" target="_blank" rel="noopener noreferrer">
+                                    <a class="btn btn-success mb-2" id="shareWhatsApp" href="https://api.whatsapp.com/send?text=<?= $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] ?>" target="_blank" rel="noopener noreferrer">
                                         <i class="fab fa-whatsapp fa-2x"></i>
                                     </a>
                                 </div>

@@ -8,9 +8,7 @@ class statisticsController extends Core {
 
     public function __construct($router = ROOT) {
         parent::__construct($router);
-        if (!$this->getLogado()) {
-            header("Location: /login");
-        }
+        $this->validaAcesso();
     }
 
     public function home() {

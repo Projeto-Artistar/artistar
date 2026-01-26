@@ -18,13 +18,13 @@
             <div class="col-md-6 d-flex align-items-center justify-content-center order-1 order-md-2">
                 <div class="login-form border">
                     <h2 class="text-center">Esqueci minha senha</h2>
-                    <form id="form-password-reset" method="get" action="<?= url("password-reset/code") ?>">
+                    <form id="form-password-reset" method="get" action="<?= url("password-reset/code?r=" . $redirect) ?>">
                         <div class="mb-3">
                             <label for="email" class="form-label">E-mail</label>
                             <input type="email" class="form-control input-stellar-blue" id="email" name="email" required>
                         </div>
                         <div class="d-flex justify-content-between align-items-center">
-                            <a href="<?= url('login') ?>" class="link-stellar-blue">Cancelar</a>
+                            <a href="<?= url('login?r=' . $redirect) ?>" class="link-stellar-blue">Cancelar</a>
                             <button type="submit" class="btn btn-nocturne-purple" id="btn-confirm-password-reset">
                                 <span id="spinner-confirm" class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display:none;"></span>
                                 <span id="text-confirm">Enviar e-mail</span>

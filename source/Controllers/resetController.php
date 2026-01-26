@@ -15,6 +15,7 @@ class resetController extends Core {
     public function home() {
         echo $this->view->render("password-reset/home", [
             'title' =>  'Esqueci minha senha - Artistar', 
+            'redirect' => $this->getRedirect()
         ]);
         return;
     }
@@ -41,6 +42,7 @@ class resetController extends Core {
         }
         echo $this->view->render("password-reset/code", [
             'title' =>  'Confirmar código - Artistar', 
+            'redirect' => $this->getRedirect()
         ]);
         return;
     }

@@ -14,7 +14,7 @@
         <div class="col-md-6 d-flex align-items-center justify-content-center">
             <div class="login-form border">
                 <h2 class="text-center">Confirmação de E-mail</h2>
-                <form id="form-confirmation-code" method="get" action="<?= url("") ?>">
+                <form id="form-confirmation-code" method="get" action="<?= url("?r=" . $redirect) ?>">
                     <div class="mb-3">
                         <label for="codigo" class="form-label">Insira o código de confirmação enviado para o seu e-mail</label>
                         <div class="d-flex justify-content-between">

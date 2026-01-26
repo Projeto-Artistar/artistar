@@ -88,7 +88,9 @@ class eventsController extends Core {
     }
 
     public function subscribe($post) {
-        if (!$this->getLogado()) exit($this->renderApiResponse(401, "Usuário não autenticado."));
+        if (!$this->getLogado()) exit($this->renderApiResponse(401, "Usuário não autenticado.", [
+            'redirect' => '/login?r=' . base64_encode(urlencode('/events/id/'.$post['eventId']))
+        ]));
         $eventsModel = new Events();
         $eventId = filter_var($post['eventId'], FILTER_SANITIZE_NUMBER_INT);
         $subscribed = $eventsModel->checkIfUserIsSubscribed($eventId, $this->getUser()['loja_id']);
@@ -129,7 +131,9 @@ class eventsController extends Core {
 
     public function updateSubscription($post) {
         $this->validaAcesso(true);
-        if (!$this->getLogado()) exit($this->renderApiResponse(401, "Usuário não autenticado."));
+        if (!$this->getLogado()) exit($this->renderApiResponse(401, "Usuário não autenticado.", [
+            'redirect' => '/login?r=' . base64_encode(urlencode('/events/id/'.$post['eventId']))
+        ]));
         $eventsModel = new Events();
         $eventId = filter_var($post['eventId'], FILTER_SANITIZE_NUMBER_INT);
         try {
