@@ -325,7 +325,7 @@ function adicionarProdutosEmLote(existingProducts) {
             "id": prod.id,
             "nome": prod.nome,
             "subtitulo": prod.subtitulo,
-            "preco": prod.total,
+            "preco": prod.preco,
             "desconto": prod.desconto_venda,
             "quantidade": prod.qtd_vendida,
             "estoque": prod.estoque,

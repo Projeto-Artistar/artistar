@@ -110,33 +110,72 @@ $(document).ready(function () {
             ) && !selecionados.has(p.id)
         );
 
-        resultados.forEach(prod => {
-            const item = $(`
-            <div class="row suggestion-item">
-                <div class="col-3">
-                    <img src="${prod.imagem}" alt="${prod.nome}">
+        // Se resultados for vazio, o botão é de "criar produto"
+        if (resultados.length > 0) {
+            resultados.forEach(prod => {
+                const item = $(`
+                <div class="row suggestion-item">
+                    <div class="col-3">
+                        <img src="${prod.imagem}" alt="${prod.nome}">
+                    </div>
+                    <div class="col-6 card-body py-3">
+                        <span class="mb-1">${prod.nome}</span>
+                        <p class="card-text mb-1"><small class="text-muted">${prod.subtitulo}</small></p>
+                    </div>
+                    <div class="col-3 text-end">
+                        <span class="card-text fw-bold text-success">R$${prod.total}</span>
+                        <p class="card-text mb-1"><small class="text-muted">${prod.estoque} uni</small></p>
+                    </div>
                 </div>
-                <div class="col-6 card-body py-3">
-                    <span class="mb-1">${prod.nome}</span>
-                    <p class="card-text mb-1"><small class="text-muted">${prod.subtitulo}</small></p>
-                </div>
-                <div class="col-3 text-end">
-                    <span class="card-text fw-bold text-success">R$${prod.total}</span>
-                    <p class="card-text mb-1"><small class="text-muted">${prod.estoque} uni</small></p>
-                </div>
-            </div>
-            `);
+                `);
 
-            item.on('click', function () {
-                adicionarProduto(prod);
-                atualizarSugestoes();
+                item.on('click', function () {
+                    adicionarProduto(prod);
+                    atualizarSugestoes();
+                });
+
+                $('#suggestions').append(item);
             });
+        }           
+        const noResult = $(`
+            <div class="row suggestion-item">
+                <div class="col-12 text-center">Não encontrou o que procura?<br>Clique aqui para criar rapidamente um novo produto.</div>
+            </div>
+        `);
 
-            $('#suggestions').append(item);
+        $('#suggestions').append(noResult);
+
+        noResult.on('click', function () {
+            $('#product-name').val(termo);
+            $('#new-price').val('0,00');
+            $('#new-discount').val('0,00');
+            $('#saleInsertNewProduct').modal('show');
         });
+
     }
 
-    function adicionarProduto(prod) {
+    $('#insert-new-product').on('click', function () {
+        $('#saleInsertNewProduct').modal('hide');
+        let nome = $('#product-name').val();
+        let preco = $('#new-price').val();
+        let desconto = $('#new-discount').val();
+        let precoNum = preco ? parseFloat(preco.replace(/\./g, '').replace(',', '.')) : 0;
+        let descontoNum = desconto ? parseFloat(desconto.replace(/\./g, '').replace(',', '.')) : 0;
+        let total = precoNum - descontoNum;
+        adicionarProduto({
+            id: `new-${Date.now()}`, // ID temporário único
+            imagem: '/assets/image/200x300.png',
+            nome: nome,
+            subtitulo: 'Produto novo adicionado rapidamente',
+            nome: nome,
+            preco: preco,
+            desconto: desconto,
+            total: total,
+            estoque: 0,
+        }, true);
+    });
+
+    function adicionarProduto(prod, newProduct = false) {
         if (selecionados.has(prod.id)) return;
 
         selecionados.add(prod.id);
@@ -151,6 +190,8 @@ $(document).ready(function () {
                         </div>
                         <div class="col-sm-6 col-12">
                             <div class="card-body py-3">
+                                <input type="hidden" name="items[${prod.id}][name]" value="${prod.nome}">
+                                <input type="hidden" name="items[${prod.id}][subtitle]" value="${prod.subtitulo}">
                                 <h5 class="card-title mb-1">${prod.nome}</h5>
                                 <p class="card-text mb-1"><small class="text-muted">${prod.subtitulo}</small></p>
                             </div>
@@ -188,12 +229,13 @@ $(document).ready(function () {
                         <div class="col-md-4 col-12 align-items-center px-3">
                             <label for="total-price-${prod.id}" class="">Valor (R$)</label>
                             <div class="text-end">
-                                <input id="base-price-${prod.id}" type="hidden" value="${prod.preco}">
+                                <input id="base-price-${prod.id}" name="items[${prod.id}][base_price]" type="hidden" value="${prod.preco}">
                                 <input id="total-price-${prod.id}" name="items[${prod.id}][total_price]" type="text" class="form-control moedaReal input-stellar-blue" value="${prod.total}">
                             </div>
                         </div>
                     </div>
                 </div>
+                <input type="hidden" name="items[${prod.id}][new_product]" value="${newProduct ? '1' : '0'}">
             </div>
         `);
 

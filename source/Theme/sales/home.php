@@ -144,6 +144,38 @@
             </div>
         </div>
     </div>
+    <form class="modal fade" id="saleInsertNewProduct" tabindex="-1" aria-labelledby="saleInsertNewProductLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="saleInsertNewProductLabel">Criar novo produto</h5>
+                    <button type="button" class="btn-close input-stellar-blue" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row mb-3">
+                        <div class="col-12">
+                            <label for="product-name-input" class="form-label">Nome do Produto</label>
+                            <input type="text" class="form-control input-stellar-blue" id="product-name" name="product_name" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="mb-3 col-6">
+                            <label for="new-price" class="form-label">Preço</label>
+                            <input type="text" class="form-control moedaReal input-stellar-blue" id="new-price" name="price" value="0,00">
+                        </div>
+                        <div class="mb-3 col-6">
+                            <label for="new-discount" class="form-label">Desconto</label>
+                            <input type="text" class="form-control moedaReal input-stellar-blue" id="new-discount" name="discount" value="0,00">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-fog-gray" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-nocturne-purple" id="insert-new-product">Finalizar!</button>
+                </div>
+            </div>
+        </div>
+    </form>
 </section>
 <section id="toasts-section">
     <div class="toast align-items-center text-light bg-success border-0 toast-sucesso m-3" id="myToast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="3000">

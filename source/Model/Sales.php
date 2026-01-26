@@ -111,6 +111,40 @@ class Sales extends Core {
             $stmt->execute();
             $saleId = $this->SQL->lastInsertId();
             foreach ($saleData['items'] as $item) {
+                $item['total_price'] = str_replace(',', '.', str_replace('.', '', $item['total_price']));
+                $item['base_price'] = str_replace(',', '.', str_replace('.', '', $item['base_price']));
+                $item['discount'] = str_replace(',', '.', str_replace('.', '', $item['discount']));
+                if (isset($item['new_product']) && $item['new_product'] == '1') {
+                    //Insert new product
+                    $stmt = $this->SQL->prepare("
+                        INSERT INTO produtos (
+                            produto_loja,
+                            produto_nome,
+                            produto_descricao,
+                            produto_valor,
+                            produto_valor_desconto,
+                            produto_estoque,
+                            produto_ativo,
+                            produto_data_cadastro
+                        ) VALUES (
+                            :loja_id,
+                            :nome,
+                            :descricao,
+                            :valor,
+                            :valor_desconto,
+                            0,
+                            1,
+                            NOW()
+                        )
+                    ");
+                    $stmt->bindValue(":loja_id", $storeId, PDO::PARAM_INT);
+                    $stmt->bindValue(":nome", $item['name'], PDO::PARAM_STR);
+                    $stmt->bindValue(":descricao", $item['subtitle'], PDO::PARAM_STR);
+                    $stmt->bindValue(":valor", $item['base_price'], PDO::PARAM_STR);
+                    $stmt->bindValue(":valor_desconto", $item['discount'], PDO::PARAM_STR);
+                    $stmt->execute();   
+                    $item['id'] = $this->SQL->lastInsertId();
+                }
                 $stmt = $this->SQL->prepare("
                     INSERT INTO vendas_itens (
                         venda_item_produto, 
@@ -123,15 +157,12 @@ class Sales extends Core {
                         :venda_id,
                         :quantidade,
                         :desconto,
-                        :preco
-                        
+                        :preco  
                     )
                 ");
                 $stmt->bindValue(":produto_id", $item['id'], PDO::PARAM_INT);
                 $stmt->bindValue(":venda_id", $saleId, PDO::PARAM_INT);
                 $stmt->bindValue(":quantidade", $item['qtd'], PDO::PARAM_INT);
-                $item['total_price'] = str_replace(',', '.', str_replace('.', '', $item['total_price']));
-                $item['discount'] = str_replace(',', '.', str_replace('.', '', $item['discount']));
                 $stmt->bindValue(":preco", $item['total_price'], PDO::PARAM_STR);
                 $stmt->bindValue(":desconto", $item['discount'], PDO::PARAM_STR);
                 $stmt->execute();
