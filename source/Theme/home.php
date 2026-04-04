@@ -12,7 +12,7 @@
 <?= $this->stop() ?>
 
 <?= $this->start("conteudo") ?>
-<?php if($logado) : ?>
+<?php if(!$logado) : ?>
 <section class="section-slide avoid-navbar">
     <div class="col-12">
         <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
@@ -65,38 +65,38 @@
 <section class="section-beneficios avoid-navbar">
     <div class="container">
         <div class="row" style="padding-top: 100px;">
-            <div class="col-lg-6 d-flex flex-column justify-content-center">
+            <div class="col-lg-8 d-flex flex-column justify-content-center">
                 <div>
-                    <h2 class="h1 text-white">
-                        <span class="fw-bold">Viver da sua arte não precisa ser um caos!</span><br>
+                    <h1 class="display-5 text-white">
+                        <span class="fw-bold">Viver da sua arte<br>não precisa ser um caos!</span><br>
                         <span class="fw-bold">Pode ser mais</span> <span class="text-typeEffect" data-palavras='<?= json_encode(["organizado", "leve", "tranquilo", "do seu jeito", "estruturado", "descomplicado", "profissional", "rentável"]) ?>'></span><span class="pipe-typeEffect">|</span>
-                    </h2>
+                    </h1>
                     <p class="text-white fs-4">A gente simplifica o lado profissional da sua arte pra você focar no que mais ama fazer: criar!</p>
-                    <a href="<?= url('register') ?>" class="btn btn-light mt-3">Comece Agora</a>
+                    <a href="<?= url('register') ?>" class="btn btn-lg btn-light color-stellar-blue mt-3">Comece Agora</a>
                 </div>
             </div>
-            <div class="col-lg-6 text-center">
+            <div class="col-lg-4 text-center mt-5 mt-lg-0">
                 <img src="<?= url('assets/image/luna.svg') ?>" alt="learning" class="img-fluid">
             </div>
         </div>
         <div class="row text-center mt-5 py-5">
             <div class="col-12 mb-5">
-                <h2 class="h1 text-white">Sua lojinha em um clique</h2>
+                <h2 class="h1 text-white">Faça as suas vendas, do seu jeito</h2>
             </div>
             <div class="col-md-4 mb-4">
-                <img style="width: 200px;" src="https://dcdn-us.mitiendanube.com/stores/002/915/628/themes/common/logo-108771010-1740163103-604f805e8e907da15fa73c01e1d92cbb1740163104.png?0" alt="Benefício 1" class="img-fluid mb-3">
-                <h5 class="fw-bold">Fácil de Usar</h5>
-                <p class="text-muted">Nossa plataforma é intuitiva e simples de navegar.</p>
+                <img style="width: 200px;" src="<?= url('assets/image/home/beneficio1.svg') ?>" alt="Benefício 1" class="img-fluid mb-3">
+                <h5 class="fw-bold color-nocturne-purple">Tudo em um só lugar</h5>
+                <p class="text-muted">Eventos, estoque, vendas e comunidade em um só lugar, sem precisar se perder entre mil ferramentas.</p>
             </div>
             <div class="col-md-4 mb-4">
-                <img style="width: 200px;" src="https://dcdn-us.mitiendanube.com/stores/002/915/628/themes/common/logo-108771010-1740163103-604f805e8e907da15fa73c01e1d92cbb1740163104.png?0" alt="Benefício 2" class="img-fluid mb-3">
-                <h5 class="fw-bold">Resultados Rápidos</h5>
-                <p class="text-muted">Obtenha insights e resultados em tempo real.</p>
+                <img style="width: 200px;" src="<?= url('assets/image/home/beneficio2.svg') ?>" alt="Benefício 2" class="img-fluid mb-3">
+                <h5 class="fw-bold color-nocturne-purple">Venda em tempo real</h5>
+                <p class="text-muted">Registre suas vendas na hora, com tudo calculado, do seu faturamento à reposição dos produtos.</p>
             </div>
             <div class="col-md-4 mb-4">
-                <img style="width: 200px;" src="https://dcdn-us.mitiendanube.com/stores/002/915/628/themes/common/logo-108771010-1740163103-604f805e8e907da15fa73c01e1d92cbb1740163104.png?0" alt="Benefício 3" class="img-fluid mb-3">
-                <h5 class="fw-bold">Suporte 24/7</h5>
-                <p class="text-muted">Estamos sempre disponíveis para ajudar você.</p>
+                <img style="width: 200px;" src="<?= url('assets/image/home/beneficio3.svg') ?>" alt="Benefício 3" class="img-fluid mb-3">
+                <h5 class="fw-bold color-nocturne-purple">Seu catálogo sempre com você</h5>
+                <p class="text-muted">Compartilhe seus produtos de forma digital com seus clientes, até no meio do evento.</p>
             </div>
         </div>
     </div>
@@ -106,21 +106,50 @@
     <div class="container">
         <div class="row">
             <div class="col-md-6 col-12 px-3 text-white">
-                <h1 class="h2">Gerencie suas vendas de forma eficiente</h1>
-                <p class="h4 mt-3">teste</p>
-                <p class="h4 mt-3">teste</p>
-                <p class="h4 mt-3">teste</p>
-                <a href="<?= url('register') ?>" class="btn btn-light mt-3">Comece Agora</a>
+                <h1 class="display-5 fw-bold">Faça as suas vendas,<br>do seu jeito</h1>
+                <table class="mt-4">
+                    <tbody>
+                        <tr>
+                            <td><i class="fa-solid fa-arrow-right me-3"></i></td>
+                            <td class="h4 fw-bold">Encontre seus produtos na hora</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><p class="h5 my-3">Busque seus produtos em segundos e registre a venda sem interromper nada.</p></td>
+                        </tr>
+                        <tr>
+                            <td><i class="fa-solid fa-arrow-right me-3"></i></td>
+                            <td class="h4 fw-bold">Cadastre novos produtos ali mesmo</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><p class="h5 my-3">Criou algo novo ou levou um item diferente? Dá pra adicionar durante a venda e seguir sem perder tempo.</p></td>
+                        </tr>
+                        <tr>
+                            <td><i class="fa-solid fa-arrow-right me-3"></i></td>
+                            <td class="h4 fw-bold">Saiba exatamente como foi o evento</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><p class="h5 my-3">Acompanhe seu faturamento por evento e saiba o que precisa repor para o próximo, sem precisar contar tudo depois.</p></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><a href="<?= url('register') ?>" class="btn btn-lg btn-light color-stellar-blue mt-3">Comece Agora</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+                
             </div>
-            <div class="col-md-6 col-12 mt-4 mt-md-0">
+            <div class="col-md-6 col-12 mt-4 mt-md-0 d-flex align-items-center justify-content-center ps-3 ps-md-5">
                 <div style="overflow: hidden; border-radius: 20px;">
-                <lottie-player 
-                    src="<?= url("assets/lottie/animacao_vendas.json") ?>"
-                    background="transparent" 
-                    speed="1" 
-                    loop 
-                    autoplay>
-                </lottie-player>
+                    <lottie-player 
+                        src="<?= url("assets/lottie/animacao_vendas.json") ?>"
+                        background="transparent" 
+                        speed="1" 
+                        loop 
+                        autoplay>
+                    </lottie-player>
                 </div>
             </div>
         </div>
