@@ -171,17 +171,45 @@
     margin: 0 2px;
 }
 
+/* Deixar a cor de fundo "esfumaçada preta" para o texto branco ser visível*/
+
 .section-beneficios {
     position: relative;
     min-height: 90vh;
-    background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0) 60%, rgba(255, 255, 255, 1) 100%), url('/assets/image/sky.jpg');
+    background-image: url('/assets/image/nuvens.svg'), linear-gradient(to bottom, var(--stellar-blue) 15%, var(--cotton-candy) 45%, white 100%);
+    background-attachment: fixed, scroll;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+    overflow: hidden;
+}
+
+.section-beneficios > .container {
+    position: relative;
+    z-index: 1;
 }
 
 .section-lastcta {
     min-height: 80vh;
     /* fazer o background color ser degrade, do tranparente para a cor atual */
     /* background-image: linear-gradient(to bottom, #eeeeee 1%, #5005F2); */
+}
+
+.pipe-typeEffect {
+    display: inline-block;
+    animation: blink 1s step-start infinite;
+}
+
+@keyframes blink {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0;
+    }
+}
+
+.text-typeEffect,
+.pipe-typeEffect {
+    font-style: italic;
 }

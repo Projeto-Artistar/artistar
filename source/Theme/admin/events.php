@@ -8,7 +8,7 @@
     <div class="row avoid-navbar">
         <div class="col-sm-6 col-12 mb-3 mb-sm-0 px-sm-0">
             <div>
-                <h1 class="text-center text-sm-start color-nocturne-purple">Produtos</h1>
+                <h1 class="text-center text-sm-start color-nocturne-purple">Eventos</h1>
             </div>
         </div>
     </div>
@@ -18,30 +18,26 @@
                 <thead>
                     <tr>
                         <th scope="col" class="color-nocturne-purple">#</th>
-                        <th scope="col" class="text-center color-nocturne-purple">Imagem</th>
                         <th scope="col" class="text-center color-nocturne-purple">Cadastro</th>
+                        <th scope="col" class="color-nocturne-purple">Proprietário</th>
                         <th scope="col" class="color-nocturne-purple">Nome</th>
-                        <th scope="col" class="color-nocturne-purple">Loja</th>
-                        <th scope="col" class="text-center color-nocturne-purple">Ativo</th>
-                        <th scope="col" class="text-center color-nocturne-purple">Última Venda</th>
+                        <th scope="col" class="text-center color-nocturne-purple">Data Inicial</th>
+                        <th scope="col" class="text-center color-nocturne-purple">Data Final</th>
+                        <th scope="col" class="color-nocturne-purple">Cidade</th>
+                        <th scope="col" class="color-nocturne-purple">Estado</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($products as $product): ?>
+                    <?php foreach ($events as $event): ?>
                     <tr>
-                        <th scope="row" class="color-stellar-blue"><?= $product['produto_id'] ?></th>
-                        <td class="text-center">
-                            <?php if (!empty($product['produto_thumbnail'])): ?>
-                                <img src="<?= storageURL($product['produto_thumbnail']) ?>" alt="<?= $product['produto_nome'] ?>" style="max-width: 50px; max-height: 50px;">
-                            <?php else: ?>
-                                <span class="text-muted">Sem imagem</span>
-                            <?php endif; ?>
-                        </td>
-                        <td class="text-center"><?= date('d/m/Y H:i:s', strtotime($product['produto_data_cadastro'])) ?></td>
-                        <td><?= $product['produto_nome'] ?></td>
-                        <td><?= $product['loja_nome'] ?></td>
-                        <td><?= $product['produto_ativo'] == 1 ? 'Sim' : 'Não' ?></td>
-                        <td class="text-center"><?= !empty($product['produto_ultima_venda']) ? date('d/m/Y H:i:s', strtotime($product['produto_ultima_venda'])) : '-' ?></td>
+                        <th scope="row" class="color-stellar-blue"><?= $event['evento_id'] ?></th>
+                        <td class="text-center"><?= date('d/m/Y H:i:s', strtotime($event['evento_data_criacao'])) ?></td>
+                        <td><?= $event['usuario_nome'] ?></td>
+                        <td><?= $event['evento_nome'] ?></td>
+                        <td class="text-center"><?= date('d/m/Y', strtotime($event['evento_data_inicial'])) ?></td>
+                        <td class="text-center"><?= date('d/m/Y', strtotime($event['evento_data_final'])) ?></td>
+                        <td><?= $event['evento_endereco_cidade'] ?></td>
+                        <td><?= $event['evento_endereco_estado'] ?></td>
                     </tr>
                     <?php endforeach; ?>
                 </tbody>
@@ -51,7 +47,7 @@
 
     <div class="row justify-content-between align-items-center" id="pagination-controls">
         <div class="col-md-6 col-12 d-flex justify-content-md-start justify-content-center mb-2 mb-md-0 px-0">
-            <p class="text-muted">Mostrando <span id="result-count"><?= count($products) ?></span> resultados de <span id="total-count"><?= $total ?></span></p>
+            <p class="text-muted">Mostrando <span id="result-count"><?= count($events) ?></span> resultados de <span id="total-count"><?= $total ?></span></p>
         </div>
         <div class="col-md-6 col-12 d-flex justify-content-md-end justify-content-center px-0">
             <nav aria-label="Page navigation example">

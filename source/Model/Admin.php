@@ -132,4 +132,62 @@ class Admin extends Core {
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return $result['count'];
     }
+
+    public function getEvents($limit = 50, $offset = 0) {
+        $stmt = $this->SQL->prepare("
+            SELECT 
+                * 
+            FROM 
+                eventos 
+            LEFT JOIN
+                usuarios ON eventos.evento_proprietario = usuarios.usuario_id
+            ORDER BY 
+                evento_id DESC
+            LIMIT 
+                :limit 
+            OFFSET 
+                :offset
+        ");
+        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getEventCount() {
+        $stmt = $this->SQL->prepare("SELECT COUNT(*) as count FROM eventos");
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result['count'];
+    }
+
+    public function getSubscriptions($limit = 50, $offset = 0) {
+        $stmt = $this->SQL->prepare("
+            SELECT 
+                * 
+            FROM 
+                inscricoes 
+            LEFT JOIN
+                lojas ON inscricoes.inscricao_loja = lojas.loja_id
+            LEFT JOIN
+                eventos ON inscricoes.inscricao_evento = eventos.evento_id
+            ORDER BY 
+                inscricao_id DESC
+            LIMIT 
+                :limit 
+            OFFSET 
+                :offset
+        ");
+        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getSubscriptionCount() {
+        $stmt = $this->SQL->prepare("SELECT COUNT(*) as count FROM inscricoes");
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result['count'];
+    }
 }

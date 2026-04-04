@@ -29,8 +29,7 @@
                                 <div class="row align-items-center">
                                     <div class="offset-xl-1 col-xl-5 col-md-6 col-12 p-5">
                                     <div>
-                                        <h2 class="h1 text-white mb-3">Vamos tornar suas vendas mais fáceis!</h2>
-                                        <p class="text-white fs-4">Registre sua atividade e analise seus resultados de forma rápida e eficiente...</p>
+                                        <h2 class="h1 text-white mb-3">Viver da sua arte não precisa ser um caos! <br>Pode ser mais <span class="text-typeEffect" data-palavras='<?= json_encode(["organizado", "leve", "tranquilo", "do seu jeito", "estruturado", "descomplicado", "profissional", "rentável"]) ?>'></span>|</h2>
                                         <a class="btn btn-outline-light" href="<?=url('login')?>">Começar</a>
                                     </div>
                                     </div>
@@ -65,14 +64,19 @@
 <?php else: ?>
 <section class="section-beneficios avoid-navbar">
     <div class="container">
-        <div class="row py-5">
-            <div class="col-md-6">
-                <h2 class="h1">Melhore suas vendas com Artistar!</h2>
-                <p class="lead mt-3">Descubra como nossa plataforma pode ajudar você a gerenciar suas vendas, organizar seus produtos e alcançar mais clientes de forma eficiente.</p>
-                <a href="<?= url('register') ?>" class="btn btn-kiklit-2 btn-lg mt-4">Comece Agora</a>
+        <div class="row" style="padding-top: 200px;">
+            <div class="col-lg-8 d-flex flex-column justify-content-center">
+                <div>
+                    <h2 class="h1 text-white">
+                        <span class="fw-bold">Viver da sua arte não precisa ser um caos!</span><br>
+                        <span class="fw-bold">Pode ser mais</span> <span class="text-typeEffect" data-palavras='<?= json_encode(["organizado", "leve", "tranquilo", "do seu jeito", "estruturado", "descomplicado", "profissional", "rentável"]) ?>'></span><span class="pipe-typeEffect">|</span>
+                    </h2>
+                    <p class="text-white fs-4">A gente simplifica o lado profissional da sua arte pra você focar no que mais ama fazer: criar!</p>
+                    <a href="<?= url('register') ?>" class="btn btn-light mt-3">Comece Agora</a>
+                </div>
             </div>
-            <div class="col-md-6 text-center">
-                <img src="https://codescandy.com/geeks-bootstrap-5/assets/images/education/course.png" alt="learning" class="img-fluid">
+            <div class="col-lg-4 text-center">
+                <img src="<?= url('assets/image/luna.svg') ?>" alt="learning" class="img-fluid">
             </div>
         </div>
         <div class="row text-center mt-5 py-5">
@@ -95,13 +99,33 @@
     </div>
 </section>
 <?php endif; ?>
-<section class="section-eventos">
+<section class="section-vendas bg-stellar-blue py-5">
     <div class="container">
-        <div class="py-3 d-flex justify-content-between align-items-center">
-            <span class="h2">Eventos</span>
-            <a href="<?= url('events')?>" class="link-kitlit-2">Ver mais</a>
+        <div class="row">
+        <div class="col-md-6 col-12">
+            <div style="overflow: hidden; border-radius: 20px;">
+            <lottie-player 
+                src="<?= url("assets/lottie/animacao_vendas.json") ?>"
+                background="transparent" 
+                speed="1" 
+                loop 
+                autoplay>
+            </lottie-player>
+            </div>
         </div>
-        <div class="row" id="eventos"></div>
+        <div class="col-md-6 col-12 px-3 text-white mt-4 mt-md-0">
+            <h1 class="h2">Gerencie suas vendas de forma eficiente</h1>
+            <p class="lead mt-3">Nossa plataforma oferece uma interface intuitiva para que você possa acompanhar suas vendas, gerenciar pedidos e manter um controle total sobre seu negócio artístico. Com recursos avançados de análise de vendas, você pode identificar tendências, entender o comportamento dos clientes e tomar decisões informadas para impulsionar seu crescimento. Simplifique a gestão das suas vendas e concentre-se no que realmente importa: criar arte incrível!</p>
+            <a href="<?= url('register') ?>" class="btn btn-light mt-3">Comece Agora</a>
+        </div>
+        </div>
+    </div>
+</section>
+<section class="section-phrase bg-white py-5 my-5">
+    <div class="container">
+        <h2 class="h1 color-nocturne-purple">"Descubra como nossa plataforma pode ajudar você a gerenciar suas vendas, organizar seus produtos e alcançar mais clientes de forma eficiente."</h2>
+        <p class="mt-3 h5 color-gray">Thuanny Oliveira, Deartcass</p> 
+        <a href="<?= url('register') ?>" class="btn btn-lg btn-outline-nocturne-purple mt-3">Comece Agora</a>
     </div>
 </section>
 <section class="section-parceiros section-dark p-4">
@@ -128,34 +152,6 @@
                 <p class="lead">Conheça nossos parceiros e patrocinadores, sem eles nada disso seria possível!</p>
                 <a href="https://www.backsite.com.br" target="_blank" class="btn btn-outline-light">Acessar</a>
             </div>
-        </div>
-    </div>
-</section>
-<section class="section-artistas p-4">
-    <div class="container">
-        <div class="pb-3 d-flex justify-content-between align-items-center">
-            <span class="h2">Depoimentos de Artistas e Lojas</span>
-            <a href="<?= url('stores')?>" class="link-kitlit-2">Ver mais</a>
-        </div>
-        <div id="carrossel-lojas">
-            <?php for($i=0; $i<=7; $i++):?>
-                <div>
-                    <div class="card text-center p-3">
-                        <img class="card-img-top rounded-circle mx-auto mt-3" src="https://dcdn-us.mitiendanube.com/stores/002/915/628/themes/common/logo-108771010-1740163103-604f805e8e907da15fa73c01e1d92cbb1740163104.png?0" alt="Depoimento de Artista <?= $i + 1 ?>">
-                        <div class="card-body">
-                            <h5 class="card-title">Artista <?= $i + 1 ?></h5>
-                            <span class="card-text">
-                                "Este é um depoimento incrível sobre a plataforma. Adorei a experiência!"
-                                <div class="stars d-flex justify-content-center mt-2">
-                                    <?php for ($star = 1; $star <= 5; $star++): ?>
-                                        <i class="fa fa-star text-warning"></i>
-                                    <?php endfor; ?>
-                                </div>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            <?php endfor;?>
         </div>
     </div>
 </section>
@@ -206,7 +202,7 @@
         </div>
     </div>
 </section>
-<section class="section-lastcta bg-nocturne-purple-stellar-blue-gradient text-white d-flex align-items-center justify-content-center">
+<section class="section-lastcta bg-nocturne-purple-stellar-blue-gradient text-white d-flex align-items-center justify-content-center" style="background-attachment: fixed;">
     <div class="container text-center">
         <h2 class="h1">Descubra como nossa plataforma pode ajudar você a gerenciar suas vendas, organizar seus produtos e alcançar mais clientes de forma eficiente.</h2>
         <a href="<?= url('register') ?>" class="btn btn-outline-kiklit-5 btn-lg mt-4">Comece Agora</a>
@@ -217,4 +213,5 @@
 <?= $this->start("js") ?>
 <script src="<?= url("assets/vendors/slick-1.8.1/slick/slick.min.js") ?>" defer></script>
 <script src="<?= url("assets/js/home.js") ?>"></script>
+<script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
 <?= $this->stop() ?>

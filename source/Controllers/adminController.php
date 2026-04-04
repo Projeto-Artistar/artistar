@@ -111,4 +111,44 @@ class adminController extends Core {
         // Implement graphs management view
     }
 
+    public function events() {
+        $admin = new Admin();
+        $page = $_GET['page'] ?? 1;
+        $limit = 50;
+        $offset = ($page - 1) * $limit;
+        echo $this->view->render("admin/events", [
+            'layout' => [
+                'title' =>  'Eventos (Painel de Administrador) - Artistar', 
+                'logado' => $this->getLogado(),
+                'header' => true,
+                'footer' => true
+            ],
+            'events' => $admin->getEvents($limit, $offset),
+            'total' => $admin->getEventCount(),
+            'page' => $page,
+            'offset' => $offset,
+            'limit' => $limit,
+        ]);
+    }
+
+    public function subscriptions() {
+        $admin = new Admin();
+        $page = $_GET['page'] ?? 1;
+        $limit = 50;
+        $offset = ($page - 1) * $limit;
+        echo $this->view->render("admin/subscriptions", [
+            'layout' => [
+                'title' =>  'Inscrições (Painel de Administrador) - Artistar', 
+                'logado' => $this->getLogado(),
+                'header' => true,
+                'footer' => true
+            ],
+            'subscriptions' => $admin->getSubscriptions($limit, $offset),
+            'total' => $admin->getSubscriptionCount(),
+            'page' => $page,
+            'offset' => $offset,
+            'limit' => $limit,
+        ]);
+    }
+
 }

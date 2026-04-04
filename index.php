@@ -68,6 +68,15 @@ $router->get("/stores", "adminController:stores", "adminController.stores");
 $router->get("/products", "adminController:products", "adminController.products");
 $router->get("/sales", "adminController:sales", "adminController.sales");
 $router->get("/graphs", "adminController:graphs", "adminController.graphs");
+$router->get("/events", "adminController:events", "adminController.events");
+$router->get("/subscriptions", "adminController:subscriptions", "adminController.subscriptions");
+
+$router->group('settings');
+$router->get("/", "settingsController:home", "settingsController.home");
+$router->get("/profile", "settingsController:profile", "settingsController.profile");
+$router->post("/profile", "settingsController:updateProfile", "settingsController.updateProfile");
+$router->get("/password", "settingsController:password", "settingsController.password");
+$router->post("/password", "settingsController:updatePassword", "settingsController.updatePassword");
 
 $router->group('results');
 $router->get("/", "searchController:results", "searchController.results");
@@ -83,11 +92,9 @@ $router->post("/update-subscription", "eventsController:updateSubscription", "ev
 $router->get("/my-events", "eventsController:myEvents", "eventsController.myEvents"); // Meus Eventos
 $router->get("/create", "eventsController:create", "eventsController.create"); // Criação de novo evento
 $router->post("/create", "eventsController:insert", "eventsController.insert"); // Armazenamento de novo evento
-
-
 $router->get("/edit/{eventId}", "eventsController:edit", "eventsController.edit");
 $router->post("/edit", "eventsController:update", "eventsController.update"); // Edição do evento
-$router->post("/delete", "eventsController:delete", "eventsController.delete");
+// $router->post("/delete", "eventsController:delete", "eventsController.delete");
 
 $router->group('legal');
 $router->get("/terms", "legalController:terms", "legalController.terms");

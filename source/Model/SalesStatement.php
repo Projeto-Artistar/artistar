@@ -338,7 +338,11 @@ class SalesStatement extends Core {
         } else {
             $stmt->bindValue(":cancellation_date", $data['cancellation_date'], PDO::PARAM_STR);
         }
-        $stmt->bindValue(":event_id", $data['event'] ?? null, PDO::PARAM_INT);
+        if (empty($data['event'])) {
+            $stmt->bindValue(":event_id", null, PDO::PARAM_NULL);
+        } else {
+            $stmt->bindValue(":event_id", $data['event'], PDO::PARAM_INT);
+        }
         $stmt->bindValue(":sale_id", $saleId, PDO::PARAM_INT);
         $stmt->execute();
     }

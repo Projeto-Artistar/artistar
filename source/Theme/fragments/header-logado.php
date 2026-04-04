@@ -194,16 +194,16 @@
                     </ul>
                 </div>
             </li>
+            <?php endif; ?>
             <li class="border-top my-3"></li>  
             <li>
-                <a href="#" class="nav-link link-dark link-hover">
+                <a href="<?= url('settings') ?>" class="nav-link link-dark link-hover">
                     <div class="d-flex align-items-center">
                         <i class="fa-solid fa-gear bi me-4" style="width:24px; text-align: center;"></i>
                         <span>Configurações</span>
                     </div>
                 </a>
             </li>
-            <?php endif; ?>
             <?php if($_SESSION['artistar']['permissions']['admin']): ?>
             <li class="border-top my-3"></li>
             <li>
@@ -216,6 +216,14 @@
             </li>
             <?php endif; ?>
         </ul>
+        <a class="d-flex justify-content-between align-items-center link-stellar-blue link-hover text-decoration-none" href="https://discord.gg/Qnk27RKWhs" target="_blank" rel="noopener noreferrer">
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center px-2">
+                    <i class="fa-brands fa-discord bi me-4" style="width:24px; text-align: center;"></i>
+                    <span><strong>Discord Oficial!</strong></span>
+                </div>
+            </div>
+        </a>
         <div class="border-top my-3"></div>
         <div class="d-flex justify-content-between align-items-center">
             <div href="#" class="d-flex justify-content-between align-items-center">

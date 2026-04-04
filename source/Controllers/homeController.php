@@ -14,16 +14,16 @@ class homeController extends Core {
     }
 
     public function home() {
-        if (!$this->getLogado()) {
-            header("location: /login");
-            return;
-        } else {
-            if ($this->isRedirect()) {
-                header("location: " . $this->extractRedirect());
-                return;
-            }
-            header("location: /stock");
-        }
+        // if (!$this->getLogado()) {
+        //     header("location: /login");
+        //     return;
+        // } else {
+        //     if ($this->isRedirect()) {
+        //         header("location: " . $this->extractRedirect());
+        //         return;
+        //     }
+        //     header("location: /stock");
+        // }
         echo $this->view->render("home", [
             'title' =>  'Artistar', 
             'logado' => $this->getLogado(),

@@ -51,6 +51,28 @@
         </a>
     </div>
 
+    <div class="col-12 col-md-6 col-lg-3">
+        <a href="<?= url("admin/events") ?>" class="text-decoration-none">
+            <div class="card text-center shadow-sm h-100">
+                <div class="card-body">
+                    <i class="fas fa-tags fa-2x mb-3 color-nocturne-purple"></i>
+                    <h6 class="card-title">Eventos</h6>
+                </div>
+            </div>
+        </a>
+    </div>
+
+    <div class="col-12 col-md-6 col-lg-3">
+        <a href="<?= url("admin/subscriptions") ?>" class="text-decoration-none">
+            <div class="card text-center shadow-sm h-100">
+                <div class="card-body">
+                    <i class="fas fa-th-list fa-2x mb-3 color-stellar-blue"></i>
+                    <h6 class="card-title">Inscrições</h6>
+                </div>
+            </div>
+        </a>
+    </div>
+
   </div>
 </div>
 <?= $this->stop() ?>

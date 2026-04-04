@@ -21,7 +21,7 @@
         <!-- <link rel="stylesheet" href="<?= url("assets/vendors/mdi/css/materialdesignicons.min.css") ?>"> -->
         <link rel="stylesheet" href="<?= url("assets/vendors/bootstrap-5.3.3/css/bootstrap.min.css") ?>">
         <link rel="preload" href="<?= url("assets/vendors/fontawesome-6.6.0/css/all.min.css") ?>" as="style" onload="this.onload=null;this.rel='stylesheet'">
-        <link rel="preload" rel="stylesheet" href="<?= url("assets/css/artistar.css") ?>" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <link rel="preload" rel="stylesheet" href="<?= url("assets/css/artistar.css?t=" . time()) ?>" as="style" onload="this.onload=null;this.rel='stylesheet'">
         <script src="https://code.iconify.design/2/2.2.1/iconify.min.js" defer></script>
         <?= $this->section("css") ?>
     </head>
@@ -32,6 +32,6 @@
     </body>
     <script src="<?= url("assets/vendors/bootstrap-5.3.3/js/bootstrap.bundle.min.js") ?>" defer></script>
     <script src="<?= url("assets/js/jquery-3.6.0.js") ?>"></script>
-    <script src="<?= url("assets/js/artistar.js") ?>"></script>
+    <script src="<?= url("assets/js/artistar.js?t=" . time()) ?>"></script>
     <?= $this->section("js") ?>
 </html>

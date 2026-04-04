@@ -34,8 +34,46 @@ async function modeloEvento(evento) {
     $('#eventos').append(htmlEvento)
 }
 
+const typeEffect = {
+    palavras: [],
+    palavraAtual: 0,
+    letraAtual: 0,
+    elemento: null,
+    deletando: false,
+    init: function(element) {
+        typeEffect.palavras = JSON.parse(element.getAttribute('data-palavras'));
+        typeEffect.palavraAtual = 0;
+        typeEffect.letraAtual = 0;
+        typeEffect.deletando = false;
+        typeEffect.elemento = element;
+        typeEffect.type();
+    },
+    type: function() {
+        let palavraAtual = typeEffect.palavras[typeEffect.palavraAtual];
+        typeEffect.elemento.innerHTML = typeEffect.deletando ?
+            palavraAtual.substring(0, typeEffect.letraAtual--) :
+            palavraAtual.substring(0, typeEffect.letraAtual++);
+
+        if (!typeEffect.deletando && typeEffect.letraAtual === palavraAtual.length + 1) {
+            typeEffect.deletando = true;
+            setTimeout(typeEffect.type, 1500);
+        } else if (typeEffect.deletando && typeEffect.letraAtual === 0) {
+            typeEffect.deletando = false;
+            typeEffect.palavraAtual = (typeEffect.palavraAtual + 1) % typeEffect.palavras.length;
+            setTimeout(typeEffect.type, 100);
+        } else {
+            setTimeout(typeEffect.type, typeEffect.deletando ? 50 : 100);
+        }
+    }    
+}
+
 $(document).ready(async function() {
-    getEventos();
+    const elements = document.querySelectorAll('.text-typeEffect');
+    elements.forEach(element => {
+        typeEffect.init(element);
+    });
+
+    // getEventos();
     $('.evento > .card').each(function() {
         var $card = $(this);
         var $cardBody = $card.find('.card-body');

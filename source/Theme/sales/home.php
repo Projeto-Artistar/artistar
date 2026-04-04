@@ -2,7 +2,7 @@
 
 <?= $this->start("css") ?>
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-<link rel="stylesheet" href="<?= url("assets/css/sales/home.css") ?>">
+<link rel="stylesheet" href="<?= url("assets/css/sales/home.css?t=" . time()) ?>">
 <?= $this->stop() ?>
 
 <?= $this->start("conteudo") ?>
@@ -196,5 +196,5 @@
 <script>
   const produtos = <?php array_walk_recursive($products,function(&$item){$item=strval($item);}); echo json_encode($products); ?>
 </script>
-  <script src="<?= url("assets/js/sales/home.js") ?>"></script>
+  <script src="<?= url("assets/js/sales/home.js?t=" . time()) ?>"></script>
 <?= $this->stop() ?>

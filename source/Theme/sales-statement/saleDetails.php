@@ -2,7 +2,7 @@
 
 <?= $this->start("css") ?>
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-<link rel="stylesheet" href="<?= url("assets/css/sales-statement/saleDetails.css") ?>">
+<link rel="stylesheet" href="<?= url("assets/css/sales-statement/saleDetails.css?t=" . time()) ?>">
 <?= $this->stop() ?>
 
 <?= $this->start("conteudo") ?>
@@ -163,7 +163,7 @@
   const produtos = <?php array_walk_recursive($products,function(&$item){$item=strval($item);}); echo json_encode($products); ?>;
   const selecionados = new Set();
 </script>
-<script src="<?= url("assets/js/sales-statement/saleDetails.js") ?>"></script>
+<script src="<?= url("assets/js/sales-statement/saleDetails.js?t=" . time()) ?>"></script>
 <script>
     adicionarProdutosEmLote(<?php 
         $saleItems = array_values(array_filter($products, function($item) {return !empty($item['id_venda_item']);}));
