@@ -120,17 +120,17 @@
             </li>
             <li class="d-md-none border-top my-3"></li>
             <li>
-                <a href="<?= url('sales-statement') ?>" class="nav-link link-dark d-block link-hover">
+                <a href="<?= url('sales-statement') ?>" class="nav-link link-nocturne-purple link-hover">
                     <div class="d-flex align-items-center">
-                        <i class="fa-solid fa-dollar-sign bi me-4" style="width:24px; text-align: center;"></i>
+                        <i class="icone-sidebar icone-extrato bi me-4" style="width:24px; text-align: center;"></i>
                         <span>Extrato de Vendas</span>
                     </div>
                 </a>
             </li>
             <li>
-               <a href="<?= url('statistics') ?>" class="nav-link link-dark link-hover">
+               <a href="<?= url('statistics') ?>" class="nav-link link-nocturne-purple link-hover">
                     <div class="d-flex align-items-center">
-                        <i class="fa-solid fa-ranking-star bi me-4" style="width:24px; text-align: center;"></i>
+                        <i class="icone-sidebar icone-estatisticas bi me-4" style="width:24px; text-align: center;"></i>
                         <span>Estatísticas</span>
                     </div>
                 </a>
@@ -138,27 +138,27 @@
             
             <li class="border-top my-3"></li>
             <li>
-               <a href="<?= url('events/my-events') ?>" class="nav-link link-dark link-hover">
+               <a href="<?= url('events/my-events') ?>" class="nav-link link-nocturne-purple link-hover">
                     <div class="d-flex align-items-center">
-                        <i class="icone-meus-eventos me-4" style="width:24px; text-align: center;"></i>
-                        <span>Meus Eventos</span>
-                    </div>
-                </a>
-            </li>
-            <li class="border-top my-3"></li> 
-            <li>
-               <a href="<?= url('events/my-events') ?>" class="nav-link link-dark link-hover">
-                    <div class="d-flex align-items-center">
-                        <i class="icone-loja me-4" style="width:24px; text-align: center;"></i>
+                        <i class="icone-sidebar icone-loja me-4" style="width:24px; text-align: center;"></i>
                         <span>Minha Loja</span>
                     </div>
                 </a>
             </li>
+            <li>
+               <a href="<?= url('events/my-events') ?>" class="nav-link link-nocturne-purple link-hover">
+                    <div class="d-flex align-items-center">
+                        <i class="icone-sidebar icone-meus-eventos me-4" style="width:24px; text-align: center;"></i>
+                        <span>Meus Eventos</span>
+                    </div>
+                </a>
+            </li>
+            <!-- <li class="border-top my-3"></li>  -->
             <?php if($_SESSION['artistar']['permissions']['prototype']): ?>
             <li>
-               <a href="<?= url('events') ?>" class="nav-link link-dark link-hover">
+               <a href="<?= url('events') ?>" class="nav-link link-nocturne-purple link-hover">
                     <div class="d-flex align-items-center">
-                        <i class="fa-solid fa-calendar-plus bi me-4" style="width:24px; text-align: center;"></i>
+                        <i class="icone-sidebar icone-procurar-eventos me-4" style="width:24px; text-align: center;"></i>
                         <span>Procurar Eventos</span>
                     </div>
                 </a>
@@ -208,7 +208,7 @@
             <li>
                 <a href="<?= url('settings') ?>" class="nav-link link-dark link-hover">
                     <div class="d-flex align-items-center">
-                        <i class="icone-config bi me-4" style="width:24px; text-align: center;"></i>
+                        <i class="icone-sidebar icone-config bi me-4" style="width:24px; text-align: center;"></i>
                         <span>Configurações</span>
                     </div>
                 </a>
@@ -216,7 +216,7 @@
             <?php if($_SESSION['artistar']['permissions']['admin']): ?>
             <li class="border-top my-3"></li>
             <li>
-               <a href="<?= url('admin') ?>" class="nav-link link-dark link-hover">
+               <a href="<?= url('admin') ?>" class="nav-link link-nocturne-purple link-hover">
                     <div class="d-flex align-items-center">
                         <i class="fa-solid fa-user-tie bi me-4" style="width:24px; text-align: center;"></i>
                         <span>Painel de Administrador</span>
@@ -241,7 +241,7 @@
                     <span><strong><?= $_SESSION['artistar']['user']['nome_completo'] ?></strong></span>
                 </div>
             </div>
-            <button style="border:none; background:none;" onclick="window.location.href='/auth/logout';" class="link-hover"><i class="icone-sair px-2"></i></button>
+            <button style="border:none; background:none;" onclick="window.location.href='/auth/logout';" class="nav-link link-hover"><i class="icone-sidebar icone-sair px-2"></i></button>
         </div>
     </div>
 </nav>

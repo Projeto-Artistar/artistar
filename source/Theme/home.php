@@ -64,8 +64,8 @@
 <?php else: ?>
 <section class="section-beneficios avoid-navbar">
     <div class="container">
-        <div class="row" style="padding-top: 200px;">
-            <div class="col-lg-8 d-flex flex-column justify-content-center">
+        <div class="row" style="padding-top: 100px;">
+            <div class="col-lg-6 d-flex flex-column justify-content-center">
                 <div>
                     <h2 class="h1 text-white">
                         <span class="fw-bold">Viver da sua arte não precisa ser um caos!</span><br>
@@ -75,11 +75,14 @@
                     <a href="<?= url('register') ?>" class="btn btn-light mt-3">Comece Agora</a>
                 </div>
             </div>
-            <div class="col-lg-4 text-center">
+            <div class="col-lg-6 text-center">
                 <img src="<?= url('assets/image/luna.svg') ?>" alt="learning" class="img-fluid">
             </div>
         </div>
         <div class="row text-center mt-5 py-5">
+            <div class="col-12 mb-5">
+                <h2 class="h1 text-white">Sua lojinha em um clique</h2>
+            </div>
             <div class="col-md-4 mb-4">
                 <img style="width: 200px;" src="https://dcdn-us.mitiendanube.com/stores/002/915/628/themes/common/logo-108771010-1740163103-604f805e8e907da15fa73c01e1d92cbb1740163104.png?0" alt="Benefício 1" class="img-fluid mb-3">
                 <h5 class="fw-bold">Fácil de Usar</h5>
@@ -102,22 +105,24 @@
 <section class="section-vendas bg-stellar-blue py-5">
     <div class="container">
         <div class="row">
-        <div class="col-md-6 col-12">
-            <div style="overflow: hidden; border-radius: 20px;">
-            <lottie-player 
-                src="<?= url("assets/lottie/animacao_vendas.json") ?>"
-                background="transparent" 
-                speed="1" 
-                loop 
-                autoplay>
-            </lottie-player>
+            <div class="col-md-6 col-12 px-3 text-white">
+                <h1 class="h2">Gerencie suas vendas de forma eficiente</h1>
+                <p class="h4 mt-3">teste</p>
+                <p class="h4 mt-3">teste</p>
+                <p class="h4 mt-3">teste</p>
+                <a href="<?= url('register') ?>" class="btn btn-light mt-3">Comece Agora</a>
             </div>
-        </div>
-        <div class="col-md-6 col-12 px-3 text-white mt-4 mt-md-0">
-            <h1 class="h2">Gerencie suas vendas de forma eficiente</h1>
-            <p class="lead mt-3">Nossa plataforma oferece uma interface intuitiva para que você possa acompanhar suas vendas, gerenciar pedidos e manter um controle total sobre seu negócio artístico. Com recursos avançados de análise de vendas, você pode identificar tendências, entender o comportamento dos clientes e tomar decisões informadas para impulsionar seu crescimento. Simplifique a gestão das suas vendas e concentre-se no que realmente importa: criar arte incrível!</p>
-            <a href="<?= url('register') ?>" class="btn btn-light mt-3">Comece Agora</a>
-        </div>
+            <div class="col-md-6 col-12 mt-4 mt-md-0">
+                <div style="overflow: hidden; border-radius: 20px;">
+                <lottie-player 
+                    src="<?= url("assets/lottie/animacao_vendas.json") ?>"
+                    background="transparent" 
+                    speed="1" 
+                    loop 
+                    autoplay>
+                </lottie-player>
+                </div>
+            </div>
         </div>
     </div>
 </section>
@@ -126,6 +131,42 @@
         <h2 class="h1 color-nocturne-purple">"Descubra como nossa plataforma pode ajudar você a gerenciar suas vendas, organizar seus produtos e alcançar mais clientes de forma eficiente."</h2>
         <p class="mt-3 h5 color-gray">Thuanny Oliveira, Deartcass</p> 
         <a href="<?= url('register') ?>" class="btn btn-lg btn-outline-nocturne-purple mt-3">Comece Agora</a>
+    </div>
+</section>
+<section class="section-vendas bg-stellar-blue py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-12 mt-4 mt-md-0 d-flex flex-column justify-content-center">
+                <h2 class="h2 text-white">Como posso começar a usar?</h2>
+                <p class="h4 text-white my-5">É simples! Siga estes x passos para começar.</p>
+                <div>
+                    <a href="<?= url('register') ?>" class="btn btn-light mt-3">Comece Agora</a>
+                </div>
+            </div>
+            <div class="col-md-6 col-12 px-3 text-white">
+                <div class="row">
+                    <div class="col-1">01</div>
+                    <div class="col-11">
+                        <h4 class="font-weight-bold">Título do passo</h4>
+                    </div>
+                    <hr>
+                    <div class="col-1">02</div>
+                    <div class="col-11">
+                        <h4 class="font-weight-bold">Título do passo</h4>
+                    </div>
+                    <hr>
+                    <div class="col-1">03</div>
+                    <div class="col-11">
+                        <h4 class="font-weight-bold">Título do passo</h4>
+                    </div>
+                    <hr>
+                    <div class="col-1">04</div>
+                    <div class="col-11">
+                        <h4 class="font-weight-bold">Título do passo</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </section>
 <section class="section-parceiros section-dark p-4">
