@@ -441,6 +441,78 @@ body {
     text-decoration: none;
 }
 
+.icone-sair {
+    width: 24px;
+    height: 24px;
+    display: inline-block;
+    background-image: url("/assets/icons/Sair.svg");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    vertical-align: middle;
+    color: var(--nocturne-purple);
+}
+
+.icone-config {
+    width: 24px;
+    height: 24px;
+    display: inline-block;
+    background-image: url("/assets/icons/Config.svg");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    vertical-align: middle;
+    color: var(--nocturne-purple);
+}
+
+.icone-estatisticas {
+    width: 24px;
+    height: 24px;
+    display: inline-block;
+    background-image: url("/assets/icons/Estatisticas.svg");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    vertical-align: middle;
+    color: var(--nocturne-purple);
+}
+
+.icone-extrato {
+    width: 24px;
+    height: 24px;
+    display: inline-block;
+    background-image: url("/assets/icons/Extrato de Vendas.svg");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    vertical-align: middle;
+    color: var(--nocturne-purple);
+}
+
+.icone-loja {
+    width: 24px;
+    height: 24px;
+    display: inline-block;
+    background-image: url("/assets/icons/Loja.svg");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    vertical-align: middle;
+    color: var(--nocturne-purple);
+}
+
+.icone-meus-eventos {
+    width: 24px;
+    height: 24px;
+    display: inline-block;
+    background-image: url("/assets/icons/Meus Eventos.svg");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    vertical-align: middle;
+    color: var(--nocturne-purple);
+}
+
 .lista-eventos .evento:hover > .card > .card-img-top {
     height: 0;
 }

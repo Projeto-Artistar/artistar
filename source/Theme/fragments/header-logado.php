@@ -140,8 +140,17 @@
             <li>
                <a href="<?= url('events/my-events') ?>" class="nav-link link-dark link-hover">
                     <div class="d-flex align-items-center">
-                        <i class="fa-solid fa-calendar bi me-4" style="width:24px; text-align: center;"></i>
+                        <i class="icone-meus-eventos me-4" style="width:24px; text-align: center;"></i>
                         <span>Meus Eventos</span>
+                    </div>
+                </a>
+            </li>
+            <li class="border-top my-3"></li> 
+            <li>
+               <a href="<?= url('events/my-events') ?>" class="nav-link link-dark link-hover">
+                    <div class="d-flex align-items-center">
+                        <i class="icone-loja me-4" style="width:24px; text-align: center;"></i>
+                        <span>Minha Loja</span>
                     </div>
                 </a>
             </li>
@@ -199,7 +208,7 @@
             <li>
                 <a href="<?= url('settings') ?>" class="nav-link link-dark link-hover">
                     <div class="d-flex align-items-center">
-                        <i class="fa-solid fa-gear bi me-4" style="width:24px; text-align: center;"></i>
+                        <i class="icone-config bi me-4" style="width:24px; text-align: center;"></i>
                         <span>Configurações</span>
                     </div>
                 </a>
@@ -232,7 +241,7 @@
                     <span><strong><?= $_SESSION['artistar']['user']['nome_completo'] ?></strong></span>
                 </div>
             </div>
-            <button style="border:none; background:none;" onclick="window.location.href='/auth/logout';" class="link-hover"><i class="fa-solid fa-right-from-bracket px-2"></i></button>
+            <button style="border:none; background:none;" onclick="window.location.href='/auth/logout';" class="link-hover"><i class="icone-sair px-2"></i></button>
         </div>
     </div>
 </nav>

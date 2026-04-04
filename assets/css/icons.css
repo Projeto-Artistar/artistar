@@ -1,0 +1,59 @@
+.icone-sair {
+    width: 40px;
+    height: 40px;
+    display: inline-block;
+    background-image: url("/assets/icons/Sair.svg");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.icone-config {
+    width: 40px;
+    height: 40px;
+    display: inline-block;
+    background-image: url("/assets/icons/Config.svg");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.icone-estatisticas {
+    width: 40px;
+    height: 40px;
+    display: inline-block;
+    background-image: url("/assets/icons/Estatisticas.svg");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.icone-extrato {
+    width: 40px;
+    height: 40px;
+    display: inline-block;
+    background-image: url("/assets/icons/Extrato de Vendas.svg");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.icone-loja {
+    width: 40px;
+    height: 40px;
+    display: inline-block;
+    background-image: url("/assets/icons/Loja.svg");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.icone-meus-eventos {
+    width: 40px;
+    height: 40px;
+    display: inline-block;
+    background-image: url("/assets/icons/Meus Eventos.svg");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
