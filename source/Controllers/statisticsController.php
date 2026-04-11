@@ -9,6 +9,9 @@ class statisticsController extends Core {
     public function __construct($router = ROOT) {
         parent::__construct($router);
         $this->validaAcesso();
+        $this->getLayout()->setHeader($this->getLogado() ? 'header-logado' : 'header');
+        $this->getLayout()->setFooter('footer');
+        $this->addLayout();
     }
 
     public function home() {

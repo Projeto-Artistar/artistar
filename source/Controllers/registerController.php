@@ -10,8 +10,15 @@ use Source\Model\Helpers\ValidationCode;
 
 class registerController extends Core {
 
+    public function __construct($router = ROOT) {
+        parent::__construct($router);
+        $this->getLayout()->setFooter('footer');
+        $this->addLayout();
+    }
+
     // Controller functions
     public function home() {
+
         echo $this->view->render("register/home", [
             'title' =>  'Cadastro - Artistar', 
             'redirect' => $this->getRedirect()

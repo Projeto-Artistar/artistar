@@ -384,6 +384,34 @@ body {
     aspect-ratio: 3000 / 1168;
 }
 
+.language-selector .language-selector-toggle {
+    border-radius: 999px;
+    padding: 0.35rem 0.75rem;
+    line-height: 1;
+}
+
+.language-selector .language-selector-toggle .fa-chevron-down {
+    font-size: 0.7rem;
+}
+
+.language-selector .language-selector-menu {
+    min-width: 11rem;
+}
+
+.language-flag {
+    width: 20px;
+    height: 14px;
+    object-fit: cover;
+    border-radius: 2px;
+    border: 1px solid var(--cloud-gray-light);
+}
+
+@media (max-width: 576px) {
+    .language-selector .language-selector-toggle {
+        padding: 0.35rem 0.5rem;
+    }
+}
+
 .store-logo {
     width: 32px;
     height: 32px;

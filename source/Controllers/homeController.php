@@ -5,6 +5,7 @@ namespace Source\Controllers;
 use CoffeeCode\Router\Router;
 use Source\Core\Core;
 use Source\Model\Home;
+use Source\Model\Helpers\BuildLayout;
 
 class homeController extends Core {
 
@@ -14,25 +15,17 @@ class homeController extends Core {
     }
 
     public function home() {
-        // if (!$this->getLogado()) {
-        //     header("location: /login");
-        //     return;
-        // } else {
-        //     if ($this->isRedirect()) {
-        //         header("location: " . $this->extractRedirect());
-        //         return;
-        //     }
-        //     header("location: /stock");
-        // }
-        echo $this->view->render("home", [
-            'title' =>  'Artistar', 
-            'logado' => $this->getLogado(),
-            'redirect' => $this->getRedirect()
-        ]);
+        $this->getLayout()->setHeader($this->getLogado() ? 'header-logado' : 'header');
+        $this->getLayout()->setFooter('footer');
+        $this->addLayout();
+        $this->addTranslator('home');
+        echo $this->view->render("home");
         return;
     }
 
     public function login() {
+        $this->getLayout()->setFooter('footer');
+        $this->addLayout();
         if ($this->getLogado()) {
             header("location: /");
             return;

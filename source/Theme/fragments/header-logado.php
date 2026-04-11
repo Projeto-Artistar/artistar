@@ -8,10 +8,10 @@
             <ul class="nav col-12 me-md-auto mb-2 mb-md-0 d-none d-md-flex">
                 <li>
                     <a href="<?= url("sales") ?>" class="btn btn-nocturne-purple mx-2">
-                        <i class="fa-solid fa-plus bi" style="width:24px; text-align: center;"></i> Nova Venda
+                        <i class="fa-solid fa-plus bi" style="width:24px; text-align: center;"></i> <?= $translator->translate('Nova Venda') ?>
                     </a>
                 </li>
-                <li><a href="<?= url("stock") ?>" class="nav-link px-2 link-nocturne-purple link-hover">Inventário</a></li>
+                <li><a href="<?= url("stock") ?>" class="nav-link px-2 link-nocturne-purple link-hover"><?= $translator->translate('Inventário') ?></a></li>
             </ul>
         </div>
         <div id="barra-direita" class="d-flex">
@@ -82,6 +82,27 @@
                     </div>
                 </ul>
             </div> -->
+
+            <div class="dropdown language-selector me-2">
+                <button class="btn language-selector-toggle d-flex align-items-center" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Selecionar idioma">
+                    <img src="<?= url('assets/image/flags/' . $languageOptions[$activeLanguage]['flag']) ?>" alt="" class="language-flag me-2">
+                    <span class="d-none d-sm-inline me-2"><?= $languageOptions[$activeLanguage]['label'] ?></span>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end language-selector-menu shadow-sm">
+                    <?php foreach ($languageOptions as $langCode => $langData): 
+                        $newUrl = $urlWithoutLang .'&lang=' . $langCode;
+                    ?>
+                    <li>
+                        <a class="dropdown-item d-flex align-items-center<?= $activeLanguage === $langCode ? ' active' : '' ?>" href="<?= htmlspecialchars($newUrl, ENT_QUOTES, 'UTF-8') ?>">
+                            <img src="<?= url('assets/image/flags/' . $langData['flag']) ?>" alt="" class="language-flag me-2">
+                            <span><?= $langData['label'] ?></span>
+                        </a>
+                    </li>
+                    <?php endforeach; ?>
+                </ul>
+            </div>
+
             <button data-bs-toggle="offcanvas" style="border:none; background:none;" type="button" href="#offcanvasExample" role="button" aria-controls="offcanvasExample" class="link-nocturne-purple link-hover">
                 <i class="fa-solid fa-bars" style="width:24px; text-align: center;"></i>
             </button>
@@ -107,14 +128,14 @@
             <li class="d-md-none">
                 <a href="<?= url("sales") ?>" class="nav-link btn btn-nocturne-purple ">
                     <div class="d-flex align-items-center">
-                        <span>Nova Venda</span>
+                        <span><?= $translator->translate('Nova Venda') ?></span>
                     </div>
                 </a>
             </li>
             <li class="d-md-none">
                 <a href="<?= url('stock')?>" class="nav-link link-nocturne-purple">
                     <div class="d-flex align-items-center">
-                        <span>Inventário</span>
+                        <span><?= $translator->translate('Inventário') ?></span>
                     </div>
                 </a>
             </li>
@@ -123,7 +144,7 @@
                 <a href="<?= url('sales-statement') ?>" class="nav-link link-nocturne-purple link-hover">
                     <div class="d-flex align-items-center">
                         <i class="icone-sidebar icone-extrato bi me-4" style="width:24px; text-align: center;"></i>
-                        <span>Extrato de Vendas</span>
+                        <span><?= $translator->translate('Extrato de Vendas') ?></span>
                     </div>
                 </a>
             </li>
@@ -131,7 +152,7 @@
                <a href="<?= url('statistics') ?>" class="nav-link link-nocturne-purple link-hover">
                     <div class="d-flex align-items-center">
                         <i class="icone-sidebar icone-estatisticas bi me-4" style="width:24px; text-align: center;"></i>
-                        <span>Estatísticas</span>
+                        <span><?= $translator->translate('Estatísticas') ?></span>
                     </div>
                 </a>
             </li>
@@ -141,7 +162,7 @@
                <a href="<?= url('events/my-events') ?>" class="nav-link link-nocturne-purple link-hover">
                     <div class="d-flex align-items-center">
                         <i class="icone-sidebar icone-loja me-4" style="width:24px; text-align: center;"></i>
-                        <span>Minha Loja</span>
+                        <span><?= $translator->translate('Minha Loja') ?></span>
                     </div>
                 </a>
             </li>
@@ -149,7 +170,7 @@
                <a href="<?= url('events/my-events') ?>" class="nav-link link-nocturne-purple link-hover">
                     <div class="d-flex align-items-center">
                         <i class="icone-sidebar icone-meus-eventos me-4" style="width:24px; text-align: center;"></i>
-                        <span>Meus Eventos</span>
+                        <span><?= $translator->translate('Meus Eventos') ?></span>
                     </div>
                 </a>
             </li>
@@ -159,7 +180,7 @@
                <a href="<?= url('events') ?>" class="nav-link link-nocturne-purple link-hover">
                     <div class="d-flex align-items-center">
                         <i class="icone-sidebar icone-procurar-eventos me-4" style="width:24px; text-align: center;"></i>
-                        <span>Procurar Eventos</span>
+                        <span><?= $translator->translate('Procurar Eventos') ?></span>
                     </div>
                 </a>
             </li>
@@ -169,7 +190,7 @@
                 <a href="#" class="nav-link link-dark link-hover">
                     <div class="d-flex align-items-center">
                         <i class="fa-solid fa-store bi me-4" style="width:24px; text-align: center;"></i>
-                        <span>Loja</span>
+                        <span><?= $translator->translate('Loja') ?></span>
                     </div>
                 </a>
             </li>
@@ -177,7 +198,7 @@
                 <a href="#" class="nav-link link-dark link-hover">
                     <div class="d-flex align-items-center">
                         <i class="fa-solid fa-people-group bi me-4" style="width:24px; text-align: center;"></i>
-                        <span>Equipe</span>
+                        <span><?= $translator->translate('Equipe') ?></span>
                     </div>
                 </a>
             </li>
@@ -185,7 +206,7 @@
                 <a href="#" class="nav-link link-dark link-hover item-parcerias" data-bs-toggle="collapse" data-bs-target="#orders-collapse" aria-expanded="false">
                     <div class="d-flex align-items-center">    
                         <i class="fa-solid fa-handshake-angle bi me-4" style="width:24px; text-align: center;"></i>
-                        <span>Parcerias <i class="fa-solid fa-chevron-down ms-2"></i></span>
+                        <span><?= $translator->translate('Parcerias') ?> <i class="fa-solid fa-chevron-down ms-2"></i></span>
                         
                     </div>
                 </a>
@@ -209,7 +230,7 @@
                 <a href="<?= url('settings') ?>" class="nav-link link-dark link-hover">
                     <div class="d-flex align-items-center">
                         <i class="icone-sidebar icone-config bi me-4" style="width:24px; text-align: center;"></i>
-                        <span>Configurações</span>
+                        <span><?= $translator->translate('Configurações') ?></span>
                     </div>
                 </a>
             </li>
@@ -219,7 +240,7 @@
                <a href="<?= url('admin') ?>" class="nav-link link-nocturne-purple link-hover">
                     <div class="d-flex align-items-center">
                         <i class="fa-solid fa-user-tie bi me-4" style="width:24px; text-align: center;"></i>
-                        <span>Painel de Administrador</span>
+                        <span><?= $translator->translate('Painel de Administrador') ?></span>
                     </div>
                 </a>
             </li>
@@ -229,7 +250,7 @@
             <div class="d-flex justify-content-between align-items-center">
                 <div class="d-flex align-items-center px-2">
                     <i class="fa-brands fa-discord bi me-4" style="width:24px; text-align: center;"></i>
-                    <span><strong>Discord Oficial!</strong></span>
+                    <span><strong><?= $translator->translate('Discord Oficial!') ?></strong></span>
                 </div>
             </div>
         </a>

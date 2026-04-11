@@ -12,6 +12,12 @@ use Source\Model\Helpers\ValidationCode;
 
 class resetController extends Core {
 
+    public function __construct($router = ROOT) {
+        parent::__construct($router);
+        $this->getLayout()->setFooter('footer');
+        $this->addLayout();
+    }
+
     public function home() {
         echo $this->view->render("password-reset/home", [
             'title' =>  'Esqueci minha senha - Artistar', 

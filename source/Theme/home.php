@@ -1,9 +1,4 @@
-<?= $this->layout("base", [
-    'title' => $title, 
-    'logado' => $logado,
-    'header' => true,
-    'footer' => true
-]); ?>
+<?= $this->layout("base") ?>
 
 <?= $this->start("css") ?>
 <link rel="stylesheet" href="<?= url("assets/vendors/slick-1.8.1/slick/slick.css") ?>">
@@ -68,11 +63,20 @@
             <div class="col-lg-8 d-flex flex-column justify-content-center">
                 <div>
                     <h1 class="display-5 text-white">
-                        <span class="fw-bold">Viver da sua arte<br>não precisa ser um caos!</span><br>
-                        <span class="fw-bold">Pode ser mais</span> <span class="text-typeEffect" data-palavras='<?= json_encode(["organizado", "leve", "tranquilo", "do seu jeito", "estruturado", "descomplicado", "profissional", "rentável"]) ?>'></span><span class="pipe-typeEffect">|</span>
+                        <span class="fw-bold"><?= $translator->translate('Viver da sua arte') ?><br><?= $translator->translate('não precisa ser um caos!') ?></span><br>
+                        <span class="fw-bold"><?= $translator->translate('Pode ser mais') ?></span> <span class="text-typeEffect" data-palavras='<?= json_encode([
+                            $translator->translate("organizado"),
+                            $translator->translate("leve"),
+                            $translator->translate("tranquilo"),
+                            $translator->translate("do seu jeito"),
+                            $translator->translate("estruturado"),
+                            $translator->translate("descomplicado"),
+                            $translator->translate("profissional"),
+                            $translator->translate("rentável")
+                        ]) ?>'></span><span class="pipe-typeEffect">|</span>
                     </h1>
-                    <p class="text-white fs-4">A gente simplifica o lado profissional da sua arte pra você focar no que mais ama fazer: criar!</p>
-                    <a href="<?= url('register') ?>" class="btn btn-lg btn-light color-stellar-blue mt-3">Comece Agora</a>
+                    <p class="text-white fs-4"><?= $translator->translate('A gente simplifica o lado profissional da sua arte pra você focar no que mais ama fazer: criar!') ?></p>
+                    <a href="<?= url('register') ?>" class="btn btn-lg btn-light color-stellar-blue mt-3"><?= $translator->translate('Comece Agora') ?></a>
                 </div>
             </div>
             <div class="col-lg-4 text-center mt-5 mt-lg-0">
@@ -81,22 +85,22 @@
         </div>
         <div class="row text-center mt-5 py-5">
             <div class="col-12 mb-5">
-                <h2 class="h1 text-white">Faça as suas vendas, do seu jeito</h2>
+                <h2 class="h1 text-white"><?= $translator->translate('Faça as suas vendas, do seu jeito') ?></h2>
             </div>
             <div class="col-md-4 mb-4">
                 <img style="width: 200px;" src="<?= url('assets/image/home/beneficio1.svg') ?>" alt="Benefício 1" class="img-fluid mb-3">
-                <h5 class="fw-bold color-nocturne-purple">Tudo em um só lugar</h5>
-                <p class="text-muted">Eventos, estoque, vendas e comunidade em um só lugar, sem precisar se perder entre mil ferramentas.</p>
+                <h5 class="fw-bold color-nocturne-purple"><?= $translator->translate('Tudo em um só lugar') ?></h5>
+                <p class="text-muted"><?= $translator->translate('Eventos, estoque, vendas e comunidade em um só lugar, sem precisar se perder entre mil ferramentas.') ?></p>
             </div>
             <div class="col-md-4 mb-4">
                 <img style="width: 200px;" src="<?= url('assets/image/home/beneficio2.svg') ?>" alt="Benefício 2" class="img-fluid mb-3">
-                <h5 class="fw-bold color-nocturne-purple">Venda em tempo real</h5>
-                <p class="text-muted">Registre suas vendas na hora, com tudo calculado, do seu faturamento à reposição dos produtos.</p>
+                <h5 class="fw-bold color-nocturne-purple"><?= $translator->translate('Venda em tempo real') ?></h5>
+                <p class="text-muted"><?= $translator->translate('Registre suas vendas na hora, com tudo calculado, do seu faturamento à reposição dos produtos.') ?></p>
             </div>
             <div class="col-md-4 mb-4">
                 <img style="width: 200px;" src="<?= url('assets/image/home/beneficio3.svg') ?>" alt="Benefício 3" class="img-fluid mb-3">
-                <h5 class="fw-bold color-nocturne-purple">Seu catálogo sempre com você</h5>
-                <p class="text-muted">Compartilhe seus produtos de forma digital com seus clientes, até no meio do evento.</p>
+                <h5 class="fw-bold color-nocturne-purple"><?= $translator->translate('Seu catálogo sempre com você') ?></h5>
+                <p class="text-muted"><?= $translator->translate('Compartilhe seus produtos de forma digital com seus clientes, até no meio do evento.') ?></p>
             </div>
         </div>
     </div>
@@ -106,36 +110,36 @@
     <div class="container">
         <div class="row">
             <div class="col-md-6 col-12 px-3 text-white">
-                <h1 class="display-5 fw-bold">Faça as suas vendas,<br>do seu jeito</h1>
+                <h1 class="display-5 fw-bold"><?= $translator->translate('Faça as suas vendas,') ?><br><?= $translator->translate('do seu jeito') ?></h1>
                 <table class="mt-4">
                     <tbody>
                         <tr>
                             <td><i class="fa-solid fa-arrow-right me-3"></i></td>
-                            <td class="h4 fw-bold">Encontre seus produtos na hora</td>
+                            <td class="h4 fw-bold"><?= $translator->translate('Encontre seus produtos na hora') ?></td>
                         </tr>
                         <tr>
                             <td></td>
-                            <td><p class="h5 my-3">Busque seus produtos em segundos e registre a venda sem interromper nada.</p></td>
+                            <td><p class="h5 my-3"><?= $translator->translate('Busque seus produtos em segundos e registre a venda sem interromper nada.') ?></p></td>
                         </tr>
                         <tr>
                             <td><i class="fa-solid fa-arrow-right me-3"></i></td>
-                            <td class="h4 fw-bold">Cadastre novos produtos ali mesmo</td>
+                            <td class="h4 fw-bold"><?= $translator->translate('Cadastre novos produtos ali mesmo') ?></td>
                         </tr>
                         <tr>
                             <td></td>
-                            <td><p class="h5 my-3">Criou algo novo ou levou um item diferente? Dá pra adicionar durante a venda e seguir sem perder tempo.</p></td>
+                            <td><p class="h5 my-3"><?= $translator->translate('Criou algo novo ou levou um item diferente? Dá pra adicionar durante a venda e seguir sem perder tempo.') ?></p></td>
                         </tr>
                         <tr>
                             <td><i class="fa-solid fa-arrow-right me-3"></i></td>
-                            <td class="h4 fw-bold">Saiba exatamente como foi o evento</td>
+                            <td class="h4 fw-bold"><?= $translator->translate('Saiba exatamente como foi o evento') ?></td>
                         </tr>
                         <tr>
                             <td></td>
-                            <td><p class="h5 my-3">Acompanhe seu faturamento por evento e saiba o que precisa repor para o próximo, sem precisar contar tudo depois.</p></td>
+                            <td><p class="h5 my-3"><?= $translator->translate('Acompanhe seu faturamento por evento e saiba o que precisa repor para o próximo, sem precisar contar tudo depois.') ?></p></td>
                         </tr>
                         <tr>
                             <td></td>
-                            <td><a href="<?= url('register') ?>" class="btn btn-lg btn-light color-stellar-blue mt-3">Comece Agora</a></td>
+                            <td><a href="<?= url('register') ?>" class="btn btn-lg btn-light color-stellar-blue mt-3"><?= $translator->translate('Comece Agora') ?></a></td>
                         </tr>
                     </tbody>
                 </table>
@@ -157,41 +161,41 @@
 </section>
 <section class="section-phrase bg-white py-5 my-5">
     <div class="container">
-        <h2 class="h1 color-nocturne-purple">"Descubra como nossa plataforma pode ajudar você a gerenciar suas vendas, organizar seus produtos e alcançar mais clientes de forma eficiente."</h2>
+        <h2 class="h1 color-nocturne-purple"><?= $translator->translate('"Descubra como nossa plataforma pode ajudar você a gerenciar suas vendas, organizar seus produtos e alcançar mais clientes de forma eficiente."') ?></h2>
         <p class="mt-3 h5 color-gray">Thuanny Oliveira, Deartcass</p> 
-        <a href="<?= url('register') ?>" class="btn btn-lg btn-outline-nocturne-purple mt-3">Comece Agora</a>
+        <a href="<?= url('register') ?>" class="btn btn-lg btn-outline-nocturne-purple mt-3"><?= $translator->translate('Comece Agora') ?></a>
     </div>
 </section>
 <section class="section-vendas bg-stellar-blue py-5">
     <div class="container">
         <div class="row">
             <div class="col-md-6 col-12 mt-4 mt-md-0 d-flex flex-column justify-content-center">
-                <h2 class="h2 text-white">Como posso começar a usar?</h2>
-                <p class="h4 text-white my-5">É simples! Siga estes x passos para começar.</p>
+                <h2 class="h2 text-white"><?= $translator->translate('Como posso começar a usar?') ?></h2>
+                <p class="h4 text-white my-5"><?= $translator->translate('É simples! Siga estes x passos para começar.') ?></p>
                 <div>
-                    <a href="<?= url('register') ?>" class="btn btn-light mt-3">Comece Agora</a>
+                    <a href="<?= url('register') ?>" class="btn btn-light mt-3"><?= $translator->translate('Comece Agora') ?></a>
                 </div>
             </div>
             <div class="col-md-6 col-12 px-3 text-white">
                 <div class="row">
                     <div class="col-1">01</div>
                     <div class="col-11">
-                        <h4 class="font-weight-bold">Título do passo</h4>
+                        <h4 class="font-weight-bold"><?= $translator->translate('Título do passo') ?></h4>
                     </div>
                     <hr>
                     <div class="col-1">02</div>
                     <div class="col-11">
-                        <h4 class="font-weight-bold">Título do passo</h4>
+                        <h4 class="font-weight-bold"><?= $translator->translate('Título do passo') ?></h4>
                     </div>
                     <hr>
                     <div class="col-1">03</div>
                     <div class="col-11">
-                        <h4 class="font-weight-bold">Título do passo</h4>
+                        <h4 class="font-weight-bold"><?= $translator->translate('Título do passo') ?></h4>
                     </div>
                     <hr>
                     <div class="col-1">04</div>
                     <div class="col-11">
-                        <h4 class="font-weight-bold">Título do passo</h4>
+                        <h4 class="font-weight-bold"><?= $translator->translate('Título do passo') ?></h4>
                     </div>
                 </div>
             </div>
@@ -201,7 +205,7 @@
 <section class="section-parceiros section-dark p-4">
     <div class="container">
         <div class="pb-3">
-            <span class="h2">Parceiros</span>
+            <span class="h2"><?= $translator->translate('Parceiros') ?></span>
         </div>
         <div class="row bg-danger rounded-4 align-items-center p-4">
             <div class="col-lg-4 img-parceiros order-lg-1 text-center text-lg-start">

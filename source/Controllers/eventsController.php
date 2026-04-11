@@ -8,6 +8,13 @@ use Source\Model\Events;
 
 class eventsController extends Core {
 
+    public function __construct($router = ROOT) {
+        parent::__construct($router);
+        $this->getLayout()->setHeader($this->getLogado() ? 'header-logado' : 'header');
+        $this->getLayout()->setFooter('footer');
+        $this->addLayout();
+    }
+
     public function home() {
         // $get = [
         //     's'     => (isset($_GET['s']) ? filter_var($_GET['s'], FILTER_SANITIZE_STRING) : ''),

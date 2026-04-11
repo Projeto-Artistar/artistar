@@ -11,9 +11,10 @@ class adminController extends Core {
     public function __construct($router = ROOT) {
         parent::__construct($router);
         $this->validaAcesso();
-        if ($this->getPermissions()['admin'] == false) {
-            header("Location: /");
-        }
+        if ($this->getPermissions()['admin'] == false) header("Location: /");
+        $this->getLayout()->setHeader($this->getLogado() ? 'header-logado' : 'header');
+        $this->getLayout()->setFooter('footer');
+        $this->addLayout();
     }
 
     public function home() {

@@ -11,9 +11,13 @@ class stockController extends Core {
     public function __construct($router = ROOT) {
         parent::__construct($router);
         $this->validaAcesso();
+        $this->getLayout()->setHeader($this->getLogado() ? 'header-logado' : 'header');
+        $this->getLayout()->setFooter('footer');
+        $this->addLayout();
     }
 
     public function home() {
+        $this->addTranslator('stock/home');
         $stockModel = new Stock();
         $store = $this->getUser()['loja_id'] ?? 0;
         $search = $_GET['search'] ?? '';
@@ -47,12 +51,6 @@ class stockController extends Core {
         $order = $stockModel->buildOrderBy($orderList, $sort);
 
         echo $this->view->render("stock/home", [
-            'layout' => [
-                'title' =>  'Stock - Artistar', 
-                'logado' => $this->getLogado(),
-                'header' => true,
-                'footer' => true
-            ],
             'stocks' => $stocks,
             'categories' => $stockModel->getCategories($store),
             'products' => $stockModel->getProducts($store, $pagination, $whereStock, $order),

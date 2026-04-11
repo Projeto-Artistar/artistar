@@ -8,43 +8,48 @@ use Exception;
 use League\Plates\Engine;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception as PHPMailerException;
+use Source\Model\Helpers\BuildLayout;
+use Source\Model\Helpers\Translator;
 
-class Core
-{
-
+class Core {
     protected $view;
-
     protected $nucleo;
-
     protected $router;
-
     protected $homenPath = 'artistar';
-
     protected $logado = false;
-
     protected $user = null;
-
-    protected $NoSQL = NULL;
-    
+    protected $NoSQL = NULL; 
     protected $SQL = NULL;
-
     protected $permissions = [];
-
     protected $isRedirect = false;
-
     protected $redirect = null;
+    protected $language = 'pt-br';
+    protected $layout = null;
+    protected $translator = null;
 
     public function __construct($router = ROOT){
         global $db;
         $this->router=$router;
         $this->view = new Engine(dirname(__DIR__,1)."/Theme");
         $this->nucleo = $this->view;
-        
         $this->SQL = $db;
+        
         $this->verificaLogado();
-        $this->view->addData(["router"=> $this->router]);
 
         $this->defineRedirect();
+
+        $this->setLanguage(isset($_GET['lang']) ? $_GET['lang'] : (isset($_SESSION['artistar']['language']) ? $_SESSION['artistar']['language'] : 'pt-br'));
+        $this->setTranslator(new Translator($this->getLanguage()));
+
+        $this->setLayout(new BuildLayout($this->view));
+        $this->getLayout()->setLang($this->getLanguage());
+        $this->getLayout()->setTranslator((new Translator($this->getLanguage()))->loadTranslation('core'));
+
+        $this->view->addData([
+            "router"=> $this->router,
+            "logado" => $this->getLogado(),
+            "redirect" => $this->getRedirect(),
+        ]);
     }
 
     public function setUserLogonStatus($user) {
@@ -57,6 +62,15 @@ class Core
 
     public function unsetUserLogonStatus() {
         unset($_SESSION['artistar']['logon']);
+    }
+
+    public function setLanguage($language) {
+        $this->language = $language;
+        $_SESSION['artistar']['language'] = $language;
+    }
+
+    public function getLanguage() {
+        return $this->language;
     }
 
     public function verificaLogado(){
@@ -239,5 +253,33 @@ class Core
             return true;
         }
         return false;
+    }
+
+    public function setLayout($layout) {
+        $this->layout = $layout;
+    }
+
+    public function getLayout() {
+        return $this->layout;
+    }
+
+    public function setTranslator($translator) {
+        $this->translator = $translator;
+    }
+
+    public function getTranslator() {
+        return $this->translator;
+    }
+
+    public function addLayout() {
+        $this->view->addData([
+            "layout" => $this->getLayout()
+        ]);
+    }
+
+    public function addTranslator($page) {
+        $this->view->addData([
+            "translator" => $this->getTranslator()->loadTranslation($page)
+        ]);
     }
 }

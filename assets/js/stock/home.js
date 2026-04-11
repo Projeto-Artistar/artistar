@@ -3,9 +3,9 @@ document.addEventListener("DOMContentLoaded", function() {
     const myChart = new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: ['Estoque bom', 'Estoque baixo', 'Sem estoque', 'Estoque morto'],
+            labels: dictionary.chart.labels,
             datasets: [{
-                label: 'Produtos',
+                label: dictionary.chart.datasetLabel,
                 data: [goodStock, lowStock, outOfStock, deadStock],
                 backgroundColor: [
                     'rgba(25, 135, 84, 1)',
@@ -72,37 +72,37 @@ document.addEventListener("DOMContentLoaded", function() {
 $(document).ready(function() {
     $('#new-category').select2({
         tags: true,
-        placeholder: "Selecione ou adicione uma nova categoria",
+        placeholder: dictionary.select2.new.category.placeholder,
         allowClear: true,
         dropdownParent: $('#newModal'),
         width: '100%',
         language: {
             noResults: function() {
-                return "Adicione uma nova categoria";
+                return dictionary.select2.new.category.language;
             }
         }
     });
     $('#new-keywords').select2({
         tags: true,
-        placeholder: "Selecione ou adicione uma nova palavra-chave",
+        placeholder: dictionary.select2.new.keywords.placeholder,
         allowClear: true,
         dropdownParent: $('#newModal'),
         width: '100%',
         language: {
             noResults: function() {
-                return "Adicione uma nova palavra-chave";
+                return dictionary.select2.new.keywords.language;
             }
         }
     });
 
     $('#filter-category').select2({
-        placeholder: "Selecione uma ou mais categorias",
+        placeholder: dictionary.select2.filter.category.placeholder,
         allowClear: true,
         dropdownParent: $('#filterModal'),
         width: '100%',
         language: {
             noResults: function() {
-                return "Nenhuma categoria encontrada";
+                return dictionary.select2.filter.category.language;
             }
         }
     });
@@ -110,36 +110,36 @@ $(document).ready(function() {
     $('#newModal').on('shown.bs.modal', function () {
         $('#new-category').select2({
             tags: true,
-            placeholder: "Selecione ou adicione uma nova categoria",
+            placeholder: dictionary.select2.new.category.placeholder,
             allowClear: true,
             dropdownParent: $('#newModal .modal-body'),
             width: '100%',
             language: {
                 noResults: function() {
-                    return "Adicione uma nova categoria";
+                    return dictionary.select2.new.category.language;
                 }
             }
         });
         $('#new-keywords').select2({
             tags: true,
-            placeholder: "Selecione ou adicione uma nova palavra-chave",
+            placeholder: dictionary.select2.new.keywords.placeholder,
             allowClear: true,
             dropdownParent: $('#newModal .modal-body'),
             width: '100%',
             language: {
                 noResults: function() {
-                    return "Adicione uma nova palavra-chave";
+                    return dictionary.select2.new.keywords.language;
                 }
             }
         });
         $('#filter-category').select2({
-            placeholder: "Selecione uma ou mais categorias",
+            placeholder: dictionary.select2.filter.category.placeholder,
             allowClear: true,
             dropdownParent: $('#filterModal'),
             width: '100%',
             language: {
                 noResults: function() {
-                    return "Nenhuma categoria encontrada";
+                    return dictionary.select2.filter.category.language;
                 }
             }
         });
@@ -163,7 +163,6 @@ $(document).ready(function() {
         let desconto = $('#new-discount').val();
         let custo = $('#new-cost').val();
 
-        // Remove apenas pontos de milhares e troca vírgula por ponto
         preco = preco ? parseFloat(preco.replace(/\./g, '').replace(',', '.')) : 0;
         desconto = desconto ? parseFloat(desconto.replace(/\./g, '').replace(',', '.')) : 0;
         custo = custo ? parseFloat(custo.replace(/\./g, '').replace(',', '.')) : 0;
@@ -244,7 +243,7 @@ $(function() {
             //limitar a imagem a 5MB
             const fileSize = file.size / 1024 / 1024; // tamanho em MB
             if (fileSize > 5) {
-                alert('A imagem deve ter no máximo 5MB');
+                alert(dictionary.imageSizeError);
                 $input.val(''); // Limpa o input
                 $area.find('img').remove();
                 $text.show();
@@ -263,9 +262,8 @@ $(document).on('click', '#create-product-btn', function() {
     var form = $('#form-new-product')[0];
     var formData = new FormData(form);
 
-    //Verifica se o campo de nome e preço estão preenchidos
     if (!formData.get('name')) {
-        alert('Por favor, preencha o campo de nome');
+        alert(dictionary.validation.nameRequired);
         return;
     }
 
@@ -278,9 +276,9 @@ $(document).on('click', '#create-product-btn', function() {
     }).done(function (response) {
         response = JSON.parse(response);
         if (response.code == 200) {
-            location.href = $('#form-new-product').attr('action'); // Redireciona para a ação do formulário
+            location.href = $('#form-new-product').attr('action');
         } else {
-            console.error('Erro ao criar produto:', response.message);
+            console.error(dictionary.validation.error, response.message);
         }
     }).fail(function (error) {
         console.error('An error occurred:', error);
