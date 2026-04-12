@@ -271,7 +271,8 @@ class Core {
         return $this->translator;
     }
 
-    public function addLayout() {
+    public function addLayout($title = null) {
+        $this->getLayout()->setTitle($title ? $title . ' - Artistar' : 'Artistar');
         $this->view->addData([
             "layout" => $this->getLayout()
         ]);

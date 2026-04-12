@@ -13,13 +13,15 @@ class stockController extends Core {
         $this->validaAcesso();
         $this->getLayout()->setHeader($this->getLogado() ? 'header-logado' : 'header');
         $this->getLayout()->setFooter('footer');
-        $this->addLayout();
     }
 
     public function home() {
         $this->addTranslator('stock/home');
+        $this->addLayout($this->getTranslator()->translate("Inventário"));
         $stockModel = new Stock();
+        $stockModel->setTranslator($this->getTranslator());
         $store = $this->getUser()['loja_id'] ?? 0;
+        if (empty($store)) exit($this->renderApiResponse(400, $this->getTranslator()->translate("Loja não encontrada.")));
         $search = $_GET['search'] ?? '';
         $filter = $_GET['filter'] ?? [];
         if (!isset($filter['status'])) $filter['status'] = '';
@@ -66,9 +68,11 @@ class stockController extends Core {
     }
 
     public function newProduct($post) {
+        $this->addTranslator('stock/home');
+        $tradutor = $this->getTranslator();
         $stockModel = new Stock();
         $store = $this->getUser()['loja_id'] ?? 0;
-        if (empty($store)) exit($this->renderApiResponse(400, "Loja não encontrada."));
+        if (empty($store)) exit($this->renderApiResponse(400, $tradutor->translate("Loja não encontrada.")));
         $insertData = [
             'produto_nome' => $post['name'] ?? '',
             'produto_codigo_interno' => $post['insideId'] ?? '',
@@ -83,11 +87,11 @@ class stockController extends Core {
             'produto_palavras_chave' => isset($post['keywords']) ? implode('|', $post['keywords']) : '',
         ];
         if (empty($insertData['produto_nome'])) {
-            exit($this->renderApiResponse(400, "Nome do produto é obrigatório."));
+            exit($this->renderApiResponse(400, $tradutor->translate("Nome do produto é obrigatório.")));
         }
         $productId = $stockModel->insertProduct($insertData);
         if (!$productId) {
-            exit($this->renderApiResponse(500, "Erro ao inserir produto."));
+            exit($this->renderApiResponse(500, $tradutor->translate("Erro ao inserir produto.")));
         } else {
             $categories = $post['category'] ?? [];
             $stockModel->insertProductCategories($categories, $store, $productId);
@@ -101,24 +105,19 @@ class stockController extends Core {
             
             
         }
-        exit($this->renderApiResponse(200, "Produto inserido com sucesso.", ['productId' => $productId]));
-
+        exit($this->renderApiResponse(200, $tradutor->translate("Produto inserido com sucesso."), ['productId' => $productId]));
     }
 
     public function productDetails($get) {
+        $this->addTranslator('stock/productDetails');
         $productId = $get['productId'] ?? 0;
         $stockModel = new Stock();
         $store = $this->getUser()['loja_id'] ?? 0;
-        if (empty($store)) exit($this->renderApiResponse(400, "Loja não encontrada."));
+        if (empty($store)) exit($this->renderApiResponse(400, $this->getTranslator()->translate("Loja não encontrada.")));
         $product = $stockModel->getProductById($productId, $store);
         if (empty($product['id'])) header("Location: ".url('stock'));
+        $this->addLayout($product['nome']);
         echo $this->view->render("stock/productDetails", [
-            'layout' => [
-                'title' =>  $product['nome'].'- Artistar', 
-                'logado' => $this->getLogado(),
-                'header' => true,
-                'footer' => true
-            ],
             'product' => $product,
             'categories' => $stockModel->getCategories($store)
         ]);
@@ -126,12 +125,14 @@ class stockController extends Core {
     }
 
     public function alterProduct($post) {
+        $this->addTranslator('stock/productDetails');
+        $tradutor = $this->getTranslator();
         $productId = $post['productId'] ?? 0;
         $store = $this->getUser()['loja_id'] ?? 0; 
         $stockModel = new Stock();
         $product = $stockModel->getProductById($productId, $store);
-        if (empty($store)) exit($this->renderApiResponse(400, "Loja não encontrada."));
-        if (empty($product)) exit($this->renderApiResponse(400, "Produto não encontrado."));
+        if (empty($store)) exit($this->renderApiResponse(400, $tradutor->translate("Loja não encontrada.")));
+        if (empty($product)) exit($this->renderApiResponse(400, $tradutor->translate("Produto não encontrado.")));
         $update = [
             'produto_nome' => $post['name'] ?? '',
             'produto_descricao' => $post['description'] ?? '',
@@ -157,25 +158,27 @@ class stockController extends Core {
                 $stockModel->updateThumbnail($newThumbnail, $productId);
             }
         } catch (Exception $e) {
-            exit($this->renderApiResponse(500, "Erro ao atualizar produto: " . $e->getMessage()));
+            exit($this->renderApiResponse(500, $tradutor->translate("Erro ao atualizar produto: ") . $e->getMessage()));
         }
 
-        exit($this->renderApiResponse(200, "Produto atualizado com sucesso."));
+        exit($this->renderApiResponse(200, $tradutor->translate("Produto atualizado com sucesso.")));
 
         return;
     }
 
     public function duplicateProduct($post) {
+        $this->addTranslator('stock/productDetails');
+        $tradutor = $this->getTranslator();
         $productId = $post['productId'] ?? 0;
         $store = $this->getUser()['loja_id'] ?? 0; 
         $stockModel = new Stock();
         $product = $stockModel->getProductById($productId, $store);
-        if (empty($store)) exit($this->renderApiResponse(400, "Loja não encontrada."));
-        if (empty($product)) exit($this->renderApiResponse(400, "Produto não encontrado."));
+        if (empty($store)) exit($this->renderApiResponse(400, $tradutor->translate("Loja não encontrada.")));
+        if (empty($product)) exit($this->renderApiResponse(400, $tradutor->translate("Produto não encontrado.")));
         
         try {
-            $newProductId = $stockModel->duplicateProduct($productId, $store);
-            if (!$newProductId) exit($this->renderApiResponse(500, "Erro ao duplicar produto."));
+            $newProductId = $stockModel->duplicateProduct($productId, $store, $tradutor->translate("Cópia"));
+            if (!$newProductId) exit($this->renderApiResponse(500, $tradutor->translate("Erro ao duplicar produto.")));
             $stockModel->duplicateProductCategories($productId, $newProductId, $store);
             if (!empty($product['thumbnail'])) {
                 $storage = new Storage();
@@ -184,19 +187,21 @@ class stockController extends Core {
                 if($newThumbnail) $stockModel->updateThumbnail($newThumbnail, $newProductId);
             }
         } catch (Exception $e) {
-            exit($this->renderApiResponse(500, "Erro ao duplicar produto: " . $e->getMessage()));
+            exit($this->renderApiResponse(500, $tradutor->translate("Erro ao duplicar produto: ") . $e->getMessage()));
         }
 
-        exit($this->renderApiResponse(200, "Produto duplicado com sucesso.", ['newProductId' => $newProductId]));
+        exit($this->renderApiResponse(200, $tradutor->translate("Produto duplicado com sucesso."), ['newProductId' => $newProductId]));
     }
 
     public function deleteProduct($post) {
+        $this->addTranslator('stock/productDetails');
+        $tradutor = $this->getTranslator();
         $productId = $post['productId'] ?? 0;
         $store = $this->getUser()['loja_id'] ?? 0; 
         $stockModel = new Stock();
         $product = $stockModel->getProductById($productId, $store);
-        if (empty($store)) exit($this->renderApiResponse(400, "Loja não encontrada."));
-        if (empty($product)) exit($this->renderApiResponse(400, "Produto não encontrado."));
+        if (empty($store)) exit($this->renderApiResponse(400, $tradutor->translate("Loja não encontrada.")));
+        if (empty($product)) exit($this->renderApiResponse(400, $tradutor->translate("Produto não encontrado.")));
         
         try {
             $stockModel->deleteProduct($productId, $store);
@@ -206,9 +211,9 @@ class stockController extends Core {
                 $storage->deleteFileFromBucket('uploads/products/'.$productId.'/thumbnail.'. pathinfo($product['thumbnail'], PATHINFO_EXTENSION), true);
             }
         } catch (Exception $e) {
-            exit($this->renderApiResponse(500, "Erro ao excluir produto: " . $e->getMessage()));
+            exit($this->renderApiResponse(500, $tradutor->translate("Erro ao excluir produto: ") . $e->getMessage()));
         }
 
-        exit($this->renderApiResponse(200, "Produto excluído com sucesso."));
+        exit($this->renderApiResponse(200, $tradutor->translate("Produto excluído com sucesso.")));
     }
 }

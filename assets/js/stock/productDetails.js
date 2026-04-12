@@ -1,23 +1,23 @@
 $(document).ready(function() {
     $('#category').select2({
         tags: true,
-        placeholder: "Selecione ou adicione uma nova categoria",
+        placeholder: $('#category').attr('data-placeholder'),
         allowClear: true,
         width: '100%',
         language: {
             noResults: function() {
-                return "Adicione uma nova categoria";
+                return $('#category').attr('data-noResults');
             }
         }
     });
     $('#keywords').select2({
         tags: true,
-        placeholder: "Selecione ou adicione uma nova palavra-chave",
+        placeholder: $('#keywords').attr('data-placeholder'),
         allowClear: true,
         width: '100%',
         language: {
             noResults: function() {
-                return "Adicione uma nova palavra-chave";
+                return $('#keywords').attr('data-noResults');
             }
         }
     });
@@ -64,10 +64,10 @@ $(function() {
     function showPreview(file) {
         const reader = new FileReader();
         reader.onload = function(e) {
-            const fileSize = file.size / 1024 / 1024; // tamanho em MB
+            const fileSize = file.size / 1024 / 1024;
             if (fileSize > 5) {
-                alert('A imagem deve ter no máximo 5MB');
-                $input.val(''); // Limpa o input
+                alert($('#image').attr('data-sizeError'));
+                $input.val('');
                 $area.find('img').remove();
                 $text.show();
                 return;
@@ -88,10 +88,8 @@ $(function() {
       digitsOptional: false,
       placeholder: '0',
       rightAlign: false,
-      removeMaskOnSubmit: true // remove a máscara ao submeter o form
+      removeMaskOnSubmit: true
     });
-
-    // $(".moedaReal").inputmask('000.000.000.000.000,00', {reverse: true});
 
     function calcularLucro() {
         let preco = $('#price').val();
@@ -150,9 +148,8 @@ $(document).on('click', '#create-product-btn, #create-product-btn-2', function()
     var form = $('#product-details-form')[0];
     var formData = new FormData(form);
 
-    //Verifica se o campo de nome e preço estão preenchidos
     if (!formData.get('name')) {
-        alert('Por favor, preencha os campo de nome');
+        alert($('#name').attr('data-empty'));
         return;
     }
 
@@ -167,37 +164,27 @@ $(document).on('click', '#create-product-btn, #create-product-btn-2', function()
     }).done(function (response) {
         response = JSON.parse(response);
         if (response.code == 200) {
-            // Update toast content for success
-            $('#toastTitle').text('Alteração Salva!');
+            $('#toastTitle').text($('#product-details-form').attr('data-success'));
             $('#toastBody').text(response.message);
             $('#myToast').removeClass('bg-danger')
             $('#myToast').addClass('bg-success');
-            // Show the toast
             var myToast = new bootstrap.Toast(document.getElementById('myToast'));
             myToast.show();
         } else {
             console.error('Erro ao salvar as alterações do produto:', response.message);
-            // Update toast content for error
-            $('#toastTitle').text('Erro ao Salvar!');
-            $('#toastBody').text('Ocorreu um erro: ' + response.message);
-            //remove class bg-success
+            $('#toastTitle').text($('#product-details-form').attr('data-error'));
+            $('#toastBody').text(dictionary.error + ': ' + response.message);
             $('#myToast').removeClass('bg-success');
-            // Add class bg-danger
             $('#myToast').addClass('bg-danger');
-            // Show the toast
             var myToast = new bootstrap.Toast(document.getElementById('myToast'));
             myToast.show();
         }
     }).fail(function (error) {
-        console.error('Ocorreu um erro:', error);
-        // Update toast content for error
-        $('#toastTitle').text('Erro ao Salvar!');
-        $('#toastBody').text('Ocorreu um erro ao salvar as alterações do produto.');
-                    //remove class bg-success
-            $('#myToast').removeClass('bg-success');
-            // Add class bg-danger
-            $('#myToast').addClass('bg-danger');
-        // Show the toast
+        console.error(dictionary.error + ':', error);
+        $('#toastTitle').text($('#product-details-form').attr('data-error'));
+        $('#toastBody').text(dictionary.saveProductError);
+        $('#myToast').removeClass('bg-success');
+        $('#myToast').addClass('bg-danger');
         var myToast = new bootstrap.Toast(document.getElementById('myToast'));
         myToast.show();
     });
@@ -207,38 +194,26 @@ $(document).on('click', '#accept-duplicate', function() {
     $.ajax({
         url: '/stock/product/duplicate',
         type: 'POST',
-        //Send data not as a object, just the productId
         data: { productId: productId },
-        // processData: false,
-        // contentType: false
     }).done(function (response) {
         response = JSON.parse(response);
         if (response.code == 200) {
-            // Update toast content for success
             window.location.href = '/stock/product/' + response.data.newProductId;
         } else {
-            console.error('Erro ao duplicar o produto:', response.message);
-            // Update toast content for error
-            $('#toastTitle').text('Erro ao Duplicar!');
-            $('#toastBody').text('Ocorreu um erro: ' + response.message);
-            //remove class bg-success
+            console.error(dictionary.duplicateProductError.title+':', response.message);
+            $('#toastTitle').text(dictionary.duplicateProductError.title);
+            $('#toastBody').text(dictionary.duplicateProductError.body);
             $('#myToast').removeClass('bg-success');
-            // Add class bg-danger
             $('#myToast').addClass('bg-danger');
-            // Show the toast
             var myToast = new bootstrap.Toast(document.getElementById('myToast'));
             myToast.show();
         }
     }).fail(function (error) {
-        console.error('Ocorreu um erro:', error);
-        // Update toast content for error
-        $('#toastTitle').text('Erro ao Duplicar!');
-        $('#toastBody').text('Ocorreu um erro ao duplicar o produto.');
-        //remove class bg-success
+        console.error(dictionary.error + ':', error);
+        $('#toastTitle').text(dictionary.duplicateProductError.title);
+        $('#toastBody').text(dictionary.duplicateProductError.body);
         $('#myToast').removeClass('bg-success');
-        // Add class bg-danger
         $('#myToast').addClass('bg-danger');
-        // Show the toast
         var myToast = new bootstrap.Toast(document.getElementById('myToast'));
         myToast.show();
     });
@@ -252,31 +227,23 @@ $(document).on('click', '#accept-delete', function() {
     }).done(function (response) {
         response = JSON.parse(response);
         if (response.code == 200) {
-            alert('Produto excluído com sucesso!');
+            alert(dictionary.deleteProduct.success);
             window.location.href = '/stock';
         } else {
             console.error('Erro ao excluir o produto:', response.message);
-            // Update toast content for error
-            $('#toastTitle').text('Erro ao Excluir!');
-            $('#toastBody').text('Ocorreu um erro: ' + response.message);
-            //remove class bg-success
+            $('#toastTitle').text(dictionary.deleteProduct.error.title);
+            $('#toastBody').text(dictionary.deleteProduct.error.body);
             $('#myToast').removeClass('bg-success');
-            // Add class bg-danger
             $('#myToast').addClass('bg-danger');
         }
-        // Show the toast
         var myToast = new bootstrap.Toast(document.getElementById('myToast'));
         myToast.show();
     }).fail(function (error) {
         console.error('Ocorreu um erro:', error);
-        // Update toast content for error
-        $('#toastTitle').text('Erro ao Excluir!');
-        $('#toastBody').text('Ocorreu um erro ao excluir o produto.');
-        //remove class bg-success
+        $('#toastTitle').text(dictionary.deleteProduct.error.title);
+        $('#toastBody').text(dictionary.deleteProduct.error.body);
         $('#myToast').removeClass('bg-success');
-        // Add class bg-danger
         $('#myToast').addClass('bg-danger');
-        // Show the toast
         var myToast = new bootstrap.Toast(document.getElementById('myToast'));
         myToast.show();
     });

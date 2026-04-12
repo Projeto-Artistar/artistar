@@ -142,61 +142,62 @@ class Stock extends Core {
 
     
     public function getOrderList($sort) {
+        $tradutor = $this->getTranslator();
         $orderList = [
             'name_asc' => [
-                'label' => 'Nome (A-Z)',
+                'label' => $tradutor->translate('Nome (A-Z)'),
                 'value' => 'produto_nome ASC, produto_id ASC'
             ],
             'name_desc' => [
-                'label' => 'Nome (Z-A)',
+                'label' => $tradutor->translate('Nome (Z-A)'),
                 'value' => 'produto_nome DESC, produto_id DESC'
             ],
             'price_asc' => [
-                'label' => 'Preço (Menor para Maior)',
+                'label' => $tradutor->translate('Preço (Menor para Maior)'),
                 'value' => 'produto_valor ASC, produto_id ASC'
             ],
             'price_desc' => [
-                'label' => 'Preço (Maior para Menor)',
+                'label' => $tradutor->translate('Preço (Maior para Menor)'),
                 'value' => 'produto_valor DESC, produto_id DESC'
             ],
             'discount_asc' => [
-                'label' => 'Desconto (Menor para Maior)',
+                'label' => $tradutor->translate('Desconto (Menor para Maior)'),
                 'value' => 'produto_valor_desconto ASC, produto_id ASC'
             ],
             'discount_desc' => [
-                'label' => 'Desconto (Maior para Menor)',
+                'label' => $tradutor->translate('Desconto (Maior para Menor)'),
                 'value' => 'produto_valor_desconto DESC, produto_id DESC'
             ],
             'final_price_asc' => [
-                'label' => 'Preço Atual (Menor para Maior)',
+                'label' => $tradutor->translate('Preço Atual (Menor para Maior)'),
                 'value' => '(produto_valor - produto_valor_desconto) ASC, produto_id ASC'
             ],
             'final_price_desc' => [
-                'label' => 'Preço Atual (Maior para Menor)',
+                'label' => $tradutor->translate('Preço Atual (Maior para Menor)'),
                 'value' => '(produto_valor - produto_valor_desconto) DESC, produto_id DESC'
             ],
             'date_asc' => [
-                'label' => 'Data de Cadastro (Mais Antigo)',
+                'label' => $tradutor->translate('Data de Cadastro (Mais Antigo)'),
                 'value' => 'produto_data_cadastro ASC, produto_id ASC'
             ],
             'date_desc' => [
-                'label' => 'Data de Cadastro (Mais Recente)',
+                'label' => $tradutor->translate('Data de Cadastro (Mais Recente)'),
                 'value' => 'produto_data_cadastro DESC, produto_id DESC'
             ],
             'last_sale_asc' => [
-                'label' => 'Data da Última Venda (Mais Antigo)',
+                'label' => $tradutor->translate('Data da Última Venda (Mais Antigo)'),
                 'value' => 'produto_ultima_venda ASC, produto_id ASC'
             ],
             'last_sale_desc' => [
-                'label' => 'Data da Última Venda (Mais Recente)',
+                'label' => $tradutor->translate('Data da Última Venda (Mais Recente)'),
                 'value' => 'produto_ultima_venda DESC, produto_id DESC'
             ],
             'stock_asc' => [
-                'label' => 'Estoque (Menor para Maior)',
+                'label' => $tradutor->translate('Estoque (Menor para Maior)'),
                 'value' => 'produto_estoque ASC, produto_id ASC'
             ],
             'stock_desc' => [
-                'label' => 'Estoque (Maior para Menor)',
+                'label' => $tradutor->translate('Estoque (Maior para Menor)'),
                 'value' => 'produto_estoque DESC, produto_id DESC'
             ]
         ];
@@ -473,7 +474,7 @@ class Stock extends Core {
         return true;
     }
 
-    public function duplicateProduct($productId, $store) {
+    public function duplicateProduct($productId, $store, $copy = 'Cópia') {
         $stmt = $this->SQL->prepare("
             INSERT INTO produtos (
                 produto_nome, 
@@ -487,7 +488,7 @@ class Stock extends Core {
                 produto_loja
             )
             SELECT 
-                CONCAT('Cópia - ', produto_nome), 
+                CONCAT(:copy, ' - ', produto_nome), 
                 produto_descricao, 
                 produto_valor, 
                 produto_valor_desconto, 
@@ -507,6 +508,7 @@ class Stock extends Core {
         ");
         $stmt->bindValue(":productId", $productId);
         $stmt->bindValue(":store", $store);
+        $stmt->bindValue(":copy", $copy);
         $stmt->execute();
 
         return $this->SQL->lastInsertId();
