@@ -116,7 +116,7 @@ function atualizarSugestoes() {
             </div>
             <div class="col-3 text-end">
                 <span class="card-text fw-bold text-success">R$${prod.total}</span>
-                <p class="card-text mb-1"><small class="text-muted">${prod.estoque} uni</small></p>
+                <p class="card-text mb-1"><small class="text-muted">${prod.estoque} ${dictionary.uni}</small></p>
             </div>
         </div>
         `);
@@ -159,16 +159,16 @@ function adicionarProduto(prod) {
                     <div class="col-md-3 col-sm-6 col-12">
                         <div class="card-body py-3">
                             <span class="card-text fw-bold text-success">R$${prod.preco}</span>
-                            <p class="card-text mb-1"><small class="text-muted">${prod.estoque} uni</small></p>
+                            <p class="card-text mb-1"><small class="text-muted">${prod.estoque} ${dictionary.uni}</small></p>
                         </div>
                     </div>
                     <div class="col-md-1 col-12 text-end">
-                        <button type="button" class="btn-close btn-remove" aria-label="Remover"></button>
+                        <button type="button" class="btn-close btn-remove" aria-label="${dictionary.remove}"></button>
                     </div>
                 </div>
                 <div class="row g-0 align-items-center mb-3">
                     <div class="col-md-4 col-12 align-items-center px-3">
-                        <label for="qtd-items-${prod.id}" class="">Quantidade</label>
+                        <label for="qtd-items-${prod.id}" class="">${dictionary.quantity}</label>
                         <div class="d-flex align-items-center justify-content-between">
                             <button type="button" class="btn btn-sm btn-danger qtd" data-id="${prod.id}" data-action="decrement">
                                 <i class="fa fa-minus"></i>
@@ -181,13 +181,13 @@ function adicionarProduto(prod) {
                         </div>
                     </div>
                     <div class="col-md-4 col-12 my-md-0 my-3 align-items-center px-3">
-                        <label for="discount-${prod.id}" class="">Desconto (R$)</label>
+                        <label for="discount-${prod.id}" class="">${dictionary.discount} (R$)</label>
                         <div class="text-end">
                             <input id="discount-${prod.id}" name="items[${prod.id}][discount]" type="text" class="form-control input-stellar-blue moedaReal" value="${prod.desconto}">
                         </div>
                     </div>
                     <div class="col-md-4 col-12 align-items-center px-3">
-                        <label for="total-price-${prod.id}" class="">Valor (R$)</label>
+                        <label for="total-price-${prod.id}" class="">${dictionary.value} (R$)</label>
                         <div class="text-end">
                             <input id="base-price-${prod.id}" type="hidden" value="${prod.preco}">
                             <input id="total-price-${prod.id}" name="items[${prod.id}][total_price]" type="text" class="form-control input-stellar-blue moedaReal" value="${prod.total}">
@@ -337,7 +337,7 @@ function adicionarProdutosEmLote(existingProducts) {
 
 $(document).on('click', '#finalizar-venda', function () {
     if ($('#selected .card-product').length === 0) {
-        alert('Adicione pelo menos um produto ao carrinho antes de finalizar a venda.');
+        alert(dictionary.add_product);
         return;
     }
 
@@ -357,13 +357,12 @@ $(document).on('click', '#save-sale, #save-sale-2', function () {
     }).done(function (response) {
         response = JSON.parse(response);
         if (response.code == 200) {
-           atualizarToast('myToast', 'Venda Atualizada', 'A venda foi atualizada com sucesso.', true);
+           atualizarToast('myToast', dictionary.toast.success.title, dictionary.toast.success.body, true);
         } else {
-            atualizarToast('myToast', 'Erro ao atualizar venda', 'Ocorreu um erro ao tentar atualizar a venda. Por favor, tente novamente.', true);
+            atualizarToast('myToast', dictionary.toast.error.title, dictionary.toast.error.body, true);
         }
     }).fail(function (error) {
-        atualizarToast('myToast', 'Erro ao atualizar venda', 'Ocorreu um erro ao tentar atualizar a venda. Por favor, tente novamente.', false);
-        // Update toast content for error
+        atualizarToast('myToast', dictionary.toast.error.title, dictionary.toast.error.body, false);
     });
 });
 

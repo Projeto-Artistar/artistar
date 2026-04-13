@@ -15,61 +15,62 @@ class SalesStatement extends Core {
     }
 
     public function getOrderList($sort) {
+        $translator = $this->getTranslator();
         $orderList = [
             'venda_desc' => [
-                'label' => 'Venda (Maior para Menor)',
+                'label' => $translator->translate('Venda (Maior para Menor)'),
                 'value' => 'numero DESC, data_criacao DESC'
             ],
             'venda_asc' => [
-                'label' => 'Venda (Menor para Maior)',
+                'label' => $translator->translate('Venda (Menor para Maior)'),
                 'value' => 'numero ASC, data_criacao ASC'
             ],
             'data_asc' => [
-                'label' => 'Data da Venda (Mais Antiga para Mais Recente)',
+                'label' => $translator->translate('Data da Venda (Mais Antiga para Mais Recente)'),
                 'value' => 'venda_data_venda ASC, numero ASC'
             ],
             'data_desc' => [
-                'label' => 'Data da Venda (Mais Recente para Mais Antiga)',
+                'label' => $translator->translate('Data da Venda (Mais Recente para Mais Antiga)'),
                 'value' => 'venda_data_venda DESC, numero DESC'
             ],
-            'payment_asc' => [
-                'label' => 'Método de Pagamento (A-Z)',
-                'value' => 'pagamento ASC, data_criacao ASC'
-            ],
-            'payment_desc' => [
-                'label' => 'Método de Pagamento (Z-A)',
-                'value' => 'pagamento DESC, data_criacao DESC'
-            ],
+            // 'payment_asc' => [
+            //     'label' => $translator->translate('Método de Pagamento (A-Z)'),
+            //     'value' => 'pagamento ASC, data_criacao ASC'
+            // ],
+            // 'payment_desc' => [
+            //     'label' => $translator->translate('Método de Pagamento (Z-A)'),
+            //     'value' => 'pagamento DESC, data_criacao DESC'
+            // ],
             'products_desc' => [
-                'label' => 'Produtos (Maior para Menor)',
+                'label' => $translator->translate('Produtos (Maior para Menor)'),
                 'value' => 'total_itens DESC, data_criacao DESC'
             ],
             'products_asc' => [
-                'label' => 'Produtos (Menor para Maior)',
+                'label' => $translator->translate('Produtos (Menor para Maior)'),
                 'value' => 'total_itens ASC, data_criacao ASC'
             ],
             'qtd_desc' => [
-                'label' => 'Unidades (Maior para Menor)',
+                'label' => $translator->translate('Unidades (Maior para Menor)'),
                 'value' => 'total_unidades DESC, data_criacao DESC'
             ],
             'qtd_asc' => [
-                'label' => 'Unidades (Menor para Maior)',
+                'label' => $translator->translate('Unidades (Menor para Maior)'),
                 'value' => 'total_unidades ASC, data_criacao ASC'
             ],
             'value_desc' => [
-                'label' => 'Valor (Maior para Menor)',
+                'label' => $translator->translate('Valor (Maior para Menor)'),
                 'value' => 'total_valor DESC, data_criacao DESC'
             ],
             'value_asc' => [
-                'label' => 'Valor (Menor para Maior)',
+                'label' => $translator->translate('Valor (Menor para Maior)'),
                 'value' => 'total_valor ASC, data_criacao ASC'
             ],
             'discount_desc' => [
-                'label' => 'Desconto (Maior para Menor)',
+                'label' => $translator->translate('Desconto (Maior para Menor)'),
                 'value' => 'total_desconto DESC, data_criacao DESC'
             ],
             'discount_asc' => [
-                'label' => 'Desconto (Menor para Maior)',
+                'label' => $translator->translate('Desconto (Menor para Maior)'),
                 'value' => 'total_desconto ASC, data_criacao ASC'
             ]
         ];
