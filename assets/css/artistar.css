@@ -200,6 +200,21 @@ body {
 .btn.btn-fog-gray:hover {color: #111111; background-color: var(--fog-gray-light); border-color: var(--fog-gray-light);}
 .btn.btn-polar-gray:hover {color: #000000; background-color: var(--polar-gray-light); border-color: var(--polar-gray-light);}
 
+.btn.btn-nocturne-purple.inverted-version {color: var(--nocturne-purple); background-color: #FFFFFF; border-color: #FFFFFF;}
+.btn.btn-stellar-blue.inverted-version {color: var(--stellar-blue); background-color: #FFFFFF; border-color: #FFFFFF;}
+.btn.btn-snow-white.inverted-version {color: var(--snow-white); background-color: #FFFFFF; border-color: #FFFFFF;}
+.btn.btn-lavanda.inverted-version {color: var(--lavanda); background-color: #FFFFFF; border-color: #FFFFFF;}
+.btn.btn-cotton-candy.inverted-version {color: var(--cotton-candy); background-color: #FFFFFF; border-color: #FFFFFF;}
+.btn.btn-sunshine-yellow.inverted-version {color: var(--sunshine-yellow); background-color: #FFFFFF; border-color: #FFFFFF;}
+.btn.btn-gray.inverted-version {color: var(--gray); background-color: #FFFFFF; border-color: #FFFFFF;}
+.btn.btn-graphite-gray.inverted-version {color: var(--graphite-gray); background-color: #FFFFFF; border-color: #FFFFFF;}
+.btn.btn-cloud-gray.inverted-version {color: var(--cloud-gray); background-color: #FFFFFF; border-color: #FFFFFF;}
+.btn.btn-fog-gray.inverted-version {color: var(--fog-gray); background-color: #FFFFFF; border-color: #FFFFFF;}
+.btn.btn-polar-gray.inverted-version {color: var(--polar-gray); background-color: #FFFFFF; border-color: #FFFFFF;}
+
+.btn.inverted-version:hover {background-color: transparent; color: #FFFFFF;}
+
+
 .btn.btn-nocturne-purple:active, .btn.btn-nocturne-purple:focus {box-shadow: 0 0 0 .2rem var(--nocturne-purple-shadow); color: #FFFFFF; background-color: var(--nocturne-purple); border-color: var(--nocturne-purple);}
 .btn.btn-stellar-blue:active, .btn.btn-stellar-blue:focus {box-shadow: 0 0 0 .2rem var(--stellar-blue-shadow); color: #FFFFFF; background-color: var(--stellar-blue); border-color: var(--stellar-blue);}
 .btn.btn-snow-white:active, .btn.btn-snow-white:focus {box-shadow: 0 0 0 .2rem var(--snow-white-shadow); color: #FFFFFF; background-color: var(--snow-white); border-color: var(--snow-white);}
