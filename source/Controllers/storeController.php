@@ -10,16 +10,17 @@ class storeController extends Core {
 
     public function __construct($router = ROOT) {
         parent::__construct($router);
+        $this->getLayout()->setHeader($this->getLogado() ? 'header-logado' : 'header');
+        $this->getLayout()->setFooter('footer');
     }
 
     public function details($data) {
 
         $storeModel = new Store();
-        $storeId = !empty($data['storeId']) ? filter_var($data['storeId'], FILTER_SANITIZE_NUMBER_INT) : null;
-        $friendlyUrl = !empty($data['friendlyUrl']) ? filter_var($data['friendlyUrl'], FILTER_SANITIZE_STRING) : null;
-
-        $store = null;
+        $storeId = !empty($this->getUser()) ? $this->getUser()['loja_id'] : null;
         $store = $storeModel->getStoreData($storeId);
+
+        $this->addLayout(!empty($store['nome']) ? $store['nome'] : null);
 
 
         echo $this->view->render("store/details", [
