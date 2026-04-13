@@ -1,18 +1,136 @@
 <?= $this->layout("base", $layout); ?>
 
 <?= $this->start("css") ?>
-<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-<link rel="stylesheet" href="<?= url("assets/css/stock/home.css") ?>">
+<link rel="stylesheet" href="<?= url("assets/css/store/details.css") ?>">
 <?= $this->stop() ?>
 
 <?= $this->start("conteudo") ?>
-<section class="minimum-height">
+<?php
+	$storeName = !empty($store['nome']) ? $store['nome'] : 'Loja sem nome';
+	$storeUsername = !empty($store['nome_unico']) ? '@' . $store['nome_unico'] : '@loja';
+	$storeDescription = !empty($store['descricao']) ? $store['descricao'] : 'Sem descricao cadastrada.';
+	$storePhoto = !empty($store['foto']) ? storageURL($store['foto']) : '';
+	$storeId = !empty($store['codigo']) ? (int) $store['codigo'] : 0;
+	$storeInitial = strtoupper(substr(trim($storeName), 0, 1));
+	$collectionPlaceholders = [
+		[
+			'nome' => 'Colecao A',
+			'itens' => ['Item 1', 'Item 2', 'Item 3']
+		],
+		[
+			'nome' => 'Colecao B',
+			'itens' => ['Item 4', 'Item 5', 'Item 6']
+		]
+	];
+	$bannerPlaceholder = url('assets/image/800x400.png');
+?>
+
+<section class="minimum-height store-details-page py-4">
+	<div class="store-profile-top">
+		<div class="store-banner mb-0">
+			<img src="<?= $bannerPlaceholder ?>" alt="Banner da loja <?= ($storeName) ?>" class="store-banner-image">
+			<div class="store-banner-overlay"></div>
+			<div class="store-banner-actions">
+				<button type="button" class="btn store-action-icon" aria-label="Instagram da loja">
+					<i class="fa-brands fa-instagram"></i>
+				</button>
+				<button type="button" class="btn store-action-icon" aria-label="Twitter da loja">
+					<i class="fa-brands fa-x-twitter"></i>
+				</button>
+				<button type="button" class="btn btn-outline-stellar-blue store-follow-btn">
+					<i class="fa-solid fa-plus"></i>
+					Seguir
+				</button>
+			</div>
+		</div>
+	</div>
+
+	<div class="container-fluid store-main-layout">
+		<div class="row g-4 align-items-start">
+			<div class="col-lg-2 store-profile-column">
+				<aside class="store-profile-panel store-profile-overview">
+					<div class="store-avatar-wrap">
+						<?php if (!empty($storePhoto)): ?>
+							<img src="<?= $storePhoto ?>" class="store-avatar" alt="Foto da loja <?= ($storeName) ?>">
+						<?php else: ?>
+							<div class="store-avatar store-avatar-fallback"><?= ($storeInitial) ?></div>
+						<?php endif; ?>
+					</div>
+
+					<h1 class="store-name mb-1"><?= ($storeName) ?></h1>
+					<p class="store-username mb-2"><?= ($storeUsername) ?></p>
+					<p class="store-description mb-4"><?= ($storeDescription) ?></p>
+                    <p class="store-name mb-1">Santos - SP</p>
+
+					<div class="store-stats">
+                        <div class="store-stat-item">
+							<span class="store-stat-value">10</span>
+							<span class="store-stat-label">produtos</span>
+						</div>
+						<div class="store-stat-item">
+							<span class="store-stat-value">90</span>
+							<span class="store-stat-label">seguidores</span>
+						</div>
+					</div>
+				</aside>
+			</div>
+
+			<div class="col-lg-10 store-catalog-column">
+				<div class="store-details-card">
+					<div class="store-content-panel">
+						<div class="store-content-header">
+							<div>
+								<p class="store-content-subtitle mb-1">catalogo</p>
+								<h2 class="store-content-title mb-0">Destaques da loja</h2>
+							</div>
+						</div>
+
+						<div class="row g-3 mt-3">
+							<div class="col-12 d-flex gap-2 flex-wrap align-items-center store-catalog-toolbar">
+								<div class="d-flex gap-2 flex-wrap align-items-center store-catalog-filters">
+									<button type="button" class="btn btn-outline-stellar-blue store-follow-btn">
+										<i class="fa-solid"></i>
+										Produtos
+									</button>
+									<button type="button" class="btn btn-outline-stellar-blue store-follow-btn">
+										<i class="fa-solid"></i>
+										Coleções
+									</button>
+								</div>
+								<div class="ms-auto text-end store-catalog-search">
+									<div class="store-search-wrap">
+										<i class="fa-solid fa-search store-search-icon"></i>
+										<input type="search" id="storeSearchInput" class="store-search-input" aria-label="Buscar no catalogo" placeholder="Buscar produtos...">
+									</div>
+								</div>
+							</div>
+
+							<div class="col-12">
+								<div id="storeProductsList" class="row g-3" data-store-id="<?= $storeId ?>">
+									<?php for ($i = 1; $i <= 6; $i++): ?>
+										<div class="col-md-6 col-xl-2">
+											<div class="store-product-card is-placeholder h-100">
+												<div class="store-product-image placeholder-glow">
+													<span class="placeholder w-100 h-100 d-block"></span>
+												</div>
+												<div class="store-product-info">
+													<p class="store-product-name mb-1">Carregando...</p>
+													<p class="store-product-price mb-0">R$ 0,00</p>
+												</div>
+											</div>
+										</div>
+									<?php endfor; ?>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </section>
 <?= $this->stop() ?>
 
 <?= $this->start("js") ?>
-<script src="<?= url("assets/vendors/chart.js/Chart.min.js") ?>"></script>
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.8/jquery.inputmask.min.js"></script>
-
+<script src="<?= url('assets/js/store/details.js?t=' . time()) ?>"></script>
 <?= $this->stop() ?>
