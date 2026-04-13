@@ -10,13 +10,15 @@ class salesStatementController extends Core {
     public function __construct($router = ROOT) {
         parent::__construct($router);
         $this->validaAcesso();
-        $this->getLayout()->setHeader($this->getLogado() ? 'header-logado' : 'header');
+        $this->getLayout()->setHeader('header-logado');
         $this->getLayout()->setFooter('footer');
-        $this->addLayout();
     }
 
     public function home() {
+        $this->addTranslator('sales-statement/home');
+        $this->addLayout($this->getTranslator()->translate("Extrato de Vendas"));
         $salesStatementModel = new SalesStatement();
+        $salesStatementModel->setTranslator($this->getTranslator());
         $store = $this->getUser()['loja_id'] ?? 0;
 
         $pagination = $_GET['pagination'] ?? [
@@ -63,12 +65,6 @@ class salesStatementController extends Core {
         }
          
         echo $this->view->render("sales-statement/home", [
-            'layout' => [
-                'title' =>  'Extrato de Vendas - Artistar', 
-                'logado' => $this->getLogado(),
-                'header' => true,
-                'footer' => true
-            ],
             'sales' => $sales,
             'totalSales' => $totalSales,
             'items' => $salesItems,
@@ -82,14 +78,16 @@ class salesStatementController extends Core {
     }
 
     public function saleDetails($get) {
+        $this->addTranslator('sales-statement/saleDetails');
         $salesStatementModel = new SalesStatement();
+
         $store = $this->getUser()['loja_id'] ?? 0;
         $saleId = $get['saleId'] ?? 0;
-        if (!$store) exit($this->renderApiResponse(404, "Loja não encontrada."));
+        if (!$store) exit($this->renderApiResponse(404, $this->getTranslator()->translate("Loja não encontrada.")));
 
         $saleInfo = $salesStatementModel->getSaleById($saleId, $store);
 
-        if (!$saleInfo) exit($this->renderApiResponse(404, "Venda não encontrada."));
+        if (!$saleInfo) exit($this->renderApiResponse(404, $this->getTranslator()->translate("Venda não encontrada.")));
 
         $products = $saleId ? $salesStatementModel->getProductsWithSales($saleId) : [];
 
@@ -105,13 +103,9 @@ class salesStatementController extends Core {
 
         $paymentMethods = new PaymentMethods();
 
+        $this->addLayout($this->getTranslator()->translate("Venda")." #".$saleInfo['numero']);
+
         echo $this->view->render("sales-statement/saleDetails", [
-            'layout' => [
-                'title' =>  'Venda #'.$saleInfo['numero'].' - Artistar', 
-                'logado' => $this->getLogado(),
-                'header' => true,
-                'footer' => true
-            ],
             'products' => $products,
             'saleInfo' => $saleInfo,
             'paymentMethods' => $paymentMethods->getMethods(),
@@ -121,6 +115,8 @@ class salesStatementController extends Core {
     }
 
     public function editSale($post) {
+        $this->addTranslator('sales-statement/saleDetails');
+        $tradutor = $this->getTranslator();
         try {
             $salesStatementModel = new SalesStatement();
             $paymentMethods = new PaymentMethods();
@@ -149,9 +145,9 @@ class salesStatementController extends Core {
             foreach ($existingItems as $item) {
                 $salesStatementModel->deleteItem($item['id']);
             }
-            exit($this->renderApiResponse(200, "Venda atualizada com sucesso."));
+            exit($this->renderApiResponse(200, $tradutor->translate("Venda atualizada com sucesso.")));
         } catch (\Exception $e) {
-            exit($this->renderApiResponse(500, "Erro ao atualizar a venda: ".$e->getMessage()));
+            exit($this->renderApiResponse(500, $tradutor->translate("Erro ao atualizar a venda: ").$e->getMessage()));
         }
 
         return;

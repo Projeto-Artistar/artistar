@@ -11,7 +11,7 @@ class stockController extends Core {
     public function __construct($router = ROOT) {
         parent::__construct($router);
         $this->validaAcesso();
-        $this->getLayout()->setHeader($this->getLogado() ? 'header-logado' : 'header');
+        $this->getLayout()->setHeader('header-logado');
         $this->getLayout()->setFooter('footer');
     }
 

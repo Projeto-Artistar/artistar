@@ -1,4 +1,4 @@
-<?= $this->layout("base", $layout); ?>
+<?= $this->layout("base"); ?>
 
 <?= $this->start("css") ?>
 <link rel="stylesheet" href="<?= url("assets/css/sales-statement/home.css") ?>">
@@ -6,13 +6,10 @@
 
 <?= $this->start("conteudo") ?>
 <section class="container pt-3 minimum-height">
-    <style>
-    /* Animação customizada para collapse */
-    </style>
     <div class="row avoid-navbar">
         <div class="col-sm-6 col-12 mb-2 mt-2 ">
             <div>
-                <h1 class="text-center text-sm-start color-nocturne-purple">Extrato de Vendas</h1>
+                <h1 class="text-center text-sm-start color-nocturne-purple"><?= $translator->translate("Extrato de Vendas") ?></h1>
             </div>
         </div>
     </div>
@@ -20,15 +17,15 @@
         <div class="col-12 mb-3 px-4">
             <div class="row p-md-5 p-3 bg-lavanda text-white rounded">
                 <div class="col-12">
-                    <h1>Você já vendeu R$<?= moedaReal($totalSales['total_value'])?> em <?= $totalSales['total_sales']-$totalSales['total_canceled'] ?> Vendas!</h1> 
+                    <h1><?= $translator->translate("Você já vendeu") ?> R$<?= moedaReal($totalSales['total_value'])?> <?= $translator->translate("em") ?> <?= $totalSales['total_sales']-$totalSales['total_canceled'] ?> <?= $translator->translate("Vendas!") ?></h1> 
                 </div>
                 <div class="col-md-6 col-12">
-                    <h5>Valor Médio das Vendas: R$<?= moedaReal($totalSales['total_value'] / ($totalSales['total_sales']-$totalSales['total_canceled']  ?: 1)) ?></h5>
-                    <h5>Unidades Vendidas: <?= $totalSales['total_items'] ?></h5>
+                    <h5><?= $translator->translate("Valor Médio das Vendas") ?>: R$<?= moedaReal($totalSales['total_value'] / ($totalSales['total_sales']-$totalSales['total_canceled']  ?: 1)) ?></h5>
+                    <h5><?= $translator->translate("Unidades Vendidas") ?>: <?= $totalSales['total_items'] ?></h5>
                 </div>
                 <div class="col-md-6 col-12">
-                    <h5>Produtos Diferentes Vendidos: <?= $totalSales['total_products'] ?></h5>
-                    <h5>Vendas Canceladas: <?= $totalSales['total_canceled'] ?></h5>
+                    <h5><?= $translator->translate("Produtos Diferentes Vendidos") ?>: <?= $totalSales['total_products'] ?></h5>
+                    <h5><?= $translator->translate("Vendas Canceladas") ?>: <?= $totalSales['total_canceled'] ?></h5>
                 </div>
             </div>
         </div>
@@ -40,11 +37,11 @@
             <div class="d-flex align-items-end">
                 <form id="id-sort-form" class="d-md-flex d-block align-items-center" method="GET" action="/sales-statement">
                     <select class="form-select form-select-sm input-stellar-blue me-2 mb-md-0 mb-2" id="events" name="event" onchange="this.form.submit()">
-                        <option value="all">-- Todos --</option>
+                        <option value="all">-- <?= $translator->translate("Todos") ?> --</option>
                         <?php foreach ($events as $event): ?>
                             <option value="<?= $event['evento_id'] ?>" <?= ($_GET['event'] ?? '') == $event['evento_id'] ? 'selected' : '' ?>><?= $event['evento_nome'] ?></option>
                         <?php endforeach; ?>
-                        <option value="none" <?= ($_GET['event'] ?? '') == 'none' ? 'selected' : '' ?>>-- Vendas Avulsas --</option>
+                        <option value="none" <?= ($_GET['event'] ?? '') == 'none' ? 'selected' : '' ?>>-- <?= $translator->translate("Vendas Avulsas") ?> --</option>
                     </select>
                     <select class="form-select form-select-sm input-stellar-blue" id="sort-options" name="sort" onchange="this.form.submit()">
                         <?php foreach ($orderList as $key => $value): ?>
@@ -62,27 +59,27 @@
                     <tr>
                         <th scope="col">&nbsp;</th>
                         <th scope="col">
-                            <span class="color-nocturne-purple">Venda</span>
+                            <span class="color-nocturne-purple"><?= $translator->translate("Venda") ?></span>
                         </th>
                         <th scope="col" class="text-center">
-                            <span class="color-nocturne-purple">Data (Venda)<br>Data (Criação)</span>
+                            <span class="color-nocturne-purple"><?= $translator->translate("Data (Venda)") ?><br><?= $translator->translate("Data (Criação)") ?></span>
                         </th>
                         <th scope="col" class="text-center">
-                            <span class="color-nocturne-purple">Status do<br>Pagamento</span>
+                            <span class="color-nocturne-purple"><?= $translator->translate("Status do<br>Pagamento") ?></span>
                         </th>
                         <th scope="col" class="text-center">
-                            <span class="color-nocturne-purple">Status da<br>Entrega</span>
+                            <span class="color-nocturne-purple"><?= $translator->translate("Status da<br>Entrega") ?></span>
                         </th>
                         <th scope="col" class="text-center">
-                            <span class="color-nocturne-purple">Método de Pagamento<br>Evento</span>
+                            <span class="color-nocturne-purple"><?= $translator->translate("Método de Pagamento") ?><br><?= $translator->translate("Evento") ?></span>
                         </th>
                         <th scope="col" class="text-center">
-                            <span class="color-nocturne-purple">Produtos</span><br>
-                            <span class="color-nocturne-purple">Unidades</span>
+                            <span class="color-nocturne-purple"><?= $translator->translate("Produtos") ?></span><br>
+                            <span class="color-nocturne-purple"><?= $translator->translate("Unidades") ?></span>
                         </th>
                         <th scope="col" class="text-end">
-                            <span class="color-nocturne-purple">Valor</span><br>
-                            <span class="color-nocturne-purple">Desconto</span>
+                            <span class="color-nocturne-purple"><?= $translator->translate("Valor") ?></span><br>
+                            <span class="color-nocturne-purple"><?= $translator->translate("Desconto") ?></span>
                         </th>
                         <th scope="col">&nbsp;</th>
                     </tr>
@@ -102,21 +99,21 @@
                         </td>
                         <th class="align-middle" scope="row" data-bs-toggle="collapse" data-bs-target="#collapse-<?= $sale['id'] ?>">
                             <span class="color-stellar-blue">#<?= $sale['numero'] ?></span><br>
-                            <small class="text-danger"><?php if ($sale['cancelada'] == 1) echo 'Cancelada'; ?></small>
+                            <small class="text-danger"><?php if ($sale['cancelada'] == 1) echo $translator->translate('Cancelada'); ?></small>
                         </th>
                         <td class="text-center align-middle" data-bs-toggle="collapse" data-bs-target="#collapse-<?= $sale['id'] ?>">
                             <?= $sale['data_venda'] ?><br>
                             <small class="color-gray"><?= $sale['data_criacao'] ?></small>
                         </td>
                         <td class="text-center align-middle" data-bs-toggle="collapse" data-bs-target="#collapse-<?= $sale['id'] ?>">
-                            <?= $sale['pago'] ? '<span class="badge text-bg-success rounded-pill p-2">Pago</span>' : '<span class="badge bg-sunshine-yellow color-graphite-gray rounded-pill p-2">Pendente</span>' ?>
+                            <?= $sale['pago'] ? '<span class="badge text-bg-success rounded-pill p-2">' . $translator->translate('Pago') . '</span>' : '<span class="badge bg-sunshine-yellow color-graphite-gray rounded-pill p-2">' . $translator->translate('Pendente') . '</span>' ?>
                         </td>
                         <td class="text-center align-middle" data-bs-toggle="collapse" data-bs-target="#collapse-<?= $sale['id'] ?>">
-                            <?= $sale['entregue'] ? '<span class="badge text-bg-success rounded-pill p-2">Entregue</span>' : '<span class="badge bg-sunshine-yellow color-graphite-gray rounded-pill p-2">Pendente</span>' ?>
+                            <?= $sale['entregue'] ? '<span class="badge text-bg-success rounded-pill p-2">' . $translator->translate('Entregue') . '</span>' : '<span class="badge bg-sunshine-yellow color-graphite-gray rounded-pill p-2">' . $translator->translate('Pendente') . '</span>' ?>
                         </td>
                         <td class="text-center align-middle" data-bs-toggle="collapse" data-bs-target="#collapse-<?= $sale['id'] ?>">
-                            <?= $sale['pagamento'] ?><br>
-                            <small class="color-gray"><?= $sale['evento_nome'] ?? '(Venda Avulsa)' ?></small>
+                            <?= $translator->translate($sale['pagamento']) ?><br>
+                            <small class="color-gray"><?= $sale['evento_nome'] ?? $translator->translate('(Venda Avulsa)') ?></small>
                         </td>
                         <td class="text-center align-middle" data-bs-toggle="collapse" data-bs-target="#collapse-<?= $sale['id'] ?>">
                             <?= $sale['total_itens'] ?><br>
@@ -128,21 +125,6 @@
                         </td>
                         <td class="text-center align-right">
                             <div class="d-flex justify-content-sm-end justify-content-between">
-                                <!-- <button type="button" class="btn btn-stellar-blue text-white mx-sm-3 text-decoration-none" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class="fa fa-ellipsis-h"></i>
-                                </button>
-                                <ul class="dropdown-menu dropdown-menu-end">
-                                    <li>
-                                        <a class="dropdown-item" href="<?= url("sales-statement/sale/{$sale['id']}") ?>">
-                                            <i class="fa-solid fa-pen-to-square me-1" aria-hidden="true"></i> Editar
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="#" id="delete-product" data-bs-toggle="modal" data-bs-target="#deleteModal">
-                                            <i class="fa fa-trash me-1" aria-hidden="true"></i> Cancelar
-                                        </a>
-                                    </li>
-                                </ul> -->
                                 <a class="btn btn-stellar-blue text-white text-decoration-none" href="<?= url("sales-statement/sale/{$sale['id']}") ?>">
                                     <i class="fa fa-pen-to-square"></i>
                                 </a>
@@ -162,16 +144,16 @@
                                         <tr>
                                             <th width="10" scope="col">&nbsp;</th>
                                             <th scope="col">
-                                                <span class="color-gray">Produto</span>
+                                                <span class="color-gray"><?= $translator->translate('Produto') ?></span>
                                             </th>
                                             <th scope="col" class="text-center">
-                                                <span class="color-gray">Qtd.</span>
+                                                <span class="color-gray"><?= $translator->translate('Qtd.') ?></span>
                                             </th>
                                             <th scope="col" class="text-end">
-                                                <span class="color-gray">Desconto</span>
+                                                <span class="color-gray"><?= $translator->translate('Desconto') ?></span>
                                             </th>
                                             <th scope="col" class="text-end">
-                                                <span class="color-gray">Valor</span>
+                                                <span class="color-gray"><?= $translator->translate('Valor') ?></span>
                                             </th>
                                         </tr>
                                     </thead>
@@ -188,11 +170,11 @@
                                                 <td class="text-center align-middle"><?= $item['qtd'] ?></td>
                                                 <td class="text-end align-middle">
                                                     <span class="color-nocturne-purple">R$<?= $item['desconto'] ?></span><br>
-                                                    <small class="color-gray">R$<?= $item['desconto_unitario'] ?>/uni</small>
+                                                    <small class="color-gray">R$<?= $item['desconto_unitario'] ?>/<?= $translator->translate('uni') ?></small>
                                                 </td>
                                                 <td class="text-end align-middle">
                                                     <span class="color-nocturne-purple">R$<?= $item['valor'] ?></span><br>
-                                                    <small class="color-gray">R$<?= $item['valor_unitario'] ?>/uni</small>
+                                                    <small class="color-gray">R$<?= $item['valor_unitario'] ?>/<?= $translator->translate('uni') ?></small>
                                                 </td>
                                             </tr>
                                         <?php endforeach; ?>
@@ -210,7 +192,7 @@
         <div class="container">
             <div class="row justify-content-between align-items-center" id="pagination-controls">
                 <div class="col-md-6 col-12 d-flex justify-content-md-start justify-content-center mb-2 mb-md-0 px-0">
-                    <p class="text-muted">Mostrando <span id="result-count"><?= count($sales)?></span> resultados de <span id="total-count"><?= $totalSales['total_sales'] ?></span></p>
+                    <p class="text-muted"><?= $translator->translate('Mostrando') ?> <span id="result-count"><?= count($sales)?></span> <?= $translator->translate('resultados de') ?> <span id="total-count"><?= $totalSales['total_sales'] ?></span></p>
                 </div>
                 <div class="col-md-6 col-12 d-flex justify-content-md-end justify-content-center px-0">
                     <?php if (!empty($sales)): ?>
@@ -223,11 +205,11 @@
                             ?>
                             <?php if ($pages['current'] > 1): ?>
                             <li class="page-item">
-                                <a class="page-link stellar-blue" href="<?= $url ?>&pagination[offset]=<?= ($pages['current'] - 2) * $pagination['limit'] ?>">Anterior</a>
+                                <a class="page-link stellar-blue" href="<?= $url ?>&pagination[offset]=<?= ($pages['current'] - 2) * $pagination['limit'] ?>"><?= $translator->translate('Anterior') ?></a>
                             </li>
                             <?php else: ?>
                             <li class="page-item disabled">
-                                <span class="page-link stellar-blue">Anterior</span>
+                                <span class="page-link stellar-blue"><?= $translator->translate('Anterior') ?></span>
                             </li>
                             <?php endif; ?>
                             <!-- Max of 4 pages before and 4 after -->
@@ -241,11 +223,11 @@
                             <?php endfor; ?>
                             <?php if ($pages['current'] < $pages['total']): ?>
                             <li class="page-item">
-                                <a class="page-link stellar-blue" href="<?= $url ?>&pagination[offset]=<?= $pages['current'] * $pagination['limit'] ?>">Próxima</a>
+                                <a class="page-link stellar-blue" href="<?= $url ?>&pagination[offset]=<?= $pages['current'] * $pagination['limit'] ?>"><?= $translator->translate('Próxima') ?></a>
                             </li>
                             <?php else: ?>
                             <li class="page-item disabled">
-                                <span class="page-link stellar-blue">Próxima</span>
+                                <span class="page-link stellar-blue"><?= $translator->translate('Próxima') ?></span>
                             </li>
                             <?php endif; ?>
                         </ul>
