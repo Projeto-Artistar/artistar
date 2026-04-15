@@ -139,7 +139,7 @@ $(document).ready(function () {
         }           
         const noResult = $(`
             <div class="row suggestion-item">
-                <div class="col-12 text-center">Não encontrou o que procura?<br>Clique aqui para criar rapidamente um novo produto.</div>
+                <div class="col-12 text-center">${dictionary.noResults[0]}<br>${dictionary.noResults[1]}</div>
             </div>
         `);
 
@@ -199,16 +199,16 @@ $(document).ready(function () {
                         <div class="col-md-3 col-sm-6 col-12">
                             <div class="card-body py-3">
                                 <span class="card-text fw-bold text-success">R$${prod.preco}</span>
-                                <p class="card-text mb-1"><small class="text-muted">${prod.estoque} uni</small></p>
+                                <p class="card-text mb-1"><small class="text-muted">${prod.estoque} ${dictionary.uni}</small></p>
                             </div>
                         </div>
                         <div class="col-md-1 col-12 text-end">
-                            <button type="button" class="btn-close btn-remove" aria-label="Remover"></button>
+                            <button type="button" class="btn-close btn-remove" aria-label="${dictionary.remove}"></button>
                         </div>
                     </div>
                     <div class="row g-0 align-items-center mb-3">
                         <div class="col-md-4 col-12 align-items-center px-3">
-                            <label for="qtd-items-${prod.id}" class="">Quantidade</label>
+                            <label for="qtd-items-${prod.id}" class="">${dictionary.quantity}</label>
                             <div class="d-flex align-items-center justify-content-between">
                                 <button type="button" class="btn btn-sm btn-danger qtd" data-id="${prod.id}" data-action="decrement">
                                     <i class="fa fa-minus"></i>
@@ -221,13 +221,13 @@ $(document).ready(function () {
                             </div>
                         </div>
                         <div class="col-md-4 col-12 my-md-0 my-3 align-items-center px-3">
-                            <label for="discount-${prod.id}" class="">Desconto (R$)</label>
+                            <label for="discount-${prod.id}" class="">${dictionary.discount} (R$)</label>
                             <div class="text-end">
                                 <input id="discount-${prod.id}" name="items[${prod.id}][discount]" type="text" class="form-control moedaReal input-stellar-blue" value="${prod.desconto}">
                             </div>
                         </div>
                         <div class="col-md-4 col-12 align-items-center px-3">
-                            <label for="total-price-${prod.id}" class="">Valor (R$)</label>
+                            <label for="total-price-${prod.id}" class="">${dictionary.value} (R$)</label>
                             <div class="text-end">
                                 <input id="base-price-${prod.id}" name="items[${prod.id}][base_price]" type="hidden" value="${prod.preco}">
                                 <input id="total-price-${prod.id}" name="items[${prod.id}][total_price]" type="text" class="form-control moedaReal input-stellar-blue" value="${prod.total}">
@@ -365,7 +365,7 @@ $(document).ready(function () {
 
 $(document).on('click', '#finalizar-venda', function () {
     if ($('#selected .card-product').length === 0) {
-        alert('Adicione pelo menos um produto ao carrinho antes de finalizar a venda.');
+        alert(dictionary.alert);
         return;
     }
     // #sale-datetime -> atualiza-se a data e hora da venda (pegar do dispositivo do usuário)
@@ -401,10 +401,10 @@ $(document).on('click', '#accept-insert', function () {
             $('#insertModal').modal('hide');
             $('#saleInsertedModal').modal('show');
         } else {
-            console.error('Erro ao registrar venda:', response.message);
+            console.error(dictionary.error.title + ':', response.message);
         }
     }).fail(function (error) {
-        atualizarToast('myToast', 'Erro ao registrar venda', 'Ocorreu um erro ao tentar registrar a venda. Por favor, tente novamente.', false);
+        atualizarToast('myToast', dictionary.error.title, dictionary.error.message, false);
         // Update toast content for error
 
     });
