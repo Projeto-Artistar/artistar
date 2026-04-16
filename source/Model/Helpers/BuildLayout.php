@@ -83,11 +83,11 @@ class buildLayout {
     }
 
     public function buildHeader() {
-        $currentUrl = strtok($_SERVER["REQUEST_URI"], '?');
         $arr = $_GET;
         unset($arr['lang']);
         unset($arr['route']);
-        $urlWithoutLang = strtok($currentUrl, '?') . (empty($arr) ? '' : '&' . http_build_query($arr));
+        unset($arr['lang']);
+        $urlWithoutLang = (empty($arr) ? '?' : '' . http_build_query($arr));
         if (!empty($this->getHeader())) {
             return $this->getView()->render("fragments/" . $this->getHeader(), [
                 'urlWithoutLang' => $urlWithoutLang,
