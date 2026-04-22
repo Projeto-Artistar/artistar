@@ -7,7 +7,7 @@
 <?= $this->stop() ?>
 
 <?= $this->start("conteudo") ?>
-<?php if(!$logado) : ?>
+<?php if($logado) : ?>
 <section class="section-slide avoid-navbar">
     <div class="col-12">
         <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
@@ -212,6 +212,7 @@
         </div>
     </div>
 </section>
+<?php if (false) : ?>
 <section class="section-parceiros section-dark p-4">
     <div class="container">
         <div class="pb-3">
@@ -239,6 +240,7 @@
         </div>
     </div>
 </section>
+<?php endif; ?>
 <?php if ($logado) :?>
 <section class="section-faq section-dark py-5">
     <div class="container">

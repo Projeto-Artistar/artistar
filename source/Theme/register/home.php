@@ -64,7 +64,7 @@
                 </div>
             </div>
             <div class="col-md-6 d-flex align-items-center justify-content-center">
-                <img src="https://codescandy.com/geeks-bootstrap-5/assets/images/education/course.png" alt="Login Image" class="img-fluid">
+                <img src="<?= url('assets/image/luna.svg') ?>" alt="Login Image" class="img-fluid" style="max-width: 60%;">
             </div>
         </div>
     </div>
