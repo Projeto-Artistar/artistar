@@ -96,21 +96,21 @@ $router->get("/edit/{eventId}", "eventsController:edit", "eventsController.edit"
 $router->post("/edit", "eventsController:update", "eventsController.update"); // Edição do evento
 // $router->post("/delete", "eventsController:delete", "eventsController.delete");
 
-$router->group('store');
-// $router->get("/", "storeController:home", "storeController.home");
-$router->get("/{friendlyUrl}", "storeController:details", "storeController.details");
-$router->get("/id/{storeId}", "storeController:details", "storecontroller.details");
-$router->get("/id/{storeId}/edit", "storeController:edit", "storeController.edit");
-$router->post("/update", "storeController:update", "storeController.update");
-$router->post("/products", "storeController:products", "storeController.products");
-$router->post("/product/new", "storeController:newProduct", "storeController.newProduct");
-$router->post("/product/move", "storeController:moveProduct", "storeController.moveProduct");
-$router->post("/product/delete", "storeController:deleteProduct", "storeController.deleteProduct");
-$router->get("/product/{productId}", "storeController:detailsProduct", "storeController.detailsProduct");
-$router->post("/collection/new", "storeController:newCollection", "storeController.newCollection");
-$router->post("/collection/edit", "storeController:editCollection", "storeController.editCollection");
-$router->post("/collection/delete", "storeController:deleteCollection", "storeController.deleteCollection");
-$router->get("/collection/{collectionId}", "storeController:detailsCollection", "storeController.detailsCollection");
+// $router->group('store');
+// // $router->get("/", "storeController:home", "storeController.home");
+// $router->get("/{friendlyUrl}", "storeController:details", "storeController.details");
+// $router->get("/id/{storeId}", "storeController:details", "storecontroller.details");
+// $router->get("/id/{storeId}/edit", "storeController:edit", "storeController.edit");
+// $router->post("/update", "storeController:update", "storeController.update");
+// $router->post("/products", "storeController:products", "storeController.products");
+// $router->post("/product/new", "storeController:newProduct", "storeController.newProduct");
+// $router->post("/product/move", "storeController:moveProduct", "storeController.moveProduct");
+// $router->post("/product/delete", "storeController:deleteProduct", "storeController.deleteProduct");
+// $router->get("/product/{productId}", "storeController:detailsProduct", "storeController.detailsProduct");
+// $router->post("/collection/new", "storeController:newCollection", "storeController.newCollection");
+// $router->post("/collection/edit", "storeController:editCollection", "storeController.editCollection");
+// $router->post("/collection/delete", "storeController:deleteCollection", "storeController.deleteCollection");
+// $router->get("/collection/{collectionId}", "storeController:detailsCollection", "storeController.detailsCollection");
 
 
 $router->group('legal');

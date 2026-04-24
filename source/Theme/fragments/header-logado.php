@@ -83,7 +83,7 @@
                 </ul>
             </div> -->
 
-            <?php if (false): ?>
+            <?php if (true): ?>
             <div class="dropdown language-selector me-2">
                 <button class="btn language-selector-toggle d-flex align-items-center" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Selecionar idioma">
                     <img src="<?= url('assets/image/flags/' . $languageOptions[$activeLanguage]['flag']) ?>" alt="" class="language-flag me-2">

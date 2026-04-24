@@ -9,7 +9,7 @@
             <!-- <form class="col-12 col-md-auto me-md-3 d-none d-md-flex" method="GET" action="<?= url('events') ?>">
                 <input name="search" type="search" class="form-control pesquisa-superior input-kiklit-2" placeholder="Pesquisar..." aria-label="Search" value="<?= $search ?>">
             </form> -->
-            <?php if (false): ?>
+            <?php if (true): ?>
             <div class="dropdown language-selector me-2 d-flex align-items-center">
                 <button class="btn language-selector-toggle d-flex align-items-center" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Selecionar idioma">
                     <img src="<?= url('assets/image/flags/' . $languageOptions[$activeLanguage]['flag']) ?>" alt="" class="language-flag me-2">
