@@ -62,8 +62,8 @@ function resendCode() {
             response = JSON.parse(response);
             if (response.code == 200) {
 
-                $('#toastTitle').text('E-mail reenviado com sucesso!');
-                $('#toastBody').text('O código enviado será válido por 1 hora. Aguarde 1 minuto para tentar novamente!');
+                $('#toastTitle').text(dictionary.emailConfirmationTitle);
+                $('#toastBody').text(dictionary.emailConfirmationMessage);
                 //remove class bg-success
                 // Add class bg-danger
                 $('#myToast').addClass('bg-success');
@@ -79,7 +79,7 @@ function resendCode() {
                     $('#text-resend').text(formatTime(timeLeft));
                     if (timeLeft <= 0) {
                         clearInterval(timer);
-                        $('#text-resend').text('Reenviar');
+                        $('#text-resend').text(dictionary.resendBtnText);
                         $('#resend-code').removeClass('disabled');
                         $('#resend-code').on('click', resendCode);
                     }
@@ -88,7 +88,7 @@ function resendCode() {
                 $('#spinner-resend').hide();
                 $('#text-resend').show();
             } else {
-                $('#text-resend').text('Reenviar');
+                $('#text-resend').text(dictionary.resendBtnText);
                 $('#resend-code').removeClass('disabled');
                 $('#resend-code').on('click', resendCode);
                 alert(response.message);
@@ -133,8 +133,8 @@ $('#form-confirmacao').on('submit', function(e) {
                 if (response.code == 200) {
                     location.href = $('#form-confirmacao').attr('action');
                 }  else {    
-                    $('#toastTitle').text('Código inválido');
-                    $('#toastBody').text('O código enviado é inválido (outro código foi enviado ou expirou), tente novamente!');
+                    $('#toastTitle').text(dictionary.invalidCodeTitle);
+                    $('#toastBody').text(dictionary.invalidCodeMessage);
                     $('#myToast').addClass('bg-danger');
                     $('#myToast').removeClass('bg-success');
 

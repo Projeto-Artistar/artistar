@@ -48,13 +48,14 @@ class ValidationCode extends Core {
     public function sendValidationEmail($email, $validationCode) {
         $credentials = EMAIL_CREDENTIALS;
         $mail = new \PHPMailer\PHPMailer\PHPMailer();
+        $translator = $this->getTranslator();
         try {
             $mail->isSMTP();
             $mail->Host = $credentials['host']; // SMTP server
             $mail->SMTPAuth = true;
             $mail->isHTML(true);
             $mail->CharSet = $credentials['char_set'];
-            $mail->Subject = 'Confirmação de Email - Artistar';
+            $mail->Subject = $translator->translate('Confirmação de Email - Artistar');
             //Use credentials
             $mail->Username = $credentials['user'];
             $mail->Password = $credentials['pass'];
@@ -66,8 +67,8 @@ class ValidationCode extends Core {
             $halfValidationCode = ceil(strlen($validationCode) / 2);
             $validationCode = substr($validationCode, 0, $halfValidationCode) . '-' . substr($validationCode, $halfValidationCode);
             $mail->FromName = $credentials['name'];
-            $mail->Body = 'Seu código de validação é: ' . $validationCode;
-            $mail->AltBody = 'Seu código de validação é: ' . $validationCode;
+            $mail->Body = $translator->translate('Seu código de validação é: ') . $validationCode;
+            $mail->AltBody = $translator->translate('Seu código de validação é: ') . $validationCode;
             $mail->send();
             return true;
         } catch (PHPMailerException $e) {

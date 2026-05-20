@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", function () {
         let user = $('#user').val();
         if (user.length < 3) {
             $('#user').addClass('is-invalid').removeClass('is-valid'); // Marca o campo como inválido
-            $('#userInvalidFeedback').text('O nome de usuário deve ter pelo menos 3 caracteres.');
+            $('#userInvalidFeedback').text($('#userInvalidFeedback').data('default')); // Usa a mensagem de erro padrão
             isValid = false; // Define como inválido
         } else {
             $('#user').removeClass('is-valid').removeClass('is-invalid');
@@ -60,7 +60,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (complete_user.length < 3) {
             $('#complete_user').addClass('is-invalid').removeClass('is-valid'); // Marca o campo como inválido
-            $('#completeUserInvalidFeedback').text('O nome completo deve ter pelo menos 3 caracteres.');
+            $('#completeUserInvalidFeedback').text($('#completeUserInvalidFeedback').data('default')); // Usa a mensagem de erro padrão
             isValid = false; // Define como inválido
         } else {
             $('#complete_user').addClass('is-valid').removeClass('is-invalid');
@@ -78,7 +78,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (!emailRegex.test(email)) {
             $('#email').addClass('is-invalid').removeClass('is-valid'); // Marca o campo como inválido
-            $('#email').next('.invalid-feedback').text('Por favor, insira um email válido.');
+            $('#emailInvalidFeedback').text($('#emailInvalidFeedback').data('default')); // Usa a mensagem de erro padrão
+            // $('#email').next('.invalid-feedback').text('Por favor, insira um email válido.');
             isValid = false; // Define como inválido
         } else {
             $('#email').removeClass('is-invalid').removeClass('is-valid');
@@ -124,8 +125,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (senha !== confirmacaoSenha) {
             $('#confirmacao-senha').addClass('is-invalid').removeClass('is-valid'); // Marca o campo como inválido
-            $('#confirmacao-senha').next('.invalid-feedback').text('As senhas não coincidem.');
-            document.getElementById('confirmacao-senha').setCustomValidity('As senhas não coincidem.'); // Define erro customizado
+            $('#confirmacaoSenhaInvalidFeedback').text($('#confirmacaoSenhaInvalidFeedback').data('default')); // Usa a mensagem de erro padrão
+            // $('#confirmacao-senha').next('.invalid-feedback').text('As senhas não coincidem.');
+            document.getElementById('confirmacao-senha').setCustomValidity($('#confirmacaoSenhaInvalidFeedback').data('default')); // Define erro customizado
             isValid = false; // Define como inválido
         } else {
             $('#confirmacao-senha').removeClass('is-invalid').addClass('is-valid'); // Marca como válido
@@ -145,7 +147,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (!senhaForteRegex.test(senha)) {
             $('#senha').addClass('is-invalid').removeClass('is-valid'); // Marca o campo como inválido
-            $('#senha').next('.invalid-feedback').text('A senha deve conter pelo menos 8 caracteres, incluindo uma letra maiúscula, uma letra minúscula, um número e um caractere especial.');
+            $('#senhaInvalidFeedback').text($('#senhaInvalidFeedback').data('default')); // Usa a mensagem de erro padrão
+            // $('#senha').next('.invalid-feedback').text('A senha deve conter pelo menos 8 caracteres, incluindo uma letra maiúscula, uma letra minúscula, um número e um caractere especial.');
             isValid = false; // Define como inválido
         } else {
             $('#senha').removeClass('is-invalid').addClass('is-valid'); // Marca como válido
