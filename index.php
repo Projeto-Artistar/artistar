@@ -98,7 +98,8 @@ $router->post("/edit", "eventsController:update", "eventsController.update"); //
 
 $router->group('store');
 // $router->get("/", "storeController:home", "storeController.home");
-$router->get("/{friendlyUrl}", "storeController:details", "storeController.details");
+$router->get("/manage", "storeController:manage", "storeController.manage");
+$router->get("/manage/", "storeController:manage", "storeController.manage.slash");
 $router->get("/id/{storeId}", "storeController:details", "storecontroller.details");
 $router->get("/id/{storeId}/edit", "storeController:edit", "storeController.edit");
 $router->post("/update", "storeController:update", "storeController.update");
@@ -111,6 +112,7 @@ $router->post("/collection/new", "storeController:newCollection", "storeControll
 $router->post("/collection/edit", "storeController:editCollection", "storeController.editCollection");
 $router->post("/collection/delete", "storeController:deleteCollection", "storeController.deleteCollection");
 $router->get("/collection/{collectionId}", "storeController:detailsCollection", "storeController.detailsCollection");
+$router->get("/{friendlyUrl}", "storeController:details", "storeController.details");
 
 
 $router->group('legal');
@@ -121,6 +123,8 @@ $router->group('apis');
 $router->post("/states", "apiController:states", "apiController.states");
 $router->post("/cities", "apiController:cities", "apiController.cities");
 $router->post("/store/products", "apiController:storeProducts", "apiController.storeProducts");
+$router->post("/store/manage-products", "apiController:manageStoreProducts", "apiController.manageStoreProducts");
+$router->post("/store/toggle-product-order", "apiController:toggleStoreProductOrder", "apiController.toggleStoreProductOrder");
 
 
 $router->group("error");

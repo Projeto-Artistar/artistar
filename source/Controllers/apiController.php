@@ -94,42 +94,140 @@ class apiController extends Core {
     }
 
     public function storeProducts($data) {
-        $storeId = isset($data['storeId']) ? (int) $data['storeId'] : 0;
-        $search = isset($data['search']) ? trim((string) $data['search']) : '';
+        try {
+            $storeId = isset($data['storeId']) ? (int) $data['storeId'] : 0;
+            $search = isset($data['search']) ? trim((string) $data['search']) : '';
 
-        if ($storeId < 1) {
+            if ($storeId < 1) {
+                echo $this->view->render("apiResponse", [
+                    'result' => [
+                        'code' => 400,
+                        'message' => 'Loja invalida.'
+                    ]
+                ]);
+                return;
+            }
+
+            $storeModel = new Store();
+            $products = $storeModel->getPublicProducts($storeId, $search, 24, true);
+
+            foreach ($products as &$product) {
+                $price = ((float) $product['valor']) - ((float) $product['valor_desconto']);
+                if ($price < 0) $price = (float) $product['valor'];
+
+                $product['thumbnail'] = !empty($product['thumbnail'])
+                    ? storageURL($product['thumbnail'])
+                    : url('assets/image/200x300.png');
+                $product['price'] = moedaReal($price);
+            }
+
             echo $this->view->render("apiResponse", [
                 'result' => [
-                    'code' => 400,
-                    'message' => 'Loja invalida.'
+                    'code' => 200,
+                    'data' => [
+                        'products' => $products
+                    ]
+                ]
+            ]);
+
+            return;
+        } catch (\Throwable $e) {
+            echo $this->view->render("apiResponse", [
+                'result' => [
+                    'code' => 500,
+                    'message' => 'Erro interno ao carregar produtos da loja.'
+                ]
+            ]);
+            return;
+        }
+    }
+
+    public function manageStoreProducts($data) {
+        try {
+            if (!$this->getLogado()) {
+                $this->renderError(401, true);
+                return;
+            }
+
+            $storeId = isset($data['storeId']) ? (int) $data['storeId'] : 0;
+            $search = isset($data['search']) ? trim((string) $data['search']) : '';
+            $loggedStoreId = !empty($this->getUser()['loja_id']) ? (int) $this->getUser()['loja_id'] : 0;
+
+            if ($storeId < 1 || $loggedStoreId < 1 || $storeId !== $loggedStoreId) {
+                echo $this->view->render("apiResponse", [
+                    'result' => [
+                        'code' => 403,
+                        'message' => 'Acesso negado.'
+                    ]
+                ]);
+                return;
+            }
+
+            $storeModel = new Store();
+            $products = $storeModel->getManageProducts($storeId, $search);
+
+            foreach ($products as &$product) {
+                $price = ((float) $product['valor']) - ((float) $product['valor_desconto']);
+                if ($price < 0) $price = (float) $product['valor'];
+
+                $product['thumbnail'] = !empty($product['thumbnail'])
+                    ? storageURL($product['thumbnail'])
+                    : url('assets/image/200x300.png');
+                $product['price'] = moedaReal($price);
+                $product['selected'] = ((int) ($product['selecionado'] ?? 0)) === 1;
+            }
+
+            echo $this->view->render("apiResponse", [
+                'result' => [
+                    'code' => 200,
+                    'data' => [
+                        'products' => $products
+                    ]
+                ]
+            ]);
+        } catch (\Throwable $e) {
+            echo $this->view->render("apiResponse", [
+                'result' => [
+                    'code' => 500,
+                    'message' => 'Erro interno ao carregar produtos para gestao.'
+                ]
+            ]);
+            return;
+        }
+    }
+
+    public function toggleStoreProductOrder($data) {
+        if (!$this->getLogado()) {
+            $this->renderError(401, true);
+            return;
+        }
+
+        $storeId = isset($data['storeId']) ? (int) $data['storeId'] : 0;
+        $productId = isset($data['productId']) ? (int) $data['productId'] : 0;
+        $loggedStoreId = !empty($this->getUser()['loja_id']) ? (int) $this->getUser()['loja_id'] : 0;
+
+        if ($storeId < 1 || $productId < 1 || $loggedStoreId < 1 || $storeId !== $loggedStoreId) {
+            echo $this->view->render("apiResponse", [
+                'result' => [
+                    'code' => 403,
+                    'message' => 'Acesso negado.'
                 ]
             ]);
             return;
         }
 
         $storeModel = new Store();
-        $products = $storeModel->getPublicProducts($storeId, $search);
-
-        foreach ($products as &$product) {
-            $price = ((float) $product['valor']) - ((float) $product['valor_desconto']);
-            if ($price < 0) $price = (float) $product['valor'];
-
-            $product['thumbnail'] = !empty($product['thumbnail'])
-                ? storageURL($product['thumbnail'])
-                : url('assets/image/200x300.png');
-            $product['price'] = moedaReal($price);
-        }
+        $toggle = $storeModel->toggleProductOrder($storeId, $productId);
 
         echo $this->view->render("apiResponse", [
             'result' => [
-                'code' => 200,
+                'code' => $toggle['success'] ? 200 : 400,
+                'message' => $toggle['message'],
                 'data' => [
-                    'products' => $products
+                    'selected' => (bool) ($toggle['selected'] ?? false)
                 ]
             ]
         ]);
-
-        return;
     }
 
 }

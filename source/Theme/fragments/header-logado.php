@@ -159,7 +159,7 @@
             
             <li class="border-top my-3"></li>
             <li>
-               <a href="<?= url('events/my-events') ?>" class="nav-link link-nocturne-purple link-hover">
+               <a href="<?= url('store/id/' . $_SESSION['artistar']['user']['loja_id']) ?>" class="nav-link link-nocturne-purple link-hover">
                     <div class="d-flex align-items-center">
                         <i class="icone-sidebar icone-loja me-4" style="width:24px; text-align: center;"></i>
                         <span><?= $translator->translate('Minha Loja') ?></span>

@@ -2,6 +2,7 @@
 
 <?= $this->start("css") ?>
 <link rel="stylesheet" href="<?= url("assets/css/store/details.css") ?>">
+<link rel="stylesheet" href="<?= url("assets/css/stock/home.css") ?>">
 <?= $this->stop() ?>
 
 <?= $this->start("conteudo") ?>
@@ -11,6 +12,7 @@
 	$storeDescription = !empty($store['descricao']) ? $store['descricao'] : 'Sem descricao cadastrada.';
 	$storePhoto = !empty($store['foto']) ? storageURL($store['foto']) : '';
 	$storeId = !empty($store['codigo']) ? (int) $store['codigo'] : 0;
+	$isOwner = !empty($isOwner);
 	$storeInitial = strtoupper(substr(trim($storeName), 0, 1));
 	$collectionPlaceholders = [
 		[
@@ -37,15 +39,22 @@
 				<button type="button" class="btn store-action-icon" aria-label="Twitter da loja">
 					<i class="fa-brands fa-x-twitter"></i>
 				</button>
-				<button type="button" class="btn btn-outline-stellar-blue store-follow-btn">
-					<i class="fa-solid fa-plus"></i>
-					Seguir
-				</button>
+				<?php if ($isOwner): ?>
+					<a href="<?= url('store/manage') ?>" class="btn btn-outline-stellar-blue store-follow-btn">
+						<i class="fa-solid fa-pen"></i>
+						Editar
+					</a>
+				<?php else: ?>
+					<button type="button" class="btn btn-outline-stellar-blue store-follow-btn">
+						<i class="fa-solid fa-plus"></i>
+						Seguir
+					</button>
+				<?php endif; ?>
 			</div>
 		</div>
 	</div>
 
-	<div class="container-fluid store-main-layout">
+	<div class="container store-main-layout">
 		<div class="row g-4 align-items-start">
 			<div class="col-lg-2 store-profile-column">
 				<aside class="store-profile-panel store-profile-overview">
@@ -64,7 +73,7 @@
 
 					<div class="store-stats">
                         <div class="store-stat-item">
-							<span class="store-stat-value">10</span>
+							<span class="store-stat-value"><?= count($products) ?></span>
 							<span class="store-stat-label">produtos</span>
 						</div>
 						<div class="store-stat-item">
@@ -88,11 +97,11 @@
 						<div class="row g-3 mt-3">
 							<div class="col-12 d-flex gap-2 flex-wrap align-items-center store-catalog-toolbar">
 								<div class="d-flex gap-2 flex-wrap align-items-center store-catalog-filters">
-									<button type="button" class="btn btn-outline-stellar-blue store-follow-btn">
+									<button type="button" class="btn btn-stellar-blue btn-md">
 										<i class="fa-solid"></i>
 										Produtos
 									</button>
-									<button type="button" class="btn btn-outline-stellar-blue store-follow-btn">
+									<button type="button" class="btn btn-stellar-blue btn-md">
 										<i class="fa-solid"></i>
 										Coleções
 									</button>
