@@ -10,6 +10,7 @@ class StatisticsGraphs {
     private $graphTypes = [];
     private $graphData = [];
     private $timePeriod = NULL;
+    protected $translator;
 
     public function __construct($storeId, $periodo) {
         $this->setDefaultGraphTypes($storeId);
@@ -120,61 +121,62 @@ class StatisticsGraphs {
     }
 
     public function buildName($graphType) {
+        $translator = $this->getTranslator();
         $nome = '';
         switch($graphType['grafico_tipo']) {
             case 'pie':
-                $nome .= 'Distribuição ';
+                $nome .= $translator->translate("Distribuição");
                 break;
             case 'bar':
-                $nome .= 'Total';
+                $nome .= $translator->translate("Comparação");
                 break;
             case 'line':
-                $nome .= 'Crescimento';
+                $nome .= $translator->translate("Evolução");
                 break;
         }
         switch($graphType['grafico_contador']) {
             case 'sold_units':
-                $nome .= ' das Unidades Vendidas';
+                $nome .= $translator->translate(' das Unidades Vendidas');
                 break;
             case 'revenue':
-                $nome .= ' do Faturamento';
+                $nome .= $translator->translate(' do Faturamento');
                 break;
             case 'discount':
-                $nome .= ' do Desconto';
+                $nome .= $translator->translate(' do Desconto');
                 break;
             case 'refunds':
-                $nome .= ' dos Reembolsos';
+                $nome .= $translator->translate(' dos Reembolsos');
                 break;
             case 'average_value':
-                $nome .= ' do Valor Médio';
+                $nome .= $translator->translate(' do Valor Médio');
                 break;
             case 'transactions':
-                $nome .= ' das Transações';
+                $nome .= $translator->translate(' das Transações');
                 break;
             case 'contribution_margin':
-                $nome .= ' da Margem de Contribuição';
+                $nome .= $translator->translate(' da Margem de Contribuição');
                 break;
         }
         switch($graphType['grafico_alvo']) {
             case 'product':
-                $nome .= ' por Produto';
+                $nome .= $translator->translate(' por Produto');
                 break;
             case 'category':
-                $nome .= ' por Categoria';
+                $nome .= $translator->translate(' por Categoria');
                 break;
             case 'payment_method':
-                $nome .= ' por Método de Pagamento';
+                $nome .= $translator->translate(' por Método de Pagamento');
                 break;
         }
         switch($graphType['grafico_filtro']) {
             case 'all':
-                $nome .= ' (Todos)';
+                $nome .= $translator->translate(' (Todos)');
                 break;
             case 'top_10':
-                $nome .= ' (Top 10)';
+                $nome .= $translator->translate(' (Top 10)');
                 break;
             case 'custom':
-                $nome .= ' (Personalizado)';
+                $nome .= $translator->translate(' (Personalizado)');
                 break;
         }
         return $nome;
@@ -338,6 +340,14 @@ class StatisticsGraphs {
             // exit;
         }
         return $query;
+    }
+
+    public function setTranslator($translator) {
+        $this->translator = $translator;
+    }
+
+    public function getTranslator() {
+        return $this->translator;
     }
 
 }

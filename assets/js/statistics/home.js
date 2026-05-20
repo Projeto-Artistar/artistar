@@ -399,50 +399,50 @@ $('[data-modal-label]').on('click', function() {
 
 $(document).ready(function() {
     $('#graph-category').select2({
-        placeholder: "Selecione uma ou mais categorias",
+        placeholder: $("#graph-category").data('placeholder'),
         allowClear: true,
         dropdownParent: $('#editGraphModal'),
         width: '100%',
         language: {
             noResults: function() {
-                return "Nenhuma categoria encontrada";
+                return $("#graph-category").data('noResults');
             }
         }
     });
 
     $('#graph-products').select2({
-        placeholder: "Selecione uma ou mais produtos",
+        placeholder: $("#graph-products").data('placeholder'),
         allowClear: true,
         dropdownParent: $('#editGraphModal'),
         width: '100%',
         language: {
             noResults: function() {
-                return "Nenhum produto encontrado";
+                return $("#graph-products").data('noResults');
             }
         }
     });
 
     $('#editGraphModal').on('shown.bs.modal', function () {
         $('#graph-category').select2({
-            placeholder: "Selecione uma ou mais categorias",
+            placeholder: $("#graph-category").data('placeholder'),
             allowClear: true,
             dropdownParent: $('#editGraphModal'),
             width: '100%',
             language: {
                 noResults: function() {
-                    return "Nenhuma categoria encontrada";
+                    return $("#graph-category").data('noResults');
                 }
             }
         });
 
         $('#graph-products').select2({
-            placeholder: "Selecione uma ou mais produtos",
+            placeholder: $("#graph-products").data('placeholder'),
             allowClear: true,
             dropdownParent: $('#editGraphModal'),
             width: '100%',
             language: {
                 noResults: function() {
-                    return "Nenhum produto encontrado";
+                    return $("#graph-products").data('noResults');
                 }
             }
         });
@@ -510,7 +510,7 @@ $(document).on('click', '#edit-graph-btn', function() {
         if (response.code == 200) {
             location.href = $('#form-edit-graph').attr('action'); // Redireciona para a ação do formulário
         } else {
-            console.error('Erro ao editar o gráfico:', response.message);
+            console.error(dictionary.error, response.message);
         }
     }).fail(function (error) {
         console.error('An error occurred:', error);

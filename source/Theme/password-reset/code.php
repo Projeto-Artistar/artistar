@@ -1,8 +1,4 @@
-<?= $this->layout("base", [
-    'title' => $title, 
-    'header' => false,
-    'footer' => true
-]); ?>
+<?= $this->layout("base"); ?>
 
 <?= $this->start("css") ?>
 <link rel="stylesheet" href="<?= url("assets/css/password-reset/new-password.css") ?>">
@@ -13,10 +9,10 @@
     <!-- <div class="row w-75 h-75 outer-box"> -->
         <div class="col-md-6 d-flex align-items-center justify-content-center">
             <div class="login-form border">
-                <h2 class="text-center">Confirmação de E-mail</h2>
+                <h2 class="text-center"><?= $translator->translate("Confirmação de E-mail") ?></h2>
                 <form id="form-confirmation-code" method="get" action="<?= url("?r=" . $redirect) ?>">
                     <div class="mb-3">
-                        <label for="codigo" class="form-label">Insira o código de confirmação enviado para o seu e-mail</label>
+                        <label for="codigo" class="form-label"><?= $translator->translate("Insira o código de confirmação enviado para o seu e-mail") ?></label>
                         <div class="d-flex justify-content-between">
                             <input type="text" class="form-control text-center m-1 input-validate input-stellar-blue" id="codigo1" name="code[0]" maxlength="1" required style="text-transform: uppercase;">
                             <input type="text" class="form-control text-center m-1 input-validate input-stellar-blue" id="codigo2" name="code[1]" maxlength="1" required style="text-transform: uppercase;">
@@ -33,14 +29,14 @@
                     <div class="mb-3">
                         <a href="#" class="link-stellar-blue" id="resend-code">
                             <span id="spinner-resend" class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display:none;"></span>
-                            <span id="text-resend">Reenviar</span>
+                            <span id="text-resend"><?= $translator->translate("Reenviar") ?></span>
                         </a>
                     </div>
                     <div class="d-flex justify-content-end align-items-center">
-                        <a class="btn btn-gray mx-1" href="<?= url('auth/logout')?>">Cancelar</a>
+                        <a class="btn btn-gray mx-1" href="<?= url('auth/logout')?>"><?= $translator->translate("Cancelar") ?></a>
                         <button type="submit" class="btn btn-nocturne-purple" id="confirm-button">
                             <span id="spinner-confirm" class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display:none;"></span>
-                            <span id="text-confirm">Confirmar</span>
+                            <span id="text-confirm"><?= $translator->translate("Confirmar") ?></span>
                         </button>
                     </div>
                 </form>

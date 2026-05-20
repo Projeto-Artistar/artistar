@@ -10,12 +10,19 @@ use Source\Model\Helpers\ValidationCode;
 
 class authController extends Core {
 
+    public function __construct($router = ROOT) {
+        parent::__construct($router);
+        $this->getLayout()->setFooter('footer');
+    }
+
     public function login($post) {
+        $this->addTranslator('login');
+        $translator = $this->getTranslator();
         $auth = new Auth();
         $user = $auth->searchUser($post['email'], $post['password']);
-        if (!$user) exit($this->renderApiResponse(404, 'User not found!'));
+        if (!$user) exit($this->renderApiResponse(404, $translator->translate('Usuário não encontrado!')));
         $this->setUserLogonStatus($user);
-        exit($this->renderApiResponse(200, 'User found!'));
+        exit($this->renderApiResponse(200, $translator->translate('Usuário encontrado!')));
     }
 
     public function logout(){

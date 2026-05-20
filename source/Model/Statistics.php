@@ -11,45 +11,46 @@ use Source\Model\Helpers\StatisticsGraphs;
 class Statistics extends Core {
 
     public function getPeriodos() {
+        $translator = $this->getTranslator();
         return [
             'day' => [
                 'id' => 'day',
-                'name' => '24h',
+                'name' => $translator->translate('24h'),
                 'following' => 'week',
                 'where' => 'v.venda_data_venda BETWEEN :dataInicio AND :dataFim',
                 'group_by' => 'DATE_FORMAT(v.venda_data_venda, "%H")'
             ],
             'week' => [
                 'id' => 'week',
-                'name' => '7 Dias',
+                'name' => $translator->translate('7 Dias'),
                 'following' => 'fortnight',
                 'where' => 'v.venda_data_venda BETWEEN :dataInicio AND :dataFim',
                 'group_by' => 'DATE_FORMAT(v.venda_data_venda, "%d")'
             ],
             'fortnight' => [
                 'id' => 'fortnight',
-                'name' => '15 Dias',
+                'name' => $translator->translate('15 Dias'),
                 'following' => 'month',
                 'where' => 'v.venda_data_venda BETWEEN :dataInicio AND :dataFim',
                 'group_by' => 'DATE_FORMAT(v.venda_data_venda, "%d")'
             ],
             'month' => [
                 'id' => 'month',
-                'name' => '1 Mês',
+                'name' => $translator->translate('1 Mês'),
                 'following' => 'semester',
                 'where' => 'v.venda_data_venda BETWEEN :dataInicio AND :dataFim',
                 'group_by' => 'DATE_FORMAT(v.venda_data_venda, "%d")'
             ],
             'semester' => [
                 'id' => 'semester',
-                'name' => '6 Meses',
+                'name' => $translator->translate('6 Meses'),
                 'following' => 'year',
                 'where' => 'v.venda_data_venda BETWEEN :dataInicio AND :dataFim',
                 'group_by' => 'DATE_FORMAT(v.venda_data_venda, "%m")'
             ],
             'year' => [
                 'id' => 'year',
-                'name' => 'Ano',
+                'name' => $translator->translate('Ano'),
                 'following' => null,
                 'where' => 'v.venda_data_venda BETWEEN :dataInicio AND :dataFim',
                 'group_by' => 'DATE_FORMAT(v.venda_data_venda, "%m")'
@@ -434,6 +435,7 @@ class Statistics extends Core {
 
     public function getGraphData($store, $graphs, $periodo, $dataReferencia) {
         $statisticsGraphs = new StatisticsGraphs($store, $periodo);
+        $statisticsGraphs->setTranslator($this->getTranslator());
         foreach($graphs as $graph) $statisticsGraphs->setGraphType($graph['grafico_posicao'], $graph);
         $info = [];
         foreach($statisticsGraphs->getGraphData() as $key => $data) {

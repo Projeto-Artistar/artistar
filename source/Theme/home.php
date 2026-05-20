@@ -7,7 +7,7 @@
 <?= $this->stop() ?>
 
 <?= $this->start("conteudo") ?>
-<?php if(!$logado) : ?>
+<?php if($logado) : ?>
 <section class="section-slide avoid-navbar">
     <div class="col-12">
         <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
@@ -76,7 +76,7 @@
                         ]) ?>'></span><span class="pipe-typeEffect">|</span>
                     </h1>
                     <p class="text-white fs-4"><?= $translator->translate('A gente simplifica o lado profissional da sua arte pra você focar no que mais ama fazer: criar!') ?></p>
-                    <a href="<?= url('register') ?>" class="btn btn-lg btn-light color-stellar-blue mt-3"><?= $translator->translate('Comece Agora') ?></a>
+                    <a href="<?= url('register') ?>" class="btn btn-lg btn-stellar-blue inverted-version mt-3"><?= $translator->translate('Comece Agora') ?></a>
                 </div>
             </div>
             <div class="col-lg-4 text-center mt-5 mt-lg-0">
@@ -139,7 +139,7 @@
                         </tr>
                         <tr>
                             <td></td>
-                            <td><a href="<?= url('register') ?>" class="btn btn-lg btn-light color-stellar-blue mt-3"><?= $translator->translate('Comece Agora') ?></a></td>
+                            <td><a href="<?= url('register') ?>" class="btn btn-lg btn-stellar-blue inverted-version mt-3"><?= $translator->translate('Comece Agora') ?></a></td>
                         </tr>
                     </tbody>
                 </table>
@@ -166,42 +166,53 @@
         <a href="<?= url('register') ?>" class="btn btn-lg btn-outline-nocturne-purple mt-3"><?= $translator->translate('Comece Agora') ?></a>
     </div>
 </section>
-<section class="section-vendas bg-stellar-blue py-5">
+<section class="section-vendas bg-cotton-candy py-5">
     <div class="container">
         <div class="row">
             <div class="col-md-6 col-12 mt-4 mt-md-0 d-flex flex-column justify-content-center">
-                <h2 class="h2 text-white"><?= $translator->translate('Como posso começar a usar?') ?></h2>
-                <p class="h4 text-white my-5"><?= $translator->translate('É simples! Siga estes x passos para começar.') ?></p>
+                <h1 class="h1 text-white"><?= $translator->translate('Comece a organizar sua arte!') ?></h1>
+                <p class="h4 text-white my-5"><?= $translator->translate('Do seu estoque até a primeira venda, sem complicar a sua vida') ?></p>
                 <div>
-                    <a href="<?= url('register') ?>" class="btn btn-light mt-3"><?= $translator->translate('Comece Agora') ?></a>
+                    <a href="<?= url('register') ?>" class="btn btn-lg btn-cotton-candy inverted-version mt-3"><?= $translator->translate('Comece Agora') ?></a>
                 </div>
             </div>
             <div class="col-md-6 col-12 px-3 text-white">
                 <div class="row">
                     <div class="col-1">01</div>
                     <div class="col-11">
-                        <h4 class="font-weight-bold"><?= $translator->translate('Título do passo') ?></h4>
+                        <h4 class="font-weight-bold"><?= $translator->translate('Organize seu estoque do seu jeito.') ?></h4>
+                        <p><?= $translator->translate('Cadastre seus produto do seu jeito e que faz sentido pra você e pra sua rotina.') ?></p>
                     </div>
                     <hr>
                     <div class="col-1">02</div>
                     <div class="col-11">
-                        <h4 class="font-weight-bold"><?= $translator->translate('Título do passo') ?></h4>
+                        <h4 class="font-weight-bold"><?= $translator->translate('Planeje seus eventos') ?></h4>
+                        <p><?= $translator->translate('Encontre, registre e organize sua agenda de eventos em um só lugar.') ?></p>
                     </div>
                     <hr>
                     <div class="col-1">03</div>
                     <div class="col-11">
-                        <h4 class="font-weight-bold"><?= $translator->translate('Título do passo') ?></h4>
+                        <h4 class="font-weight-bold"><?= $translator->translate('Monte seu catálogo de produtos') ?></h4>
+                        <p><?= $translator->translate('Personalize seu catálogo com a sua cara e deixe tudo pronto pra mostrar pros seus clientes, até durante o evento.') ?></p>
                     </div>
                     <hr>
                     <div class="col-1">04</div>
                     <div class="col-11">
-                        <h4 class="font-weight-bold"><?= $translator->translate('Título do passo') ?></h4>
+                        <h4 class="font-weight-bold"><?= $translator->translate('Comece a vender de verdade') ?></h4>
+                        <p><?= $translator->translate('Registre suas vendas na hora, sem ser tudo um caos, e acompanhe tudo enquanto acontece.') ?></p>
+                    </div>
+                    <hr>
+                    <div class="col-1">05</div>
+                    <div class="col-11">
+                        <h4 class="font-weight-bold"><?= $translator->translate('Entenda o que funciona pra você') ?></h4>
+                        <p><?= $translator->translate('Veja os produtos que mais vende e o que precisa repor rápido.') ?></p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
+<?php if (false) : ?>
 <section class="section-parceiros section-dark p-4">
     <div class="container">
         <div class="pb-3">
@@ -229,47 +240,72 @@
         </div>
     </div>
 </section>
-<?php if (!$logado) :?>
+<?php endif; ?>
+<?php if ($logado) :?>
 <section class="section-faq section-dark py-5">
     <div class="container">
         <div class="pb-3">
-            <span class="h2">Perguntas Frequentes</span>
-            <p class="lead mt-3">Descubra como nossa plataforma pode ajudar você a gerenciar suas vendas, organizar seus produtos e alcançar mais clientes de forma eficiente.</p>
+            <span class="h1"><?= $translator->translate('Ficou com alguma dúvida?') ?></span><br><br>
+            <span class="h4 lead mt-3"><?= $translator->translate('Vem que a gente responde!') ?></span>
         </div>
         <div class="accordion" id="accordionExample">
-            <div class="accordion-item rounded mb-3">
-                <h2 class="accordion-header" id="headingOne">
-                    <button class="accordion-button rounded bg-klikit-2 text-white" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                        Como começar?
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq1">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq1-collapse" aria-expanded="false" aria-controls="faq1-collapse">
+                        <?= $translator->translate('O que é o Artistar?') ?>
                     </button>
                 </h2>
-                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                <div id="faq1-collapse" class="accordion-collapse collapse" aria-labelledby="faq1" data-bs-parent="#accordionExample">
                     <div class="accordion-body">
-                        <strong>This is the first item's accordion body.</strong> It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+                        <?= $translator->translate('O Artistar é uma plataforma feita de artista para artistas, que te ajuda a organizar o lado profissional da sua arte, desde suas vendas ao seu estoque, dos eventos que vai participar até o catálogo que seus clientes vão ver, tudo em um só lugar.') ?>
                     </div>
                 </div>
             </div>
-            <div class="accordion-item rounded mb-3">
-                <h2 class="accordion-header" id="headingTwo">
-                    <button class="accordion-button rounded collapsed bg-klikit-2 text-white" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                        Como isso me beneficia?
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq2">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2-collapse" aria-expanded="false" aria-controls="faq2-collapse">
+                        <?= $translator->translate('Posso usar o Artistar durante eventos?') ?>
                     </button>
                 </h2>
-                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                <div id="faq2-collapse" class="accordion-collapse collapse" aria-labelledby="faq2" data-bs-parent="#accordionExample">
                     <div class="accordion-body">
-                        <strong>This is the second item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+                        <?= $translator->translate('Pode sim e deve! O Artistar foi projetado para você conseguir registrar suas vendas na hora, da forma mais rápida e sem perder venda, mesmo no meio do movimento.') ?>
                     </div>
                 </div>
             </div>
-            <div class="accordion-item rounded mb-3">
-                <h2 class="accordion-header" id="headingThree">
-                    <button class="accordion-button rounded collapsed bg-klikit-2 text-white" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                        Quais são os custos?
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq3">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3-collapse" aria-expanded="false" aria-controls="faq3-collapse">
+                        <?= $translator->translate('O Artistar é uma plataforma de loja virtual?') ?>
                     </button>
                 </h2>
-                <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+                <div id="faq3-collapse" class="accordion-collapse collapse" aria-labelledby="faq3" data-bs-parent="#accordionExample">
                     <div class="accordion-body">
-                        <strong>This is the third item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+                        <?= $translator->translate('Ele não é uma loja virtual. O Artistar cuida da organização do seu negócio como um todo, inclusive ajudando você a vender melhor, dentro dos eventos que você participa.') ?>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq4">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4-collapse" aria-expanded="false" aria-controls="faq4-collapse">
+                        <?= $translator->translate('Funciona para quem está começando agora?') ?>
+                    </button>
+                </h2>
+                <div id="faq4-collapse" class="accordion-collapse collapse" aria-labelledby="faq4" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <?= $translator->translate('Óbvio! Inclusive, é uma ótima forma de você começar já com tudo organizadinho, desde o início!') ?>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="faq5">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq5-collapse" aria-expanded="false" aria-controls="faq5-collapse">
+                        <?= $translator->translate('E se eu já vendo há um tempo?') ?>
+                    </button>
+                </h2>
+                <div id="faq5-collapse" class="accordion-collapse collapse" aria-labelledby="faq5" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <?= $translator->translate('Melhor ainda! O Artistar te ajuda a sair do improviso e ter mais controle e profissionalismo sobre o que você já faz ; )') ?>
                     </div>
                 </div>
             </div>

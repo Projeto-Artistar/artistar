@@ -44,6 +44,7 @@ class Core {
         $this->setLayout(new BuildLayout($this->view));
         $this->getLayout()->setLang($this->getLanguage());
         $this->getLayout()->setTranslator((new Translator($this->getLanguage()))->loadTranslation('core'));
+        $this->getLayout()->setDescription($this->getLayout()->getTranslator()->translate('Gerencie seu estoque de forma eficiente e prática durante eventos com o Artistar. Nossa plataforma facilita o controle de vendas, produtos e relatórios, proporcionando uma experiência otimizada para artistas e vendedores. Simplifique sua gestão e maximize seus lucros com nossas ferramentas intuitivas.'));
 
         $this->view->addData([
             "router"=> $this->router,

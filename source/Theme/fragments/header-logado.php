@@ -83,6 +83,7 @@
                 </ul>
             </div> -->
 
+            <?php if (true): ?>
             <div class="dropdown language-selector me-2">
                 <button class="btn language-selector-toggle d-flex align-items-center" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Selecionar idioma">
                     <img src="<?= url('assets/image/flags/' . $languageOptions[$activeLanguage]['flag']) ?>" alt="" class="language-flag me-2">
@@ -102,6 +103,7 @@
                     <?php endforeach; ?>
                 </ul>
             </div>
+            <?php endif; ?>
 
             <button data-bs-toggle="offcanvas" style="border:none; background:none;" type="button" href="#offcanvasExample" role="button" aria-controls="offcanvasExample" class="link-nocturne-purple link-hover">
                 <i class="fa-solid fa-bars" style="width:24px; text-align: center;"></i>
@@ -161,14 +163,6 @@
             <li>
                <a href="<?= url('store/id/' . $_SESSION['artistar']['user']['loja_id']) ?>" class="nav-link link-nocturne-purple link-hover">
                     <div class="d-flex align-items-center">
-                        <i class="icone-sidebar icone-loja me-4" style="width:24px; text-align: center;"></i>
-                        <span><?= $translator->translate('Minha Loja') ?></span>
-                    </div>
-                </a>
-            </li>
-            <li>
-               <a href="<?= url('events/my-events') ?>" class="nav-link link-nocturne-purple link-hover">
-                    <div class="d-flex align-items-center">
                         <i class="icone-sidebar icone-meus-eventos me-4" style="width:24px; text-align: center;"></i>
                         <span><?= $translator->translate('Meus Eventos') ?></span>
                     </div>
@@ -176,6 +170,14 @@
             </li>
             <!-- <li class="border-top my-3"></li>  -->
             <?php if($_SESSION['artistar']['permissions']['prototype']): ?>
+            <li>
+               <a href="<?= url('events/my-events') ?>" class="nav-link link-nocturne-purple link-hover">
+                    <div class="d-flex align-items-center">
+                        <i class="icone-sidebar icone-loja me-4" style="width:24px; text-align: center;"></i>
+                        <span><?= $translator->translate('Minha Loja') ?></span>
+                    </div>
+                </a>
+            </li>
             <li>
                <a href="<?= url('events') ?>" class="nav-link link-nocturne-purple link-hover">
                     <div class="d-flex align-items-center">
@@ -224,7 +226,6 @@
                     </ul>
                 </div>
             </li>
-            <?php endif; ?>
             <li class="border-top my-3"></li>  
             <li>
                 <a href="<?= url('settings') ?>" class="nav-link link-dark link-hover">
@@ -234,6 +235,8 @@
                     </div>
                 </a>
             </li>
+            <?php endif; ?>
+
             <?php if($_SESSION['artistar']['permissions']['admin']): ?>
             <li class="border-top my-3"></li>
             <li>

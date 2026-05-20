@@ -12,11 +12,15 @@ class homeController extends Core {
     public function __construct($router = ROOT) {
         parent::__construct($router);
         if($this->getLogado() && $this->getUser()['email_validado'] != 1) $this->checkIfEmailIsValidated();
+        $this->getLayout()->setFooter('footer');
     }
 
     public function home() {
+        if ($this->getLogado()) {
+            header("location: /stock");
+            return;
+        }
         $this->getLayout()->setHeader($this->getLogado() ? 'header-logado' : 'header');
-        $this->getLayout()->setFooter('footer');
         $this->addLayout();
         $this->addTranslator('home');
         echo $this->view->render("home");
@@ -24,16 +28,14 @@ class homeController extends Core {
     }
 
     public function login() {
-        $this->getLayout()->setFooter('footer');
+        $this->addTranslator('login');
+        $this->addLayout($this->getTranslator()->translate("Login"));
         $this->addLayout();
         if ($this->getLogado()) {
             header("location: /");
             return;
         }
-        echo $this->view->render("login", [
-            'title' =>  'Login - Artistar', 
-            'redirect' => $this->getRedirect()
-        ]);
+        echo $this->view->render("login");
         return;
     }
 
