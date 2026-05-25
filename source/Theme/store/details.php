@@ -13,6 +13,8 @@
 	$storePhoto = !empty($store['foto']) ? storageURL($store['foto']) : '';
 	$storeId = !empty($store['codigo']) ? (int) $store['codigo'] : 0;
 	$isOwner = !empty($isOwner);
+	$followersCount = isset($followersCount) ? (int) $followersCount : 0;
+	$loginRedirect = base64_encode(urlencode($_SERVER['REQUEST_URI'] ?? '/'));
 	$storeInitial = strtoupper(substr(trim($storeName), 0, 1));
 	$collectionPlaceholders = [
 		[
@@ -44,11 +46,16 @@
 						<i class="fa-solid fa-pen"></i>
 						Editar
 					</a>
-				<?php else: ?>
-					<button type="button" class="btn btn-outline-stellar-blue store-follow-btn">
+				<?php elseif ($logado): ?>
+					<button type="button" class="btn btn-outline-stellar-blue store-follow-btn" data-store-id="<?= $storeId ?>" data-login-redirect="<?= $loginRedirect ?>">
 						<i class="fa-solid fa-plus"></i>
 						Seguir
 					</button>
+				<?php else: ?>
+					<a href="<?= url('login?r=' . $loginRedirect) ?>" class="btn btn-outline-stellar-blue store-follow-btn">
+						<i class="fa-solid fa-plus"></i>
+						Seguir
+					</a>
 				<?php endif; ?>
 			</div>
 		</div>
@@ -71,13 +78,13 @@
 					<p class="store-description mb-4"><?= ($storeDescription) ?></p>
                     <p class="store-name mb-1">Santos - SP</p>
 
-					<div class="store-stats">
-                        <div class="store-stat-item">
+					<div class="store-stats" style="display:flex; flex-wrap:nowrap; gap:0.65rem; align-items:stretch;">
+						<div class="store-stat-item" style="flex:1 1 0; min-width:0;">
 							<span class="store-stat-value"><?= count($products) ?></span>
 							<span class="store-stat-label">produtos</span>
 						</div>
-						<div class="store-stat-item">
-							<span class="store-stat-value">90</span>
+						<div class="store-stat-item" style="flex:1 1 0; min-width:0;">
+							<span class="store-stat-value"><?= $followersCount ?></span>
 							<span class="store-stat-label">seguidores</span>
 						</div>
 					</div>

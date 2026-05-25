@@ -56,6 +56,81 @@ class Store extends Core {
         return $select->fetch(PDO::FETCH_ASSOC);
     }
 
+    public function getStoreFollowersCount($storeId) {
+        $storeId = (int) $storeId;
+        if ($storeId < 1) return 0;
+
+        $select = $this->SQL->prepare('
+            SELECT
+                COUNT(*) total
+            FROM
+                lojas_seguidores
+            WHERE
+                loja_id = :storeId
+            LIMIT 1
+        ');
+        
+        $select->bindParam(':storeId', $storeId, PDO::PARAM_INT);
+        $select->execute();
+
+        return (int) ($select->fetch(PDO::FETCH_ASSOC)['total'] ?? 0);
+    }
+
+    public function checkIfUserFollowsStore($storeId, $userId) {
+        $storeId = (int) $storeId;
+        $userId = (int) $userId;
+
+        if ($storeId < 1 || $userId < 1) return null;
+
+        $select = $this->SQL->prepare('
+            SELECT
+                *
+            FROM
+                lojas_seguidores
+            WHERE
+                loja_id = :storeId
+            AND
+                usuario_id = :userId
+            LIMIT 1
+        ');
+
+        $select->bindParam(':storeId', $storeId, PDO::PARAM_INT);
+        $select->bindParam(':userId', $userId, PDO::PARAM_INT);
+        $select->execute();
+
+
+        return $select->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function followStore($storeId, $userId) {
+        $storeId = (int) $storeId;
+        $userId = (int) $userId;
+
+        if ($storeId < 1 || $userId < 1) return false;
+
+        $insert = $this->SQL->prepare('
+            INSERT INTO lojas_seguidores
+                (
+                    loja_id,
+                    usuario_id,
+                    loja_seguidor_dt
+                )
+            VALUES
+                (
+                    :storeId,
+                    :userId,
+                    NOW()
+                )
+        ');
+
+        $insert->bindParam(':storeId', $storeId, PDO::PARAM_INT);
+        $insert->bindParam(':userId', $userId, PDO::PARAM_INT);
+
+        if (!$insert->execute()) return false;
+
+        return $this->SQL->lastInsertId();
+    }
+
     public function getPublicProducts($storeId, $search = '', $limit = 24, $onlyOrdered = false) {
         $query = '
             SELECT

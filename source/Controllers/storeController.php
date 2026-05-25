@@ -50,6 +50,7 @@ class storeController extends Core {
         $this->addLayout(!empty($store['nome']) ? $store['nome'] : null);
 
         $products = $storeModel->getPublicProducts($storeId, '', 24, true);
+        $followersCount = $storeModel->getStoreFollowersCount($storeId);
 
         echo $this->view->render("store/details", [
             'layout' => [
@@ -60,6 +61,7 @@ class storeController extends Core {
             ],
             'store' => $store,
             'isOwner' => $isOwner,
+            'followersCount' => $followersCount,
             'products' => $products ?? []
         ]);
     }

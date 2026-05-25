@@ -1,6 +1,7 @@
 (function () {
     var productsList = document.getElementById('storeProductsList');
     var searchInput = document.getElementById('storeSearchInput');
+    var followButton = document.querySelector('.store-follow-btn[data-store-id]');
 
     if (!productsList) return;
 
@@ -210,6 +211,52 @@
             searchTimeout = setTimeout(function () {
                 loadProducts(value);
             }, 30);
+        });
+    }
+
+    if (followButton) {
+        followButton.addEventListener('click', function () {
+            var button = this;
+            var buttonStoreId = parseInt(button.dataset.storeId || '0', 10);
+            var loginRedirect = button.dataset.loginRedirect || '';
+
+            if (!buttonStoreId || button.disabled) return;
+
+            button.disabled = true;
+
+            $.ajax({
+                url: '/apis/store/follow',
+                type: 'POST',
+                data: {
+                    storeId: buttonStoreId,
+                    returnUrl: loginRedirect
+                },
+                success: function (response) {
+                    response = parseApiResponse(response);
+
+                    if (!response) {
+                        button.disabled = false;
+                        return;
+                    }
+
+                    if (response.code === 401 && response.data && response.data.redirect) {
+                        window.location.href = response.data.redirect;
+                        return;
+                    }
+
+                    if (response.code !== 200) {
+                        button.disabled = false;
+                        return;
+                    }
+
+                    button.innerHTML = '<i class="fa-solid fa-check"></i> Seguindo';
+                    button.classList.remove('btn-outline-stellar-blue');
+                    button.classList.add('btn-success');
+                },
+                error: function () {
+                    button.disabled = false;
+                }
+            });
         });
     }
 

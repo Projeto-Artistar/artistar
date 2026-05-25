@@ -230,4 +230,53 @@ class apiController extends Core {
         ]);
     }
 
+
+    public function followStore($data) {
+        if (!$this->getLogado()) {
+            $returnUrl = isset($data['returnUrl']) ? (string) $data['returnUrl'] : base64_encode(urlencode('/'));
+            exit($this->renderApiResponse(401, 'Usuário não autenticado.', [
+                'redirect' => '/login?r=' . $returnUrl
+            ]));
+        }
+
+        $storeId = isset($data['storeId']) ? (int) $data['storeId'] : 0;
+        $userId = !empty($this->getUser()['id']) ? (int) $this->getUser()['id'] : 0;
+
+        if ($storeId < 1 || $userId < 1) {
+            exit($this->renderApiResponse(400, 'Dados invalidos.'));
+        }
+
+        if (!empty($this->getUser()['loja_id']) && ((int) $this->getUser()['loja_id']) === $storeId) {
+            exit($this->renderApiResponse(403, 'Voce nao pode seguir a propria loja.'));
+        }
+
+        $storeModel = new Store();
+        $store = $storeModel->getStoreData($storeId);
+
+        if (empty($store)) {
+            exit($this->renderApiResponse(404, 'Loja nao encontrada.'));
+        }
+
+        $existingFollow = $storeModel->checkIfUserFollowsStore($storeId, $userId);
+        if (!empty($existingFollow)) {
+            exit($this->renderApiResponse(200, 'Voce ja segue esta loja.', [
+                'followed' => true,
+                'followers' => $storeModel->getStoreFollowersCount($storeId)
+            ]));
+        }
+
+        try {
+            $followId = $storeModel->followStore($storeId, $userId);
+            if (!$followId) {
+                exit($this->renderApiResponse(500, 'Erro ao seguir a loja.'));
+            }
+        } catch (\Throwable $e) {
+            exit($this->renderApiResponse(500, 'Erro ao seguir a loja: ' . $e->getMessage()));
+        }
+
+        exit($this->renderApiResponse(200, 'Loja seguida com sucesso.', [
+            'followed' => true,
+            'followers' => $storeModel->getStoreFollowersCount($storeId)
+        ]));
+    }
 }

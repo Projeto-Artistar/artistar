@@ -133,9 +133,8 @@
 }
 
 .store-stats {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 0.65rem;
 }
 
@@ -145,7 +144,7 @@
     padding: 0.55rem 0.7rem;
     background: #fafbff;
     text-align: center;
-    min-width: 110px;
+    width: 100%;
 }
 
 .store-stat-value {
@@ -520,7 +519,7 @@
     }
 
     .store-stats {
-        justify-content: center;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
     .store-main-layout {

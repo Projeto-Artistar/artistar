@@ -47,7 +47,7 @@
                     <p class="store-description mb-4"><?= ($storeDescription) ?></p>
 
                     <div class="alert alert-light border small mb-0">
-                        Clique no coracao para incluir ou remover produtos da vitrine publica.
+                        Clique no coração para incluir ou remover produtos da vitrine publica.
                     </div>
                 </aside>
             </div>
@@ -65,10 +65,15 @@
                         <div class="row g-3 mt-3">
                             <div class="col-12 d-flex gap-2 flex-wrap align-items-center store-catalog-toolbar">
                                 <div class="d-flex gap-2 flex-wrap align-items-center store-catalog-filters">
-                                    <button type="button" class="btn btn-outline-stellar-blue store-follow-btn" disabled>
-                                        Produtos da loja
-                                    </button>
-                                </div>
+									<button type="button" class="btn btn-stellar-blue btn-md">
+										<i class="fa-solid"></i>
+										Produtos
+									</button>
+									<button type="button" class="btn btn-stellar-blue btn-md">
+										<i class="fa-solid"></i>
+										Coleções
+									</button>
+								</div>
                                 <div class="ms-auto text-end store-catalog-search">
                                     <div class="store-search-wrap">
                                         <i class="fa-solid fa-search store-search-icon"></i>

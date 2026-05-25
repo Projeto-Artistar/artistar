@@ -125,6 +125,7 @@ $router->post("/cities", "apiController:cities", "apiController.cities");
 $router->post("/store/products", "apiController:storeProducts", "apiController.storeProducts");
 $router->post("/store/manage-products", "apiController:manageStoreProducts", "apiController.manageStoreProducts");
 $router->post("/store/toggle-product-order", "apiController:toggleStoreProductOrder", "apiController.toggleStoreProductOrder");
+$router->post("/store/follow", "apiController:followStore", "apiController.followStore");
 
 
 $router->group("error");
